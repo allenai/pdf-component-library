@@ -1,0 +1,6 @@
+{
+    "appName": "skiff-template",
+    "contact": "reviz",
+    "team": "reviz",
+    "replicas": { "prod": 2 }
+}
