@@ -3,17 +3,13 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.tsx',
+    entry: ['./src/index.tsx', './src/less/main.less'],
     module: {
         rules: [
-            // This allows for CSS to be included via import statements, like so:
-            // `import '@allenai/varnish/dist/theme.css';`
             {
-                test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                test: /\.(less|css)$/,
+                use: ['style-loader', 'css-loader', 'less-loader'],
             },
-            // This tells webpack to hand TypeScript files to the TypeScript compiler
-            // before bundling them.
             {
                 test: /\.tsx?$/,
                 loader: 'ts-loader',
@@ -21,6 +17,7 @@ module.exports = {
             },
         ],
     },
+    devtool: 'eval-source-map',
     resolve: {
         extensions: ['.tsx', '.ts', '.js', '.jsx'],
     },
@@ -44,6 +41,10 @@ module.exports = {
                         return absPathToFile !== path.resolve(__dirname, 'public', 'index.html');
                     },
                     transformPath: (p) => p.replace(/^public\//, ''),
+                },
+                {
+                  from: 'node_modules/pdfjs-dist/cmaps/',
+                  to: 'cmaps/'
                 },
             ],
         }),
