@@ -12,9 +12,9 @@ export default function SimpleZoomControl({scale, onScale}: Props) {
   const scaleFormatted = `${(scale / 1.0) * 100}%`;
   return (
     <span>
-      <a href="" onClick={handleScale(0.5)}>-</a>
+      <a className="hacky-zoom-button" onClick={handleScale(0.5)}>-</a>
       <span>{scaleFormatted}</span>
-      <a href="" onClick={handleScale(2)}>+</a>
+      <a className="hacky-zoom-button" onClick={handleScale(2)}>+</a>
     </span>
   );
 };
