@@ -49,7 +49,7 @@ export default class Reader extends React.Component<
 
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
     pdfDoc.getPage(1).then((page) => {
-      this.setState({ pdfWidthPx: computePageWidthPx(page) });
+      this.setState({ pdfWidthPx: computePageWidthPx(page.userUnit, page.view) });
     });
     this.setState({
       isLoading: false,
