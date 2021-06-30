@@ -66,6 +66,5 @@ module.exports = {
         // slower, but it's probably worth the extra nanosecond.
         writeToDisk: true,
         lazy: false,
-        sockPort: 8080,
     },
 };
