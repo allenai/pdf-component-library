@@ -8,20 +8,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
-import { VarnishApp } from '@allenai/varnish/components';
-import { ScrollToTopOnPageChange } from '@allenai/varnish-react-router';
 
-import '@allenai/varnish/dist/theme.css';
+import Reader from './Reader';
 
-import { App } from './App';
-
-const VarnishedApp = () => (
+const App = () => (
     <BrowserRouter>
-        <ScrollToTopOnPageChange />
-        <VarnishApp>
-            <Route path="/" component={App} />
-        </VarnishApp>
+      <Route path="/" component={Reader} />
     </BrowserRouter>
 );
 
-ReactDOM.render(<VarnishedApp />, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));

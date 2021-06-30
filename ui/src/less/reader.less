@@ -1,0 +1,53 @@
+body {
+  overflow: hidden;
+  position: fixed;
+}
+
+.reader__container {
+  display: grid;
+  grid-template-rows: 100px minmax(0, 1fr);
+  grid-template-areas:
+    "header"
+    "main";
+  height: 100vh;
+  width: 100vw;
+}
+
+.reader__header {
+  grid-area: header;
+}
+
+.reader__sidebar {
+  grid-area: sidebar;
+}
+
+.reader__main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 300px minMax(0, 1fr);
+  grid-template-areas: "sidebar document"
+}
+
+.reader__page {
+  background-color: @white;
+  margin: 24px;
+  box-shadow: 0px 4px 14px fade(@black, 20%);
+}
+
+.reader__page-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-area: document;
+  background-color: @grey;
+  overflow: scroll;
+}
+
+.hacky-zoom-button {
+  padding: 10px;
+  color: @blue;
+  &:hover {
+    color: @light-blue;
+    cursor: pointer;
+  }
+}
