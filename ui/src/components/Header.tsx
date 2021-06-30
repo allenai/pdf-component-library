@@ -7,12 +7,6 @@ type Props = {
 };
 
 export default class Header extends React.Component<Props> {
-  onSearch = () => {
-    console.log('hi!');
-    // @ts-ignore -- window.find() should be supported despite not being standard
-    window.find('',0,0,0,0,0,1);
-  }
-
   render() {
     return (
       <div>

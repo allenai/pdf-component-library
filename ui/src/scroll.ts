@@ -1,5 +1,3 @@
-// TODO: Rename this file
-
 // Each page div is ID'd accoreding to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
