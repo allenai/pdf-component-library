@@ -1,4 +1,10 @@
-# skiff-template
+# pdf-component-library
+
+See Design Document [here](https://docs.google.com/document/d/1U7NwejFSXNhoXuSdPvhCuYp1rZroZnCcR3EVU4evz0o/edit?usp=sharing)
+
+This is a temporary repository for the PDF Component Library and what will probably become the "Hello World" template for Semantic Reader. This is a private repo intended mainly as an easy place to develop the components, and once the actual "library" takes shape and is in a place where we want to start publishing it, we can split that code into a new OSS repository for publishing to NPM with a clean git history. Same goes for the "Hello World" app--the Reader and supporting example UI can probably be moved to a new OSS repo for being the "Hello World" app that we publish to the world with a clean git history.
+
+# The Original Skiff Readme
 
 Ahoy! Welcome to your new [skiff](https://github.com/allenai/skiff) template
 application that includes:
