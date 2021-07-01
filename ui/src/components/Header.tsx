@@ -6,7 +6,7 @@ type Props = {
   handleZoom: (multiplier: number) => void,
 };
 
-export default class Header extends React.Component<Props> {
+export default class Header extends React.PureComponent<Props> {
   render() {
     return (
       <div>
