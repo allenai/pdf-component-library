@@ -12,13 +12,13 @@ type Props = {
   onClick: () => void;
 };
 
-export default function BoundingBox({
+const BoundingBox: React.FunctionComponent<Props> = ({
   top,
   left,
   height,
   width,
   ...rest
-}: Props) {
+}: Props) => {
   const { scale } = React.useContext(PageSizeContext);
   return (
     <rect
@@ -30,4 +30,6 @@ export default function BoundingBox({
       {...rest}
     />
   );
-}
+};
+
+export default BoundingBox;

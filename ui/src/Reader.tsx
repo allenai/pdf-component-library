@@ -12,6 +12,7 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { Outline } from "react-pdf/dist/esm/entry.webpack";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import BoundingBox from "./components/BoundingBox";
 
 type State = {
   pdfSizePx: Nullable<PdfPixelSize>;
@@ -100,7 +101,17 @@ export default class Reader extends React.Component<
                     scale={scale}
                     pageSize={pdfSizePx}
                   >
-                    <Overlay />
+                    <Overlay>
+                      <BoundingBox
+                        top={10}
+                        left={10}
+                        height={10}
+                        width={10}
+                        fill="#ff0000"
+                        stroke="#00ff00"
+                        onClick={() => window.alert("!!")}
+                      />
+                    </Overlay>
                   </PageWrapper>
                 ))}
               </div>

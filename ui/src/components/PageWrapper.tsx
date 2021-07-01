@@ -35,7 +35,7 @@ export default class PageWrapper extends React.PureComponent<Props> {
       return undefined;
     }
     return {
-      width: pageSize.width * (scale || 1.0),
+      width: pageSize.width * scale,
     };
   };
 
@@ -63,7 +63,7 @@ export default class PageWrapper extends React.PureComponent<Props> {
         className="reader__page"
         style={this.computeStyle()}
       >
-        <PageSizeContext.Provider value={{ pageSize, scale}}>
+        <PageSizeContext.Provider value={{ pageSize, scale }}>
           {children}
         </PageSizeContext.Provider>
         <Page
