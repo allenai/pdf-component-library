@@ -103,13 +103,13 @@ export default class Reader extends React.Component<
                   >
                     <Overlay>
                       <BoundingBox
-                        top={10}
-                        left={10}
-                        height={10}
-                        width={10}
+                        top={10 + (i * 50)}
+                        left={10 + (i * 50)}
+                        height={30}
+                        width={30}
                         fill="#ff0000"
                         stroke="#00ff00"
-                        onClick={() => window.alert("!!")}
+                        onClick={() => window.alert(`You clicked on page ${i + 1}!!`)}
                       />
                     </Overlay>
                   </PageWrapper>
