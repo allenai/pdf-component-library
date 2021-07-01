@@ -1,4 +1,7 @@
+import { PdfPageSizeData, PdfPixelSize, USER_UNIT_DENOMINATOR } from "./types";
+
 // We assume 96 DPI for display
+// TODO: There are more accurate ways to do this, but this is what ScholarPhi does now
 const DPI = 96;
 
 /**
@@ -7,8 +10,9 @@ const DPI = 96;
  * @param view an array of numbers defining the corners of the page as [x1, y1, x2, y2]
  * @returns Pixel width of a page at 100% scale assuming 96DPI display
  */
-export function computePageWidthPx(userUnit: number, view: [number, number, number, number]): number {
-  const x1 = view[0];
-  const x2 = view[2];
-  return (x2 - x1) * (userUnit / 72) * DPI;
+export function computePageSizePx({ userUnit, topLeft, bottomRight }: PdfPageSizeData): PdfPixelSize {
+  return {
+    height: (bottomRight.y - topLeft.y) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
+    width: (bottomRight.x - topLeft.x) * (userUnit / USER_UNIT_DENOMINATOR) * DPI
+  };
 }
