@@ -1,8 +1,11 @@
-import { PdfPageSizeData, PdfPixelSize, USER_UNIT_DENOMINATOR } from "./types";
+import { PdfPageSizeData, PdfPixelSize } from "./types";
 
 // We assume 96 DPI for display
 // TODO: There are more accurate ways to do this, but this is what ScholarPhi does now
 const DPI = 96;
+
+ // PDF units are in 1/72nds of an inch
+const USER_UNIT_DENOMINATOR = 72;
 
 /**
  * Given data from the PDFPageProxy, calculates the pixel width of the PDF page at 100% scale

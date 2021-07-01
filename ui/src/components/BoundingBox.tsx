@@ -3,13 +3,17 @@ import { PageSizeContext } from "./PageSizeContext";
 
 type Props = {
   className?: string;
+  /**
+   * top, left, height, and width are in screen pixel units
+   * at 100% scaling of the page
+   */
   top: number;
   left: number;
   height: number;
   width: number;
   fill?: string;
   stroke?: string;
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 const BoundingBox: React.FunctionComponent<Props> = ({

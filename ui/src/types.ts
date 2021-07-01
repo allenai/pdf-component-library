@@ -18,5 +18,3 @@ export type PdfPixelSize = {
   height: number;
   width: number;
 };
-
-export const USER_UNIT_DENOMINATOR = 72; // the default size of units in 1/72nds of an inch
