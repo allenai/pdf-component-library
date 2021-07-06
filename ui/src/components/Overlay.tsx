@@ -1,13 +1,10 @@
 import { PageSizeContext } from "./PageSizeContext";
+import BoundingBox from "./BoundingBox";
 
 import * as React from "react";
 
 type Props = {
-  /**
-   * Really this should only be a BoundingBox
-   * TODO: Can it be better scoped?
-   */
-  children: React.ReactNode
+  children: React.ReactElement<typeof BoundingBox>
 };
 
 const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
