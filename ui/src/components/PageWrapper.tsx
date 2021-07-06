@@ -1,6 +1,7 @@
 import { generatePageId } from "../scroll";
 import { Nullable, PdfPixelSize } from "../types";
 import { PageSizeContext } from "./PageSizeContext";
+import Overlay from './Overlay';
 
 import { Page } from "react-pdf/dist/esm/entry.webpack";
 import * as React from "react";
@@ -19,6 +20,7 @@ type PageProps = {
 };
 type Props = {
   className?: string;
+  children?: React.ReactElement<typeof Overlay>;
   pageSize: Nullable<PdfPixelSize>;
 } & PageProps;
 
