@@ -44,6 +44,7 @@ export default class PageWrapper extends React.PureComponent<Props> {
   render(): React.ReactNode {
     const { pageSize, error, loading, noData, pageIndex, pageNumber, scale, children } = this.props;
     // Click events from the Outline only give pageNumber, so we need to be clever when setting the ID.
+    // TODO: Settle on one to use--pageIndex or pageNumber. react-pdf seems to prefer the latter
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
       : this.props.pageIndex
