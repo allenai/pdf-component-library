@@ -6,14 +6,14 @@ import { Outline } from 'react-pdf/dist/esm/entry.webpack';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import BoundingBox from './components/BoundingBox';
-import DocumentWrapper from './components/DocumentWrapper';
 import Header from './components/Header';
-import Overlay from './components/Overlay';
-import PageWrapper from './components/PageWrapper';
-import { computePageSize } from './scale';
-import { scrollToPdfPage } from './scroll';
-import { Nullable, PdfPixelSize } from './types';
+import BoundingBox from './library/components/BoundingBox';
+import DocumentWrapper from './library/components/DocumentWrapper';
+import Overlay from './library/components/Overlay';
+import PageWrapper from './library/components/PageWrapper';
+import { computePageSize, PdfPixelSize } from './library/scale';
+import { scrollToPdfPage } from './library/scroll';
+import { Nullable } from './types';
 
 type State = {
   pdfSize: Nullable<PdfPixelSize>;

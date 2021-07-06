@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { PdfPixelSize } from '../types';
+import { PdfPixelSize } from '../scale';
 
 export type PageSizeContextData = {
   pageSize: PdfPixelSize; // Scaled at 100%, might want a better name

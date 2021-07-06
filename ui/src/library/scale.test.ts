@@ -1,5 +1,4 @@
-import { computePageSize } from './scale';
-import { PdfPageSizeData } from './types';
+import { computePageSize, PdfPageSizeData } from './scale';
 
 describe('computePageSizePx', () => {
   const mockData: PdfPageSizeData = {

@@ -1,4 +1,20 @@
-import { PdfPageSizeData, PdfPixelSize } from './types';
+export type Point = {
+  x: number;
+  y: number;
+};
+
+// TODO: augh this name is terrible, it's the data from react-pdf/pdfjs that
+//       we need to compute the pixel size of the PDF's page(s).
+export type PdfPageSizeData = {
+  userUnit: number; // the default size of units in 1/72nds of an inch
+  topLeft: Point;
+  bottomRight: Point;
+};
+
+export type PdfPixelSize = {
+  height: number;
+  width: number;
+};
 
 // We assume 96 DPI for display
 // TODO: There are more accurate ways to do this, but this is what ScholarPhi does now
