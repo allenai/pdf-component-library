@@ -2,7 +2,7 @@ import DocumentWrapper from "./components/DocumentWrapper";
 import PageWrapper from "./components/PageWrapper";
 import Header from "./components/Header";
 import { scrollToPdfPage } from "./scroll";
-import { computePageSizePx } from "./scale";
+import { computePageSize } from "./scale";
 import { Nullable, PdfPixelSize } from "./types";
 import Overlay from "./components/Overlay";
 
@@ -15,7 +15,7 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import BoundingBox from "./components/BoundingBox";
 
 type State = {
-  pdfSizePx: Nullable<PdfPixelSize>;
+  pdfSize: Nullable<PdfPixelSize>;
   isLoading: boolean;
   errorMsg: string | null;
   numPages: number;
@@ -29,7 +29,7 @@ export default class Reader extends React.Component<
   State
 > {
   state = {
-    pdfSizePx: null,
+    pdfSize: null,
     isLoading: false,
     errorMsg: null,
     numPages: 0,
@@ -54,7 +54,7 @@ export default class Reader extends React.Component<
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then((page) => {
       this.setState({
-        pdfSizePx: computePageSizePx({
+        pdfSize: computePageSize({
           userUnit: page.userUnit,
           topLeft: { x: page.view[0], y: page.view[1] },
           bottomRight: { x: page.view[2], y: page.view[3] },
@@ -76,7 +76,7 @@ export default class Reader extends React.Component<
   };
 
   render() {
-    const { numPages, scale, pdfSizePx } = this.state;
+    const { numPages, scale, pdfSize } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -99,7 +99,7 @@ export default class Reader extends React.Component<
                     key={i}
                     pageIndex={i}
                     scale={scale}
-                    pageSize={pdfSizePx}
+                    pageSize={pdfSize}
                   >
                     <Overlay>
                       <BoundingBox

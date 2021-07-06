@@ -1,4 +1,4 @@
-import { computePageSizePx } from "./scale";
+import { computePageSize } from "./scale";
 import { PdfPageSizeData } from "./types";
 
 describe('computePageSizePx', () => {
@@ -8,7 +8,7 @@ describe('computePageSizePx', () => {
     bottomRight: {x: 612, y: 792}
   };
   it('computes pixel height and width of the PDF', () => {
-    const output = computePageSizePx(mockData);
+    const output = computePageSize(mockData);
     expect(output.height).toEqual(1056);
     expect(output.width).toEqual(816);
   });
