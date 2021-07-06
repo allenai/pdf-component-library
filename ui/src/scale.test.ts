@@ -1,8 +1,15 @@
-import { computePageWidthPx } from "./scale";
+import { computePageSize } from "./scale";
+import { PdfPageSizeData } from "./types";
 
-describe('computePageWidthPx', () => {
-  it('computes pixel width of the PDF', () => {
-    const output = computePageWidthPx(1, [0, 0, 612, 800]);
-    expect(output).toEqual(816);
+describe('computePageSizePx', () => {
+  const mockData: PdfPageSizeData = {
+    userUnit: 1,
+    topLeft: {x: 0, y: 0},
+    bottomRight: {x: 612, y: 792}
+  };
+  it('computes pixel height and width of the PDF', () => {
+    const output = computePageSize(mockData);
+    expect(output.height).toEqual(1056);
+    expect(output.width).toEqual(816);
   });
 });

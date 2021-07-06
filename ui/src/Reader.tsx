@@ -2,7 +2,9 @@ import DocumentWrapper from "./components/DocumentWrapper";
 import PageWrapper from "./components/PageWrapper";
 import Header from "./components/Header";
 import { scrollToPdfPage } from "./scroll";
-import { computePageWidthPx } from "./scale";
+import { computePageSize } from "./scale";
+import { Nullable, PdfPixelSize } from "./types";
+import Overlay from "./components/Overlay";
 
 import React from "react";
 import { RouteComponentProps } from "react-router";
@@ -10,9 +12,10 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { Outline } from "react-pdf/dist/esm/entry.webpack";
 import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import BoundingBox from "./components/BoundingBox";
 
 type State = {
-  pdfWidthPx: number;
+  pdfSize: Nullable<PdfPixelSize>;
   isLoading: boolean;
   errorMsg: string | null;
   numPages: number;
@@ -26,7 +29,7 @@ export default class Reader extends React.Component<
   State
 > {
   state = {
-    pdfWidthPx: 0,
+    pdfSize: null,
     isLoading: false,
     errorMsg: null,
     numPages: 0,
@@ -48,8 +51,15 @@ export default class Reader extends React.Component<
   };
 
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
+    // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then((page) => {
-      this.setState({ pdfWidthPx: computePageWidthPx(page.userUnit, page.view) });
+      this.setState({
+        pdfSize: computePageSize({
+          userUnit: page.userUnit,
+          topLeft: { x: page.view[0], y: page.view[1] },
+          bottomRight: { x: page.view[2], y: page.view[3] },
+        }),
+      });
     });
     this.setState({
       isLoading: false,
@@ -66,7 +76,7 @@ export default class Reader extends React.Component<
   };
 
   render() {
-    const { numPages, scale, pdfWidthPx } = this.state;
+    const { numPages, scale, pdfSize } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -89,8 +99,20 @@ export default class Reader extends React.Component<
                     key={i}
                     pageIndex={i}
                     scale={scale}
-                    width={pdfWidthPx}
-                  />
+                    pageSize={pdfSize}
+                  >
+                    <Overlay>
+                      <BoundingBox
+                        top={10 + (i * 50)}
+                        left={10 + (i * 50)}
+                        height={30}
+                        width={30}
+                        fill="#ff0000"
+                        stroke="#00ff00"
+                        onClick={() => window.alert(`You clicked on page ${i + 1}!!`)}
+                      />
+                    </Overlay>
+                  </PageWrapper>
                 ))}
               </div>
             </DocumentWrapper>
