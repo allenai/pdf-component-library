@@ -37,14 +37,14 @@ module.exports = {
             patterns: [
                 {
                     from: 'public/**/*',
-                    filter: (absPathToFile) => {
+                    filter: absPathToFile => {
                         return absPathToFile !== path.resolve(__dirname, 'public', 'index.html');
                     },
-                    transformPath: (p) => p.replace(/^public\//, ''),
+                    transformPath: p => p.replace(/^public\//, ''),
                 },
                 {
-                  from: 'node_modules/pdfjs-dist/cmaps/',
-                  to: 'cmaps/'
+                    from: 'node_modules/pdfjs-dist/cmaps/',
+                    to: 'cmaps/',
                 },
             ],
         }),
