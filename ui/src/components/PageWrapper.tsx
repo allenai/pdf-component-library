@@ -1,11 +1,11 @@
-import { generatePageId } from "../scroll";
-import { Nullable, PdfPixelSize } from "../types";
-import { PageSizeContext } from "./PageSizeContext";
-import Overlay from './Overlay';
+import * as React from 'react';
+import { Page } from 'react-pdf/dist/esm/entry.webpack';
+import { RenderFunction } from 'react-pdf/dist/Page';
 
-import { Page } from "react-pdf/dist/esm/entry.webpack";
-import * as React from "react";
-import { RenderFunction } from "react-pdf/dist/Page";
+import { generatePageId } from '../scroll';
+import { Nullable, PdfPixelSize } from '../types';
+import Overlay from './Overlay';
+import { PageSizeContext } from './PageSizeContext';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
@@ -27,7 +27,7 @@ type Props = {
 export default class PageWrapper extends React.PureComponent<Props> {
   canvasRef = React.createRef<HTMLCanvasElement>();
 
-  onClick = (e: any) => {
+  onClick = (e: unknown): void => {
     console.log(e);
   };
 
@@ -41,9 +41,8 @@ export default class PageWrapper extends React.PureComponent<Props> {
     };
   };
 
-  render() {
-    const { pageSize, error, loading, noData, pageIndex, pageNumber, scale, children } =
-      this.props;
+  render(): React.ReactNode {
+    const { pageSize, error, loading, noData, pageIndex, pageNumber, scale, children } = this.props;
     // Click events from the Outline only give pageNumber, so we need to be clever when setting the ID.
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
@@ -63,11 +62,8 @@ export default class PageWrapper extends React.PureComponent<Props> {
       <div
         id={generatePageId(pageNumberForId)}
         className="reader__page"
-        style={this.computeStyle()}
-      >
-        <PageSizeContext.Provider value={{ pageSize, scale }}>
-          {children}
-        </PageSizeContext.Provider>
+        style={this.computeStyle()}>
+        <PageSizeContext.Provider value={{ pageSize, scale }}>{children}</PageSizeContext.Provider>
         <Page
           width={pageSize.width}
           error={error}

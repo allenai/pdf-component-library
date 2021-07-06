@@ -1,10 +1,10 @@
-import { PdfPageSizeData, PdfPixelSize } from "./types";
+import { PdfPageSizeData, PdfPixelSize } from './types';
 
 // We assume 96 DPI for display
 // TODO: There are more accurate ways to do this, but this is what ScholarPhi does now
 const DPI = 96;
 
- // PDF units are in 1/72nds of an inch
+// PDF units are in 1/72nds of an inch
 const USER_UNIT_DENOMINATOR = 72;
 
 /**
@@ -16,6 +16,6 @@ const USER_UNIT_DENOMINATOR = 72;
 export function computePageSize({ userUnit, topLeft, bottomRight }: PdfPageSizeData): PdfPixelSize {
   return {
     height: (bottomRight.y - topLeft.y) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
-    width: (bottomRight.x - topLeft.x) * (userUnit / USER_UNIT_DENOMINATOR) * DPI
+    width: (bottomRight.x - topLeft.x) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
   };
 }

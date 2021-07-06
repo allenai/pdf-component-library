@@ -12,9 +12,9 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Reader from './Reader';
 
 const App = () => (
-    <BrowserRouter>
-      <Route path="/" component={Reader} />
-    </BrowserRouter>
+  <BrowserRouter>
+    <Route path="/" component={Reader} />
+  </BrowserRouter>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));
