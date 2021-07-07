@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import SimpleZoomControl from './SimpleZoomControl';
+import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
   scale: number;
   handleZoom: (multiplier: number) => void;
 };
 
-export default class Header extends React.PureComponent<Props> {
+export class Header extends React.PureComponent<Props> {
   render(): React.ReactNode {
     return (
       <div>

@@ -17,7 +17,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const BoundingBox: React.FunctionComponent<Props> = ({
+export const BoundingBox: React.FunctionComponent<Props> = ({
   top,
   left,
   height,
@@ -36,5 +36,3 @@ const BoundingBox: React.FunctionComponent<Props> = ({
     />
   );
 };
-
-export default BoundingBox;
