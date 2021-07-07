@@ -26,7 +26,6 @@ type Props = {
 } & PageProps;
 
 export default class PageWrapper extends React.PureComponent<Props> {
-
   onClick = (e: unknown): void => {
     console.log(e);
   };
