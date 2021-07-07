@@ -15,15 +15,12 @@
  *
  * @returns {string}
  */
-export function unwrap(
-    value: string | string[] | undefined | null,
-    defaultValue: string = ''
-): string {
-    if (value === undefined || value === null) {
-        return defaultValue;
-    } else if (Array.isArray(value)) {
-        return value[0];
-    } else {
-        return value;
-    }
+export function unwrap(value: string | string[] | undefined | null, defaultValue = ''): string {
+  if (value === undefined || value === null) {
+    return defaultValue;
+  } else if (Array.isArray(value)) {
+    return value[0];
+  } else {
+    return value;
+  }
 }

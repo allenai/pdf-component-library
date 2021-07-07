@@ -1,10 +1,10 @@
-import { PageSizeContext } from "./PageSizeContext";
-import BoundingBox from "./BoundingBox";
+import * as React from 'react';
 
-import * as React from "react";
+import BoundingBox from './BoundingBox';
+import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
-  children: React.ReactElement<typeof BoundingBox>
+  children: React.ReactElement<typeof BoundingBox>;
 };
 
 const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
@@ -13,11 +13,10 @@ const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
     <svg
       className="reader__page-overlay"
       width={pageSize.width * scale}
-      height={pageSize.height * scale}
-    >
+      height={pageSize.height * scale}>
       {children}
     </svg>
   );
-}
+};
 
 export default Overlay;

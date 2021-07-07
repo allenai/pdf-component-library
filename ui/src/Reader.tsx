@@ -1,18 +1,19 @@
-import DocumentWrapper from "./components/DocumentWrapper";
-import PageWrapper from "./components/PageWrapper";
-import Header from "./components/Header";
-import { scrollToPdfPage } from "./scroll";
-import { computePageSize } from "./scale";
-import { Nullable, PdfPixelSize } from "./types";
-import Overlay from "./components/Overlay";
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import React from "react";
-import { RouteComponentProps } from "react-router";
-import { BrowserRouter, Route } from "react-router-dom";
-import { Outline } from "react-pdf/dist/esm/entry.webpack";
-import { PDFDocumentProxy } from "pdfjs-dist/types/display/api";
-import "react-pdf/dist/esm/Page/AnnotationLayer.css";
-import BoundingBox from "./components/BoundingBox";
+import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
+import React from 'react';
+import { Outline } from 'react-pdf/dist/esm/entry.webpack';
+import { RouteComponentProps } from 'react-router';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import Header from './components/Header';
+import BoundingBox from './library/components/BoundingBox';
+import DocumentWrapper from './library/components/DocumentWrapper';
+import Overlay from './library/components/Overlay';
+import PageWrapper from './library/components/PageWrapper';
+import { computePageSize, PdfPixelSize } from './library/scale';
+import { scrollToPdfPage } from './library/scroll';
+import { Nullable } from './types';
 
 type State = {
   pdfSize: Nullable<PdfPixelSize>;
@@ -22,12 +23,9 @@ type State = {
   scale: number;
 };
 
-const TEST_PDF_URL = "https://arxiv.org/pdf/math/0008020v2.pdf";
+const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 
-export default class Reader extends React.Component<
-  RouteComponentProps,
-  State
-> {
+export default class Reader extends React.Component<RouteComponentProps, State> {
   state = {
     pdfSize: null,
     isLoading: false,
@@ -36,23 +34,23 @@ export default class Reader extends React.Component<
     scale: 1.0,
   };
 
-  componentDidMount() {
-    fetch(TEST_PDF_URL).then((pdf) => console.log(pdf));
+  componentDidMount(): void {
+    fetch(TEST_PDF_URL).then(pdf => console.log(pdf));
   }
 
   handleOutlineClick = ({ pageNumber }: { pageNumber: string }): void => {
     scrollToPdfPage(pageNumber);
   };
 
-  handleZoom = (multiplier: number) => {
-    this.setState((state) => {
+  handleZoom = (multiplier: number): void => {
+    this.setState(state => {
       return { scale: state.scale * multiplier };
     });
   };
 
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
-    pdfDoc.getPage(1).then((page) => {
+    pdfDoc.getPage(1).then(page => {
       this.setState({
         pdfSize: computePageSize({
           userUnit: page.userUnit,
@@ -68,14 +66,14 @@ export default class Reader extends React.Component<
     });
   };
 
-  onPdfLoadError = (error: Object): void => {
+  onPdfLoadError = (error: unknown): void => {
     this.setState({
       isLoading: false,
       errorMsg: getErrorMessage(error),
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     const { numPages, scale, pdfSize } = this.state;
     return (
       <BrowserRouter>
@@ -88,23 +86,17 @@ export default class Reader extends React.Component<
               className="reader__main"
               file={TEST_PDF_URL}
               onLoadError={this.onPdfLoadError}
-              onLoadSuccess={this.onPdfLoadSuccess}
-            >
+              onLoadSuccess={this.onPdfLoadSuccess}>
               <div className="reader__sidebar">
                 <Outline onItemClick={this.handleOutlineClick} />
               </div>
               <div className="reader__page-list">
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper
-                    key={i}
-                    pageIndex={i}
-                    scale={scale}
-                    pageSize={pdfSize}
-                  >
+                  <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
                     <Overlay>
                       <BoundingBox
-                        top={10 + (i * 50)}
-                        left={10 + (i * 50)}
+                        top={10 + i * 50}
+                        left={10 + i * 50}
                         height={30}
                         width={30}
                         fill="#ff0000"
@@ -125,15 +117,15 @@ export default class Reader extends React.Component<
 
 function getErrorMessage(error: any): string {
   if (!error) {
-    return "Unknown error";
+    return 'Unknown error';
   }
-  if (typeof error === "string") {
+  if (typeof error === 'string') {
     return error;
   }
   if (error instanceof Error) {
     return error.message;
   }
-  if (typeof error.error === "string") {
+  if (typeof error.error === 'string') {
     return error.error;
   }
   return error.toString();

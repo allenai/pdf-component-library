@@ -1,5 +1,6 @@
-import * as React from "react";
-import { PageSizeContext } from "./PageSizeContext";
+import * as React from 'react';
+
+import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
   className?: string;

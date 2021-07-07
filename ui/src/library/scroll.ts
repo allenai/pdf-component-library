@@ -9,7 +9,7 @@ export function generatePageId(pageNum: number | string): string {
 export function scrollToPdfPage(pageNum: number | string): void {
   const pageElement = document.getElementById(generatePageId(pageNum));
   if (pageElement) {
-    pageElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center'});
+    pageElement.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
   } else {
     console.error(`Could not find scroll target for page ${pageNum}`);
   }
