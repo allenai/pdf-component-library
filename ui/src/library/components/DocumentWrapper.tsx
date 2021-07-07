@@ -6,7 +6,7 @@ type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 
-export default class DocumentWrapper extends React.PureComponent<Props> {
+export class DocumentWrapper extends React.PureComponent<Props> {
   render(): React.ReactNode {
     const { children, ...rest } = this.props;
     return (

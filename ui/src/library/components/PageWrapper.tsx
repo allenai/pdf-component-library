@@ -5,7 +5,7 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 import { Nullable } from '../../types';
 import { PdfPixelSize } from '../scale';
 import { generatePageId } from '../scroll';
-import Overlay from './Overlay';
+import { Overlay } from './Overlay';
 import { PageSizeContext } from './PageSizeContext';
 
 /**
@@ -25,7 +25,7 @@ type Props = {
   pageSize?: Nullable<PdfPixelSize>;
 } & PageProps;
 
-export default class PageWrapper extends React.PureComponent<Props> {
+export class PageWrapper extends React.PureComponent<Props> {
   onClick = (e: unknown): void => {
     console.log(e);
   };

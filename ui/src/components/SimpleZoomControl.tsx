@@ -9,7 +9,7 @@ type Props = {
 
 const ZOOM_MULTIPLIER = 1.2;
 
-const SimpleZoomControl: React.FunctionComponent<Props> = ({ scale, onScale }: Props) => {
+export const SimpleZoomControl: React.FunctionComponent<Props> = ({ scale, onScale }: Props) => {
   const handleScale = (multiplier: number) => {
     return () => onScale(multiplier);
   };
@@ -25,5 +25,3 @@ const SimpleZoomControl: React.FunctionComponent<Props> = ({ scale, onScale }: P
     </span>
   );
 };
-
-export default SimpleZoomControl;
