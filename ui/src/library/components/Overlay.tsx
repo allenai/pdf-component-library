@@ -9,13 +9,14 @@ type Props = {
 
 const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
   const { pageSize, scale } = React.useContext(PageSizeContext);
+  const style = {
+    width: pageSize.width * scale,
+    height: pageSize.height * scale,
+  };
   return (
-    <svg
-      className="reader__page-overlay"
-      width={pageSize.width * scale}
-      height={pageSize.height * scale}>
+    <div className="reader__page-overlay" style={style}>
       {children}
-    </svg>
+    </div>
   );
 };
 

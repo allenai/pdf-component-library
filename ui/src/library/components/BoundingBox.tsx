@@ -12,27 +12,29 @@ type Props = {
   left: number;
   height: number;
   width: number;
-  fill?: string;
-  stroke?: string;
   onClick?: () => void;
 };
 
 const BoundingBox: React.FunctionComponent<Props> = ({
+  className,
   top,
   left,
   height,
   width,
-  ...rest
+  onClick,
 }: Props) => {
   const { scale } = React.useContext(PageSizeContext);
+  const style = {
+    top: top * scale,
+    left: left * scale,
+    height: height * scale,
+    width: width * scale,
+  };
   return (
-    <rect
-      x={left * scale}
-      y={top * scale}
-      height={height * scale}
-      width={width * scale}
-      className="reader__page-overlay__bounding-box"
-      {...rest}
+    <div
+      className={`reader__page-overlay__bounding-box ${className}`}
+      style={style}
+      onClick={onClick}
     />
   );
 };

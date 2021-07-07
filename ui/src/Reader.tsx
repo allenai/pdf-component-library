@@ -95,12 +95,11 @@ export default class Reader extends React.Component<RouteComponentProps, State> 
                   <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
                     <Overlay>
                       <BoundingBox
+                        className="reader__sample-overlay__bbox"
                         top={10 + i * 50}
                         left={10 + i * 50}
                         height={30}
                         width={30}
-                        fill="#ff0000"
-                        stroke="#00ff00"
                         onClick={() => window.alert(`You clicked on page ${i + 1}!!`)}
                       />
                     </Overlay>
