@@ -1,3 +1,5 @@
+import { expect } from 'chai';
+
 import { computePageSize, PdfPageSizeData } from './scale';
 
 describe('computePageSizePx', () => {
@@ -8,7 +10,7 @@ describe('computePageSizePx', () => {
   };
   it('computes pixel height and width of the PDF', () => {
     const output = computePageSize(mockData);
-    expect(output.height).toEqual(1056);
-    expect(output.width).toEqual(816);
+    expect(output.height).to.equal(1056);
+    expect(output.width).to.equal(816);
   });
 });

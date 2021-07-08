@@ -9,7 +9,7 @@
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "start": "webpack serve --hot --mode development",
-    "test": "jest"
+    "test": "ts-mocha -p tsconfig.json src/**/*.test.ts"
   },
   "resolutions": {
     "@typescript-eslint/eslint-plugin": "^4.1.1",
@@ -19,7 +19,8 @@
     "ssri": "^8.0.1"
   },
   "dependencies": {
-    "@types/jest": "^26.0.23",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^8.2.3",
     "@types/node": "11.9.5",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
@@ -35,15 +36,14 @@
     "dayjs": "^1.8.30",
     "eslint": "7.30.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-config-standard": "16.0.3",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
     "eslint-plugin-simple-import-sort": "7.0.0",
     "html-webpack-plugin": "^4.2.0",
-    "jest": "^27.0.6",
     "less": "^4.1.1",
     "less-loader": "7.3.0",
+    "mocha": "8.4.0",
     "pdfjs-dist": "2.6.347",
     "prettier": "2.3.2",
     "react": "^17.0.2",
@@ -53,8 +53,8 @@
     "react-router-dom": "^5.2.0",
     "style-loader": "^2.0.0",
     "styled-components": "^5.3.0",
-    "ts-jest": "^27.0.3",
     "ts-loader": "^8.0.17",
+    "ts-mocha": "8.0.0",
     "typescript": "^4.2.4",
     "webpack": "^4.29.5",
     "webpack-cli": "^4.5.0",
