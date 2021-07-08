@@ -1,15 +1,15 @@
 .reader__page {
-  background-color: @white; // TODO: This is coming from the colors file outside /library
+  background-color: @pdflib-page-background;
   margin: 24px;
-  box-shadow: 0px 4px 14px fade(@black, 20%); // TODO: This is coming from the colors file outside /library
+  box-shadow: 0px 4px 14px fade(@pdflib-page-shadow, 20%);
   position: relative;
 }
 
 .reader__page-overlay {
   position: absolute;
-  z-index: @z-index-bbox-overlay;
 }
 
 .reader__page-overlay__bounding-box {
-  opacity: 0.6;
+  position: absolute;
+  z-index: @z-index-bbox-overlay;
 }
