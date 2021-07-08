@@ -26,8 +26,6 @@ type Props = {
 } & PageProps;
 
 export class PageWrapper extends React.PureComponent<Props> {
-  canvasRef = React.createRef<HTMLCanvasElement>();
-
   onClick = (e: unknown): void => {
     console.log(e);
   };
@@ -74,7 +72,6 @@ export class PageWrapper extends React.PureComponent<Props> {
           pageIndex={pageIndex}
           pageNumber={pageNumber}
           scale={scale}
-          canvasRef={this.canvasRef}
           onClick={this.onClick}
           renderAnnotationLayer={false}
         />

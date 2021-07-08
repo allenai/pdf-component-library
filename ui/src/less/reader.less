@@ -45,3 +45,9 @@ body {
     cursor: pointer;
   }
 }
+
+@overlay-bbox-color: #ff0000;
+.reader__sample-overlay__bbox {
+  border: solid 1px @overlay-bbox-color;
+  background-color: fadeout(@overlay-bbox-color, 50%);
+}
