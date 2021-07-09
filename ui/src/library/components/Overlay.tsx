@@ -4,7 +4,7 @@ import { BoundingBox } from './BoundingBox';
 import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
-  children: React.ReactElement<typeof BoundingBox>;
+  children?: React.ReactElement<typeof BoundingBox>;
 };
 
 export const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
