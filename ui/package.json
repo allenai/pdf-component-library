@@ -11,6 +11,9 @@
     "start": "webpack serve --hot --mode development",
     "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json src/**/*.test.ts{,?}"
   },
+  "resolutions": {
+    "glob-parent": "5.1.2"
+  },
   "dependencies": {
     "@types/chai": "4.2.21",
     "@types/enzyme": "3.10.9",
