@@ -1,7 +1,7 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
-import React from 'react';
+import * as React from 'react';
 import { Outline } from 'react-pdf/dist/esm/entry.webpack';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -25,7 +25,7 @@ type State = {
 
 const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 
-export default class Reader extends React.Component<RouteComponentProps, State> {
+export class Reader extends React.Component<RouteComponentProps, State> {
   state = {
     pdfSize: null,
     isLoading: false,

@@ -3,7 +3,7 @@
     "target": "es6",
     "lib": ["dom", "dom.iterable", "es2019"],
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
