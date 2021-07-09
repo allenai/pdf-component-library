@@ -30,11 +30,8 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
     height: height * scale,
     width: width * scale,
   };
-  return (
-    <div
-      className={`reader__page-overlay__bounding-box ${className}`}
-      style={style}
-      onClick={onClick}
-    />
-  );
+  const componentClassName = ['reader__page-overlay__bounding-box', className]
+    .filter(Boolean)
+    .join(' ');
+  return <div className={componentClassName} style={style} onClick={onClick} />;
 };
