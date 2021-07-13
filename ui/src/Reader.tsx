@@ -96,7 +96,6 @@ export class Reader extends React.Component<RouteComponentProps, State> {
 
   render(): React.ReactNode {
     const { isDrawerOpen, numPages, scale, pdfSize } = this.state;
-    console.log(this.pdfScrollableRef.current);
     return (
       <BrowserRouter>
         <Route path="/">
