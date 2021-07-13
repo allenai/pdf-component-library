@@ -17,24 +17,18 @@ body {
   grid-area: header;
 }
 
-.reader__sidebar {
-  grid-area: sidebar;
-}
-
 .reader__main {
   grid-area: main;
-  display: grid;
-  grid-template-columns: 250px minMax(0, 1fr);
-  grid-template-areas: "sidebar document"
+  position: relative;
 }
 
 .reader__page-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  grid-area: document;
   background-color: @grey;
   overflow: scroll;
+  height: 100%;
 }
 
 .hacky-zoom-button {
@@ -50,4 +44,8 @@ body {
 .reader__sample-overlay__bbox {
   border: solid 1px @overlay-bbox-color;
   background-color: fadeout(@overlay-bbox-color, 50%);
+}
+
+.reader__outline-drawer {
+  position: relative;
 }

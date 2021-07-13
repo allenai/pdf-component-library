@@ -1,5 +1,6 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
+import { Drawer } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { Outline } from 'react-pdf/dist/esm/entry.webpack';
@@ -17,6 +18,7 @@ import { Nullable } from './types';
 
 type State = {
   pdfSize: Nullable<PdfPixelSize>;
+  isDrawerOpen: boolean;
   isLoading: boolean;
   errorMsg: string | null;
   numPages: number;
@@ -26,8 +28,12 @@ type State = {
 const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 
 export class Reader extends React.Component<RouteComponentProps, State> {
+  // ref for the div in which the Document component renders
+  pdfContentRef = React.createRef<HTMLDivElement>();
+
   state = {
     pdfSize: null,
+    isDrawerOpen: false,
     isLoading: false,
     errorMsg: null,
     numPages: 0,
@@ -46,6 +52,14 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     this.setState(state => {
       return { scale: state.scale * multiplier };
     });
+  };
+
+  handleOpenDrawer = (): void => {
+    this.setState({ isDrawerOpen: true });
+  };
+
+  handleCloseDrawer = (): void => {
+    this.setState({ isDrawerOpen: false });
   };
 
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
@@ -74,22 +88,40 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   };
 
   render(): React.ReactNode {
-    const { numPages, scale, pdfSize } = this.state;
+    const { isDrawerOpen, numPages, scale, pdfSize } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
           <div className="reader__container">
             <div className="reader__header">
-              <Header scale={scale} handleZoom={this.handleZoom} />
+              <Header
+                scale={scale}
+                handleZoom={this.handleZoom}
+                handleOpenDrawer={this.handleOpenDrawer}
+              />
             </div>
             <DocumentWrapper
               className="reader__main"
               file={TEST_PDF_URL}
               onLoadError={this.onPdfLoadError}
-              onLoadSuccess={this.onPdfLoadSuccess}>
-              <div className="reader__sidebar">
+              onLoadSuccess={this.onPdfLoadSuccess}
+              inputRef={this.pdfContentRef}>
+              <Drawer
+                title="Outline"
+                placement="left"
+                visible={isDrawerOpen}
+                mask={false}
+                onClose={this.handleCloseDrawer}
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore there's something wonky with the types here
+                getContainer={() => {
+                  // Passing this ref mounts the drawer "inside" the grid content area
+                  // instead of using the entire browser height.
+                  return this.pdfContentRef.current;
+                }}
+                style={{ position: 'absolute' }}>
                 <Outline onItemClick={this.handleOutlineClick} />
-              </div>
+              </Drawer>
               <div className="reader__page-list">
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
@@ -114,6 +146,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getErrorMessage(error: any): string {
   if (!error) {
     return 'Unknown error';
