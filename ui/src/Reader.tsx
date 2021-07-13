@@ -1,6 +1,6 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { Drawer } from 'antd';
+import { Drawer, Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { Outline } from 'react-pdf/dist/esm/entry.webpack';
@@ -30,6 +30,9 @@ const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 export class Reader extends React.Component<RouteComponentProps, State> {
   // ref for the div in which the Document component renders
   pdfContentRef = React.createRef<HTMLDivElement>();
+
+  // ref for the scrollable region where the pages are rendered
+  pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   state = {
     pdfSize: null,
@@ -87,8 +90,13 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     });
   };
 
+  renderPopoverContent = (pageNumber: number): React.ReactNode => {
+    return <div>You clicked on page {pageNumber}.</div>;
+  };
+
   render(): React.ReactNode {
     const { isDrawerOpen, numPages, scale, pdfSize } = this.state;
+    console.log(this.pdfScrollableRef.current);
     return (
       <BrowserRouter>
         <Route path="/">
@@ -122,18 +130,24 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                 style={{ position: 'absolute' }}>
                 <Outline onItemClick={this.handleOutlineClick} />
               </Drawer>
-              <div className="reader__page-list">
+              <div className="reader__page-list" ref={this.pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
                     <Overlay>
-                      <BoundingBox
-                        className="reader__sample-overlay__bbox"
-                        top={10 + i * 50}
-                        left={10 + i * 50}
-                        height={30}
-                        width={30}
-                        onClick={() => window.alert(`You clicked on page ${i + 1}!!`)}
-                      />
+                      <Popover
+                        content={this.renderPopoverContent(i)}
+                        trigger="click"
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        //@ts-ignore there's something wonky with the types here
+                        getPopupContainer={() => this.pdfScrollableRef.current}>
+                        <BoundingBox
+                          className="reader__sample-overlay__bbox"
+                          top={10 + i * 50}
+                          left={10 + i * 50}
+                          height={30}
+                          width={30}
+                        />
+                      </Popover>
                     </Overlay>
                   </PageWrapper>
                 ))}
