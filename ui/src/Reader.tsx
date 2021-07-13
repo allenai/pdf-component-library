@@ -127,7 +127,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                   // instead of using the entire browser height.
                   return this.pdfContentRef.current;
                 }}
-                style={{ position: 'absolute' }}>
+                className="reader__outline-drawer">
                 <Outline onItemClick={this.handleOutlineClick} />
               </Drawer>
               <div className="reader__page-list" ref={this.pdfScrollableRef}>

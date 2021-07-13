@@ -54,7 +54,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'main.[hash:6].js',
+    filename: 'main.[fullhash:6].js',
     path: path.resolve(__dirname, 'build'),
   },
   devServer: {
