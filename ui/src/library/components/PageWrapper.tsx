@@ -5,6 +5,7 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 import { Nullable } from '../../types';
 import { PdfPixelSize } from '../scale';
 import { generatePageId } from '../scroll';
+import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 import { PageSizeContext } from './PageSizeContext';
 
@@ -21,7 +22,7 @@ type PageProps = {
 };
 type Props = {
   className?: string;
-  children?: React.ReactElement<typeof Overlay>;
+  children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
   pageSize?: Nullable<PdfPixelSize>;
 } & PageProps;
 
@@ -47,8 +48,8 @@ export class PageWrapper extends React.PureComponent<Props> {
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
       : this.props.pageIndex
-      ? this.props.pageIndex + 1
-      : 1;
+        ? this.props.pageIndex + 1
+        : 1;
 
     // Don't display until we have page size data
     // TODO: Handle this nicer so we display either the loading or error treatment

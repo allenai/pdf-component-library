@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
+import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { computePageSize, PdfPixelSize } from './library/scale';
@@ -18,6 +19,7 @@ import { Nullable } from './types';
 type State = {
   pdfSize: Nullable<PdfPixelSize>;
   isLoading: boolean;
+  isShowingHighlightOverlay: boolean;
   errorMsg: string | null;
   numPages: number;
   scale: number;
@@ -29,6 +31,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   state = {
     pdfSize: null,
     isLoading: false,
+    isShowingHighlightOverlay: false,
     errorMsg: null,
     numPages: 0,
     scale: 1.0,
@@ -45,6 +48,12 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   handleZoom = (multiplier: number): void => {
     this.setState(state => {
       return { scale: state.scale * multiplier };
+    });
+  };
+
+  handleToggleHighlightOverlay = (): void => {
+    this.setState(state => {
+      return { isShowingHighlightOverlay: !state.isShowingHighlightOverlay };
     });
   };
 
@@ -73,6 +82,42 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     });
   };
 
+  renderOverlay = (index: number): React.ReactNode => {
+    const pageNumber = index + 1;
+    const top = 300 + index * 50;
+    const width = 300;
+
+    if (this.state.isShowingHighlightOverlay) {
+      return <HighlightOverlay pageNumber={pageNumber}>
+        <BoundingBox
+          className="reader__sample-highlight-overlay__bbox"
+          top={top}
+          left={top}
+          height={width}
+          width={width}
+        />
+        <BoundingBox
+          className="reader__sample-highlight-overlay__bbox"
+          top={top + width}
+          left={top}
+          height={width}
+          width={width}
+        />
+      </HighlightOverlay>;
+    }
+
+    return <Overlay>
+      <BoundingBox
+        className="reader__sample-overlay__bbox"
+        top={top}
+        left={top}
+        height={width}
+        width={width}
+        onClick={() => window.alert(`You clicked on page ${pageNumber}!!`)}
+      />
+    </Overlay>;
+  };
+
   render(): React.ReactNode {
     const { numPages, scale, pdfSize } = this.state;
     return (
@@ -80,7 +125,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
         <Route path="/">
           <div className="reader__container">
             <div className="reader__header">
-              <Header scale={scale} handleZoom={this.handleZoom} />
+              <Header scale={scale} handleZoom={this.handleZoom} handleToggleHighlightOverlay={this.handleToggleHighlightOverlay} />
             </div>
             <DocumentWrapper
               className="reader__main"
@@ -93,16 +138,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               <div className="reader__page-list">
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
-                    <Overlay>
-                      <BoundingBox
-                        className="reader__sample-overlay__bbox"
-                        top={10 + i * 50}
-                        left={10 + i * 50}
-                        height={30}
-                        width={30}
-                        onClick={() => window.alert(`You clicked on page ${i + 1}!!`)}
-                      />
-                    </Overlay>
+                    {this.renderOverlay(i)}
                   </PageWrapper>
                 ))}
               </div>
