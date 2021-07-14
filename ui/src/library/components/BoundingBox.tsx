@@ -46,7 +46,7 @@ type StyleSizeProps = {
 
 /**
  * Computes the style for the bounding box given the current page scaling and rotation context
- * TODO: top, left, height, and width can probably be collaped into a BoundingBox type for storing
+ * TODO: top, left, height, and width can probably be collapsed into a BoundingBox type for storing
  *       size/placement info about boxes on the page.
  * @param top top value for the boundingbox
  * @param left left value for the boundingbox
