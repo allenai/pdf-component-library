@@ -119,7 +119,6 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                 visible={isDrawerOpen}
                 mask={false}
                 onClose={this.handleCloseDrawer}
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore there's something wonky with the types here
                 getContainer={() => {
                   // Passing this ref mounts the drawer "inside" the grid content area
@@ -136,7 +135,6 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                       <Popover
                         content={this.renderPopoverContent(i)}
                         trigger="click"
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                         //@ts-ignore there's something wonky with the types here
                         getPopupContainer={() => this.pdfScrollableRef.current}>
                         <BoundingBox
