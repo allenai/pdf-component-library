@@ -5,10 +5,6 @@ export enum PageRotation {
   Rotate270 = 270,
 }
 
-export function getTranslationString(rotation: PageRotation): string {
-  return `rotate(${rotation}deg)`;
-}
-
 export function rotateClockwise(rotation: PageRotation): PageRotation {
   switch (rotation) {
     case PageRotation.Rotate0:
