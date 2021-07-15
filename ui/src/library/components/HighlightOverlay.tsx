@@ -16,6 +16,10 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({ children, pag
     };
 
     const getUnmaskedArea = function (boundingBoxes) {
+        if (!boundingBoxes) {
+            return;
+        }
+
         const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
         return boxes.map((box, i) => {
             const boxStyle = {
