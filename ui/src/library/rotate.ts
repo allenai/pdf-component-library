@@ -31,6 +31,10 @@ export function rotateCounterClockwise(rotation: PageRotation): PageRotation {
   }
 }
 
+/**
+ * Tests whether the page is rotated 90 degrees clockwise or counterclockwise from zero,
+ * e.g. whether the page "is rotated sideways."
+ */
 export function isSideways(rotation: PageRotation): boolean {
   return rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270;
 }

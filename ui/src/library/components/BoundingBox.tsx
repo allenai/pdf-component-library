@@ -53,7 +53,7 @@ type StyleSizeProps = {
  * @param height height value for the boundingbox
  * @param width width value for the boundingbox
  * @param context PageSizeContext from the context provider
- * @returns
+ * @returns style object for the BoundingBox div
  */
 function computeStyleWithContext(
   top: number,
