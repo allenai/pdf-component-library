@@ -48,8 +48,8 @@ export class PageWrapper extends React.PureComponent<Props> {
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
       : this.props.pageIndex
-        ? this.props.pageIndex + 1
-        : 1;
+      ? this.props.pageIndex + 1
+      : 1;
 
     // Don't display until we have page size data
     // TODO: Handle this nicer so we display either the loading or error treatment
