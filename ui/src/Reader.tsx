@@ -12,6 +12,7 @@ import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
+import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize, PdfPixelSize } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
 import { Nullable } from './types';
@@ -23,6 +24,7 @@ type State = {
   errorMsg: string | null;
   numPages: number;
   scale: number;
+  rotation: PageRotation;
 };
 
 const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -41,6 +43,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     errorMsg: null,
     numPages: 0,
     scale: 1.0,
+    rotation: PageRotation.Rotate0,
   };
 
   componentDidMount(): void {
@@ -63,6 +66,22 @@ export class Reader extends React.Component<RouteComponentProps, State> {
 
   handleCloseDrawer = (): void => {
     this.setState({ isDrawerOpen: false });
+  };
+
+  handleRotateCW = (): void => {
+    this.setState(state => {
+      return {
+        rotation: rotateClockwise(state.rotation),
+      };
+    });
+  };
+
+  handleRotateCCW = (): void => {
+    this.setState(state => {
+      return {
+        rotation: rotateCounterClockwise(state.rotation),
+      };
+    });
   };
 
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
@@ -95,7 +114,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   };
 
   render(): React.ReactNode {
-    const { isDrawerOpen, numPages, scale, pdfSize } = this.state;
+    const { isDrawerOpen, numPages, scale, pdfSize, rotation } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -105,6 +124,8 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                 scale={scale}
                 handleZoom={this.handleZoom}
                 handleOpenDrawer={this.handleOpenDrawer}
+                handleRotateCW={this.handleRotateCW}
+                handleRotateCCW={this.handleRotateCCW}
               />
             </div>
             <DocumentWrapper
@@ -130,7 +151,12 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               </Drawer>
               <div className="reader__page-list" ref={this.pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
+                  <PageWrapper
+                    key={i}
+                    pageIndex={i}
+                    scale={scale}
+                    rotation={rotation}
+                    pageSize={pdfSize}>
                     <Overlay>
                       <Popover
                         content={this.renderPopoverContent(i)}

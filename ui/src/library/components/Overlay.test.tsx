@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import * as React from 'react';
 
+import { PageRotation } from '../rotate';
 import { mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { Overlay } from './Overlay';
@@ -13,6 +14,7 @@ describe('<Overlay/>', () => {
       width: 816,
     },
     scale: 1.0,
+    rotation: PageRotation.Rotate0,
   };
 
   it('renders on its own without issue', () => {
@@ -34,6 +36,17 @@ describe('<Overlay/>', () => {
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1632px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 2112px;');
+  });
+
+  it('responds to page rotation', () => {
+    const context = {
+      ...mockContext,
+      rotation: PageRotation.Rotate90,
+    };
+    const wrapper = mountWithPageSizeContext(<Overlay />, context);
+
+    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1056px;');
+    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 816px;');
   });
 
   it('renders a BoundingBox', () => {

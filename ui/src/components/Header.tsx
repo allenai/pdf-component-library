@@ -6,6 +6,8 @@ type Props = {
   scale: number;
   handleZoom: (multiplier: number) => void;
   handleOpenDrawer: () => void;
+  handleRotateCW: () => void;
+  handleRotateCCW: () => void;
 };
 
 export class Header extends React.PureComponent<Props> {
@@ -17,6 +19,8 @@ export class Header extends React.PureComponent<Props> {
         <SimpleZoomControl scale={this.props.scale} onScale={this.props.handleZoom} />
         <br />
         <a onClick={this.props.handleOpenDrawer}>Outline</a>
+        <a onClick={this.props.handleRotateCW}>↷</a>
+        <a onClick={this.props.handleRotateCCW}>↶</a>
       </div>
     );
   }
