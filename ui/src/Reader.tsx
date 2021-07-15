@@ -84,24 +84,29 @@ export class Reader extends React.Component<RouteComponentProps, State> {
 
   renderOverlay = (index: number): React.ReactNode => {
     const pageNumber = index + 1;
-    const top = 300 + index * 50;
-    const width = 300;
 
     if (this.state.isShowingHighlightOverlay) {
       return <HighlightOverlay pageNumber={pageNumber}>
         <BoundingBox
           className="reader__sample-highlight-overlay__bbox"
-          top={top}
-          left={top}
-          height={width}
-          width={width}
+          top={280}
+          left={250}
+          height={20}
+          width={425}
         />
         <BoundingBox
           className="reader__sample-highlight-overlay__bbox"
-          top={top + width}
-          left={top}
-          height={width}
-          width={width}
+          top={300}
+          left={120}
+          height={55}
+          width={550}
+        />
+        <BoundingBox
+          className="reader__sample-highlight-overlay__bbox"
+          top={350}
+          left={120}
+          height={20}
+          width={240}
         />
       </HighlightOverlay>;
     }
@@ -109,10 +114,10 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     return <Overlay>
       <BoundingBox
         className="reader__sample-overlay__bbox"
-        top={top}
-        left={top}
-        height={width}
-        width={width}
+        top={300 + index * 50}
+        left={300 + index * 50}
+        height={300}
+        width={300}
         onClick={() => window.alert(`You clicked on page ${pageNumber}!!`)}
       />
     </Overlay>;
