@@ -74,7 +74,7 @@ describe('<HighlightOverlay/>', () => {
                 ...mockContext,
                 scale: 2.0,
             };
-            const wrapper = mountWithPageSizeContext(<HighlightOverlay />, context);
+            const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
 
             expectHeightWidth(wrapper.getDOMNode(),
                 mockContext.pageSize.height * context.scale,
@@ -86,7 +86,7 @@ describe('<HighlightOverlay/>', () => {
                 ...mockContext,
                 scale: 2.0,
             };
-            const wrapper = mountWithPageSizeContext(<HighlightOverlay />, context);
+            const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
             const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
             expectHeightWidth(svg,
@@ -99,7 +99,7 @@ describe('<HighlightOverlay/>', () => {
                 ...mockContext,
                 scale: 2.0,
             };
-            const wrapper = mountWithPageSizeContext(<HighlightOverlay />, context);
+            const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
             const maskedRects = getRectsWithFill(wrapper, 'white');
 
             expect(maskedRects.length).equals(2);
