@@ -2,11 +2,11 @@ import { expect } from 'chai';
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
+import { PageRotation } from '../rotate';
 import { expectHeightWidth, expectLeftTop, mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
 import { PageSizeContextData } from './PageSizeContext';
-import { PageRotation } from '../rotate';
 
 describe('<HighlightOverlay/>', () => {
   const mockContext: PageSizeContextData = {
@@ -131,7 +131,11 @@ describe('<HighlightOverlay/>', () => {
       const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
 
       expectLeftTop(wrapper.getDOMNode(), 0, 0);
-      expectHeightWidth(wrapper.getDOMNode(), mockContext.pageSize.width, mockContext.pageSize.height);
+      expectHeightWidth(
+        wrapper.getDOMNode(),
+        mockContext.pageSize.width,
+        mockContext.pageSize.height
+      );
     });
 
     it('responds to page rotation [SVG element]', () => {
