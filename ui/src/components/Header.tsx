@@ -22,7 +22,8 @@ export class Header extends React.PureComponent<Props> {
         <a onClick={this.props.handleOpenDrawer}>Outline</a>
         <a onClick={this.props.handleRotateCW}>↷</a>
         <a onClick={this.props.handleRotateCCW}>↶</a>
-        <button onClick={this.props.handleToggleHighlightOverlay}>Toggle Highlight Overlay</button>
+        <br />
+        <a onClick={this.props.handleToggleHighlightOverlay}>Highlight Overlay</a>
       </div>
     );
   }
