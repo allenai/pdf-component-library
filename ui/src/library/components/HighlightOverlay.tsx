@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { BoundingBoxProps } from './BoundingBox';
+import { BoundingBoxProps, computeStyleWithContext } from './BoundingBox';
 import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
@@ -12,11 +12,8 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
   pageNumber,
 }: Props) => {
-  const { pageSize, scale } = React.useContext(PageSizeContext);
-  const style = {
-    width: pageSize.width * scale,
-    height: pageSize.height * scale,
-  };
+  const context = React.useContext(PageSizeContext);
+  const pageStyle = computeStyleWithContext(0, 0, context.pageSize.height, context.pageSize.width, context);
 
   const getUnmaskedArea = function (
     boundingBoxes:
@@ -29,12 +26,9 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
 
     const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
     return boxes.map((box, i) => {
-      const boxStyle = box && {
-        width: box.props.width,
-        height: box.props.height,
-      };
+      const boxStyle = computeStyleWithContext(box.props.top, box.props.left, box.props.height, box.props.width, context);
       return (
-        <rect style={boxStyle} x={box.props.left} y={box.props.top} key={i} fill="black"></rect>
+        <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>
       );
     });
   };
@@ -42,13 +36,13 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   const maskId = `highlight-overlay-mask-${pageNumber}`;
 
   return (
-    <div className="reader__page-highlight-overlay" style={style}>
-      <svg className="page-mask" style={style}>
+    <div className="reader__page-highlight-overlay" style={pageStyle}>
+      <svg className="page-mask" style={pageStyle}>
         <mask id={maskId}>
-          <rect style={style} fill="white"></rect>
+          <rect style={pageStyle} fill="white"></rect>
           {children && getUnmaskedArea(children)}
         </mask>
-        <rect style={style} fill="white" opacity="0.6" mask={`url(#${maskId})`}></rect>
+        <rect style={pageStyle} fill="white" opacity="0.6" mask={`url(#${maskId})`}></rect>
       </svg>
     </div>
   );

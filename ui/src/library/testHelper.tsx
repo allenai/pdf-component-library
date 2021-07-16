@@ -11,6 +11,11 @@ export function expectHeightWidth(element: Element, height: number, width: numbe
   expect(element.getAttribute('style')).to.include(`width: ${width}px;`);
 }
 
+export function expectLeftTop(element: Element, left: number, top: number): void {
+  expect(element.getAttribute('style')).to.include(`left: ${left}px;`);
+  expect(element.getAttribute('style')).to.include(`top: ${top}px;`);
+}
+
 export function mountWithPageSizeContext(component: React.ReactNode, context: PageSizeContextData) {
   return mount(<PageSizeContext.Provider value={context}>{component}</PageSizeContext.Provider>);
 }
