@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
 import { mountWithPageSizeContext } from '../testHelper';
@@ -15,34 +16,31 @@ describe('<HighlightOverlay/>', () => {
     scale: 1.0,
   };
 
-  function getRectsWithFill(
-    component: React.ReactComponentElement,
-    fillColor: string
-  ): Array<React.DOMElement> {
+  function getRectsWithFill(component: ReactWrapper, fillColor: string): Array<SVGElement> {
     const rects = component.getDOMNode().getElementsByTagName('rect');
-    return Object.values(rects).filter((rect: React.DOMElement) => {
+    return Object.values(rects).filter((rect: SVGElement) => {
       if (rect.getAttribute('fill') == fillColor) {
         return true;
       }
     });
   }
 
-  function expectHeightWidth(element: React.DOMElement, height: number, width: number): void {
+  function expectHeightWidth(element: Element, height: number, width: number): void {
     expect(element.getAttribute('style')).to.include(`height: ${height}px;`);
     expect(element.getAttribute('style')).to.include(`width: ${width}px;`);
   }
 
-  function expectXY(element: React.DOMElement, x: number, y: number): void {
-    expect(element.style.x).equals(`${x}px`);
-    expect(element.style.y).equals(`${y}px`);
+  function expectXY(element: SVGElement, x: number, y: number): void {
+    expect(element.getAttribute('x')).equals(`${x}`);
+    expect(element.getAttribute('y')).equals(`${y}`);
   }
 
   it('renders on its own without issue', () => {
-    mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, mockContext);
+    mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
   });
 
   it('sets mask ID based on page number', () => {
-    const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="345" />, mockContext);
+    const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={345} />, mockContext);
 
     expect(wrapper.getDOMNode().getElementsByTagName('mask')[0].id).equals(
       'highlight-overlay-mask-345'
@@ -51,7 +49,7 @@ describe('<HighlightOverlay/>', () => {
 
   describe('pixel size', () => {
     it('matches the pixel size of the page [outer wrapper div]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, mockContext);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
 
       expectHeightWidth(
         wrapper.getDOMNode(),
@@ -61,14 +59,14 @@ describe('<HighlightOverlay/>', () => {
     });
 
     it('matches the pixel size of the page [SVG element]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, mockContext);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
       const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
       expectHeightWidth(svg, mockContext.pageSize.height, mockContext.pageSize.width);
     });
 
     it('matches the pixel size of the page [masked rect elements]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, mockContext);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
       const maskedRects = getRectsWithFill(wrapper, 'white');
 
       expect(maskedRects.length).equals(2);
@@ -83,7 +81,7 @@ describe('<HighlightOverlay/>', () => {
         ...mockContext,
         scale: 2.0,
       };
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
 
       expectHeightWidth(
         wrapper.getDOMNode(),
@@ -97,7 +95,7 @@ describe('<HighlightOverlay/>', () => {
         ...mockContext,
         scale: 2.0,
       };
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
       const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
       expectHeightWidth(
@@ -112,7 +110,7 @@ describe('<HighlightOverlay/>', () => {
         ...mockContext,
         scale: 2.0,
       };
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, context);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
       const maskedRects = getRectsWithFill(wrapper, 'white');
 
       expect(maskedRects.length).equals(2);
@@ -131,7 +129,7 @@ describe('<HighlightOverlay/>', () => {
 
   describe('rendering unmasked content', () => {
     it('renders no unmasked rects when no children are given', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber="1" />, mockContext);
+      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
       const unmaskedRects = getRectsWithFill(wrapper, 'black');
 
       expect(unmaskedRects.length).equals(0);
@@ -139,7 +137,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders 1 unmasked rect when 1 child is given', () => {
       const wrapper = mountWithPageSizeContext(
-        <HighlightOverlay pageNumber="1">
+        <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
         </HighlightOverlay>,
         mockContext
@@ -153,7 +151,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders 2 unmasked rects when 2 children are given', () => {
       const wrapper = mountWithPageSizeContext(
-        <HighlightOverlay pageNumber="1">
+        <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
         </HighlightOverlay>,
@@ -170,7 +168,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders no 3 rects when 3 children are given', () => {
       const wrapper = mountWithPageSizeContext(
-        <HighlightOverlay pageNumber="1">
+        <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
           <BoundingBox top={101} left={23} height={45} width={67} />

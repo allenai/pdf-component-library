@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { BoundingBox } from './BoundingBox';
+import { BoundingBoxProps } from './BoundingBox';
 import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
-  children?: React.ReactNode;
+  children?: React.ReactElement<BoundingBoxProps> | Array<React.ReactElement<BoundingBoxProps>>;
   pageNumber: number;
 };
 
@@ -18,20 +18,24 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
     height: pageSize.height * scale,
   };
 
-  const getUnmaskedArea = function (boundingBoxes: typeof BoundingBox) {
+  const getUnmaskedArea = function (
+    boundingBoxes:
+      | React.ReactElement<BoundingBoxProps>
+      | Array<React.ReactElement<BoundingBoxProps>>
+  ) {
     if (!boundingBoxes) {
       return;
     }
 
     const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
     return boxes.map((box, i) => {
-      const boxStyle = {
+      const boxStyle = box && {
         width: box.props.width,
         height: box.props.height,
-        x: box.props.left,
-        y: box.props.top,
       };
-      return <rect style={boxStyle} key={i} fill="black"></rect>;
+      return (
+        <rect style={boxStyle} x={box.props.left} y={box.props.top} key={i} fill="black"></rect>
+      );
     });
   };
 
@@ -42,7 +46,7 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
       <svg className="page-mask" style={style}>
         <mask id={maskId}>
           <rect style={style} fill="white"></rect>
-          {getUnmaskedArea(children)}
+          {children && getUnmaskedArea(children)}
         </mask>
         <rect style={style} fill="white" opacity="0.6" mask={`url(#${maskId})`}></rect>
       </svg>

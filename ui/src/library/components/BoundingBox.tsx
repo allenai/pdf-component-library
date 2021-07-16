@@ -15,6 +15,8 @@ type Props = {
   onClick?: () => void;
 };
 
+export type BoundingBoxProps = Props;
+
 export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
   top,

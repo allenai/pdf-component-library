@@ -82,7 +82,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     });
   };
 
-  renderOverlay = (index: number): React.ReactNode => {
+  renderOverlay = (index: number): React.ReactElement => {
     const pageNumber = index + 1;
 
     if (this.state.isShowingHighlightOverlay) {
