@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import { mountWithPageSizeContext } from '../testHelper';
+import { expectHeightWidth, mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
 import { PageSizeContextData } from './PageSizeContext';
@@ -23,11 +23,6 @@ describe('<HighlightOverlay/>', () => {
         return true;
       }
     });
-  }
-
-  function expectHeightWidth(element: Element, height: number, width: number): void {
-    expect(element.getAttribute('style')).to.include(`height: ${height}px;`);
-    expect(element.getAttribute('style')).to.include(`width: ${width}px;`);
   }
 
   function expectXY(element: SVGElement, x: number, y: number): void {
