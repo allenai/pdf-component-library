@@ -8,7 +8,11 @@ module.exports = {
     rules: [
       {
         test: /\.(less|css)$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'less-loader', options: { lessOptions: { javascriptEnabled: true } } },
+        ],
       },
       {
         test: /\.tsx?$/,
@@ -50,7 +54,7 @@ module.exports = {
     }),
   ],
   output: {
-    filename: 'main.[hash:6].js',
+    filename: 'main.[fullhash:6].js',
     path: path.resolve(__dirname, 'build'),
   },
   devServer: {

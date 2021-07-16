@@ -1,5 +1,6 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
+import { Drawer, Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { Outline } from 'react-pdf/dist/esm/entry.webpack';
@@ -12,29 +13,40 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
+import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize, PdfPixelSize } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
 import { Nullable } from './types';
 
 type State = {
   pdfSize: Nullable<PdfPixelSize>;
+  isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;
   errorMsg: string | null;
   numPages: number;
   scale: number;
+  rotation: PageRotation;
 };
 
 const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 
 export class Reader extends React.Component<RouteComponentProps, State> {
+  // ref for the div in which the Document component renders
+  pdfContentRef = React.createRef<HTMLDivElement>();
+
+  // ref for the scrollable region where the pages are rendered
+  pdfScrollableRef = React.createRef<HTMLDivElement>();
+
   state = {
     pdfSize: null,
+    isDrawerOpen: false,
     isLoading: false,
     isShowingHighlightOverlay: false,
     errorMsg: null,
     numPages: 0,
     scale: 1.0,
+    rotation: PageRotation.Rotate0,
   };
 
   componentDidMount(): void {
@@ -48,6 +60,30 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   handleZoom = (multiplier: number): void => {
     this.setState(state => {
       return { scale: state.scale * multiplier };
+    });
+  };
+
+  handleOpenDrawer = (): void => {
+    this.setState({ isDrawerOpen: true });
+  };
+
+  handleCloseDrawer = (): void => {
+    this.setState({ isDrawerOpen: false });
+  };
+
+  handleRotateCW = (): void => {
+    this.setState(state => {
+      return {
+        rotation: rotateClockwise(state.rotation),
+      };
+    });
+  };
+
+  handleRotateCCW = (): void => {
+    this.setState(state => {
+      return {
+        rotation: rotateCounterClockwise(state.rotation),
+      };
     });
   };
 
@@ -80,6 +116,10 @@ export class Reader extends React.Component<RouteComponentProps, State> {
       isLoading: false,
       errorMsg: getErrorMessage(error),
     });
+  };
+
+  renderPopoverContent = (pageNumber: number): React.ReactNode => {
+    return <div>You clicked on page {pageNumber}.</div>;
   };
 
   renderOverlay = (index: number): React.ReactElement => {
@@ -115,20 +155,25 @@ export class Reader extends React.Component<RouteComponentProps, State> {
 
     return (
       <Overlay>
-        <BoundingBox
-          className="reader__sample-overlay__bbox"
-          top={300 + index * 50}
-          left={300 + index * 50}
-          height={300}
-          width={300}
-          onClick={() => window.alert(`You clicked on page ${pageNumber}!!`)}
-        />
+        <Popover
+          content={this.renderPopoverContent(index)}
+          trigger="click"
+          //@ts-ignore there's something wonky with the types here
+          getPopupContainer={() => this.pdfScrollableRef.current}>
+          <BoundingBox
+            className="reader__sample-overlay__bbox"
+            top={10 + index * 50}
+            left={10 + index * 50}
+            height={30}
+            width={30}
+          />
+        </Popover>
       </Overlay>
     );
   };
 
   render(): React.ReactNode {
-    const { numPages, scale, pdfSize } = this.state;
+    const { isDrawerOpen, numPages, scale, pdfSize, rotation } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -137,6 +182,9 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               <Header
                 scale={scale}
                 handleZoom={this.handleZoom}
+                handleOpenDrawer={this.handleOpenDrawer}
+                handleRotateCW={this.handleRotateCW}
+                handleRotateCCW={this.handleRotateCCW}
                 handleToggleHighlightOverlay={this.handleToggleHighlightOverlay}
               />
             </div>
@@ -144,13 +192,31 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               className="reader__main"
               file={TEST_PDF_URL}
               onLoadError={this.onPdfLoadError}
-              onLoadSuccess={this.onPdfLoadSuccess}>
-              <div className="reader__sidebar">
+              onLoadSuccess={this.onPdfLoadSuccess}
+              inputRef={this.pdfContentRef}>
+              <Drawer
+                title="Outline"
+                placement="left"
+                visible={isDrawerOpen}
+                mask={false}
+                onClose={this.handleCloseDrawer}
+                //@ts-ignore there's something wonky with the types here
+                getContainer={() => {
+                  // Passing this ref mounts the drawer "inside" the grid content area
+                  // instead of using the entire browser height.
+                  return this.pdfContentRef.current;
+                }}
+                className="reader__outline-drawer">
                 <Outline onItemClick={this.handleOutlineClick} />
-              </div>
-              <div className="reader__page-list">
+              </Drawer>
+              <div className="reader__page-list" ref={this.pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper key={i} pageIndex={i} scale={scale} pageSize={pdfSize}>
+                  <PageWrapper
+                    key={i}
+                    pageIndex={i}
+                    scale={scale}
+                    rotation={rotation}
+                    pageSize={pdfSize}>
                     {this.renderOverlay(i)}
                   </PageWrapper>
                 ))}
@@ -163,6 +229,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getErrorMessage(error: any): string {
   if (!error) {
     return 'Unknown error';

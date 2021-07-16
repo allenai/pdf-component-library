@@ -43,6 +43,7 @@ module.exports = {
       'error',
       { allowArgumentsExplicitlyTypedAsAny: true },
     ],
+    '@typescript-eslint/ban-ts-comment': 0,
   },
   settings: {
     react: {

@@ -3,6 +3,7 @@ import { Page } from 'react-pdf/dist/esm/entry.webpack';
 import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { Nullable } from '../../types';
+import { isSideways, PageRotation } from '../rotate';
 import { PdfPixelSize } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
@@ -19,6 +20,7 @@ type PageProps = {
   pageIndex?: number;
   pageNumber?: number;
   scale: number; // Unlike the react-pdf component, this is now required
+  rotation: PageRotation;
 };
 type Props = {
   className?: string;
@@ -32,17 +34,18 @@ export class PageWrapper extends React.PureComponent<Props> {
   };
 
   computeStyle = (): { width: number } | undefined => {
-    const { pageSize, scale } = this.props;
+    const { pageSize, scale, rotation } = this.props;
     if (!pageSize) {
       return undefined;
     }
     return {
-      width: pageSize.width * scale,
+      width: (isSideways(rotation) ? pageSize.height : pageSize.width) * scale,
     };
   };
 
   render(): React.ReactNode {
-    const { pageSize, error, loading, noData, pageIndex, pageNumber, scale, children } = this.props;
+    const { pageSize, error, loading, noData, pageIndex, pageNumber, scale, rotation, children } =
+      this.props;
     // Click events from the Outline only give pageNumber, so we need to be clever when setting the ID.
     // TODO: Settle on one to use--pageIndex or pageNumber. react-pdf seems to prefer the latter
     const pageNumberForId = this.props.pageNumber
@@ -56,6 +59,7 @@ export class PageWrapper extends React.PureComponent<Props> {
     if (!pageSize) {
       return null;
     }
+
     // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
     // and mis-aligning the text layer.
     // TODO: Can we CSS this to auto-shrink?
@@ -64,9 +68,11 @@ export class PageWrapper extends React.PureComponent<Props> {
         id={generatePageId(pageNumberForId)}
         className="reader__page"
         style={this.computeStyle()}>
-        <PageSizeContext.Provider value={{ pageSize, scale }}>{children}</PageSizeContext.Provider>
+        <PageSizeContext.Provider value={{ pageSize, scale, rotation }}>
+          {children}
+        </PageSizeContext.Provider>
         <Page
-          width={pageSize.width}
+          width={isSideways(rotation) ? pageSize.height : pageSize.width}
           error={error}
           loading={loading}
           noData={noData}
@@ -74,6 +80,7 @@ export class PageWrapper extends React.PureComponent<Props> {
           pageNumber={pageNumber}
           scale={scale}
           onClick={this.onClick}
+          rotate={rotation}
           renderAnnotationLayer={false}
         />
       </div>
