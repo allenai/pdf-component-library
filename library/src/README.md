@@ -1,0 +1,1 @@
+Things in this folder are destined for the PDF Component Library, and will be published to the world for the Hello World app _and_ S2 to use. If it isn't something that has broad utility for rendering PDFs (with overlays) in React applications, then it might not belong in here.

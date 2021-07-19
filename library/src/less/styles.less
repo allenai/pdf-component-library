@@ -1,0 +1,21 @@
+.reader__page {
+  background-color: @pdflib-page-background;
+  margin: 24px;
+  box-shadow: 0px 4px 14px fade(@pdflib-page-shadow, 20%);
+  position: relative;
+}
+
+.reader__page-overlay {
+  position: absolute;
+}
+
+.reader__page-overlay__bounding-box {
+  position: absolute;
+  z-index: @z-index-bbox-overlay;
+}
+
+.reader__page-highlight-overlay {
+  pointer-events: none;
+  position: absolute;
+  z-index: @z-index-bbox-overlay;
+}
