@@ -6,6 +6,7 @@ import { Nullable } from '../../types';
 import { isSideways, PageRotation } from '../rotate';
 import { PdfPixelSize } from '../scale';
 import { generatePageId } from '../scroll';
+import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 import { PageSizeContext } from './PageSizeContext';
 
@@ -23,7 +24,7 @@ type PageProps = {
 };
 type Props = {
   className?: string;
-  children?: React.ReactElement<typeof Overlay>;
+  children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
   pageSize?: Nullable<PdfPixelSize>;
 } & PageProps;
 

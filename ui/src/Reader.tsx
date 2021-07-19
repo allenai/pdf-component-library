@@ -10,6 +10,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
+import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
@@ -21,6 +22,7 @@ type State = {
   pdfSize: Nullable<PdfPixelSize>;
   isDrawerOpen: boolean;
   isLoading: boolean;
+  isShowingHighlightOverlay: boolean;
   errorMsg: string | null;
   numPages: number;
   scale: number;
@@ -40,6 +42,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     pdfSize: null,
     isDrawerOpen: false,
     isLoading: false,
+    isShowingHighlightOverlay: false,
     errorMsg: null,
     numPages: 0,
     scale: 1.0,
@@ -84,6 +87,12 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     });
   };
 
+  handleToggleHighlightOverlay = (): void => {
+    this.setState(state => {
+      return { isShowingHighlightOverlay: !state.isShowingHighlightOverlay };
+    });
+  };
+
   onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
@@ -113,6 +122,56 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     return <div>You clicked on page {pageNumber}.</div>;
   };
 
+  renderOverlay = (index: number): React.ReactElement => {
+    const pageNumber = index + 1;
+
+    if (this.state.isShowingHighlightOverlay) {
+      return (
+        <HighlightOverlay pageNumber={pageNumber}>
+          <BoundingBox
+            className="reader__sample-highlight-overlay__bbox"
+            top={280}
+            left={250}
+            height={20}
+            width={425}
+          />
+          <BoundingBox
+            className="reader__sample-highlight-overlay__bbox"
+            top={300}
+            left={120}
+            height={55}
+            width={550}
+          />
+          <BoundingBox
+            className="reader__sample-highlight-overlay__bbox"
+            top={350}
+            left={120}
+            height={20}
+            width={240}
+          />
+        </HighlightOverlay>
+      );
+    }
+
+    return (
+      <Overlay>
+        <Popover
+          content={this.renderPopoverContent(index)}
+          trigger="click"
+          //@ts-ignore there's something wonky with the types here
+          getPopupContainer={() => this.pdfScrollableRef.current}>
+          <BoundingBox
+            className="reader__sample-overlay__bbox"
+            top={10 + index * 50}
+            left={10 + index * 50}
+            height={30}
+            width={30}
+          />
+        </Popover>
+      </Overlay>
+    );
+  };
+
   render(): React.ReactNode {
     const { isDrawerOpen, numPages, scale, pdfSize, rotation } = this.state;
     return (
@@ -126,6 +185,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                 handleOpenDrawer={this.handleOpenDrawer}
                 handleRotateCW={this.handleRotateCW}
                 handleRotateCCW={this.handleRotateCCW}
+                handleToggleHighlightOverlay={this.handleToggleHighlightOverlay}
               />
             </div>
             <DocumentWrapper
@@ -157,21 +217,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                     scale={scale}
                     rotation={rotation}
                     pageSize={pdfSize}>
-                    <Overlay>
-                      <Popover
-                        content={this.renderPopoverContent(i)}
-                        trigger="click"
-                        //@ts-ignore there's something wonky with the types here
-                        getPopupContainer={() => this.pdfScrollableRef.current}>
-                        <BoundingBox
-                          className="reader__sample-overlay__bbox"
-                          top={10 + i * 50}
-                          left={10 + i * 50}
-                          height={30}
-                          width={30}
-                        />
-                      </Popover>
-                    </Overlay>
+                    {this.renderOverlay(i)}
                   </PageWrapper>
                 ))}
               </div>
