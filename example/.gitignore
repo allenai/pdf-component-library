@@ -4,5 +4,5 @@ node_modules/
 # build output
 build/
 
-# UI package manager debug output
+# log files
 *.log
