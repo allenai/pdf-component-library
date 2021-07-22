@@ -17,7 +17,6 @@
   "dependencies": {
     "@types/chai": "4.2.21",
     "@types/enzyme": "3.10.9",
-    "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/mocha": "8.2.3",
     "@types/node": "11.9.5",
     "@types/react": "17.0.14",
