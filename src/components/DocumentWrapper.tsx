@@ -10,7 +10,7 @@ export class DocumentWrapper extends React.PureComponent<Props> {
   render(): React.ReactNode {
     const { children, ...rest } = this.props;
     return (
-      <Document options={{ cMapUrl: 'cmaps/', cMapPacked: true }} {...rest}>
+      <Document options={/*{ cMapUrl: 'cmaps/', cMapPacked: true }*/ undefined} {...rest}>
         {children}
       </Document>
     );
