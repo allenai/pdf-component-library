@@ -7,15 +7,20 @@ import { Outline } from 'react-pdf/dist/esm/entry.webpack';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import {
+  BoundingBox,
+  computePageSize,
+  DocumentWrapper,
+  HighlightOverlay,
+  Overlay,
+  PageRotation,
+  PageWrapper,
+  PdfPixelSize,
+  rotateClockwise,
+  rotateCounterClockwise,
+  scrollToPdfPage,
+} from '../../src/index';
 import { Header } from './components/Header';
-import { BoundingBox } from './library/components/BoundingBox';
-import { DocumentWrapper } from './library/components/DocumentWrapper';
-import { HighlightOverlay } from './library/components/HighlightOverlay';
-import { Overlay } from './library/components/Overlay';
-import { PageWrapper } from './library/components/PageWrapper';
-import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
-import { computePageSize, PdfPixelSize } from './library/scale';
-import { scrollToPdfPage } from './library/scroll';
 import { Nullable } from './types';
 
 type State = {
@@ -193,7 +198,8 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               file={TEST_PDF_URL}
               onLoadError={this.onPdfLoadError}
               onLoadSuccess={this.onPdfLoadSuccess}
-              inputRef={this.pdfContentRef}>
+              inputRef={this.pdfContentRef}
+              options={{ cMapUrl: 'cmaps/', cMapPacked: true }}>
               <Drawer
                 title="Outline"
                 placement="left"
