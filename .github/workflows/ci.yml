@@ -1,7 +1,7 @@
 name: ci
 on: push
 jobs:
-   library:
+  library:
     # The default is 360 (6 hours).
     timeout-minutes: 5
     runs-on: ubuntu-latest
