@@ -1,1 +1,15 @@
-Things in this folder are destined for the PDF Component Library, and will be published to the world for the Hello World app _and_ S2 to use. If it isn't something that has broad utility for rendering PDFs (with overlays) in React applications, then it might not belong in here.
+# pdf-component-library
+
+See Design Document [here](https://docs.google.com/document/d/1U7NwejFSXNhoXuSdPvhCuYp1rZroZnCcR3EVU4evz0o/edit?usp=sharing)
+
+## How to Build the Library
+From the root of the repository:
+1. `yarn install` (if you just cloned or changed a dependency)
+2. `yarn build`
+Built JS files will appear in /build.
+
+## How to Run Hello World
+1. `cd /example`
+2. `yarn install` (if you just cloned or changed a dependency)
+3. `yarn start`
+4. Point your browser at `http://0.0.0.0:3000`
