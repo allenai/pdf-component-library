@@ -1,6 +1,7 @@
 node_modules/
 build/
 public/
+example/
 package.json
 tsconfig.json
 webpack.config.js
