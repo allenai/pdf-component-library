@@ -1,5 +1,4 @@
 const path = require('path');
-//const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: ['./src/index.tsx', './src/less/index.less'],
@@ -25,16 +24,6 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   plugins: [
-    // This copies everything that isn't `index.html` from `public/` into the build output
-    // directory.
-    // new CopyPlugin({
-    //   patterns: [
-    //     {
-    //       from: 'node_modules/pdfjs-dist/cmaps/',
-    //       to: 'cmaps/',
-    //     },
-    //   ],
-    // }),
   ],
   output: {
     filename: 'main.[fullhash:6].js',
