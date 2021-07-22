@@ -8,5 +8,11 @@
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "sourceMap": true
-  }
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
