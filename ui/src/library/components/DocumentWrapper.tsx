@@ -6,13 +6,12 @@ type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 
-export class DocumentWrapper extends React.PureComponent<Props> {
-  render(): React.ReactNode {
-    const { children, ...rest } = this.props;
-    return (
-      <Document options={{ cMapUrl: 'cmaps/', cMapPacked: true }} {...rest}>
-        {children}
-      </Document>
-    );
-  }
+export const DocumentWrapper: React.FunctionComponent<Props> = (props: Props) => {
+  const { children, ...rest } = props;
+
+  return (
+    <Document options={{ cMapUrl: 'cmaps/', cMapPacked: true }} {...rest}>
+      {children}
+    </Document>
+  );
 }
