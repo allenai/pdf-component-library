@@ -9,11 +9,16 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import { ContextProvider } from './library/components/ContextProvider';
 import { Reader } from './Reader';
 
 const App = () => (
   <BrowserRouter>
-    <Route path="/" component={Reader} />
+    <Route path="/">
+      <ContextProvider>
+        <Reader />
+      </ContextProvider>
+    </Route>
   </BrowserRouter>
 );
 
