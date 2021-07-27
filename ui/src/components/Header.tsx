@@ -1,30 +1,41 @@
 import * as React from 'react';
 
+import { PageSizeContext } from '../library/components/PageSizeContext';
+import { rotateClockwise, rotateCounterClockwise } from '../library/rotate';
 import { SimpleZoomControl } from './SimpleZoomControl';
+import { UIContext } from '../library/components/UIContext';
 
-type Props = {
-  scale: number;
-  handleToggleHighlightOverlay: () => void;
-  handleZoom: (multiplier: number) => void;
-  handleOpenDrawer: () => void;
-  handleRotateCW: () => void;
-  handleRotateCCW: () => void;
-};
+export const Header: React.FunctionComponent = () => {
+  const pageSizeContext = React.useContext(PageSizeContext);
+  const uiContext = React.useContext(UIContext);
 
-export class Header extends React.PureComponent<Props> {
-  render(): React.ReactNode {
-    return (
-      <div>
-        I&apos;m a header!
-        <br />
-        <SimpleZoomControl scale={this.props.scale} onScale={this.props.handleZoom} />
-        <br />
-        <a onClick={this.props.handleOpenDrawer}>Outline</a>
-        <a onClick={this.props.handleRotateCW}>↷</a>
-        <a onClick={this.props.handleRotateCCW}>↶</a>
-        <br />
-        <a onClick={this.props.handleToggleHighlightOverlay}>Highlight Overlay</a>
-      </div>
-    );
+  function handleOpenDrawer(): void {
+    uiContext.setIsDrawerOpen(true);
   }
+
+  function handleToggleHighlightOverlay(): void {
+    uiContext.setIsShowingHighlightOverlay(!uiContext.isShowingHighlightOverlay);
+  };
+
+  function handleRotateCW(): void {
+    pageSizeContext.setRotation(rotateClockwise(pageSizeContext.rotation));
+  }
+
+  function handleRotateCCW(): void {
+    pageSizeContext.setRotation(rotateCounterClockwise(pageSizeContext.rotation));
+  }
+
+  return (
+    <div>
+      I&apos;m a header!
+      <br />
+      <SimpleZoomControl />
+      <br />
+      <a onClick={handleOpenDrawer}>Outline</a>
+      <a onClick={handleRotateCW}>↷</a>
+      <a onClick={handleRotateCCW}>↶</a>
+      <br />
+      <a onClick={handleToggleHighlightOverlay}>Highlight Overlay</a>
+    </div>
+  );
 }
