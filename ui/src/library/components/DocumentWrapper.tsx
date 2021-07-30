@@ -14,4 +14,4 @@ export const DocumentWrapper: React.FunctionComponent<Props> = (props: Props) =>
       {children}
     </Document>
   );
-}
+};

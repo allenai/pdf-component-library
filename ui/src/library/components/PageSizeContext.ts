@@ -7,9 +7,9 @@ export type PageSizeContextData = {
   pageSize: PdfPixelSize; // Scaled at 100%, might want a better name
   rotation: PageRotation;
   scale: number;
-  setPageSize: Function,
-  setRotation: Function,
-  setScale: Function,
+  setPageSize: (pageSize: PdfPixelSize) => void;
+  setRotation: (rotation: PageRotation) => void;
+  setScale: (scale: number) => void;
 };
 
 export const PageSizeContext = React.createContext<PageSizeContextData>({
@@ -32,7 +32,7 @@ export function getStyleFromContext(
   top: number,
   left: number,
   height: number,
-  width: number,
+  width: number
 ): StyleSizeProps {
   const { rotation, scale, pageSize } = React.useContext(PageSizeContext);
   switch (rotation) {

@@ -1,19 +1,18 @@
 import * as React from 'react';
-
-import { PageSizeContext } from '../library/components/PageSizeContext';
-import { PercentFormatter } from '../format';
-
 import { MouseEventHandler } from 'react-router/node_modules/@types/react';
 
-export const SimpleZoomControl: React.FunctionComponent = () => {
-  const { scale, setScale } = React.useContext(PageSizeContext);
-  const ZOOM_MULTIPLIER = 1.2;
+import { PercentFormatter } from '../format';
+import { PageSizeContext } from '../library/components/PageSizeContext';
 
+const { scale, setScale } = React.useContext(PageSizeContext);
+const ZOOM_MULTIPLIER = 1.2;
+
+export const SimpleZoomControl: React.FunctionComponent = () => {
   function handleScale(multiplier: number): MouseEventHandler {
     return () => {
       setScale(scale * multiplier);
     };
-  };
+  }
 
   return (
     <span>
