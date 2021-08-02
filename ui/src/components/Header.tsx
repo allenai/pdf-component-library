@@ -17,13 +17,13 @@ export const Header: React.FunctionComponent = () => {
     uiContext.setIsShowingHighlightOverlay(!uiContext.isShowingHighlightOverlay);
   }
 
-  function handleRotateCW(): void {
+  const handleRotateCW = React.useCallback(() => {
     pageSizeContext.setRotation(rotateClockwise(pageSizeContext.rotation));
-  }
+  }, [pageSizeContext.rotation]);
 
-  function handleRotateCCW(): void {
+  const handleRotateCCW = React.useCallback(() => {
     pageSizeContext.setRotation(rotateCounterClockwise(pageSizeContext.rotation));
-  }
+  }, [pageSizeContext.rotation]);
 
   return (
     <div>

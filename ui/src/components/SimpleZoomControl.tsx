@@ -3,8 +3,6 @@ import * as React from 'react';
 import { PercentFormatter } from '../format';
 import { PageSizeContext } from '../library/components/PageSizeContext';
 
-
-
 export const SimpleZoomControl: React.FunctionComponent = () => {
   const { scale, setScale } = React.useContext(PageSizeContext);
   const ZOOM_MULTIPLIER = 1.2;
