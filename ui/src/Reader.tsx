@@ -7,6 +7,7 @@ import * as React from 'react';
 import { Header } from './components/Header';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
+import { getErrorMessage } from './library/components/errorUtils';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Outline } from './library/components/Outline';
 import { Overlay } from './library/components/Overlay';
@@ -23,23 +24,6 @@ export const Reader: React.FunctionComponent = () => {
 
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function getErrorMessage(error: any): string {
-    if (!error) {
-      return 'Unknown error';
-    }
-    if (typeof error === 'string') {
-      return error;
-    }
-    if (error instanceof Error) {
-      return error.message;
-    }
-    if (typeof error.error === 'string') {
-      return error.error;
-    }
-    return error.toString();
-  }
 
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
