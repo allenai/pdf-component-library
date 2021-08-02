@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { PageRotation } from '../rotate';
 import { PdfPixelSize } from '../scale';
+import { logProviderMessage } from './errorUtils';
 
 export type PageSizeContextData = {
   pageSize: PdfPixelSize; // Scaled at 100%, might want a better name
@@ -16,9 +17,15 @@ export const PageSizeContext = React.createContext<PageSizeContextData>({
   pageSize: { height: 0, width: 0 },
   rotation: PageRotation.Rotate0,
   scale: 1,
-  setPageSize: () => { },
-  setRotation: () => { },
-  setScale: () => { },
+  setPageSize: pageSize => {
+    logProviderMessage(`setPageSize(${pageSize})`, 'PageSizeContext');
+  },
+  setRotation: rotation => {
+    logProviderMessage(`setRotation(${rotation})`, 'PageSizeContext');
+  },
+  setScale: scale => {
+    logProviderMessage(`setScale(${scale})`, 'PageSizeContext');
+  },
 });
 
 export type StyleSizeProps = {

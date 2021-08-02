@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Nullable } from '../../types';
+import { logProviderWarning } from './errorUtils';
 
 export type UIContextData = {
   drawerContainerClass: string;
@@ -10,11 +11,11 @@ export type UIContextData = {
   isShowingHighlightOverlay: boolean;
   numPages: number;
 
-  setErrorMessage: Function;
-  setIsDrawerOpen: Function;
-  setIsLoading: Function;
-  setIsShowingHighlightOverlay: Function;
-  setNumPages: Function;
+  setErrorMessage: (message: Nullable<string>) => void;
+  setIsDrawerOpen: (isDrawerOpen: boolean) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
+  setNumPages: (numPages: number) => void;
 };
 
 export const UIContext = React.createContext<UIContextData>({
@@ -25,9 +26,19 @@ export const UIContext = React.createContext<UIContextData>({
   isShowingHighlightOverlay: false,
   numPages: 0,
 
-  setErrorMessage: () => {},
-  setIsDrawerOpen: () => {},
-  setIsLoading: () => {},
-  setIsShowingHighlightOverlay: () => {},
-  setNumPages: () => {},
+  setErrorMessage: message => {
+    logProviderWarning(`setErrorMessage(${message})`, 'UIContext');
+  },
+  setIsDrawerOpen: isDrawerOpen => {
+    logProviderWarning(`setIsDrawerOpen(${isDrawerOpen})`, 'UIContext');
+  },
+  setIsLoading: isLoading => {
+    logProviderWarning(`setIsLoading(${isLoading})`, 'UIContext');
+  },
+  setIsShowingHighlightOverlay: isShowingHighlightOverlay => {
+    logProviderWarning(`setIsShowingHighlightOverlay(${isShowingHighlightOverlay})`, 'UIContext');
+  },
+  setNumPages: numPages => {
+    logProviderWarning(`setNumPages(${numPages})`, 'UIContext');
+  },
 });
