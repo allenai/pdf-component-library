@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Nullable } from '../../types';
-import { logProviderWarning } from './errorUtils';
+import { logProviderWarning } from '../errorUtils';
 
 export type UIContextData = {
   drawerContainerClass: string;

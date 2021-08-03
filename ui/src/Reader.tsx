@@ -7,13 +7,14 @@ import * as React from 'react';
 import { Header } from './components/Header';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
-import { getErrorMessage } from './library/components/errorUtils';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Outline } from './library/components/Outline';
 import { Overlay } from './library/components/Overlay';
 import { PageSizeContext } from './library/components/PageSizeContext';
 import { PageWrapper } from './library/components/PageWrapper';
 import { UIContext } from './library/components/UIContext';
+import { getErrorMessage } from './library/errorUtils';
+import { getPageNumber } from './library/pageNumber';
 import { computePageSize } from './library/scale';
 
 export const Reader: React.FunctionComponent = () => {
@@ -51,7 +52,7 @@ export const Reader: React.FunctionComponent = () => {
   }
 
   function renderOverlay(index: number): React.ReactElement {
-    const pageNumber = index + 1;
+    const pageNumber = getPageNumber(undefined, index);
 
     if (uiContext.isShowingHighlightOverlay) {
       return (

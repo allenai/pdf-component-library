@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Page } from 'react-pdf/dist/esm/entry.webpack';
 import { RenderFunction } from 'react-pdf/dist/Page';
 
+import { getPageNumber } from '../pageNumber';
 import { isSideways } from '../rotate';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
@@ -43,11 +44,7 @@ export const PageWrapper: React.FunctionComponent<Props> = (props: Props) => {
 
   // Click events from the Outline only give pageNumber, so we need to be clever when setting the ID.
   // TODO: Settle on one to use--pageIndex or pageNumber. react-pdf seems to prefer the latter
-  const pageNumberForId = props.pageNumber
-    ? props.pageNumber
-    : props.pageIndex
-    ? props.pageIndex + 1
-    : 1;
+  const pageNumberForId = getPageNumber(pageNumber, pageIndex);
 
   // Don't display until we have page size data
   // TODO: Handle this nicer so we display either the loading or error treatment
