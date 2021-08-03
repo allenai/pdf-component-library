@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getStyleFromContext } from './PageSizeContext';
+import { getStyleFromContext, PageSizeContext } from './PageSizeContext';
 
 type Props = {
   className?: string;
@@ -25,13 +25,14 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   width,
   onClick,
 }: Props) => {
+  const context = React.useContext(PageSizeContext);
   const componentClassName = ['reader__page-overlay__bounding-box', className]
     .filter(Boolean)
     .join(' ');
   return (
     <div
       className={componentClassName}
-      style={getStyleFromContext(top, left, height, width)}
+      style={getStyleFromContext({ top, left, height, width }, context)}
       onClick={onClick}
     />
   );

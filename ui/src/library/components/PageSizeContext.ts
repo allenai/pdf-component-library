@@ -35,13 +35,9 @@ export type StyleSizeProps = {
   width: number;
 };
 
-export function getStyleFromContext(
-  top: number,
-  left: number,
-  height: number,
-  width: number
-): StyleSizeProps {
-  const { rotation, scale, pageSize } = React.useContext(PageSizeContext);
+export function getStyleFromContext(sizeProps: StyleSizeProps, context: PageSizeContextData): StyleSizeProps {
+  const { top, left, height, width } = sizeProps;
+  const { rotation, scale, pageSize } = context;
   switch (rotation) {
     case PageRotation.Rotate90:
       return {

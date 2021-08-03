@@ -13,9 +13,13 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   pageNumber,
 }: Props) => {
   const context = React.useContext(PageSizeContext);
-  const pageStyle = getStyleFromContext(0, 0, context.pageSize.height, context.pageSize.width);
-  console.info('style is');
-  console.info(pageStyle);
+  const pageStyleProps = {
+    top: 0,
+    left: 0,
+    height: context.pageSize.height,
+    width: context.pageSize.width,
+  };
+  const pageStyle = getStyleFromContext(pageStyleProps, context);
   const getUnmaskedArea = function (
     boundingBoxes:
       | React.ReactElement<BoundingBoxProps>
@@ -27,12 +31,13 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
 
     const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
     return boxes.map((box, i) => {
-      const boxStyle = getStyleFromContext(
-        box.props.top,
-        box.props.left,
-        box.props.height,
-        box.props.width
-      );
+      const boxStyleProps = {
+        top: box.props.top,
+        left: box.props.left,
+        height: box.props.height,
+        width: box.props.width,
+      };
+      const boxStyle = getStyleFromContext(boxStyleProps, context);
       return <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>;
     });
   };
