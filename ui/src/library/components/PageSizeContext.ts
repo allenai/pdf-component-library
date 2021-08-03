@@ -39,6 +39,16 @@ export function getStyleFromContext(sizeProps: StyleSizeProps, context: PageSize
   const { top, left, height, width } = sizeProps;
   const { rotation, scale, pageSize } = context;
   switch (rotation) {
+    // 0º = A
+    default:
+    case PageRotation.Rotate0:
+      return {
+        top: top * scale,
+        left: left * scale,
+        height: height * scale,
+        width: width * scale,
+      };
+    // 90º = ᗆ
     case PageRotation.Rotate90:
       return {
         top: left * scale,
@@ -46,6 +56,7 @@ export function getStyleFromContext(sizeProps: StyleSizeProps, context: PageSize
         height: width * scale,
         width: height * scale,
       };
+    // 180º = Ɐ
     case PageRotation.Rotate180:
       return {
         top: (pageSize.height - height - top) * scale,
@@ -53,19 +64,13 @@ export function getStyleFromContext(sizeProps: StyleSizeProps, context: PageSize
         height: height * scale,
         width: width * scale,
       };
+    // 270º = ᗉ
     case PageRotation.Rotate270:
       return {
         top: (pageSize.width - width - left) * scale,
         left: top * scale,
         height: width * scale,
         width: height * scale,
-      };
-    default:
-      return {
-        top: top * scale,
-        left: left * scale,
-        height: height * scale,
-        width: width * scale,
       };
   }
 }
