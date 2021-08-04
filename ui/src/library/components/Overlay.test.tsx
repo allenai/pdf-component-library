@@ -2,6 +2,7 @@ import { expect } from 'chai';
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
+import { PdfPixelSize } from '../scale';
 import { mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { Overlay } from './Overlay';
@@ -15,6 +16,15 @@ describe('<Overlay/>', () => {
     },
     scale: 1.0,
     rotation: PageRotation.Rotate0,
+    setPageSize: (pageSize: PdfPixelSize) => {
+      return pageSize;
+    },
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
   };
 
   it('renders on its own without issue', () => {

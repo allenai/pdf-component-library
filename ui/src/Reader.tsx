@@ -1,5 +1,3 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import { Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';

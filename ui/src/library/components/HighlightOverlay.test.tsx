@@ -3,6 +3,7 @@ import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
+import { PdfPixelSize } from '../scale';
 import { expectHeightWidth, expectLeftTop, mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
@@ -16,6 +17,15 @@ describe('<HighlightOverlay/>', () => {
     },
     scale: 1.0,
     rotation: PageRotation.Rotate0,
+    setPageSize: (pageSize: PdfPixelSize) => {
+      return pageSize;
+    },
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
   };
 
   function getRectsWithFill(component: ReactWrapper, fillColor: string): Array<SVGElement> {

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
+import { logProviderWarning } from '../errorUtils';
 import { PageRotation } from '../rotate';
 import { PdfPixelSize } from '../scale';
-import { logProviderWarning } from './errorUtils';
 
 export type PageSizeContextData = {
   pageSize: PdfPixelSize; // Scaled at 100%, might want a better name
@@ -35,7 +35,10 @@ export type StyleSizeProps = {
   width: number;
 };
 
-export function getStyleFromContext(sizeProps: StyleSizeProps, context: PageSizeContextData): StyleSizeProps {
+export function getStyleFromContext(
+  sizeProps: StyleSizeProps,
+  context: PageSizeContextData
+): StyleSizeProps {
   const { top, left, height, width } = sizeProps;
   const { rotation, scale, pageSize } = context;
   switch (rotation) {

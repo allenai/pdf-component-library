@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { PageRotation } from '../rotate';
+import { PdfPixelSize } from '../scale';
 import { mountWithPageSizeContext } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { PageSizeContextData } from './PageSizeContext';
@@ -15,6 +16,15 @@ describe('<BoundingBox/>', () => {
     },
     scale: 1.0,
     rotation: PageRotation.Rotate0,
+    setPageSize: (pageSize: PdfPixelSize) => {
+      return pageSize;
+    },
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
   };
 
   it('renders at the right spot when rotated at 0 degrees', () => {
