@@ -14,12 +14,12 @@ import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
-import { computePageSize, PdfPixelSize } from './library/scale';
+import { computePageSize, Size } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
 import { Nullable } from './types';
 
 type State = {
-  pdfSize: Nullable<PdfPixelSize>;
+  pdfSize: Nullable<Size>;
   isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;

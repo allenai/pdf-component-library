@@ -4,7 +4,7 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { Nullable } from '../../types';
 import { isSideways, PageRotation } from '../rotate';
-import { PdfPixelSize } from '../scale';
+import { Size } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
@@ -26,7 +26,7 @@ type PageProps = {
 type Props = {
   className?: string;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
-  pageSize?: Nullable<PdfPixelSize>;
+  pageSize?: Nullable<Size>;
 } & PageProps;
 
 export class PageWrapper extends React.PureComponent<Props> {
