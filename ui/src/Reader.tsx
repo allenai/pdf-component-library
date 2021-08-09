@@ -16,10 +16,11 @@ import { PageWrapper } from './library/components/PageWrapper';
 import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize, Size } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
-import { Nullable } from './types';
+import { PageSizeContext } from './library/components/PageSizeContext';
+import { TransformContext } from './library/components/TransformContext';
 
 type State = {
-  pdfSize: Nullable<Size>;
+  pageSize: Size;
   isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;
@@ -39,7 +40,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   state = {
-    pdfSize: null,
+    pageSize: { height: 0, width: 0 },
     isDrawerOpen: false,
     isLoading: false,
     isShowingHighlightOverlay: false,
@@ -97,7 +98,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
       this.setState({
-        pdfSize: computePageSize({
+        pageSize: computePageSize({
           userUnit: page.userUnit,
           topLeft: { x: page.view[0], y: page.view[1] },
           bottomRight: { x: page.view[2], y: page.view[3] },
@@ -173,7 +174,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   };
 
   render(): React.ReactNode {
-    const { isDrawerOpen, numPages, scale, pdfSize, rotation } = this.state;
+    const { isDrawerOpen, numPages, scale, pageSize, rotation } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -211,14 +212,18 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               </Drawer>
               <div className="reader__page-list" ref={this.pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper
-                    key={i}
-                    pageIndex={i}
-                    scale={scale}
-                    rotation={rotation}
-                    pageSize={pdfSize}>
-                    {this.renderOverlay(i)}
-                  </PageWrapper>
+                  <PageSizeContext.Provider value={{ pageSize }} key={i}>
+                    <TransformContext.Provider value={{ rotation, scale }}>
+                      <PageWrapper
+                        pageIndex={i}
+                        scale={scale}
+                        rotation={rotation}
+                        pageSize={pageSize}>
+                        {this.renderOverlay(i)}
+                      </PageWrapper>
+                    </TransformContext.Provider>
+                  </PageSizeContext.Provider>
+
                 ))}
               </div>
             </DocumentWrapper>

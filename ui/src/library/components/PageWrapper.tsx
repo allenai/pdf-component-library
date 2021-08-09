@@ -69,11 +69,7 @@ export class PageWrapper extends React.PureComponent<Props> {
         id={generatePageId(pageNumberForId)}
         className="reader__page"
         style={this.computeStyle()}>
-        <PageSizeContext.Provider value={{ pageSize }}>
-          <TransformContext.Provider value={{ rotation, scale }}>
-            {children}
-          </TransformContext.Provider>
-        </PageSizeContext.Provider>
+        {children}
         <Page
           width={isSideways(rotation) ? pageSize.height : pageSize.width}
           error={error}
