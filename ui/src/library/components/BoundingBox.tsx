@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
-import { PageSizeContext, PageSizeContextData } from '../context/PageSizeContext';
+import { PageSizeContext, IPageSize } from '../context/PageSizeContext';
 import { ITransform, TransformContext } from '../context/TransformContext';
 
 type Props = {
@@ -64,7 +64,7 @@ export function computeStyleWithContext(
   left: number,
   height: number,
   width: number,
-  pageSizeContext: PageSizeContextData,
+  pageSizeContext: IPageSize,
   transformContext: ITransform,
 ): StyleSizeProps {
   const { pageSize } = pageSizeContext;

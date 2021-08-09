@@ -6,11 +6,11 @@ import { PageRotation } from '../rotate';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
-import { PageSizeContextData } from '../context/PageSizeContext';
+import { IPageSize } from '../context/PageSizeContext';
 import { ITransform } from '../context/TransformContext';
 
 describe('<HighlightOverlay/>', () => {
-  const mockPageSizeContext: PageSizeContextData = {
+  const mockPageSizeContext: IPageSize = {
     pageSize: {
       height: 1056,
       width: 816,
