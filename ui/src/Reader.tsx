@@ -18,13 +18,14 @@ import { computePageSize, Size } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
 import { PageSizeContext } from './library/context/PageSizeContext';
 import { TransformContext } from './library/context/TransformContext';
+import { UiContext } from './library/context/UiContext';
 
 type State = {
   pageSize: Size;
   isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;
-  errorMsg: string | null;
+  errorMessage: string | null;
   numPages: number;
   scale: number;
   rotation: PageRotation;
@@ -44,7 +45,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     isDrawerOpen: false,
     isLoading: false,
     isShowingHighlightOverlay: false,
-    errorMsg: null,
+    errorMessage: null,
     numPages: 0,
     scale: 1.0,
     rotation: PageRotation.Rotate0,
@@ -108,14 +109,14 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     this.setState({
       isLoading: false,
       numPages: pdfDoc.numPages,
-      errorMsg: null,
+      errorMessage: null,
     });
   };
 
   onPdfLoadError = (error: unknown): void => {
     this.setState({
       isLoading: false,
-      errorMsg: getErrorMessage(error),
+      errorMessage: getErrorMessage(error),
     });
   };
 
@@ -174,7 +175,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
   };
 
   render(): React.ReactNode {
-    const { isDrawerOpen, numPages, scale, pageSize, rotation } = this.state;
+    const { errorMessage, isDrawerOpen, isLoading, isShowingHighlightOverlay, numPages, scale, pageSize, rotation } = this.state;
     return (
       <BrowserRouter>
         <Route path="/">
@@ -214,13 +215,15 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageSizeContext.Provider value={{ pageSize }} key={i}>
                     <TransformContext.Provider value={{ rotation, scale }}>
-                      <PageWrapper
-                        pageIndex={i}
-                        scale={scale}
-                        rotation={rotation}
-                        pageSize={pageSize}>
-                        {this.renderOverlay(i)}
-                      </PageWrapper>
+                      <UiContext.Provider value={{ errorMessage, isDrawerOpen, isLoading, isShowingHighlightOverlay }}>
+                        <PageWrapper
+                          pageIndex={i}
+                          scale={scale}
+                          rotation={rotation}
+                          pageSize={pageSize}>
+                          {this.renderOverlay(i)}
+                        </PageWrapper>
+                      </UiContext.Provider>
                     </TransformContext.Provider>
                   </PageSizeContext.Provider>
 
