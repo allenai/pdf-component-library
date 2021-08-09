@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { BoundingBoxProps, computeStyleWithContext } from './BoundingBox';
-import { PageSizeContext } from './PageSizeContext';
-import { TransformContext } from './TransformContext';
+import { PageSizeContext } from '../context/PageSizeContext';
+import { TransformContext } from '../context/TransformContext';
 
 type Props = {
   children?: React.ReactElement<BoundingBoxProps> | Array<React.ReactElement<BoundingBoxProps>>;

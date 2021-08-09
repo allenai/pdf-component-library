@@ -5,8 +5,8 @@ import * as sinon from 'sinon';
 import { PageRotation } from '../rotate';
 import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
-import { PageSizeContextData } from './PageSizeContext';
-import { ITransform } from './TransformContext';
+import { PageSizeContextData } from '../context/PageSizeContext';
+import { ITransform } from '../context/TransformContext';
 
 describe('<BoundingBox/>', () => {
   const mockPageSizeContext: PageSizeContextData = {

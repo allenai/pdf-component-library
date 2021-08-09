@@ -16,8 +16,8 @@ import { PageWrapper } from './library/components/PageWrapper';
 import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize, Size } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
-import { PageSizeContext } from './library/components/PageSizeContext';
-import { TransformContext } from './library/components/TransformContext';
+import { PageSizeContext } from './library/context/PageSizeContext';
+import { TransformContext } from './library/context/TransformContext';
 
 type State = {
   pageSize: Size;

@@ -8,8 +8,8 @@ import { Size } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
-import { PageSizeContext } from './PageSizeContext';
-import { TransformContext } from './TransformContext';
+import { PageSizeContext } from '../context/PageSizeContext';
+import { TransformContext } from '../context/TransformContext';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper

@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
-import { PageSizeContext, PageSizeContextData } from './PageSizeContext';
-import { ITransform, TransformContext } from './TransformContext';
+import { PageSizeContext, PageSizeContextData } from '../context/PageSizeContext';
+import { ITransform, TransformContext } from '../context/TransformContext';
 
 type Props = {
   className?: string;

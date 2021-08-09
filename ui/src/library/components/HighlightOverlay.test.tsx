@@ -6,8 +6,8 @@ import { PageRotation } from '../rotate';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
-import { PageSizeContextData } from './PageSizeContext';
-import { ITransform } from './TransformContext';
+import { PageSizeContextData } from '../context/PageSizeContext';
+import { ITransform } from '../context/TransformContext';
 
 describe('<HighlightOverlay/>', () => {
   const mockPageSizeContext: PageSizeContextData = {
