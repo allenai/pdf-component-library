@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { PageSizeContext, IPageSize } from './context/PageSizeContext';
+import { DocumentContext, IDocument } from './context/DocumentContext';
 import { ITransform, TransformContext } from './context/TransformContext';
 
 export function expectHeightWidth(element: Element, height: number, width: number): void {
@@ -17,12 +17,12 @@ export function expectLeftTop(element: Element, left: number, top: number): void
   expect(element.getAttribute('style')).to.include(`top: ${top}px;`);
 }
 
-export function mountWithContexts(component: React.ReactNode, pageSizeContext: IPageSize, transformContext: ITransform) {
-  return mount(<PageSizeContext.Provider value={pageSizeContext}>
+export function mountWithContexts(component: React.ReactNode, documentContext: IDocument, transformContext: ITransform) {
+  return mount(<DocumentContext.Provider value={documentContext}>
     <TransformContext.Provider value={transformContext}>
       {component}
     </TransformContext.Provider>
-  </PageSizeContext.Provider>);
+  </DocumentContext.Provider>);
 }
 
 export const mochaHooks = {

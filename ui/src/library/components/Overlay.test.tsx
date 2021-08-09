@@ -5,11 +5,12 @@ import { PageRotation } from '../rotate';
 import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { Overlay } from './Overlay';
-import { IPageSize } from '../context/PageSizeContext';
+import { IDocument } from '../context/DocumentContext';
 import { ITransform } from '../context/TransformContext';
 
 describe('<Overlay/>', () => {
-  const mockPageSizeContext: IPageSize = {
+  const mockDocumentContext: IDocument = {
+    numPages: 2,
     pageSize: {
       height: 1056,
       width: 816,
@@ -22,11 +23,11 @@ describe('<Overlay/>', () => {
   }
 
   it('renders on its own without issue', () => {
-    mountWithContexts(<Overlay />, mockPageSizeContext, mockTransformContext);
+    mountWithContexts(<Overlay />, mockDocumentContext, mockTransformContext);
   });
 
   it('matches the pixel size of the page', () => {
-    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, mockTransformContext);
+    const wrapper = mountWithContexts(<Overlay />, mockDocumentContext, mockTransformContext);
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 816px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 1056px;');
   });
@@ -36,7 +37,7 @@ describe('<Overlay/>', () => {
       ...mockTransformContext,
       scale: 2.0,
     };
-    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, transformContext);
+    const wrapper = mountWithContexts(<Overlay />, mockDocumentContext, transformContext);
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1632px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 2112px;');
@@ -47,7 +48,7 @@ describe('<Overlay/>', () => {
       ...mockTransformContext,
       rotation: PageRotation.Rotate90,
     };
-    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, transformContext);
+    const wrapper = mountWithContexts(<Overlay />, mockDocumentContext, transformContext);
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1056px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 816px;');
@@ -58,7 +59,7 @@ describe('<Overlay/>', () => {
       <Overlay>
         <BoundingBox top={192} left={192} height={96} width={96} />
       </Overlay>,
-      mockPageSizeContext,
+      mockDocumentContext,
       mockTransformContext
     );
 

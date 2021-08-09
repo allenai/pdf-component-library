@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { BoundingBoxProps, computeStyleWithContext } from './BoundingBox';
-import { PageSizeContext } from '../context/PageSizeContext';
+import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 
 type Props = {
@@ -13,14 +13,14 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
   pageNumber,
 }: Props) => {
-  const pageSizeContext = React.useContext(PageSizeContext);
+  const documentContext = React.useContext(DocumentContext);
   const transformContext = React.useContext(TransformContext);
   const pageStyle = computeStyleWithContext(
     0,
     0,
-    pageSizeContext.pageSize.height,
-    pageSizeContext.pageSize.width,
-    pageSizeContext,
+    documentContext.pageSize.height,
+    documentContext.pageSize.width,
+    documentContext,
     transformContext,
   );
 
@@ -40,7 +40,7 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
         box.props.left,
         box.props.height,
         box.props.width,
-        pageSizeContext,
+        documentContext,
         transformContext,
       );
       return <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>;

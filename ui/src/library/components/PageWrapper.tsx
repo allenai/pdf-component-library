@@ -8,7 +8,7 @@ import { Size } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
-import { PageSizeContext } from '../context/PageSizeContext';
+import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 
 /**

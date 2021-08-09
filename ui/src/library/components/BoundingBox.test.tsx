@@ -5,11 +5,12 @@ import * as sinon from 'sinon';
 import { PageRotation } from '../rotate';
 import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
-import { IPageSize } from '../context/PageSizeContext';
+import { IDocument } from '../context/DocumentContext';
 import { ITransform } from '../context/TransformContext';
 
 describe('<BoundingBox/>', () => {
-  const mockPageSizeContext: IPageSize = {
+  const mockDocumentContext: IDocument = {
+    numPages: 2,
     pageSize: {
       height: 1056,
       width: 816,
@@ -23,7 +24,7 @@ describe('<BoundingBox/>', () => {
   it('renders at the right spot when rotated at 0 degrees', () => {
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       mockTransformContext,
     );
 
@@ -40,7 +41,7 @@ describe('<BoundingBox/>', () => {
   it('renders at the right spot when rotated 90 degrees', () => {
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       {
         ...mockTransformContext,
         rotation: PageRotation.Rotate90,
@@ -60,7 +61,7 @@ describe('<BoundingBox/>', () => {
   it('renders at the right spot when rotated 180 degrees', () => {
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       {
         ...mockTransformContext,
         rotation: PageRotation.Rotate180,
@@ -80,7 +81,7 @@ describe('<BoundingBox/>', () => {
   it('renders at the right spot when rotated 270 degrees', () => {
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       {
         ...mockTransformContext,
         rotation: PageRotation.Rotate270,
@@ -104,7 +105,7 @@ describe('<BoundingBox/>', () => {
     };
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       transformContext
     );
 
@@ -118,7 +119,7 @@ describe('<BoundingBox/>', () => {
     const spy = sinon.spy();
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} onClick={spy} />,
-      mockPageSizeContext,
+      mockDocumentContext,
       mockTransformContext
     );
 

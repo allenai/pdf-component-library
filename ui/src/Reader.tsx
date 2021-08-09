@@ -16,7 +16,7 @@ import { PageWrapper } from './library/components/PageWrapper';
 import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize, Size } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
-import { PageSizeContext } from './library/context/PageSizeContext';
+import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 
@@ -213,7 +213,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
               </Drawer>
               <div className="reader__page-list" ref={this.pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageSizeContext.Provider value={{ pageSize }} key={i}>
+                  <DocumentContext.Provider value={{ numPages, pageSize }} key={i}>
                     <TransformContext.Provider value={{ rotation, scale }}>
                       <UiContext.Provider value={{ errorMessage, isDrawerOpen, isLoading, isShowingHighlightOverlay }}>
                         <PageWrapper
@@ -225,7 +225,7 @@ export class Reader extends React.Component<RouteComponentProps, State> {
                         </PageWrapper>
                       </UiContext.Provider>
                     </TransformContext.Provider>
-                  </PageSizeContext.Provider>
+                  </DocumentContext.Provider>
 
                 ))}
               </div>
