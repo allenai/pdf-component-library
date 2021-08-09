@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { PageRotation } from '../rotate';
 import { PageSizeContext, PageSizeContextData } from './PageSizeContext';
+import { ITransform, TransformContext } from './TransformContext';
 
 type Props = {
   className?: string;
@@ -26,14 +27,15 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   width,
   onClick,
 }: Props) => {
-  const context = React.useContext(PageSizeContext);
+  const pageSizeContext = React.useContext(PageSizeContext);
+  const transformContext = React.useContext(TransformContext);
   const componentClassName = ['reader__page-overlay__bounding-box', className]
     .filter(Boolean)
     .join(' ');
   return (
     <div
       className={componentClassName}
-      style={computeStyleWithContext(top, left, height, width, context)}
+      style={computeStyleWithContext(top, left, height, width, pageSizeContext, transformContext)}
       onClick={onClick}
     />
   );
@@ -54,7 +56,7 @@ type StyleSizeProps = {
  * @param left left value for the boundingbox
  * @param height height value for the boundingbox
  * @param width width value for the boundingbox
- * @param context PageSizeContext from the context provider
+ * @param pageSizeContext PageSizeContext from the context provider
  * @returns style object for the BoundingBox div
  */
 export function computeStyleWithContext(
@@ -62,9 +64,11 @@ export function computeStyleWithContext(
   left: number,
   height: number,
   width: number,
-  context: PageSizeContextData
+  pageSizeContext: PageSizeContextData,
+  transformContext: ITransform,
 ): StyleSizeProps {
-  const { rotation, scale, pageSize } = context;
+  const { pageSize } = pageSizeContext;
+  const { rotation, scale } = transformContext;
   switch (rotation) {
     case PageRotation.Rotate90:
       return {

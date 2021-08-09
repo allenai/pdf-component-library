@@ -2,59 +2,64 @@ import { expect } from 'chai';
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
-import { mountWithPageSizeContext } from '../testHelper';
+import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { Overlay } from './Overlay';
 import { PageSizeContextData } from './PageSizeContext';
+import { ITransform } from './TransformContext';
 
 describe('<Overlay/>', () => {
-  const mockContext: PageSizeContextData = {
+  const mockPageSizeContext: PageSizeContextData = {
     pageSize: {
       height: 1056,
       width: 816,
     },
-    scale: 1.0,
-    rotation: PageRotation.Rotate0,
   };
 
+  const mockTransformContext: ITransform = {
+    rotation: PageRotation.Rotate0,
+    scale: 1.0,
+  }
+
   it('renders on its own without issue', () => {
-    mountWithPageSizeContext(<Overlay />, mockContext);
+    mountWithContexts(<Overlay />, mockPageSizeContext, mockTransformContext);
   });
 
   it('matches the pixel size of the page', () => {
-    const wrapper = mountWithPageSizeContext(<Overlay />, mockContext);
+    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, mockTransformContext);
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 816px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 1056px;');
   });
 
   it('responds to page scaling', () => {
-    const context = {
-      ...mockContext,
+    const transformContext = {
+      ...mockTransformContext,
       scale: 2.0,
     };
-    const wrapper = mountWithPageSizeContext(<Overlay />, context);
+    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, transformContext);
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1632px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 2112px;');
   });
 
   it('responds to page rotation', () => {
-    const context = {
-      ...mockContext,
+    const transformContext = {
+      ...mockTransformContext,
       rotation: PageRotation.Rotate90,
     };
-    const wrapper = mountWithPageSizeContext(<Overlay />, context);
+    const wrapper = mountWithContexts(<Overlay />, mockPageSizeContext, transformContext);
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 1056px;');
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 816px;');
   });
 
   it('renders a BoundingBox', () => {
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <Overlay>
         <BoundingBox top={192} left={192} height={96} width={96} />
       </Overlay>,
-      mockContext
+      mockPageSizeContext,
+      mockTransformContext
     );
 
     const bbox = wrapper.find(BoundingBox);

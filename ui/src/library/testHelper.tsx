@@ -5,6 +5,7 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { PageSizeContext, PageSizeContextData } from './components/PageSizeContext';
+import { ITransform, TransformContext } from './components/TransformContext';
 
 export function expectHeightWidth(element: Element, height: number, width: number): void {
   expect(element.getAttribute('style')).to.include(`height: ${height}px;`);
@@ -16,8 +17,12 @@ export function expectLeftTop(element: Element, left: number, top: number): void
   expect(element.getAttribute('style')).to.include(`top: ${top}px;`);
 }
 
-export function mountWithPageSizeContext(component: React.ReactNode, context: PageSizeContextData) {
-  return mount(<PageSizeContext.Provider value={context}>{component}</PageSizeContext.Provider>);
+export function mountWithContexts(component: React.ReactNode, pageSizeContext: PageSizeContextData, transformContext: ITransform) {
+  return mount(<PageSizeContext.Provider value={pageSizeContext}>
+    <TransformContext.Provider value={transformContext}>
+      {component}
+    </TransformContext.Provider>
+  </PageSizeContext.Provider>);
 }
 
 export const mochaHooks = {

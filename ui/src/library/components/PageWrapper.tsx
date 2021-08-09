@@ -9,6 +9,7 @@ import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 import { PageSizeContext } from './PageSizeContext';
+import { TransformContext } from './TransformContext';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
@@ -51,8 +52,8 @@ export class PageWrapper extends React.PureComponent<Props> {
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
       : this.props.pageIndex
-      ? this.props.pageIndex + 1
-      : 1;
+        ? this.props.pageIndex + 1
+        : 1;
 
     // Don't display until we have page size data
     // TODO: Handle this nicer so we display either the loading or error treatment
@@ -68,8 +69,10 @@ export class PageWrapper extends React.PureComponent<Props> {
         id={generatePageId(pageNumberForId)}
         className="reader__page"
         style={this.computeStyle()}>
-        <PageSizeContext.Provider value={{ pageSize, scale, rotation }}>
-          {children}
+        <PageSizeContext.Provider value={{ pageSize }}>
+          <TransformContext.Provider value={{ rotation, scale }}>
+            {children}
+          </TransformContext.Provider>
         </PageSizeContext.Provider>
         <Page
           width={isSideways(rotation) ? pageSize.height : pageSize.width}

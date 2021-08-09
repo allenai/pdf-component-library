@@ -3,24 +3,28 @@ import * as React from 'react';
 import * as sinon from 'sinon';
 
 import { PageRotation } from '../rotate';
-import { mountWithPageSizeContext } from '../testHelper';
+import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { PageSizeContextData } from './PageSizeContext';
+import { ITransform } from './TransformContext';
 
 describe('<BoundingBox/>', () => {
-  const mockContext: PageSizeContextData = {
+  const mockPageSizeContext: PageSizeContextData = {
     pageSize: {
       height: 1056,
       width: 816,
     },
-    scale: 1.0,
+  };
+  const mockTransformContext: ITransform = {
     rotation: PageRotation.Rotate0,
+    scale: 1.0,
   };
 
   it('renders at the right spot when rotated at 0 degrees', () => {
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} />,
-      mockContext
+      mockPageSizeContext,
+      mockTransformContext,
     );
 
     expect(wrapper.getDOMNode()).to.have.property(
@@ -34,10 +38,11 @@ describe('<BoundingBox/>', () => {
   });
 
   it('renders at the right spot when rotated 90 degrees', () => {
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
+      mockPageSizeContext,
       {
-        ...mockContext,
+        ...mockTransformContext,
         rotation: PageRotation.Rotate90,
       }
     );
@@ -53,10 +58,11 @@ describe('<BoundingBox/>', () => {
   });
 
   it('renders at the right spot when rotated 180 degrees', () => {
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
+      mockPageSizeContext,
       {
-        ...mockContext,
+        ...mockTransformContext,
         rotation: PageRotation.Rotate180,
       }
     );
@@ -72,10 +78,11 @@ describe('<BoundingBox/>', () => {
   });
 
   it('renders at the right spot when rotated 270 degrees', () => {
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={96} height={96} width={192} />,
+      mockPageSizeContext,
       {
-        ...mockContext,
+        ...mockTransformContext,
         rotation: PageRotation.Rotate270,
       }
     );
@@ -91,13 +98,14 @@ describe('<BoundingBox/>', () => {
   });
 
   it('responds to page scaling', () => {
-    const context = {
-      ...mockContext,
+    const transformContext = {
+      ...mockTransformContext,
       scale: 2.0,
     };
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} />,
-      context
+      mockPageSizeContext,
+      transformContext
     );
 
     expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 384px;');
@@ -108,9 +116,10 @@ describe('<BoundingBox/>', () => {
 
   it('can do something when clicked', () => {
     const spy = sinon.spy();
-    const wrapper = mountWithPageSizeContext(
+    const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} onClick={spy} />,
-      mockContext
+      mockPageSizeContext,
+      mockTransformContext
     );
 
     wrapper.simulate('click');
