@@ -5,20 +5,25 @@ import * as sinon from 'sinon';
 import { PageRotation } from '../rotate';
 import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
-import { IDocument } from '../context/DocumentContext';
-import { ITransform } from '../context/TransformContext';
+import { IDocumentContext } from '../context/DocumentContext';
+import { ITransformContext } from '../context/TransformContext';
+import { Size } from '../scale';
 
 describe('<BoundingBox/>', () => {
-  const mockDocumentContext: IDocument = {
+  const mockDocumentContext: IDocumentContext = {
     numPages: 2,
     pageSize: {
       height: 1056,
       width: 816,
     },
+    setNumPages: (numPages: number) => { },
+    setPageSize: (pageSize: Size) => { },
   };
-  const mockTransformContext: ITransform = {
+  const mockTransformContext: ITransformContext = {
     rotation: PageRotation.Rotate0,
     scale: 1.0,
+    setRotation: (rotation: PageRotation) => { },
+    setScale: (scale: number) => { },
   };
 
   it('renders at the right spot when rotated at 0 degrees', () => {

@@ -4,8 +4,8 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { DocumentContext, IDocument } from './context/DocumentContext';
-import { ITransform, TransformContext } from './context/TransformContext';
+import { DocumentContext, IDocumentContext } from './context/DocumentContext';
+import { ITransformContext, TransformContext } from './context/TransformContext';
 
 export function expectHeightWidth(element: Element, height: number, width: number): void {
   expect(element.getAttribute('style')).to.include(`height: ${height}px;`);
@@ -17,7 +17,7 @@ export function expectLeftTop(element: Element, left: number, top: number): void
   expect(element.getAttribute('style')).to.include(`top: ${top}px;`);
 }
 
-export function mountWithContexts(component: React.ReactNode, documentContext: IDocument, transformContext: ITransform) {
+export function mountWithContexts(component: React.ReactNode, documentContext: IDocumentContext, transformContext: ITransformContext) {
   return mount(<DocumentContext.Provider value={documentContext}>
     <TransformContext.Provider value={transformContext}>
       {component}

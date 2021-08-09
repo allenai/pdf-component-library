@@ -6,20 +6,25 @@ import { PageRotation } from '../rotate';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
-import { IDocument } from '../context/DocumentContext';
-import { ITransform } from '../context/TransformContext';
+import { IDocumentContext } from '../context/DocumentContext';
+import { ITransformContext } from '../context/TransformContext';
+import { Size } from '../scale';
 
 describe('<HighlightOverlay/>', () => {
-  const mockDocumentContext: IDocument = {
+  const mockDocumentContext: IDocumentContext = {
     numPages: 2,
     pageSize: {
       height: 1056,
       width: 816,
     },
+    setNumPages: (numPages: number) => { },
+    setPageSize: (pageSize: Size) => { },
   };
-  const mockTransformContext: ITransform = {
-    scale: 1.0,
+  const mockTransformContext: ITransformContext = {
     rotation: PageRotation.Rotate0,
+    scale: 1.0,
+    setRotation: (rotation: PageRotation) => { },
+    setScale: (scale: number) => { },
   };
 
   function getRectsWithFill(component: ReactWrapper, fillColor: string): Array<SVGElement> {
