@@ -13,12 +13,12 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
-import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
-import { computePageSize } from './library/scale';
-import { scrollToPdfPage } from './library/scroll';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
+import { computePageSize } from './library/scale';
+import { scrollToPdfPage } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -28,60 +28,69 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const { isDrawerOpen, isShowingHighlightOverlay, setErrorMessage, setIsDrawerOpen, setIsLoading, setIsShowingHighlightOverlay } = React.useContext(UiContext);
+  const {
+    isDrawerOpen,
+    isShowingHighlightOverlay,
+    setErrorMessage,
+    setIsDrawerOpen,
+    setIsLoading,
+    setIsShowingHighlightOverlay,
+  } = React.useContext(UiContext);
   const { rotation, scale, setRotation, setScale } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
   function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
     scrollToPdfPage(pageNumber);
-  };
+  }
 
   function handleZoom(multiplier: number): void {
     setScale(scale * multiplier);
-  };
+  }
 
   function handleOpenDrawer(): void {
     setIsDrawerOpen(true);
-  };
+  }
 
   function handleCloseDrawer(): void {
     setIsDrawerOpen(false);
-  };
+  }
 
   function handleRotateCW(): void {
     setRotation(rotateClockwise(rotation));
-  };
+  }
 
   function handleRotateCCW(): void {
     setRotation(rotateCounterClockwise(rotation));
-  };
+  }
 
   function handleToggleHighlightOverlay(): void {
     setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
-  };
+  }
 
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
-      setPageSize(computePageSize({
-        userUnit: page.userUnit,
-        topLeft: { x: page.view[0], y: page.view[1] },
-        bottomRight: { x: page.view[2], y: page.view[3] },
-      }));
+      setPageSize(
+        computePageSize({
+          userUnit: page.userUnit,
+          topLeft: { x: page.view[0], y: page.view[1] },
+          bottomRight: { x: page.view[2], y: page.view[3] },
+        })
+      );
     });
     setIsLoading(false);
     setNumPages(pdfDoc.numPages);
     setErrorMessage(null);
-  };
+  }
 
   function onPdfLoadError(error: unknown): void {
     setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
-  };
+  }
 
   function renderPopoverContent(pageNumber: number): React.ReactNode {
     return <div>You clicked on page {pageNumber}.</div>;
-  };
+  }
 
   function renderOverlay(index: number): React.ReactElement {
     const pageNumber = index + 1;
@@ -131,7 +140,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         </Popover>
       </Overlay>
     );
-  };
+  }
 
   return (
     <BrowserRouter>
@@ -185,7 +194,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       </Route>
     </BrowserRouter>
   );
-}
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getErrorMessage(error: any): string {

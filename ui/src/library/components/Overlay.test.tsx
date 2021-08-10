@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import * as React from 'react';
 
+import { IDocumentContext } from '../context/DocumentContext';
+import { ITransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
+import { Size } from '../scale';
 import { mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { Overlay } from './Overlay';
-import { IDocumentContext } from '../context/DocumentContext';
-import { ITransformContext } from '../context/TransformContext';
-import { Size } from '../scale';
 
 describe('<Overlay/>', () => {
   const mockDocumentContext: IDocumentContext = {
@@ -16,16 +16,23 @@ describe('<Overlay/>', () => {
       height: 1056,
       width: 816,
     },
-    setNumPages: (numPages: number) => { },
-    setPageSize: (pageSize: Size) => { },
+    setNumPages: (numPages: number) => {
+      return numPages;
+    },
+    setPageSize: (pageSize: Size) => {
+      return pageSize;
+    },
   };
-
   const mockTransformContext: ITransformContext = {
     rotation: PageRotation.Rotate0,
     scale: 1.0,
-    setRotation: (rotation: PageRotation) => { },
-    setScale: (scale: number) => { },
-  }
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
+  };
 
   it('renders on its own without issue', () => {
     mountWithContexts(<Overlay />, mockDocumentContext, mockTransformContext);

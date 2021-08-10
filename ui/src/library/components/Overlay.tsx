@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { isSideways } from '../rotate';
-import { BoundingBox } from './BoundingBox';
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
+import { isSideways } from '../rotate';
+import { BoundingBox } from './BoundingBox';
 
 type Props = {
   children?: React.ReactElement<typeof BoundingBox>;

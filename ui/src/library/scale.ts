@@ -1,11 +1,11 @@
 export type Point = {
-  x: number,
-  y: number,
+  x: number;
+  y: number;
 };
 
 export type Size = {
-  height: number,
-  width: number,
+  height: number;
+  width: number;
 };
 
 // TODO: augh this name is terrible, it's the data from react-pdf/pdfjs that

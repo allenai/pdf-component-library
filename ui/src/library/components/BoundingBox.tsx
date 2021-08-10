@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { PageRotation } from '../rotate';
 import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
+import { PageRotation } from '../rotate';
 
 type Props = {
   className?: string;
@@ -65,7 +65,7 @@ export function computeStyleWithContext(
   height: number,
   width: number,
   documentContext: IDocumentContext,
-  transformContext: ITransformContext,
+  transformContext: ITransformContext
 ): StyleSizeProps {
   const { pageSize } = documentContext;
   const { rotation, scale } = transformContext;

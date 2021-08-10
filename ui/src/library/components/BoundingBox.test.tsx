@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { PageRotation } from '../rotate';
-import { mountWithContexts } from '../testHelper';
-import { BoundingBox } from './BoundingBox';
 import { IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext } from '../context/TransformContext';
+import { PageRotation } from '../rotate';
 import { Size } from '../scale';
+import { mountWithContexts } from '../testHelper';
+import { BoundingBox } from './BoundingBox';
 
 describe('<BoundingBox/>', () => {
   const mockDocumentContext: IDocumentContext = {
@@ -16,21 +16,29 @@ describe('<BoundingBox/>', () => {
       height: 1056,
       width: 816,
     },
-    setNumPages: (numPages: number) => { },
-    setPageSize: (pageSize: Size) => { },
+    setNumPages: (numPages: number) => {
+      return numPages;
+    },
+    setPageSize: (pageSize: Size) => {
+      return pageSize;
+    },
   };
   const mockTransformContext: ITransformContext = {
     rotation: PageRotation.Rotate0,
     scale: 1.0,
-    setRotation: (rotation: PageRotation) => { },
-    setScale: (scale: number) => { },
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
   };
 
   it('renders at the right spot when rotated at 0 degrees', () => {
     const wrapper = mountWithContexts(
       <BoundingBox top={192} left={192} height={96} width={96} />,
       mockDocumentContext,
-      mockTransformContext,
+      mockTransformContext
     );
 
     expect(wrapper.getDOMNode()).to.have.property(

@@ -8,8 +8,6 @@ import { Size } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
-import { DocumentContext } from '../context/DocumentContext';
-import { TransformContext } from '../context/TransformContext';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
@@ -52,8 +50,8 @@ export class PageWrapper extends React.PureComponent<Props> {
     const pageNumberForId = this.props.pageNumber
       ? this.props.pageNumber
       : this.props.pageIndex
-        ? this.props.pageIndex + 1
-        : 1;
+      ? this.props.pageIndex + 1
+      : 1;
 
     // Don't display until we have page size data
     // TODO: Handle this nicer so we display either the loading or error treatment

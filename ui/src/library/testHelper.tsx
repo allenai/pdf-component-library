@@ -17,12 +17,16 @@ export function expectLeftTop(element: Element, left: number, top: number): void
   expect(element.getAttribute('style')).to.include(`top: ${top}px;`);
 }
 
-export function mountWithContexts(component: React.ReactNode, documentContext: IDocumentContext, transformContext: ITransformContext) {
-  return mount(<DocumentContext.Provider value={documentContext}>
-    <TransformContext.Provider value={transformContext}>
-      {component}
-    </TransformContext.Provider>
-  </DocumentContext.Provider>);
+export function mountWithContexts(
+  component: React.ReactNode,
+  documentContext: IDocumentContext,
+  transformContext: ITransformContext
+) {
+  return mount(
+    <DocumentContext.Provider value={documentContext}>
+      <TransformContext.Provider value={transformContext}>{component}</TransformContext.Provider>
+    </DocumentContext.Provider>
+  );
 }
 
 export const mochaHooks = {
