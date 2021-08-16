@@ -15,7 +15,9 @@ describe('<ContextProvider/>', () => {
     let wrapper: ReactWrapper;
 
     function expectTextFromClassName(className: string, value: string | number | boolean | null) {
-        expect(wrapper.find(`.${className}`).text()).equals(`${value}`);
+        const actual = wrapper.find(`.${className}`).text();
+        const message = `Expected text for element with class .${className} to be ${value} instead of ${actual}`;
+        expect(actual).equals(`${value}`, message);
     }
 
     describe('<DocumentContext.Provider/>', () => {
