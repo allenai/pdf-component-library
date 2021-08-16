@@ -2,20 +2,37 @@ import { expect } from 'chai';
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
+import { IDocumentContext } from '../context/DocumentContext';
+import { ITransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
-import { expectHeightWidth, expectLeftTop, mountWithPageSizeContext } from '../testHelper';
+import { Size } from '../scale';
+import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
-import { PageSizeContextData } from './PageSizeContext';
 
 describe('<HighlightOverlay/>', () => {
-  const mockContext: PageSizeContextData = {
+  const mockDocumentContext: IDocumentContext = {
+    numPages: 2,
     pageSize: {
       height: 1056,
       width: 816,
     },
-    scale: 1.0,
+    setNumPages: (numPages: number) => {
+      return numPages;
+    },
+    setPageSize: (pageSize: Size) => {
+      return pageSize;
+    },
+  };
+  const mockTransformContext: ITransformContext = {
     rotation: PageRotation.Rotate0,
+    scale: 1.0,
+    setRotation: (rotation: PageRotation) => {
+      return rotation;
+    },
+    setScale: (scale: number) => {
+      return scale;
+    },
   };
 
   function getRectsWithFill(component: ReactWrapper, fillColor: string): Array<SVGElement> {
@@ -33,11 +50,19 @@ describe('<HighlightOverlay/>', () => {
   }
 
   it('renders on its own without issue', () => {
-    mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
+    mountWithContexts(
+      <HighlightOverlay pageNumber={1} />,
+      mockDocumentContext,
+      mockTransformContext
+    );
   });
 
   it('sets mask ID based on page number', () => {
-    const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={345} />, mockContext);
+    const wrapper = mountWithContexts(
+      <HighlightOverlay pageNumber={345} />,
+      mockDocumentContext,
+      mockTransformContext
+    );
 
     expect(wrapper.getDOMNode().getElementsByTagName('mask')[0].id).equals(
       'highlight-overlay-mask-345'
@@ -46,132 +71,197 @@ describe('<HighlightOverlay/>', () => {
 
   describe('pixel size', () => {
     it('matches the pixel size of the page [outer wrapper div]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        mockTransformContext
+      );
 
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockContext.pageSize.height,
-        mockContext.pageSize.width
+        mockDocumentContext.pageSize.height,
+        mockDocumentContext.pageSize.width
       );
     });
 
     it('matches the pixel size of the page [SVG element]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        mockTransformContext
+      );
       const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
-      expectHeightWidth(svg, mockContext.pageSize.height, mockContext.pageSize.width);
+      expectHeightWidth(
+        svg,
+        mockDocumentContext.pageSize.height,
+        mockDocumentContext.pageSize.width
+      );
     });
 
     it('matches the pixel size of the page [masked rect elements]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        mockTransformContext
+      );
       const maskedRects = getRectsWithFill(wrapper, 'white');
 
       expect(maskedRects.length).equals(2);
-      expectHeightWidth(maskedRects[0], mockContext.pageSize.height, mockContext.pageSize.width);
-      expectHeightWidth(maskedRects[1], mockContext.pageSize.height, mockContext.pageSize.width);
+      expectHeightWidth(
+        maskedRects[0],
+        mockDocumentContext.pageSize.height,
+        mockDocumentContext.pageSize.width
+      );
+      expectHeightWidth(
+        maskedRects[1],
+        mockDocumentContext.pageSize.height,
+        mockDocumentContext.pageSize.width
+      );
     });
   });
 
   describe('page scaling', () => {
-    const context = {
-      ...mockContext,
+    const transformContext = {
+      ...mockTransformContext,
       scale: 2.0,
     };
 
     it('responds to page scaling [outer wrapper div]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
 
       expectLeftTop(wrapper.getDOMNode(), 0, 0);
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockContext.pageSize.height * context.scale,
-        mockContext.pageSize.width * context.scale
+        mockDocumentContext.pageSize.height * transformContext.scale,
+        mockDocumentContext.pageSize.width * transformContext.scale
       );
     });
 
     it('responds to page scaling [SVG element]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
       const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
       expectLeftTop(svg, 0, 0);
       expectHeightWidth(
         svg,
-        mockContext.pageSize.height * context.scale,
-        mockContext.pageSize.width * context.scale
+        mockDocumentContext.pageSize.height * transformContext.scale,
+        mockDocumentContext.pageSize.width * transformContext.scale
       );
     });
 
     it('responds to page scaling [masked rect elements]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
       const maskedRects = getRectsWithFill(wrapper, 'white');
 
       expect(maskedRects.length).equals(2);
       expectLeftTop(maskedRects[0], 0, 0);
       expectHeightWidth(
         maskedRects[0],
-        mockContext.pageSize.height * context.scale,
-        mockContext.pageSize.width * context.scale
+        mockDocumentContext.pageSize.height * transformContext.scale,
+        mockDocumentContext.pageSize.width * transformContext.scale
       );
       expectLeftTop(maskedRects[1], 0, 0);
       expectHeightWidth(
         maskedRects[1],
-        mockContext.pageSize.height * context.scale,
-        mockContext.pageSize.width * context.scale
+        mockDocumentContext.pageSize.height * transformContext.scale,
+        mockDocumentContext.pageSize.width * transformContext.scale
       );
     });
   });
 
   describe('page rotation', () => {
-    const context = {
-      ...mockContext,
+    const transformContext = {
+      ...mockTransformContext,
       rotation: PageRotation.Rotate90,
     };
 
     it('responds to page rotation [outer wrapper div]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
 
       expectLeftTop(wrapper.getDOMNode(), 0, 0);
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockContext.pageSize.width,
-        mockContext.pageSize.height
+        mockDocumentContext.pageSize.width,
+        mockDocumentContext.pageSize.height
       );
     });
 
     it('responds to page rotation [SVG element]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
       const svg = wrapper.getDOMNode().getElementsByTagName('svg')[0];
 
       expectLeftTop(svg, 0, 0);
-      expectHeightWidth(svg, mockContext.pageSize.width, mockContext.pageSize.height);
+      expectHeightWidth(
+        svg,
+        mockDocumentContext.pageSize.width,
+        mockDocumentContext.pageSize.height
+      );
     });
 
     it('responds to page rotation [masked rect elements]', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, context);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        transformContext
+      );
       const maskedRects = getRectsWithFill(wrapper, 'white');
 
       expect(maskedRects.length).equals(2);
       expectLeftTop(maskedRects[0], 0, 0);
-      expectHeightWidth(maskedRects[0], mockContext.pageSize.width, mockContext.pageSize.height);
+      expectHeightWidth(
+        maskedRects[0],
+        mockDocumentContext.pageSize.width,
+        mockDocumentContext.pageSize.height
+      );
       expectLeftTop(maskedRects[1], 0, 0);
-      expectHeightWidth(maskedRects[1], mockContext.pageSize.width, mockContext.pageSize.height);
+      expectHeightWidth(
+        maskedRects[1],
+        mockDocumentContext.pageSize.width,
+        mockDocumentContext.pageSize.height
+      );
     });
   });
 
   describe('rendering unmasked content', () => {
     it('renders no unmasked rects when no children are given', () => {
-      const wrapper = mountWithPageSizeContext(<HighlightOverlay pageNumber={1} />, mockContext);
+      const wrapper = mountWithContexts(
+        <HighlightOverlay pageNumber={1} />,
+        mockDocumentContext,
+        mockTransformContext
+      );
       const unmaskedRects = getRectsWithFill(wrapper, 'black');
 
       expect(unmaskedRects.length).equals(0);
     });
 
     it('renders 1 unmasked rect when 1 child is given', () => {
-      const wrapper = mountWithPageSizeContext(
+      const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
         </HighlightOverlay>,
-        mockContext
+        mockDocumentContext,
+        mockTransformContext
       );
 
       const unmaskedRects = getRectsWithFill(wrapper, 'black');
@@ -181,12 +271,13 @@ describe('<HighlightOverlay/>', () => {
     });
 
     it('renders 2 unmasked rects when 2 children are given', () => {
-      const wrapper = mountWithPageSizeContext(
+      const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
         </HighlightOverlay>,
-        mockContext
+        mockDocumentContext,
+        mockTransformContext
       );
 
       const unmaskedRects = getRectsWithFill(wrapper, 'black');
@@ -198,13 +289,14 @@ describe('<HighlightOverlay/>', () => {
     });
 
     it('renders no 3 rects when 3 children are given', () => {
-      const wrapper = mountWithPageSizeContext(
+      const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
           <BoundingBox top={101} left={23} height={45} width={67} />
         </HighlightOverlay>,
-        mockContext
+        mockDocumentContext,
+        mockTransformContext
       );
 
       const unmaskedRects = getRectsWithFill(wrapper, 'black');

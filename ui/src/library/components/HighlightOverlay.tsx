@@ -1,7 +1,8 @@
 import * as React from 'react';
 
+import { DocumentContext } from '../context/DocumentContext';
+import { TransformContext } from '../context/TransformContext';
 import { BoundingBoxProps, computeStyleWithContext } from './BoundingBox';
-import { PageSizeContext } from './PageSizeContext';
 
 type Props = {
   children?: React.ReactElement<BoundingBoxProps> | Array<React.ReactElement<BoundingBoxProps>>;
@@ -12,13 +13,15 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
   pageNumber,
 }: Props) => {
-  const context = React.useContext(PageSizeContext);
+  const documentContext = React.useContext(DocumentContext);
+  const transformContext = React.useContext(TransformContext);
   const pageStyle = computeStyleWithContext(
     0,
     0,
-    context.pageSize.height,
-    context.pageSize.width,
-    context
+    documentContext.pageSize.height,
+    documentContext.pageSize.width,
+    documentContext,
+    transformContext
   );
 
   const getUnmaskedArea = function (
@@ -37,7 +40,8 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
         box.props.left,
         box.props.height,
         box.props.width,
-        context
+        documentContext,
+        transformContext
       );
       return <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>;
     });

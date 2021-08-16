@@ -13,119 +13,89 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
-import { PageRotation, rotateClockwise, rotateCounterClockwise } from './library/rotate';
-import { computePageSize, PdfPixelSize } from './library/scale';
+import { DocumentContext } from './library/context/DocumentContext';
+import { TransformContext } from './library/context/TransformContext';
+import { UiContext } from './library/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
+import { computePageSize } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
-import { Nullable } from './types';
 
-type State = {
-  pdfSize: Nullable<PdfPixelSize>;
-  isDrawerOpen: boolean;
-  isLoading: boolean;
-  isShowingHighlightOverlay: boolean;
-  errorMsg: string | null;
-  numPages: number;
-  scale: number;
-  rotation: PageRotation;
-};
-
-const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
-
-export class Reader extends React.Component<RouteComponentProps, State> {
+export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
+  const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
   // ref for the div in which the Document component renders
-  pdfContentRef = React.createRef<HTMLDivElement>();
+  const pdfContentRef = React.createRef<HTMLDivElement>();
 
   // ref for the scrollable region where the pages are rendered
-  pdfScrollableRef = React.createRef<HTMLDivElement>();
+  const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  state = {
-    pdfSize: null,
-    isDrawerOpen: false,
-    isLoading: false,
-    isShowingHighlightOverlay: false,
-    errorMsg: null,
-    numPages: 0,
-    scale: 1.0,
-    rotation: PageRotation.Rotate0,
-  };
+  const {
+    isDrawerOpen,
+    isShowingHighlightOverlay,
+    setErrorMessage,
+    setIsDrawerOpen,
+    setIsLoading,
+    setIsShowingHighlightOverlay,
+  } = React.useContext(UiContext);
+  const { rotation, scale, setRotation, setScale } = React.useContext(TransformContext);
+  const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
-  componentDidMount(): void {
-    fetch(TEST_PDF_URL).then(pdf => console.log(pdf));
+  function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
+    scrollToPdfPage(pageNumber);
   }
 
-  handleOutlineClick = ({ pageNumber }: { pageNumber: string }): void => {
-    scrollToPdfPage(pageNumber);
-  };
+  function handleZoom(multiplier: number): void {
+    setScale(scale * multiplier);
+  }
 
-  handleZoom = (multiplier: number): void => {
-    this.setState(state => {
-      return { scale: state.scale * multiplier };
-    });
-  };
+  function handleOpenDrawer(): void {
+    setIsDrawerOpen(true);
+  }
 
-  handleOpenDrawer = (): void => {
-    this.setState({ isDrawerOpen: true });
-  };
+  function handleCloseDrawer(): void {
+    setIsDrawerOpen(false);
+  }
 
-  handleCloseDrawer = (): void => {
-    this.setState({ isDrawerOpen: false });
-  };
+  function handleRotateCW(): void {
+    setRotation(rotateClockwise(rotation));
+  }
 
-  handleRotateCW = (): void => {
-    this.setState(state => {
-      return {
-        rotation: rotateClockwise(state.rotation),
-      };
-    });
-  };
+  function handleRotateCCW(): void {
+    setRotation(rotateCounterClockwise(rotation));
+  }
 
-  handleRotateCCW = (): void => {
-    this.setState(state => {
-      return {
-        rotation: rotateCounterClockwise(state.rotation),
-      };
-    });
-  };
+  function handleToggleHighlightOverlay(): void {
+    setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
+  }
 
-  handleToggleHighlightOverlay = (): void => {
-    this.setState(state => {
-      return { isShowingHighlightOverlay: !state.isShowingHighlightOverlay };
-    });
-  };
-
-  onPdfLoadSuccess = (pdfDoc: PDFDocumentProxy): void => {
+  function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
-      this.setState({
-        pdfSize: computePageSize({
+      setPageSize(
+        computePageSize({
           userUnit: page.userUnit,
           topLeft: { x: page.view[0], y: page.view[1] },
           bottomRight: { x: page.view[2], y: page.view[3] },
-        }),
-      });
+        })
+      );
     });
-    this.setState({
-      isLoading: false,
-      numPages: pdfDoc.numPages,
-      errorMsg: null,
-    });
-  };
+    setIsLoading(false);
+    setNumPages(pdfDoc.numPages);
+    setErrorMessage(null);
+  }
 
-  onPdfLoadError = (error: unknown): void => {
-    this.setState({
-      isLoading: false,
-      errorMsg: getErrorMessage(error),
-    });
-  };
+  function onPdfLoadError(error: unknown): void {
+    setIsLoading(false);
+    setErrorMessage(getErrorMessage(error));
+  }
 
-  renderPopoverContent = (pageNumber: number): React.ReactNode => {
+  function renderPopoverContent(pageNumber: number): React.ReactNode {
     return <div>You clicked on page {pageNumber}.</div>;
-  };
+  }
 
-  renderOverlay = (index: number): React.ReactElement => {
+  function renderOverlay(index: number): React.ReactElement {
     const pageNumber = index + 1;
 
-    if (this.state.isShowingHighlightOverlay) {
+    if (isShowingHighlightOverlay) {
       return (
         <HighlightOverlay pageNumber={pageNumber}>
           <BoundingBox
@@ -156,10 +126,11 @@ export class Reader extends React.Component<RouteComponentProps, State> {
     return (
       <Overlay>
         <Popover
-          content={this.renderPopoverContent(index)}
+          // TODO: #28926 Fix renderPopoverContent to use pageNumber, not index
+          content={renderPopoverContent(index)}
           trigger="click"
           //@ts-ignore there's something wonky with the types here
-          getPopupContainer={() => this.pdfScrollableRef.current}>
+          getPopupContainer={() => pdfScrollableRef.current}>
           <BoundingBox
             className="reader__sample-overlay__bbox"
             top={10 + index * 50}
@@ -170,64 +141,62 @@ export class Reader extends React.Component<RouteComponentProps, State> {
         </Popover>
       </Overlay>
     );
-  };
-
-  render(): React.ReactNode {
-    const { isDrawerOpen, numPages, scale, pdfSize, rotation } = this.state;
-    return (
-      <BrowserRouter>
-        <Route path="/">
-          <div className="reader__container">
-            <div className="reader__header">
-              <Header
-                scale={scale}
-                handleZoom={this.handleZoom}
-                handleOpenDrawer={this.handleOpenDrawer}
-                handleRotateCW={this.handleRotateCW}
-                handleRotateCCW={this.handleRotateCCW}
-                handleToggleHighlightOverlay={this.handleToggleHighlightOverlay}
-              />
-            </div>
-            <DocumentWrapper
-              className="reader__main"
-              file={TEST_PDF_URL}
-              onLoadError={this.onPdfLoadError}
-              onLoadSuccess={this.onPdfLoadSuccess}
-              inputRef={this.pdfContentRef}>
-              <Drawer
-                title="Outline"
-                placement="left"
-                visible={isDrawerOpen}
-                mask={false}
-                onClose={this.handleCloseDrawer}
-                //@ts-ignore there's something wonky with the types here
-                getContainer={() => {
-                  // Passing this ref mounts the drawer "inside" the grid content area
-                  // instead of using the entire browser height.
-                  return this.pdfContentRef.current;
-                }}
-                className="reader__outline-drawer">
-                <Outline onItemClick={this.handleOutlineClick} />
-              </Drawer>
-              <div className="reader__page-list" ref={this.pdfScrollableRef}>
-                {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper
-                    key={i}
-                    pageIndex={i}
-                    scale={scale}
-                    rotation={rotation}
-                    pageSize={pdfSize}>
-                    {this.renderOverlay(i)}
-                  </PageWrapper>
-                ))}
-              </div>
-            </DocumentWrapper>
-          </div>
-        </Route>
-      </BrowserRouter>
-    );
   }
-}
+
+  return (
+    <BrowserRouter>
+      <Route path="/">
+        <div className="reader__container">
+          <div className="reader__header">
+            <Header
+              scale={scale}
+              handleZoom={handleZoom}
+              handleOpenDrawer={handleOpenDrawer}
+              handleRotateCW={handleRotateCW}
+              handleRotateCCW={handleRotateCCW}
+              handleToggleHighlightOverlay={handleToggleHighlightOverlay}
+            />
+          </div>
+          <DocumentWrapper
+            className="reader__main"
+            file={TEST_PDF_URL}
+            // TODO: #28926 Improve performance by using callbacks for load handlers
+            onLoadError={onPdfLoadError}
+            onLoadSuccess={onPdfLoadSuccess}
+            inputRef={pdfContentRef}>
+            <Drawer
+              title="Outline"
+              placement="left"
+              visible={isDrawerOpen}
+              mask={false}
+              onClose={handleCloseDrawer}
+              //@ts-ignore there's something wonky with the types here
+              getContainer={() => {
+                // Passing this ref mounts the drawer "inside" the grid content area
+                // instead of using the entire browser height.
+                return pdfContentRef.current;
+              }}
+              className="reader__outline-drawer">
+              <Outline onItemClick={handleOutlineClick} />
+            </Drawer>
+            <div className="reader__page-list" ref={pdfScrollableRef}>
+              {Array.from({ length: numPages }).map((_, i) => (
+                <PageWrapper
+                  key={i}
+                  pageIndex={i}
+                  scale={scale}
+                  rotation={rotation}
+                  pageSize={pageSize}>
+                  {renderOverlay(i)}
+                </PageWrapper>
+              ))}
+            </div>
+          </DocumentWrapper>
+        </div>
+      </Route>
+    </BrowserRouter>
+  );
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function getErrorMessage(error: any): string {

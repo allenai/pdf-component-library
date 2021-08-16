@@ -4,11 +4,10 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { Nullable } from '../../types';
 import { isSideways, PageRotation } from '../rotate';
-import { PdfPixelSize } from '../scale';
+import { Size } from '../scale';
 import { generatePageId } from '../scroll';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
-import { PageSizeContext } from './PageSizeContext';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
@@ -25,7 +24,7 @@ type PageProps = {
 type Props = {
   className?: string;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
-  pageSize?: Nullable<PdfPixelSize>;
+  pageSize?: Nullable<Size>;
 } & PageProps;
 
 export class PageWrapper extends React.PureComponent<Props> {
@@ -68,9 +67,7 @@ export class PageWrapper extends React.PureComponent<Props> {
         id={generatePageId(pageNumberForId)}
         className="reader__page"
         style={this.computeStyle()}>
-        <PageSizeContext.Provider value={{ pageSize, scale, rotation }}>
-          {children}
-        </PageSizeContext.Provider>
+        {children}
         <Page
           width={isSideways(rotation) ? pageSize.height : pageSize.width}
           error={error}

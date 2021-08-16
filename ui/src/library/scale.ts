@@ -3,17 +3,17 @@ export type Point = {
   y: number;
 };
 
+export type Size = {
+  height: number;
+  width: number;
+};
+
 // TODO: augh this name is terrible, it's the data from react-pdf/pdfjs that
 //       we need to compute the pixel size of the PDF's page(s).
 export type PdfPageSizeData = {
   userUnit: number; // the default size of units in 1/72nds of an inch
   topLeft: Point;
   bottomRight: Point;
-};
-
-export type PdfPixelSize = {
-  height: number;
-  width: number;
 };
 
 // We assume 96 DPI for display
@@ -29,7 +29,7 @@ const USER_UNIT_DENOMINATOR = 72;
  * @param view an array of numbers defining the corners of the page as [x1, y1, x2, y2]
  * @returns Pixel size of a page at 100% scale assuming 96DPI display
  */
-export function computePageSize({ userUnit, topLeft, bottomRight }: PdfPageSizeData): PdfPixelSize {
+export function computePageSize({ userUnit, topLeft, bottomRight }: PdfPageSizeData): Size {
   return {
     height: (bottomRight.y - topLeft.y) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
     width: (bottomRight.x - topLeft.x) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
