@@ -9,11 +9,11 @@ export const SimpleZoomControl: React.FunctionComponent = () => {
 
   const handleZoomIn = () => {
     setScale(scale * ZOOM_MULTIPLIER);
-  }
+  };
 
   const handleZoomOut = () => {
     setScale(scale / ZOOM_MULTIPLIER);
-  }
+  };
 
   return (
     <span>
