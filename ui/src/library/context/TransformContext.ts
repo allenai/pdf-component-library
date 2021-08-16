@@ -12,7 +12,7 @@ export interface ITransformContext {
 export const TransformContext = React.createContext<ITransformContext>({
   rotation: PageRotation.Rotate0,
   scale: 1,
-  // TODO log this instead of returning
+  // TODO: #28926 Log this with an error util instead of returning value
   setRotation: rotation => {
     return rotation;
   },

@@ -18,7 +18,7 @@ export const UiContext = React.createContext<IUiContext>({
   isDrawerOpen: false,
   isLoading: false,
   isShowingHighlightOverlay: false,
-  // TODO log this instead of returning
+  // TODO: #28926 Log this with an error util instead of returning value
   setErrorMessage: errorMessage => {
     return errorMessage;
   },
