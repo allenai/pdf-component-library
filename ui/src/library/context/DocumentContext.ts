@@ -12,7 +12,7 @@ export interface IDocumentContext {
 export const DocumentContext = React.createContext<IDocumentContext>({
   numPages: 0,
   pageSize: { height: 0, width: 0 },
-  // TODO log this instead of returning
+  // TODO: #28926 Log this with an error util instead of returning value
   setNumPages: numPages => {
     return numPages;
   },

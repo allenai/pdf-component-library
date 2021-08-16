@@ -126,6 +126,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     return (
       <Overlay>
         <Popover
+          // TODO: #28926 Fix renderPopoverContent to use pageNumber, not index
           content={renderPopoverContent(index)}
           trigger="click"
           //@ts-ignore there's something wonky with the types here
@@ -159,6 +160,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           <DocumentWrapper
             className="reader__main"
             file={TEST_PDF_URL}
+            // TODO: #28926 Improve performance by using callbacks for load handlers
             onLoadError={onPdfLoadError}
             onLoadSuccess={onPdfLoadSuccess}
             inputRef={pdfContentRef}>
