@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { logProviderWarning } from './providerUtils';
 import { PageRotation } from '../rotate';
 
 export interface ITransformContext {
@@ -12,11 +13,10 @@ export interface ITransformContext {
 export const TransformContext = React.createContext<ITransformContext>({
   rotation: PageRotation.Rotate0,
   scale: 1,
-  // TODO log this instead of returning
   setRotation: rotation => {
-    return rotation;
+    logProviderWarning(`setRotation(${rotation})`, 'TransformContext');
   },
   setScale: scale => {
-    return scale;
+    logProviderWarning(`setScale(${scale})`, 'TransformContext');
   },
 });
