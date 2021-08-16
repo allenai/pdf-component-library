@@ -54,12 +54,12 @@ function useUiContextProps(): IUiContext {
 }
 
 export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Props) => {
-  const pageSizeContextProps = useDocumentContextProps();
+  const documentProps = useDocumentContextProps();
   const transformProps = useTransformContextProps();
   const uiProps = useUiContextProps();
 
   return (
-    <DocumentContext.Provider value={pageSizeContextProps}>
+    <DocumentContext.Provider value={documentProps}>
       <TransformContext.Provider value={transformProps}>
         <UiContext.Provider value={uiProps}>{children}</UiContext.Provider>
       </TransformContext.Provider>
