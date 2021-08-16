@@ -149,8 +149,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <div className="reader__header">
             <Header
-              scale={scale}
-              handleZoom={handleZoom}
               handleOpenDrawer={handleOpenDrawer}
               handleRotateCW={handleRotateCW}
               handleRotateCCW={handleRotateCCW}
