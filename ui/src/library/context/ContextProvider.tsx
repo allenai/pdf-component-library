@@ -11,7 +11,7 @@ type Props = {
   children?: React.ReactElement | Array<React.ReactElement>;
 };
 
-function getDocumentContextProps(): IDocumentContext {
+function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
   const [pageSize, setPageSize] = React.useState<Size>({ height: 0, width: 0 });
 
@@ -23,7 +23,7 @@ function getDocumentContextProps(): IDocumentContext {
   };
 }
 
-function getTransformContextProps(): ITransformContext {
+function useTransformContextProps(): ITransformContext {
   const [rotation, setRotation] = React.useState<PageRotation>(PageRotation.Rotate0);
   const [scale, setScale] = React.useState<number>(1.0);
 
@@ -35,7 +35,7 @@ function getTransformContextProps(): ITransformContext {
   };
 }
 
-function getUiContextProps(): IUiContext {
+function useUiContextProps(): IUiContext {
   const [errorMessage, setErrorMessage] = React.useState<Nullable<string>>(null);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -54,9 +54,9 @@ function getUiContextProps(): IUiContext {
 }
 
 export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Props) => {
-  const pageSizeContextProps = getDocumentContextProps();
-  const transformProps = getTransformContextProps();
-  const uiProps = getUiContextProps();
+  const pageSizeContextProps = useDocumentContextProps();
+  const transformProps = useTransformContextProps();
+  const uiProps = useUiContextProps();
 
   return (
     <DocumentContext.Provider value={pageSizeContextProps}>
