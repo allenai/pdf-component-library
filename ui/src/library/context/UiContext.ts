@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { logProviderWarning } from './providerUtils';
 import { Nullable } from '../../types';
+import { logProviderWarning } from './providerUtils';
 
 export interface IUiContext {
   errorMessage: Nullable<string>;

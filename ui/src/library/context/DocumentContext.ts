@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { logProviderWarning } from './providerUtils';
 import { Size } from '../scale';
+import { logProviderWarning } from './providerUtils';
 
 export interface IDocumentContext {
   numPages: number;
