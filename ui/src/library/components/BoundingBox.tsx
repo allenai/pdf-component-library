@@ -4,8 +4,11 @@ import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
 
+import classNames from 'classnames';
+
 type Props = {
   className?: string;
+  isHighlighted?: boolean;
   /**
    * top, left, height, and width are in screen pixel units
    * at 100% scaling of the page
@@ -21,6 +24,7 @@ export type BoundingBoxProps = Props;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
+  isHighlighted,
   top,
   left,
   height,
@@ -29,9 +33,11 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
 }: Props) => {
   const documentContext = React.useContext(DocumentContext);
   const transformContext = React.useContext(TransformContext);
-  const componentClassName = ['reader__page-overlay__bounding-box', className]
-    .filter(Boolean)
-    .join(' ');
+  const componentClassName = classNames(
+    'reader__page-overlay__bounding-box',
+    isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
+    className
+  );
   return (
     <div
       className={componentClassName}
