@@ -1,25 +1,27 @@
 import * as React from 'react';
 
 import { PercentFormatter } from '../format';
+import { TransformContext } from '../library/context/TransformContext';
 
-type Props = {
-  scale: number;
-  onScale: (multiplier: number) => void;
-};
+export const SimpleZoomControl: React.FunctionComponent = () => {
+  const { scale, setScale } = React.useContext(TransformContext);
+  const ZOOM_MULTIPLIER = 1.2;
 
-const ZOOM_MULTIPLIER = 1.2;
-
-export const SimpleZoomControl: React.FunctionComponent<Props> = ({ scale, onScale }: Props) => {
-  const handleScale = (multiplier: number) => {
-    return () => onScale(multiplier);
+  const handleZoomIn = () => {
+    setScale(scale * ZOOM_MULTIPLIER);
   };
+
+  const handleZoomOut = () => {
+    setScale(scale / ZOOM_MULTIPLIER);
+  };
+
   return (
     <span>
-      <a className="hacky-zoom-button" onClick={handleScale(1 / ZOOM_MULTIPLIER)}>
+      <a className="hacky-zoom-button" onClick={handleZoomOut}>
         -
       </a>
       <span>{PercentFormatter.format(scale)}</span>
-      <a className="hacky-zoom-button" onClick={handleScale(ZOOM_MULTIPLIER)}>
+      <a className="hacky-zoom-button" onClick={handleZoomIn}>
         +
       </a>
     </span>

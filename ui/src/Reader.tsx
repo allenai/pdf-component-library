@@ -36,15 +36,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setIsLoading,
     setIsShowingHighlightOverlay,
   } = React.useContext(UiContext);
-  const { rotation, scale, setRotation, setScale } = React.useContext(TransformContext);
+  const { rotation, scale, setRotation } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
   function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
     scrollToPdfPage(pageNumber);
-  }
-
-  function handleZoom(multiplier: number): void {
-    setScale(scale * multiplier);
   }
 
   function handleOpenDrawer(): void {
@@ -149,8 +145,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <div className="reader__header">
             <Header
-              scale={scale}
-              handleZoom={handleZoom}
               handleOpenDrawer={handleOpenDrawer}
               handleRotateCW={handleRotateCW}
               handleRotateCCW={handleRotateCCW}
