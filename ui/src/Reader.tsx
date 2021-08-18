@@ -131,7 +131,10 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: remove this once we have real data and UI design
-  function renderHighlightOverlayBoundingBox(boxProps: BoundingBoxProps, index: number): React.ReactElement {
+  function renderHighlightOverlayBoundingBox(
+    boxProps: BoundingBoxProps,
+    index: number
+  ): React.ReactElement {
     const props = {
       ...boxProps,
       className: 'reader__sample-highlight-overlay__bbox',
@@ -139,13 +142,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       key: index,
     };
 
-    return (
-      <BoundingBox {...props} />
-    );
+    return <BoundingBox {...props} />;
   }
 
   // TODO: remove this once we have real data and UI design
-  function renderTextHighlightBoundingBox(boxProps: BoundingBoxProps, index: number): React.ReactElement {
+  function renderTextHighlightBoundingBox(
+    boxProps: BoundingBoxProps,
+    index: number
+  ): React.ReactElement {
     const props = {
       ...boxProps,
       className: 'reader__sample-text-highlight__bbox',
@@ -153,9 +157,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       key: index,
     };
 
-    return (
-      <BoundingBox {...props} />
-    );
+    return <BoundingBox {...props} />;
   }
 
   // TODO: remove this once we have real data and UI design
@@ -166,9 +168,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingHighlightOverlay) {
       return (
         <HighlightOverlay pageNumber={pageNumber}>
-          {getDemoBoundingBoxProps().map((prop, i) => (
-            renderHighlightOverlayBoundingBox(prop, i)
-          ))}
+          {getDemoBoundingBoxProps().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
         </HighlightOverlay>
       );
     }
@@ -177,9 +177,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingTextHighlight) {
       return (
         <Overlay>
-          {getDemoBoundingBoxProps().map((prop, i) => (
-            renderTextHighlightBoundingBox(prop, i)
-          ))}
+          {getDemoBoundingBoxProps().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
         </Overlay>
       );
     }

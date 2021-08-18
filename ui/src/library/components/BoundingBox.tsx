@@ -1,10 +1,9 @@
+import classNames from 'classnames';
 import * as React from 'react';
 
 import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
-
-import classNames from 'classnames';
 
 type Props = {
   className?: string;
