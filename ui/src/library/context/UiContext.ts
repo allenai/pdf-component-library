@@ -21,6 +21,7 @@ export const UiContext = React.createContext<IUiContext>({
   isDrawerOpen: false,
   isLoading: false,
   isShowingHighlightOverlay: false,
+  isShowingTextHighlight: false,
   setErrorMessage: errorMessage => {
     logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
   },
@@ -34,6 +35,6 @@ export const UiContext = React.createContext<IUiContext>({
     logProviderWarning(`setIsShowingHighlightOverlay(${isShowingHighlightOverlay})`, 'UiContext');
   },
   setIsShowingTextHighlight: isShowingTextHighlight => {
-    return isShowingTextHighlight;
+    logProviderWarning(`setIsShowingTextHighlight(${isShowingTextHighlight})`, 'UiContext');
   },
 });
