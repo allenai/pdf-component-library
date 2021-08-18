@@ -3,9 +3,7 @@ import * as React from 'react';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
-  scale: number;
   handleToggleHighlightOverlay: () => void;
-  handleZoom: (multiplier: number) => void;
   handleOpenDrawer: () => void;
   handleRotateCW: () => void;
   handleRotateCCW: () => void;
@@ -17,7 +15,7 @@ export class Header extends React.PureComponent<Props> {
       <div>
         I&apos;m a header!
         <br />
-        <SimpleZoomControl scale={this.props.scale} onScale={this.props.handleZoom} />
+        <SimpleZoomControl />
         <br />
         <a onClick={this.props.handleOpenDrawer}>Outline</a>
         <a onClick={this.props.handleRotateCW}>↷</a>
