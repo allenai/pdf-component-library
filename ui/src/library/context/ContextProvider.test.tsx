@@ -134,6 +134,7 @@ describe('<ContextProvider/>', () => {
     let _setIsDrawerOpen: (isDrawerOpen: boolean) => void;
     let _setIsLoading: (isLoading: boolean) => void;
     let _setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
+    let _setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
 
     before(() => {
       wrapper = mount(
@@ -145,15 +146,18 @@ describe('<ContextProvider/>', () => {
                 isDrawerOpen,
                 isLoading,
                 isShowingHighlightOverlay,
+                isShowingTextHighlight,
                 setErrorMessage,
                 setIsDrawerOpen,
                 setIsLoading,
                 setIsShowingHighlightOverlay,
+                setIsShowingTextHighlight,
               } = args;
               _setErrorMessage = setErrorMessage;
               _setIsDrawerOpen = setIsDrawerOpen;
               _setIsLoading = setIsLoading;
               _setIsShowingHighlightOverlay = setIsShowingHighlightOverlay;
+              _setIsShowingTextHighlight = setIsShowingTextHighlight;
               return (
                 <div>
                   <div className="errorMessage">
@@ -164,6 +168,7 @@ describe('<ContextProvider/>', () => {
                   <div className="isShowingHighlightOverlay">
                     {isShowingHighlightOverlay.toString()}
                   </div>
+                  <div className="isShowingTextHighlight">{isShowingTextHighlight.toString()}</div>
                 </div>
               );
             }}
@@ -190,6 +195,10 @@ describe('<ContextProvider/>', () => {
 
     it('provides a default isShowingHighlightOverlay', () => {
       expectTextFromClassName('isShowingHighlightOverlay', false);
+    });
+
+    it('provides a default isShowingTextHighlight', () => {
+      expectTextFromClassName('isShowingTextHighlight', false);
     });
 
     it('provides a function to set errorMessage', () => {
@@ -222,6 +231,14 @@ describe('<ContextProvider/>', () => {
       _setIsShowingHighlightOverlay(true);
 
       expectTextFromClassName('isShowingHighlightOverlay', true);
+    });
+
+    it('provides a function to set isShowingTextHighlight', () => {
+      expectTextFromClassName('isShowingTextHighlight', false);
+
+      _setIsShowingTextHighlight(true);
+
+      expectTextFromClassName('isShowingTextHighlight', true);
     });
   });
 });
