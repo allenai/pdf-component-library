@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { SimpleZoomControl } from './SimpleZoomControl';
 
+// TODO: #28926 Update handlers to use context vars instead of props
 type Props = {
   scale: number;
   handleToggleHighlightOverlay: () => void;
