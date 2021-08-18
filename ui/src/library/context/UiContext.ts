@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Nullable } from '../../types';
+import { logProviderWarning } from './providerUtils';
 
 export interface IUiContext {
   errorMessage: Nullable<string>;
@@ -20,19 +21,17 @@ export const UiContext = React.createContext<IUiContext>({
   isDrawerOpen: false,
   isLoading: false,
   isShowingHighlightOverlay: false,
-  isShowingTextHighlight: false,
-  // TODO log this instead of returning
   setErrorMessage: errorMessage => {
-    return errorMessage;
+    logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
   },
   setIsDrawerOpen: isDrawerOpen => {
-    return isDrawerOpen;
+    logProviderWarning(`setIsDrawerOpen(${isDrawerOpen})`, 'UiContext');
   },
   setIsLoading: isLoading => {
-    return isLoading;
+    logProviderWarning(`setIsLoading(${isLoading})`, 'UiContext');
   },
   setIsShowingHighlightOverlay: isShowingHighlightOverlay => {
-    return isShowingHighlightOverlay;
+    logProviderWarning(`setIsShowingHighlightOverlay(${isShowingHighlightOverlay})`, 'UiContext');
   },
   setIsShowingTextHighlight: isShowingTextHighlight => {
     return isShowingTextHighlight;

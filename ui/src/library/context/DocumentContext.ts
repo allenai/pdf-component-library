@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { Size } from '../scale';
+import { logProviderWarning } from './providerUtils';
 
 export interface IDocumentContext {
   numPages: number;
@@ -12,11 +13,10 @@ export interface IDocumentContext {
 export const DocumentContext = React.createContext<IDocumentContext>({
   numPages: 0,
   pageSize: { height: 0, width: 0 },
-  // TODO: #28926 Log this with an error util instead of returning value
   setNumPages: numPages => {
-    return numPages;
+    logProviderWarning(`setNumPages(${numPages})`, 'DocumentContext');
   },
   setPageSize: pageSize => {
-    return pageSize;
+    logProviderWarning(`setPageSize(${pageSize})`, 'DocumentContext');
   },
 });
