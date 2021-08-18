@@ -7,10 +7,12 @@ export interface IUiContext {
   isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;
+  isShowingTextHighlight: boolean;
   setErrorMessage: (errorMessage: Nullable<string>) => void;
   setIsDrawerOpen: (isDrawerOpen: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
+  setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
 }
 
 export const UiContext = React.createContext<IUiContext>({
@@ -18,6 +20,7 @@ export const UiContext = React.createContext<IUiContext>({
   isDrawerOpen: false,
   isLoading: false,
   isShowingHighlightOverlay: false,
+  isShowingTextHighlight: false,
   // TODO log this instead of returning
   setErrorMessage: errorMessage => {
     return errorMessage;
@@ -30,5 +33,8 @@ export const UiContext = React.createContext<IUiContext>({
   },
   setIsShowingHighlightOverlay: isShowingHighlightOverlay => {
     return isShowingHighlightOverlay;
+  },
+  setIsShowingTextHighlight: isShowingTextHighlight => {
+    return isShowingTextHighlight;
   },
 });
