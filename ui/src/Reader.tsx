@@ -183,8 +183,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
 
     return (
-      // example of standard overlay with randomly styled bounding boxes
-      // each bounding box shows popover example on click
+      // example of standard overlay with bounding boxes that display
+      // popover example on click
       <Overlay>
         <Popover
           // TODO: #28926 Fix renderPopoverContent to use pageNumber, not index
