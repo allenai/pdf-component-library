@@ -61,8 +61,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setRotation(rotateCounterClockwise(rotation));
   }
 
-  // TODO: remove this once UI design is finalized
+  // TODO: #29079 remove this once UI design is finalized
   function handleToggleHighlightOverlay(): void {
+    // Store new value in a temp variable because state value updates are batched and
+    // executed once this function returns. Otherwise we won't get the correct value
+    // for isShowingHighlightOverlay down below
     const newVal = !isShowingHighlightOverlay;
     setIsShowingHighlightOverlay(newVal);
 
@@ -71,8 +74,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
   }
 
-  // TODO: remove this once UI design is finalized
+  // TODO: #29079 remove this once UI design is finalized
   function handleToggleTextHighlight(): void {
+    // Store new value in a temp variable because state value updates are batched and
+    // executed once this function returns. Otherwise we won't get the correct value
+    // for isShowingTextHighlight down below
     const newVal = !isShowingTextHighlight;
     setIsShowingTextHighlight(newVal);
     if (newVal) {
@@ -101,12 +107,12 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setErrorMessage(getErrorMessage(error));
   }
 
-  // TODO: remove this once UI design is finalized and we have real data
+  // TODO: #29079 remove this once UI design is finalized and we have real data
   function renderPopoverContent(pageNumber: number): React.ReactNode {
     return <div>You clicked on page {pageNumber}.</div>;
   }
 
-  // TODO: remove this once we have real data
+  // TODO: #29079 remove this once we have real data
   function getDemoBoundingBoxProps(): Array<BoundingBoxProps> {
     return [
       {
@@ -130,7 +136,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     ];
   }
 
-  // TODO: remove this once we have real data and UI design
+  // TODO: #29079 remove this once we have real data and UI design
   function renderHighlightOverlayBoundingBox(
     boxProps: BoundingBoxProps,
     index: number
@@ -145,7 +151,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     return <BoundingBox {...props} />;
   }
 
-  // TODO: remove this once we have real data and UI design
+  // TODO: #29079 remove this once we have real data and UI design
   function renderTextHighlightBoundingBox(
     boxProps: BoundingBoxProps,
     index: number
@@ -160,7 +166,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     return <BoundingBox {...props} />;
   }
 
-  // TODO: remove this once we have real data and UI design
+  // TODO: #29079 remove this once we have real data and UI design
   function renderOverlay(index: number): React.ReactElement {
     const pageNumber = index + 1;
 
