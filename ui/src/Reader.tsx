@@ -86,6 +86,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
   }
 
+  // TODO: #29079 remove this once UI design is finalized and we have real data
   function handleScrollToFigure(): void {
     setIsShowingTextHighlight(false);
     setIsShowingHighlightOverlay(false);
