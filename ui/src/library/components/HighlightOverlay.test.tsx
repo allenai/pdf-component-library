@@ -258,7 +258,7 @@ describe('<HighlightOverlay/>', () => {
     it('renders 1 unmasked rect when 1 child is given', () => {
       const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
-          <BoundingBox top={12} left={34} height={56} width={78} />
+          <BoundingBox pageNum={2} top={12} left={34} height={56} width={78} />
         </HighlightOverlay>,
         mockDocumentContext,
         mockTransformContext
@@ -273,8 +273,8 @@ describe('<HighlightOverlay/>', () => {
     it('renders 2 unmasked rects when 2 children are given', () => {
       const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
-          <BoundingBox top={12} left={34} height={56} width={78} />
-          <BoundingBox top={98} left={76} height={54} width={32} />
+          <BoundingBox pageNum={2} top={12} left={34} height={56} width={78} />
+          <BoundingBox pageNum={2} top={98} left={76} height={54} width={32} />
         </HighlightOverlay>,
         mockDocumentContext,
         mockTransformContext
@@ -291,9 +291,9 @@ describe('<HighlightOverlay/>', () => {
     it('renders no 3 rects when 3 children are given', () => {
       const wrapper = mountWithContexts(
         <HighlightOverlay pageNumber={1}>
-          <BoundingBox top={12} left={34} height={56} width={78} />
-          <BoundingBox top={98} left={76} height={54} width={32} />
-          <BoundingBox top={101} left={23} height={45} width={67} />
+          <BoundingBox pageNum={2} top={12} left={34} height={56} width={78} />
+          <BoundingBox pageNum={2} top={98} left={76} height={54} width={32} />
+          <BoundingBox pageNum={2} top={101} left={23} height={45} width={67} />
         </HighlightOverlay>,
         mockDocumentContext,
         mockTransformContext

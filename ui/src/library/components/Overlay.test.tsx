@@ -69,7 +69,7 @@ describe('<Overlay/>', () => {
   it('renders a BoundingBox', () => {
     const wrapper = mountWithContexts(
       <Overlay>
-        <BoundingBox top={192} left={192} height={96} width={96} />
+        <BoundingBox pageNum={2} top={192} left={192} height={96} width={96} />
       </Overlay>,
       mockDocumentContext,
       mockTransformContext
