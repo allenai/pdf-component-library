@@ -40,16 +40,19 @@ function useUiContextProps(): IUiContext {
   const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
+  const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
 
   return {
     errorMessage,
     isDrawerOpen,
     isLoading,
     isShowingHighlightOverlay,
+    isShowingTextHighlight,
     setErrorMessage,
     setIsDrawerOpen,
     setIsLoading,
     setIsShowingHighlightOverlay,
+    setIsShowingTextHighlight,
   };
 }
 

@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
-import { BoundingBox } from './library/components/BoundingBox';
+import { BoundingBox, BoundingBoxProps } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
@@ -31,10 +31,12 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const {
     isDrawerOpen,
     isShowingHighlightOverlay,
+    isShowingTextHighlight,
     setErrorMessage,
     setIsDrawerOpen,
     setIsLoading,
     setIsShowingHighlightOverlay,
+    setIsShowingTextHighlight,
   } = React.useContext(UiContext);
   const { rotation, scale, setRotation } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
@@ -59,8 +61,29 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setRotation(rotateCounterClockwise(rotation));
   }
 
+  // TODO: #29079 remove this once UI design is finalized
   function handleToggleHighlightOverlay(): void {
-    setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
+    // Store new value in a temp variable because state value updates are batched and
+    // executed once this function returns. Otherwise we won't get the correct value
+    // for isShowingHighlightOverlay down below
+    const newVal = !isShowingHighlightOverlay;
+    setIsShowingHighlightOverlay(newVal);
+
+    if (newVal) {
+      setIsShowingTextHighlight(false);
+    }
+  }
+
+  // TODO: #29079 remove this once UI design is finalized
+  function handleToggleTextHighlight(): void {
+    // Store new value in a temp variable because state value updates are batched and
+    // executed once this function returns. Otherwise we won't get the correct value
+    // for isShowingTextHighlight down below
+    const newVal = !isShowingTextHighlight;
+    setIsShowingTextHighlight(newVal);
+    if (newVal) {
+      setIsShowingHighlightOverlay(false);
+    }
   }
 
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
@@ -84,42 +107,90 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setErrorMessage(getErrorMessage(error));
   }
 
+  // TODO: #29079 remove this once UI design is finalized and we have real data
   function renderPopoverContent(pageNumber: number): React.ReactNode {
     return <div>You clicked on page {pageNumber}.</div>;
   }
 
+  // TODO: #29079 remove this once we have real data
+  function getDemoBoundingBoxProps(): Array<BoundingBoxProps> {
+    return [
+      {
+        top: 280,
+        left: 250,
+        height: 20,
+        width: 420,
+      },
+      {
+        top: 300,
+        left: 130,
+        height: 55,
+        width: 540,
+      },
+      {
+        top: 355,
+        left: 130,
+        height: 20,
+        width: 225,
+      },
+    ];
+  }
+
+  // TODO: #29079 remove this once we have real data and UI design
+  function renderHighlightOverlayBoundingBox(
+    boxProps: BoundingBoxProps,
+    index: number
+  ): React.ReactElement {
+    const props = {
+      ...boxProps,
+      className: 'reader__sample-highlight-overlay__bbox',
+      isHighlighted: false,
+      key: index,
+    };
+
+    return <BoundingBox {...props} />;
+  }
+
+  // TODO: #29079 remove this once we have real data and UI design
+  function renderTextHighlightBoundingBox(
+    boxProps: BoundingBoxProps,
+    index: number
+  ): React.ReactElement {
+    const props = {
+      ...boxProps,
+      className: 'reader__sample-text-highlight__bbox',
+      isHighlighted: true,
+      key: index,
+    };
+
+    return <BoundingBox {...props} />;
+  }
+
+  // TODO: #29079 remove this once we have real data and UI design
   function renderOverlay(index: number): React.ReactElement {
     const pageNumber = index + 1;
 
+    // example of highlight overlay with unmasked bounding boxes
     if (isShowingHighlightOverlay) {
       return (
         <HighlightOverlay pageNumber={pageNumber}>
-          <BoundingBox
-            className="reader__sample-highlight-overlay__bbox"
-            top={280}
-            left={250}
-            height={20}
-            width={425}
-          />
-          <BoundingBox
-            className="reader__sample-highlight-overlay__bbox"
-            top={300}
-            left={120}
-            height={55}
-            width={550}
-          />
-          <BoundingBox
-            className="reader__sample-highlight-overlay__bbox"
-            top={350}
-            left={120}
-            height={20}
-            width={240}
-          />
+          {getDemoBoundingBoxProps().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
         </HighlightOverlay>
       );
     }
 
+    // example of standard overlay with "highlighted" bounding boxes
+    if (isShowingTextHighlight) {
+      return (
+        <Overlay>
+          {getDemoBoundingBoxProps().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
+        </Overlay>
+      );
+    }
+
     return (
+      // example of standard overlay with bounding boxes that display
+      // popover example on click
       <Overlay>
         <Popover
           // TODO: #28926 Fix renderPopoverContent to use pageNumber, not index
@@ -149,6 +220,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
               handleRotateCW={handleRotateCW}
               handleRotateCCW={handleRotateCCW}
               handleToggleHighlightOverlay={handleToggleHighlightOverlay}
+              handleToggleHighlightText={handleToggleTextHighlight}
             />
           </div>
           <DocumentWrapper
