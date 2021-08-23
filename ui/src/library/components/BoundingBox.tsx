@@ -22,7 +22,7 @@ type Props = {
 
 export type BoundingBoxProps = Props;
 
-export function getBoundingBoxId(boxProps: BoundingBoxProps) {
+export function getBoundingBoxId(boxProps: BoundingBoxProps): string {
   const { pageNum, top, left, height, width } = boxProps;
   return `bbox__pg-${pageNum}__${top}-${left}-${height}-${width}`;
 }
