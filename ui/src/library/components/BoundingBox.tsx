@@ -55,7 +55,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   );
 };
 
-type StyleSizeProps = {
+export type StyleSizeProps = {
   top: number;
   left: number;
   height: number;

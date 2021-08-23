@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
-import { BoundingBox, BoundingBoxProps } from './library/components/BoundingBox';
+import { BoundingBox, StyleSizeProps } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
@@ -122,42 +122,42 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data
-  function getDemoBoundingBoxProps(): Array<BoundingBoxProps> {
+  function getDemoBoundingBoxProps(): Array<StyleSizeProps> {
     return [
       {
         top: 280,
         left: 250,
         height: 20,
         width: 420,
-        pageNum: 2,
       },
       {
         top: 300,
         left: 130,
         height: 55,
         width: 540,
-        pageNum: 2,
       },
       {
         top: 355,
         left: 130,
         height: 20,
         width: 225,
-        pageNum: 2,
       },
     ];
   }
 
   // TODO: #29079 remove this once we have real data and UI design
   function renderHighlightOverlayBoundingBox(
-    boxProps: BoundingBoxProps,
+    sizeProps: StyleSizeProps,
     index: number
   ): React.ReactElement {
+    // TODO: #28926 choose between pageNumber and pageIndex or create a util to convert from one to the other
+    const pageNum = index++;
     const props = {
-      ...boxProps,
+      ...sizeProps,
       className: 'reader__sample-highlight-overlay__bbox',
       isHighlighted: false,
       key: index,
+      pageNum: pageNum,
     };
 
     return <BoundingBox {...props} />;
@@ -165,14 +165,17 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
   // TODO: #29079 remove this once we have real data and UI design
   function renderTextHighlightBoundingBox(
-    boxProps: BoundingBoxProps,
+    sizeProps: StyleSizeProps,
     index: number
   ): React.ReactElement {
+    // TODO: #28926 choose between pageNumber and pageIndex or create a util to convert from one to the other
+    const pageNum = index++;
     const props = {
-      ...boxProps,
+      ...sizeProps,
       className: 'reader__sample-text-highlight__bbox',
       isHighlighted: true,
       key: index,
+      pageNum: pageNum,
     };
 
     return <BoundingBox {...props} />;
