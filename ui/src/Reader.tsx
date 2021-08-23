@@ -18,7 +18,7 @@ import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
-import { scrollToPdfPage } from './library/scroll';
+import { scrollTo, scrollToPdfPage } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -86,6 +86,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
   }
 
+  function handleScrollToFigure(): void {
+    setIsShowingTextHighlight(false);
+    setIsShowingHighlightOverlay(false);
+
+    const id = 'bbox__pg-2__380-105-110-600';
+    scrollTo(id);
+  }
+
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
@@ -120,18 +128,21 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         left: 250,
         height: 20,
         width: 420,
+        pageNum: 2,
       },
       {
         top: 300,
         left: 130,
         height: 55,
         width: 540,
+        pageNum: 2,
       },
       {
         top: 355,
         left: 130,
         height: 20,
         width: 225,
+        pageNum: 2,
       },
     ];
   }
@@ -200,10 +211,19 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           getPopupContainer={() => pdfScrollableRef.current}>
           <BoundingBox
             className="reader__sample-overlay__bbox"
+            pageNum={pageNumber}
             top={10 + index * 50}
             left={10 + index * 50}
             height={30}
             width={30}
+          />
+          <BoundingBox
+            className="reader__sample-figure-scroll-bbox"
+            pageNum={pageNumber}
+            top={380}
+            left={105}
+            height={110}
+            width={600}
           />
         </Popover>
       </Overlay>
@@ -221,6 +241,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
               handleRotateCCW={handleRotateCCW}
               handleToggleHighlightOverlay={handleToggleHighlightOverlay}
               handleToggleHighlightText={handleToggleTextHighlight}
+              handleScrollToFigure={handleScrollToFigure}
             />
           </div>
           <DocumentWrapper
