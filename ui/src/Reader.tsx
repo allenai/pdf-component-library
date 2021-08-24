@@ -16,7 +16,6 @@ import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
 import { scrollToPdfPage } from './library/scroll';
 
@@ -35,55 +34,16 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setErrorMessage,
     setIsDrawerOpen,
     setIsLoading,
-    setIsShowingHighlightOverlay,
-    setIsShowingTextHighlight,
   } = React.useContext(UiContext);
-  const { rotation, scale, setRotation } = React.useContext(TransformContext);
+  const { rotation, scale } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
   function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
     scrollToPdfPage(pageNumber);
   }
 
-  function handleOpenDrawer(): void {
-    setIsDrawerOpen(true);
-  }
-
   function handleCloseDrawer(): void {
     setIsDrawerOpen(false);
-  }
-
-  function handleRotateCW(): void {
-    setRotation(rotateClockwise(rotation));
-  }
-
-  function handleRotateCCW(): void {
-    setRotation(rotateCounterClockwise(rotation));
-  }
-
-  // TODO: #29079 remove this once UI design is finalized
-  function handleToggleHighlightOverlay(): void {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingHighlightOverlay down below
-    const newVal = !isShowingHighlightOverlay;
-    setIsShowingHighlightOverlay(newVal);
-
-    if (newVal) {
-      setIsShowingTextHighlight(false);
-    }
-  }
-
-  // TODO: #29079 remove this once UI design is finalized
-  function handleToggleTextHighlight(): void {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingTextHighlight down below
-    const newVal = !isShowingTextHighlight;
-    setIsShowingTextHighlight(newVal);
-    if (newVal) {
-      setIsShowingHighlightOverlay(false);
-    }
   }
 
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
@@ -215,13 +175,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       <Route path="/">
         <div className="reader__container">
           <div className="reader__header">
-            <Header
-              handleOpenDrawer={handleOpenDrawer}
-              handleRotateCW={handleRotateCW}
-              handleRotateCCW={handleRotateCCW}
-              handleToggleHighlightOverlay={handleToggleHighlightOverlay}
-              handleToggleHighlightText={handleToggleTextHighlight}
-            />
+            <Header />
           </div>
           <DocumentWrapper
             className="reader__main"
