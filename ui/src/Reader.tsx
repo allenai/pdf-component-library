@@ -29,13 +29,13 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   const {
-    isDrawerOpen,
     isShowingHighlightOverlay,
+    isShowingOutline,
     isShowingTextHighlight,
     setErrorMessage,
-    setIsDrawerOpen,
     setIsLoading,
     setIsShowingHighlightOverlay,
+    setIsShowingOutline,
     setIsShowingTextHighlight,
   } = React.useContext(UiContext);
   const { rotation, scale, setRotation } = React.useContext(TransformContext);
@@ -46,11 +46,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   function handleOpenDrawer(): void {
-    setIsDrawerOpen(true);
+    setIsShowingOutline(true);
   }
 
   function handleCloseDrawer(): void {
-    setIsDrawerOpen(false);
+    setIsShowingOutline(false);
   }
 
   function handleRotateCW(): void {
@@ -233,7 +233,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             <Drawer
               title="Outline"
               placement="left"
-              visible={isDrawerOpen}
+              visible={isShowingOutline}
               mask={false}
               onClose={handleCloseDrawer}
               //@ts-ignore there's something wonky with the types here

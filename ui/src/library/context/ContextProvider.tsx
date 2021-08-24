@@ -37,21 +37,21 @@ function useTransformContextProps(): ITransformContext {
 
 function useUiContextProps(): IUiContext {
   const [errorMessage, setErrorMessage] = React.useState<Nullable<string>>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
+  const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
   const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
 
   return {
     errorMessage,
-    isDrawerOpen,
     isLoading,
     isShowingHighlightOverlay,
+    isShowingOutline,
     isShowingTextHighlight,
     setErrorMessage,
-    setIsDrawerOpen,
     setIsLoading,
     setIsShowingHighlightOverlay,
+    setIsShowingOutline,
     setIsShowingTextHighlight,
   };
 }

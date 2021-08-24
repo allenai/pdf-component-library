@@ -5,28 +5,28 @@ import { logProviderWarning } from './providerUtils';
 
 export interface IUiContext {
   errorMessage: Nullable<string>;
-  isDrawerOpen: boolean;
   isLoading: boolean;
   isShowingHighlightOverlay: boolean;
+  isShowingOutline: boolean;
   isShowingTextHighlight: boolean;
   setErrorMessage: (errorMessage: Nullable<string>) => void;
-  setIsDrawerOpen: (isDrawerOpen: boolean) => void;
   setIsLoading: (isLoading: boolean) => void;
   setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
+  setIsShowingOutline: (isShowingOutline: boolean) => void;
   setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
 }
 
 export const UiContext = React.createContext<IUiContext>({
   errorMessage: null,
-  isDrawerOpen: false,
   isLoading: false,
   isShowingHighlightOverlay: false,
+  isShowingOutline: false,
   isShowingTextHighlight: false,
   setErrorMessage: errorMessage => {
     logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
   },
-  setIsDrawerOpen: isDrawerOpen => {
-    logProviderWarning(`setIsDrawerOpen(${isDrawerOpen})`, 'UiContext');
+  setIsShowingOutline: isShowingOutline => {
+    logProviderWarning(`setIsShowingOutline(${isShowingOutline})`, 'UiContext');
   },
   setIsLoading: isLoading => {
     logProviderWarning(`setIsLoading(${isLoading})`, 'UiContext');
