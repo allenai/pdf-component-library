@@ -1,13 +1,13 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { Drawer, Popover } from 'antd';
+import { Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
-import { Outline } from 'react-pdf/dist/esm/entry.webpack';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
+import { Outline } from './components/Outline';
 import { BoundingBox, BoundingBoxProps } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
@@ -18,21 +18,15 @@ import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
-import { scrollToPdfPage } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
-  // ref for the div in which the Document component renders
-  const pdfContentRef = React.createRef<HTMLDivElement>();
-
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   const {
     isShowingHighlightOverlay,
-    isShowingOutline,
     isShowingTextHighlight,
-    outlineContainerClass,
     setErrorMessage,
     setIsLoading,
     setIsShowingHighlightOverlay,
@@ -42,16 +36,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { rotation, scale, setRotation } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
-  function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
-    scrollToPdfPage(pageNumber);
-  }
-
   function handleOpenDrawer(): void {
     setIsShowingOutline(true);
-  }
-
-  function handleCloseDrawer(): void {
-    setIsShowingOutline(false);
   }
 
   function handleRotateCW(): void {
@@ -229,19 +215,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             file={TEST_PDF_URL}
             // TODO: #28926 Improve performance by using callbacks for load handlers
             onLoadError={onPdfLoadError}
-            onLoadSuccess={onPdfLoadSuccess}
-            inputRef={pdfContentRef}>
-            <Drawer
-              title="Outline"
-              placement="left"
-              visible={isShowingOutline}
-              mask={false}
-              onClose={handleCloseDrawer}
-              //@ts-ignore there's something wonky with the types here
-              getContainer={`.${outlineContainerClass}`}
-              className="reader__outline-drawer">
-              <Outline onItemClick={handleOutlineClick} />
-            </Drawer>
+            onLoadSuccess={onPdfLoadSuccess}>
+            <Outline />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
                 <PageWrapper
