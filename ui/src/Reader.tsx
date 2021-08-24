@@ -27,6 +27,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const {
     isShowingHighlightOverlay,
     isShowingTextHighlight,
+    outlineContainerClass,
     setErrorMessage,
     setIsLoading,
     setIsShowingHighlightOverlay,
@@ -211,7 +212,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             />
           </div>
           <DocumentWrapper
-            className="reader__main"
+            className={outlineContainerClass}
             file={TEST_PDF_URL}
             // TODO: #28926 Improve performance by using callbacks for load handlers
             onLoadError={onPdfLoadError}
