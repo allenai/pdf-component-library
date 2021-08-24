@@ -37,7 +37,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { rotation, scale, setRotation } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
-  function handleOpenDrawer(): void {
+  function handleShowOutline(): void {
     setIsShowingOutline(true);
   }
 
@@ -204,7 +204,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <div className="reader__header">
             <Header
-              handleOpenDrawer={handleOpenDrawer}
+              handleShowOutline={handleShowOutline}
               handleRotateCW={handleRotateCW}
               handleRotateCCW={handleRotateCCW}
               handleToggleHighlightOverlay={handleToggleHighlightOverlay}
