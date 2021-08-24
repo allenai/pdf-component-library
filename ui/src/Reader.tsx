@@ -32,6 +32,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     isShowingHighlightOverlay,
     isShowingOutline,
     isShowingTextHighlight,
+    outlineContainerClass,
     setErrorMessage,
     setIsLoading,
     setIsShowingHighlightOverlay,
@@ -237,11 +238,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
               mask={false}
               onClose={handleCloseDrawer}
               //@ts-ignore there's something wonky with the types here
-              getContainer={() => {
-                // Passing this ref mounts the drawer "inside" the grid content area
-                // instead of using the entire browser height.
-                return pdfContentRef.current;
-              }}
+              getContainer={`.${outlineContainerClass}`}
               className="reader__outline-drawer">
               <Outline onItemClick={handleOutlineClick} />
             </Drawer>

@@ -41,6 +41,7 @@ function useUiContextProps(): IUiContext {
   const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
   const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
   const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
+  const outlineContainerClass = 'reader__main';
 
   return {
     errorMessage,
@@ -48,6 +49,7 @@ function useUiContextProps(): IUiContext {
     isShowingHighlightOverlay,
     isShowingOutline,
     isShowingTextHighlight,
+    outlineContainerClass,
     setErrorMessage,
     setIsLoading,
     setIsShowingHighlightOverlay,

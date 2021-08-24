@@ -147,6 +147,7 @@ describe('<ContextProvider/>', () => {
                 isLoading,
                 isShowingHighlightOverlay,
                 isShowingTextHighlight,
+                outlineContainerClass,
                 setErrorMessage,
                 setIsShowingOutline,
                 setIsLoading,
@@ -163,12 +164,13 @@ describe('<ContextProvider/>', () => {
                   <div className="errorMessage">
                     {errorMessage === null ? 'null' : errorMessage}
                   </div>
-                  <div className="isShowingOutline">{isShowingOutline.toString()}</div>
                   <div className="isLoading">{isLoading.toString()}</div>
                   <div className="isShowingHighlightOverlay">
                     {isShowingHighlightOverlay.toString()}
                   </div>
+                  <div className="isShowingOutline">{isShowingOutline.toString()}</div>
                   <div className="isShowingTextHighlight">{isShowingTextHighlight.toString()}</div>
+                  <div className="outlineContainerClass">{outlineContainerClass}</div>
                 </div>
               );
             }}
@@ -199,6 +201,10 @@ describe('<ContextProvider/>', () => {
 
     it('provides a default isShowingTextHighlight', () => {
       expectTextFromClassName('isShowingTextHighlight', false);
+    });
+
+    it('provides a default outlineContainerClass', () => {
+      expectTextFromClassName('outlineContainerClass', 'reader__main');
     });
 
     it('provides a function to set errorMessage', () => {
