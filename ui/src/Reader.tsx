@@ -21,6 +21,10 @@ import { computePageSize } from './library/scale';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
+
+  // ref for the div in which the Document component renders
+  const pdfContentRef = React.createRef<HTMLDivElement>();
+
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
@@ -216,8 +220,9 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             file={TEST_PDF_URL}
             // TODO: #28926 Improve performance by using callbacks for load handlers
             onLoadError={onPdfLoadError}
-            onLoadSuccess={onPdfLoadSuccess}>
-            <Outline />
+            onLoadSuccess={onPdfLoadSuccess}
+            inputRef={pdfContentRef}>
+            <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
                 <PageWrapper
