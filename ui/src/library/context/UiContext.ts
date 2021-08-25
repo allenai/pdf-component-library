@@ -9,7 +9,6 @@ export interface IUiContext {
   isShowingHighlightOverlay: boolean;
   isShowingOutline: boolean;
   isShowingTextHighlight: boolean;
-  outlineContainerClass: string;
   setErrorMessage: (errorMessage: Nullable<string>) => void;
   setIsLoading: (isLoading: boolean) => void;
   setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
@@ -23,7 +22,6 @@ export const UiContext = React.createContext<IUiContext>({
   isShowingHighlightOverlay: false,
   isShowingOutline: false,
   isShowingTextHighlight: false,
-  outlineContainerClass: '',
   setErrorMessage: errorMessage => {
     logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
   },
