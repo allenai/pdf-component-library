@@ -29,6 +29,8 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
       visible={isShowingOutline}
       mask={false}
       onClose={handleHideOutline}
+      // Passing this ref mounts the drawer "inside" the grid content area
+      // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
       getContainer={parentRef.current}
       className="reader__outline-drawer">
