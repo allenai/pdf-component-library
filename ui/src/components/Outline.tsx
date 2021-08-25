@@ -7,9 +7,12 @@ import { Outline as PdfOutline } from 'react-pdf/dist/esm/entry.webpack';
 import { UiContext } from '../library/context/UiContext';
 import { scrollToPdfPage } from '../library/scroll';
 
-export const Outline: React.FunctionComponent = () => {
-  const { isShowingOutline, outlineContainerClass, setIsShowingOutline } =
-    React.useContext(UiContext);
+type Props = {
+  parentRef: React.RefObject<HTMLDivElement>;
+};
+
+export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) => {
+  const { isShowingOutline, setIsShowingOutline } = React.useContext(UiContext);
 
   function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
     scrollToPdfPage(pageNumber);
@@ -26,7 +29,8 @@ export const Outline: React.FunctionComponent = () => {
       visible={isShowingOutline}
       mask={false}
       onClose={handleHideOutline}
-      getContainer={`.${outlineContainerClass}`}
+      //@ts-ignore there's something wonky with the types here
+      getContainer={parentRef.current}
       className="reader__outline-drawer">
       <PdfOutline onItemClick={handleOutlineClick} />
     </Drawer>
