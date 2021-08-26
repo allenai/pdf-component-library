@@ -151,7 +151,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     index: number
   ): React.ReactElement {
     // TODO: #28926 choose between pageNumber and pageIndex or create a util to convert from one to the other
-    const pageNum = index++;
     const props = {
       ...sizeProps,
       className: 'reader__sample-highlight-overlay__bbox',
@@ -168,7 +167,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     index: number
   ): React.ReactElement {
     // TODO: #28926 choose between pageNumber and pageIndex or create a util to convert from one to the other
-    const pageNum = index++;
     const props = {
       ...sizeProps,
       className: 'reader__sample-text-highlight__bbox',
