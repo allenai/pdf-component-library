@@ -122,7 +122,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data
-  function getDemoBoundingBoxProps(): Array<StyleSizeProps> {
+  function getDemoBoundingBoxSizes(): Array<StyleSizeProps> {
     return [
       {
         top: 280,
@@ -183,7 +183,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingHighlightOverlay) {
       return (
         <HighlightOverlay pageNumber={pageNumber}>
-          {getDemoBoundingBoxProps().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
+          {getDemoBoundingBoxSizes().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
         </HighlightOverlay>
       );
     }
@@ -192,7 +192,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingTextHighlight) {
       return (
         <Overlay>
-          {getDemoBoundingBoxProps().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
+          {getDemoBoundingBoxSizes().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
         </Overlay>
       );
     }

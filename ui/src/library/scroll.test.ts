@@ -13,7 +13,6 @@ describe('generatePageId', () => {
   });
 });
 
-
 describe('scrollTo', () => {
   it('logs a console error when an element with the given ID does not exist', () => {
     const consoleSpy = sinon.spy(console, 'error');
@@ -34,6 +33,4 @@ describe('scrollTo', () => {
     expect(stub.calledOnce).to.be.true;
     expect(stub.calledWith({ behavior: 'smooth', block: 'start', inline: 'center' })).to.be.true;
   });
-
 });
-
