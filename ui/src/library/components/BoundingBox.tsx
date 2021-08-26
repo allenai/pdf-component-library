@@ -7,8 +7,8 @@ import { PageRotation } from '../rotate';
 
 type Props = {
   className?: string;
+  id?: string;
   isHighlighted?: boolean;
-  pageNum: number;
   /**
    * top, left, height, and width are in screen pixel units
    * at 100% scaling of the page
@@ -22,15 +22,10 @@ type Props = {
 
 export type BoundingBoxProps = Props;
 
-export function getBoundingBoxId(boxProps: BoundingBoxProps): string {
-  const { pageNum, top, left, height, width } = boxProps;
-  return `bbox__pg-${pageNum}__${top}-${left}-${height}-${width}`;
-}
-
 export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
+  id,
   isHighlighted,
-  pageNum,
   top,
   left,
   height,
@@ -44,7 +39,6 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
     isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
     className
   );
-  const id = getBoundingBoxId({ pageNum, top, left, height, width });
   return (
     <div
       id={id}

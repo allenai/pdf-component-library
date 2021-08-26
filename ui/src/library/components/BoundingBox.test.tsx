@@ -36,7 +36,7 @@ describe('<BoundingBox/>', () => {
 
   it('renders at the right spot when rotated at 0 degrees', () => {
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={192} height={96} width={96} />,
+      <BoundingBox top={192} left={192} height={96} width={96} />,
       mockDocumentContext,
       mockTransformContext
     );
@@ -53,7 +53,7 @@ describe('<BoundingBox/>', () => {
 
   it('renders at the right spot when rotated 90 degrees', () => {
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={96} height={96} width={192} />,
+      <BoundingBox top={192} left={96} height={96} width={192} />,
       mockDocumentContext,
       {
         ...mockTransformContext,
@@ -73,7 +73,7 @@ describe('<BoundingBox/>', () => {
 
   it('renders at the right spot when rotated 180 degrees', () => {
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={96} height={96} width={192} />,
+      <BoundingBox top={192} left={96} height={96} width={192} />,
       mockDocumentContext,
       {
         ...mockTransformContext,
@@ -93,7 +93,7 @@ describe('<BoundingBox/>', () => {
 
   it('renders at the right spot when rotated 270 degrees', () => {
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={96} height={96} width={192} />,
+      <BoundingBox top={192} left={96} height={96} width={192} />,
       mockDocumentContext,
       {
         ...mockTransformContext,
@@ -117,7 +117,7 @@ describe('<BoundingBox/>', () => {
       scale: 2.0,
     };
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={192} height={96} width={96} />,
+      <BoundingBox top={192} left={192} height={96} width={96} />,
       mockDocumentContext,
       transformContext
     );
@@ -131,7 +131,7 @@ describe('<BoundingBox/>', () => {
   it('can do something when clicked', () => {
     const spy = sinon.spy();
     const wrapper = mountWithContexts(
-      <BoundingBox pageNum={2} top={192} left={192} height={96} width={96} onClick={spy} />,
+      <BoundingBox top={192} left={192} height={96} width={96} onClick={spy} />,
       mockDocumentContext,
       mockTransformContext
     );

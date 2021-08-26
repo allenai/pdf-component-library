@@ -91,7 +91,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     setIsShowingTextHighlight(false);
     setIsShowingHighlightOverlay(false);
 
-    const id = 'bbox__pg-2__380-105-110-600';
+    const id = 'demoFigure_1';
     scrollTo(id);
   }
 
@@ -215,15 +215,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           getPopupContainer={() => pdfScrollableRef.current}>
           <BoundingBox
             className="reader__sample-overlay__bbox"
-            pageNum={pageNumber}
             top={10 + index * 50}
             left={10 + index * 50}
             height={30}
             width={30}
           />
           <BoundingBox
+            id={`demoFigure_${index}`}
             className="reader__sample-figure-scroll-bbox"
-            pageNum={pageNumber}
             top={380}
             left={105}
             height={110}
