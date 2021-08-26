@@ -8,7 +8,7 @@ import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
-import { BoundingBox, BoundingBoxProps } from './library/components/BoundingBox';
+import { BoundingBox, StyleSizeProps } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
@@ -18,7 +18,7 @@ import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
-import { scrollToPdfPage } from './library/scroll';
+import { scrollTo, scrollToPdfPage } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -86,6 +86,15 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
   }
 
+  // TODO: #29079 remove this once UI design is finalized and we have real data
+  function handleScrollToFigure(): void {
+    setIsShowingTextHighlight(false);
+    setIsShowingHighlightOverlay(false);
+
+    const id = 'demoFigure_1';
+    scrollTo(id);
+  }
+
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     pdfDoc.getPage(1).then(page => {
@@ -113,7 +122,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data
-  function getDemoBoundingBoxProps(): Array<BoundingBoxProps> {
+  function getDemoBoundingBoxSizes(): Array<StyleSizeProps> {
     return [
       {
         top: 280,
@@ -138,11 +147,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
   // TODO: #29079 remove this once we have real data and UI design
   function renderHighlightOverlayBoundingBox(
-    boxProps: BoundingBoxProps,
+    sizeProps: StyleSizeProps,
     index: number
   ): React.ReactElement {
     const props = {
-      ...boxProps,
+      ...sizeProps,
       className: 'reader__sample-highlight-overlay__bbox',
       isHighlighted: false,
       key: index,
@@ -153,11 +162,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
   // TODO: #29079 remove this once we have real data and UI design
   function renderTextHighlightBoundingBox(
-    boxProps: BoundingBoxProps,
+    sizeProps: StyleSizeProps,
     index: number
   ): React.ReactElement {
     const props = {
-      ...boxProps,
+      ...sizeProps,
       className: 'reader__sample-text-highlight__bbox',
       isHighlighted: true,
       key: index,
@@ -174,7 +183,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingHighlightOverlay) {
       return (
         <HighlightOverlay pageNumber={pageNumber}>
-          {getDemoBoundingBoxProps().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
+          {getDemoBoundingBoxSizes().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
         </HighlightOverlay>
       );
     }
@@ -183,7 +192,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     if (isShowingTextHighlight) {
       return (
         <Overlay>
-          {getDemoBoundingBoxProps().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
+          {getDemoBoundingBoxSizes().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
         </Overlay>
       );
     }
@@ -205,6 +214,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             height={30}
             width={30}
           />
+          <BoundingBox
+            id={`demoFigure_${index}`}
+            className="reader__sample-figure-scroll-bbox"
+            top={380}
+            left={105}
+            height={110}
+            width={600}
+          />
         </Popover>
       </Overlay>
     );
@@ -221,6 +238,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
               handleRotateCCW={handleRotateCCW}
               handleToggleHighlightOverlay={handleToggleHighlightOverlay}
               handleToggleHighlightText={handleToggleTextHighlight}
+              handleScrollToFigure={handleScrollToFigure}
             />
           </div>
           <DocumentWrapper

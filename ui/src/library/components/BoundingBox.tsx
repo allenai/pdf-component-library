@@ -7,6 +7,7 @@ import { PageRotation } from '../rotate';
 
 type Props = {
   className?: string;
+  id?: string;
   isHighlighted?: boolean;
   /**
    * top, left, height, and width are in screen pixel units
@@ -23,6 +24,7 @@ export type BoundingBoxProps = Props;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
+  id,
   isHighlighted,
   top,
   left,
@@ -39,6 +41,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   );
   return (
     <div
+      id={id}
       className={componentClassName}
       style={computeStyleWithContext(top, left, height, width, documentContext, transformContext)}
       onClick={onClick}
@@ -46,7 +49,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   );
 };
 
-type StyleSizeProps = {
+export type StyleSizeProps = {
   top: number;
   left: number;
   height: number;
