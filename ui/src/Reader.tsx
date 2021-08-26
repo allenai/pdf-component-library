@@ -1,13 +1,13 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { Drawer, Popover } from 'antd';
+import { Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
-import { Outline } from 'react-pdf/dist/esm/entry.webpack';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
+import { Outline } from './components/Outline';
 import { BoundingBox, StyleSizeProps } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
@@ -18,10 +18,11 @@ import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
-import { scrollTo, scrollToPdfPage } from './library/scroll';
+import { scrollTo } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
+
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
 
@@ -29,28 +30,19 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   const {
-    isDrawerOpen,
     isShowingHighlightOverlay,
     isShowingTextHighlight,
     setErrorMessage,
-    setIsDrawerOpen,
     setIsLoading,
     setIsShowingHighlightOverlay,
+    setIsShowingOutline,
     setIsShowingTextHighlight,
   } = React.useContext(UiContext);
   const { rotation, scale, setRotation } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
-  function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
-    scrollToPdfPage(pageNumber);
-  }
-
-  function handleOpenDrawer(): void {
-    setIsDrawerOpen(true);
-  }
-
-  function handleCloseDrawer(): void {
-    setIsDrawerOpen(false);
+  function handleShowOutline(): void {
+    setIsShowingOutline(true);
   }
 
   function handleRotateCW(): void {
@@ -233,7 +225,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <div className="reader__header">
             <Header
-              handleOpenDrawer={handleOpenDrawer}
+              handleShowOutline={handleShowOutline}
               handleRotateCW={handleRotateCW}
               handleRotateCCW={handleRotateCCW}
               handleToggleHighlightOverlay={handleToggleHighlightOverlay}
@@ -248,21 +240,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             onLoadError={onPdfLoadError}
             onLoadSuccess={onPdfLoadSuccess}
             inputRef={pdfContentRef}>
-            <Drawer
-              title="Outline"
-              placement="left"
-              visible={isDrawerOpen}
-              mask={false}
-              onClose={handleCloseDrawer}
-              //@ts-ignore there's something wonky with the types here
-              getContainer={() => {
-                // Passing this ref mounts the drawer "inside" the grid content area
-                // instead of using the entire browser height.
-                return pdfContentRef.current;
-              }}
-              className="reader__outline-drawer">
-              <Outline onItemClick={handleOutlineClick} />
-            </Drawer>
+            <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
                 <PageWrapper

@@ -131,7 +131,7 @@ describe('<ContextProvider/>', () => {
 
   describe('<UIContext.Provider/>', () => {
     let _setErrorMessage: (errorMessage: Nullable<string>) => void;
-    let _setIsDrawerOpen: (isDrawerOpen: boolean) => void;
+    let _setIsShowingOutline: (isShowingOutline: boolean) => void;
     let _setIsLoading: (isLoading: boolean) => void;
     let _setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
     let _setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
@@ -143,18 +143,18 @@ describe('<ContextProvider/>', () => {
             {(args: IUiContext) => {
               const {
                 errorMessage,
-                isDrawerOpen,
+                isShowingOutline,
                 isLoading,
                 isShowingHighlightOverlay,
                 isShowingTextHighlight,
                 setErrorMessage,
-                setIsDrawerOpen,
+                setIsShowingOutline,
                 setIsLoading,
                 setIsShowingHighlightOverlay,
                 setIsShowingTextHighlight,
               } = args;
               _setErrorMessage = setErrorMessage;
-              _setIsDrawerOpen = setIsDrawerOpen;
+              _setIsShowingOutline = setIsShowingOutline;
               _setIsLoading = setIsLoading;
               _setIsShowingHighlightOverlay = setIsShowingHighlightOverlay;
               _setIsShowingTextHighlight = setIsShowingTextHighlight;
@@ -163,11 +163,11 @@ describe('<ContextProvider/>', () => {
                   <div className="errorMessage">
                     {errorMessage === null ? 'null' : errorMessage}
                   </div>
-                  <div className="isDrawerOpen">{isDrawerOpen.toString()}</div>
                   <div className="isLoading">{isLoading.toString()}</div>
                   <div className="isShowingHighlightOverlay">
                     {isShowingHighlightOverlay.toString()}
                   </div>
+                  <div className="isShowingOutline">{isShowingOutline.toString()}</div>
                   <div className="isShowingTextHighlight">{isShowingTextHighlight.toString()}</div>
                 </div>
               );
@@ -185,8 +185,8 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('errorMessage', null);
     });
 
-    it('provides a default isDrawerOpen', () => {
-      expectTextFromClassName('isDrawerOpen', false);
+    it('provides a default isShowingOutline', () => {
+      expectTextFromClassName('isShowingOutline', false);
     });
 
     it('provides a default isLoading', () => {
@@ -209,12 +209,12 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('errorMessage', 'Test message');
     });
 
-    it('provides a function to set isDrawerOpen', () => {
-      expectTextFromClassName('isDrawerOpen', false);
+    it('provides a function to set isShowingOutline', () => {
+      expectTextFromClassName('isShowingOutline', false);
 
-      _setIsDrawerOpen(true);
+      _setIsShowingOutline(true);
 
-      expectTextFromClassName('isDrawerOpen', true);
+      expectTextFromClassName('isShowingOutline', true);
     });
 
     it('provides a function to set isLoading', () => {

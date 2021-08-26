@@ -6,7 +6,7 @@ import { SimpleZoomControl } from './SimpleZoomControl';
 type Props = {
   handleToggleHighlightOverlay: () => void;
   handleToggleHighlightText: () => void;
-  handleOpenDrawer: () => void;
+  handleShowOutline: () => void;
   handleRotateCW: () => void;
   handleRotateCCW: () => void;
   handleScrollToFigure: () => void;
@@ -25,7 +25,7 @@ export class Header extends React.PureComponent<Props> {
           <a onClick={this.props.handleRotateCCW}>↶</a>
         </div>
         <div className="header-control">
-          <a onClick={this.props.handleOpenDrawer}>Outline</a>
+          <a onClick={this.props.handleShowOutline}>Outline</a>
         </div>
         <div className="header-control">
           <a onClick={this.props.handleToggleHighlightOverlay}>Highlight Overlay</a>
