@@ -157,7 +157,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       className: 'reader__sample-highlight-overlay__bbox',
       isHighlighted: false,
       key: index,
-      pageNum: pageNum,
     };
 
     return <BoundingBox {...props} />;
@@ -175,7 +174,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       className: 'reader__sample-text-highlight__bbox',
       isHighlighted: true,
       key: index,
-      pageNum: pageNum,
     };
 
     return <BoundingBox {...props} />;
