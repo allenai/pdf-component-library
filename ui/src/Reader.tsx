@@ -16,9 +16,7 @@ import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from './library/rotate';
 import { computePageSize } from './library/scale';
-import { scrollTo } from './library/scroll';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -29,63 +27,10 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const {
-    isShowingHighlightOverlay,
-    isShowingTextHighlight,
-    setErrorMessage,
-    setIsLoading,
-    setIsShowingHighlightOverlay,
-    setIsShowingOutline,
-    setIsShowingTextHighlight,
-  } = React.useContext(UiContext);
-  const { rotation, scale, setRotation } = React.useContext(TransformContext);
+  const { isShowingHighlightOverlay, isShowingTextHighlight, setErrorMessage, setIsLoading } =
+    React.useContext(UiContext);
+  const { rotation, scale } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
-
-  function handleShowOutline(): void {
-    setIsShowingOutline(true);
-  }
-
-  function handleRotateCW(): void {
-    setRotation(rotateClockwise(rotation));
-  }
-
-  function handleRotateCCW(): void {
-    setRotation(rotateCounterClockwise(rotation));
-  }
-
-  // TODO: #29079 remove this once UI design is finalized
-  function handleToggleHighlightOverlay(): void {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingHighlightOverlay down below
-    const newVal = !isShowingHighlightOverlay;
-    setIsShowingHighlightOverlay(newVal);
-
-    if (newVal) {
-      setIsShowingTextHighlight(false);
-    }
-  }
-
-  // TODO: #29079 remove this once UI design is finalized
-  function handleToggleTextHighlight(): void {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingTextHighlight down below
-    const newVal = !isShowingTextHighlight;
-    setIsShowingTextHighlight(newVal);
-    if (newVal) {
-      setIsShowingHighlightOverlay(false);
-    }
-  }
-
-  // TODO: #29079 remove this once UI design is finalized and we have real data
-  function handleScrollToFigure(): void {
-    setIsShowingTextHighlight(false);
-    setIsShowingHighlightOverlay(false);
-
-    const id = 'demoFigure_1';
-    scrollTo(id);
-  }
 
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
@@ -224,14 +169,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       <Route path="/">
         <div className="reader__container">
           <div className="reader__header">
-            <Header
-              handleShowOutline={handleShowOutline}
-              handleRotateCW={handleRotateCW}
-              handleRotateCCW={handleRotateCCW}
-              handleToggleHighlightOverlay={handleToggleHighlightOverlay}
-              handleToggleHighlightText={handleToggleTextHighlight}
-              handleScrollToFigure={handleScrollToFigure}
-            />
+            <Header />
           </div>
           <DocumentWrapper
             className="reader__main"
