@@ -1,35 +1,28 @@
 import classNames from 'classnames';
 import * as React from 'react';
 
+import { BoundingBox as BoundingBoxType, Size } from '../../data/types';
 import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
 
-type Props = {
+type Props = BoundingBoxType & {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
-  /**
-   * top, left, height, and width are in screen pixel units
-   * at 100% scaling of the page
-   */
-  top: number;
-  left: number;
-  height: number;
-  width: number;
   onClick?: () => void;
 };
 
 export type BoundingBoxProps = Props;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
-  className,
-  id,
-  isHighlighted,
   top,
   left,
   height,
   width,
+  className,
+  id,
+  isHighlighted,
   onClick,
 }: Props) => {
   const documentContext = React.useContext(DocumentContext);
@@ -47,13 +40,6 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
       onClick={onClick}
     />
   );
-};
-
-export type StyleSizeProps = {
-  top: number;
-  left: number;
-  height: number;
-  width: number;
 };
 
 /**
@@ -74,7 +60,7 @@ export function computeStyleWithContext(
   width: number,
   documentContext: IDocumentContext,
   transformContext: ITransformContext
-): StyleSizeProps {
+): Size {
   const { pageSize } = documentContext;
   const { rotation, scale } = transformContext;
   switch (rotation) {
