@@ -23,8 +23,8 @@ export type Entity = {
 };
 
 export type Equation = Entity & {
-  type: ENTITY_TYPE.EQUATION,
+  type: ENTITY_TYPE.EQUATION;
   attributes: {
-    tex: string,
-  },
+    tex: string;
+  };
 };
