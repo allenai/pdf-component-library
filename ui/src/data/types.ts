@@ -21,3 +21,24 @@ export type Entity = {
     boundingBoxes: Array<BoundingBox>;
   };
 };
+
+// TODO: uncomment this once other types are merged in
+// export type Mention = Citation | Equation | Symbol | Term;
+export type Mention = Entity;
+
+export type SymbolData = {
+  label: string;
+  definingFormulaEquations: Array<string>;
+  definingFormulas: Array<string>;
+  definitionSentences: Array<string>;
+  definitionTexs: Array<string>;
+  definitions: Array<string>;
+  snippets: Array<string>;
+  snippetSentences: Array<string>;
+  sources: Array<string>;
+};
+
+export type PaperData = {
+  entities: Array<Mention>;
+  sharedSymbolData: Array<SymbolData>;
+};
