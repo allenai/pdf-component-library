@@ -21,3 +21,13 @@ export type Entity = {
     boundingBoxes: Array<BoundingBox>;
   };
 };
+
+export type Sentence = Entity & {
+  type: ENTITY_TYPE.SENTENCE;
+  attributes: {
+    text: string;
+    tex: string;
+    texStart: number;
+    texEnd: number;
+  };
+};
