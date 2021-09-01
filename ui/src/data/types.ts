@@ -21,3 +21,23 @@ export type Entity = {
     boundingBoxes: Array<BoundingBox>;
   };
 };
+
+export type Reference = {
+  id: string;
+};
+
+export type Term = Entity & {
+  attributes: {
+    name: string;
+    term_type: string;
+    definitions: Array<string>;
+    definitionTexs: Array<string>;
+    sources: Array<string>;
+    snippets: Array<string>;
+  };
+  relationships: {
+    sentence: Reference;
+    definitionSentences: Array<Reference>;
+    snippetSentences: Array<Reference>;
+  };
+};
