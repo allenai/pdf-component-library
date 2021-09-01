@@ -21,3 +21,10 @@ export type Entity = {
     boundingBoxes: Array<BoundingBox>;
   };
 };
+
+export type Equation = Entity & {
+  type: ENTITY_TYPE.EQUATION,
+  attributes: {
+    tex: string,
+  },
+};
