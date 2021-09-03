@@ -14,8 +14,7 @@ export type BoundingBox = {
 } & Size;
 
 export enum ENTITY_TYPE {
-  // TODO: Remove once we have other types
-  ENTITY,
+  CITATION,
 }
 
 export type Entity = {
@@ -39,9 +38,9 @@ export type CitationPaper = {
   year: number;
 };
 
-export type Citation = Entity & {
+export type Citation = {
   type: ENTITY_TYPE.CITATION;
   attributes: {
     paper: CitationPaper;
   };
-};
+} & Entity;
