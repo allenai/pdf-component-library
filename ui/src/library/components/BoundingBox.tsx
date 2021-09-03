@@ -6,12 +6,12 @@ import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
 
-type Props = BoundingBoxType & {
+type Props = {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
   onClick?: () => void;
-};
+} & BoundingBoxType;
 
 export type BoundingBoxProps = Props;
 

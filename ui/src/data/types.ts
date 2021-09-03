@@ -9,9 +9,9 @@ export type Size = {
   width: number;
 };
 
-export type BoundingBox = Size & {
+export type BoundingBox = {
   page?: number;
-};
+} & Size;
 
 export enum ENTITY_TYPE {
   CITATION,
