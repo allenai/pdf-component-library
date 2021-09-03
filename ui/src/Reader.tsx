@@ -8,7 +8,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './components/Header';
 import { Outline } from './components/Outline';
-import { BoundingBox, StyleSizeProps } from './library/components/BoundingBox';
+import { Size } from './data/types';
+import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
@@ -59,7 +60,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data
-  function getDemoBoundingBoxSizes(): Array<StyleSizeProps> {
+  function getDemoBoundingBoxSizes(): Array<Size> {
     return [
       {
         top: 280,
@@ -83,10 +84,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data and UI design
-  function renderHighlightOverlayBoundingBox(
-    sizeProps: StyleSizeProps,
-    index: number
-  ): React.ReactElement {
+  function renderHighlightOverlayBoundingBox(sizeProps: Size, index: number): React.ReactElement {
     const props = {
       ...sizeProps,
       className: 'reader__sample-highlight-overlay__bbox',
@@ -98,10 +96,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }
 
   // TODO: #29079 remove this once we have real data and UI design
-  function renderTextHighlightBoundingBox(
-    sizeProps: StyleSizeProps,
-    index: number
-  ): React.ReactElement {
+  function renderTextHighlightBoundingBox(sizeProps: Size, index: number): React.ReactElement {
     const props = {
       ...sizeProps,
       className: 'reader__sample-text-highlight__bbox',

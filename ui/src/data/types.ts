@@ -1,17 +1,21 @@
-export type BoundingBox = {
-  page: number;
-  left: number;
+/**
+ * top, left, height, and width are in screen pixel units
+ * at 100% scaling of the page
+ */
+export type Size = {
   top: number;
-  width: number;
+  left: number;
   height: number;
+  width: number;
 };
 
+export type BoundingBox = {
+  page?: number;
+} & Size;
+
 export enum ENTITY_TYPE {
-  CITATION,
-  EQUATION,
-  SENTENCE,
-  SYMBOL,
-  TERM,
+  // TODO: Remove once we have other types
+  ENTITY,
 }
 
 export type Entity = {
