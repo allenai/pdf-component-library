@@ -14,11 +14,8 @@ export type BoundingBox = {
 } & Size;
 
 export enum ENTITY_TYPE {
-  CITATION,
-  EQUATION,
-  SENTENCE,
-  SYMBOL,
-  TERM,
+  // TODO: Remove once we have other types
+  ENTITY,
 }
 
 export type Entity = {
