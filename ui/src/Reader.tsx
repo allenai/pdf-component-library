@@ -127,6 +127,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     return (
       // example of standard overlay with citation popover
       <Overlay>
+        <BoundingBox
+          id={`demoFigure_${index}`}
+          className="reader__sample-figure-scroll-bbox"
+          top={380}
+          left={105}
+          height={110}
+          width={600}
+        />
         <CitationPopover
           citation={{
             boundingBox: {
