@@ -1,11 +1,11 @@
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
-import { Popover } from 'antd';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import { CitationPopover } from './components/CitationPopover';
 import { Header } from './components/Header';
 import { Outline } from './components/Outline';
 import { Size } from './data/types';
@@ -52,11 +52,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   function onPdfLoadError(error: unknown): void {
     setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
-  }
-
-  // TODO: #29079 remove this once UI design is finalized and we have real data
-  function renderPopoverContent(pageNumber: number): React.ReactNode {
-    return <div>You clicked on page {pageNumber}.</div>;
   }
 
   // TODO: #29079 remove this once we have real data
@@ -130,31 +125,32 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     }
 
     return (
-      // example of standard overlay with bounding boxes that display
-      // popover example on click
+      // example of standard overlay with citation popover
       <Overlay>
-        <Popover
-          // TODO: #28926 Fix renderPopoverContent to use pageNumber, not index
-          content={renderPopoverContent(index)}
-          trigger="click"
-          //@ts-ignore there's something wonky with the types here
-          getPopupContainer={() => pdfScrollableRef.current}>
-          <BoundingBox
-            className="reader__sample-overlay__bbox"
-            top={10 + index * 50}
-            left={10 + index * 50}
-            height={30}
-            width={30}
-          />
-          <BoundingBox
-            id={`demoFigure_${index}`}
-            className="reader__sample-figure-scroll-bbox"
-            top={380}
-            left={105}
-            height={110}
-            width={600}
-          />
-        </Popover>
+        <CitationPopover
+          citation={{
+            boundingBox: {
+              page: 1,
+              top: 748,
+              left: 365,
+              height: 20,
+              width: 17,
+            },
+            paper: {
+              title: 'The Best Paper Ever',
+              authors: [
+                { id: 1, name: 'Author One', url: 'https://www.semanticscholar.org' },
+                { id: 2, name: 'Author Two', url: 'https://www.semanticscholar.org' },
+                { id: 3, name: 'Author Three', url: 'https://www.semanticscholar.org' },
+              ],
+              year: 2021,
+              abstract:
+                'Research has found that baking soda is an underrated leavener for baked goods containing acidic ingredients.',
+              url: 'http://www.semanticscholar.org',
+            },
+          }}
+          parentRef={pdfScrollableRef}
+        />
       </Overlay>
     );
   }
