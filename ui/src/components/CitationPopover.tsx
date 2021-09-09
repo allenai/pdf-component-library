@@ -2,8 +2,8 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
-import { Author, Citation } from '../types/citations';
 import { BoundingBox } from '../library/components/BoundingBox';
+import { Author, Citation } from '../types/citations';
 
 type Props = {
   citation: Citation;
@@ -63,32 +63,34 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     );
   }
 
-  return (<div>
-    { // Create a BoundingBox/Popover pair for each bounding box in the citation.
-      // This accounts for citations that span multiple pages and avoids buggy popover placement 
-      // behavior that occurs when the inner BoundingBox is placed in a loop.
-      (citation.attributes.boundingBoxes.map((box, i) => {
-        return (
-          <Popover
-            // Passing this ref mounts the popover "inside" the scrollable content area
-            // instead of using the entire browser height.
-            //@ts-ignore there's something wonky with the types here
-            getPopupContainer={() => parentRef.current}
-            content={renderPopoverContent()}
-            trigger="click"
-            key={i}
-            onVisibleChange={handleVisibleChange}>
-            <BoundingBox
-              className={classNames('reader__popover__bbox', isPopoverVisible ? 'selected' : '')}
-              top={box.top}
-              left={box.left}
-              height={box.height}
-              width={box.width}
-            />
-          </Popover>
-        )
+  return (
+    <div>
+      {
+        // Create a BoundingBox/Popover pair for each bounding box in the citation.
+        // This accounts for citations that span multiple pages and avoids buggy popover placement
+        // behavior that occurs when the inner BoundingBox is placed in a loop.
+        citation.attributes.boundingBoxes.map((box, i) => {
+          return (
+            <Popover
+              // Passing this ref mounts the popover "inside" the scrollable content area
+              // instead of using the entire browser height.
+              //@ts-ignore there's something wonky with the types here
+              getPopupContainer={() => parentRef.current}
+              content={renderPopoverContent()}
+              trigger="click"
+              key={i}
+              onVisibleChange={handleVisibleChange}>
+              <BoundingBox
+                className={classNames('reader__popover__bbox', isPopoverVisible ? 'selected' : '')}
+                top={box.top}
+                left={box.left}
+                height={box.height}
+                width={box.width}
+              />
+            </Popover>
+          );
+        })
       }
-      ))}
-  </div>)
-
+    </div>
+  );
 };

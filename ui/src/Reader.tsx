@@ -8,7 +8,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { CitationPopover } from './components/CitationPopover';
 import { Header } from './components/Header';
 import { Outline } from './components/Outline';
-import { ENTITY_TYPE } from './types/entity';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
@@ -19,6 +18,7 @@ import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { computePageSize } from './library/scale';
 import { Size } from './library/types';
+import { ENTITY_TYPE } from './types/entity';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -162,7 +162,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                   'Research has found that baking soda is an underrated leavener for baked goods containing acidic ingredients.',
                 url: 'http://www.semanticscholar.org',
               },
-            }
+            },
           }}
           parentRef={pdfScrollableRef}
         />
