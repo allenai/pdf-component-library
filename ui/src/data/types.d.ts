@@ -1,7 +1,7 @@
 import { BoundingBox } from '../library/types';
 
 export enum ENTITY_TYPE {
-  CITATION,
+  CITATION = 'citation',
 }
 
 export type Entity = {
