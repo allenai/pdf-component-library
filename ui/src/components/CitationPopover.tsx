@@ -31,7 +31,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
 
   function renderAuthorNames(authors: Array<Author>): React.ReactNode {
     if (!authors || !authors.length) {
-      return '';
+      return null;
     }
 
     return authors.map((author: Author, i: number) => {
