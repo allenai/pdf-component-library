@@ -8,7 +8,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { CitationPopover } from './components/CitationPopover';
 import { Header } from './components/Header';
 import { Outline } from './components/Outline';
-import { Size } from './data/types';
 import { BoundingBox } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { HighlightOverlay } from './library/components/HighlightOverlay';
@@ -18,6 +17,7 @@ import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { computePageSize } from './library/scale';
+import { Size } from './library/types';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';

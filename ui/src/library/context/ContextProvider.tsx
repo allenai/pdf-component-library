@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import { Nullable } from '../../types';
 import { PageRotation } from '../rotate';
 import { Size } from '../scale';
+import { Nullable } from '../types';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';
 import { IUiContext, UiContext } from './UiContext';
