@@ -5,7 +5,7 @@ export enum ENTITY_TYPE {
 }
 
 export type Entity = {
-  id: string;
+  id: number;
   type: ENTITY_TYPE;
   attributes: {
     boundingBoxes: Array<BoundingBox>;
