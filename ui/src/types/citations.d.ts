@@ -1,16 +1,4 @@
-import { BoundingBox } from '../library/types';
-
-export enum ENTITY_TYPE {
-  CITATION = 'citation',
-}
-
-export type Entity = {
-  id: string;
-  type: ENTITY_TYPE;
-  attributes: {
-    boundingBoxes: Array<BoundingBox>;
-  };
-};
+import { Entity, ENTITY_TYPE } from './entity';
 
 export type Author = {
   name: string;
