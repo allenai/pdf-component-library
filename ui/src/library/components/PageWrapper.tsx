@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Page } from 'react-pdf/dist/esm/entry.webpack';
 import { RenderFunction } from 'react-pdf/dist/Page';
 
-import { Nullable } from '../../types';
 import { isSideways, PageRotation } from '../rotate';
 import { Size } from '../scale';
 import { generatePageId } from '../scroll';
+import { Nullable } from '../types';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 
