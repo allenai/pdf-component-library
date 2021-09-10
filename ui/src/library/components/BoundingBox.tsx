@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import * as React from 'react';
 
-import { BoundingBox as BoundingBoxType, Size } from '../../data/types';
 import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext, TransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
+import { BoundingBox as BoundingBoxType, Size } from '../types';
 
 type Props = {
   className?: string;
