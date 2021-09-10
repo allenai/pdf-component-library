@@ -1,6 +1,7 @@
 import { Entity, ENTITY_TYPE } from './entity';
 
 export type Author = {
+  id: number;
   name: string;
   url?: string;
 };
