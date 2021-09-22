@@ -1,47 +1,34 @@
 import * as React from 'react';
 
-import { ENTITY_TYPE } from '../types/entity';
+import { Annotations } from '../types/paper';
 import { CitationPopover } from './CitationPopover';
 
 type Props = {
-  parentRef: React.RefObject<HTMLDivElement>;
+    // TODO: #28926 subtask choose between pageNumber/pageIndex
+    pageIndex: number;
+    annotations: Map<number, Annotations>;
+    parentRef: React.RefObject<HTMLDivElement>;
 };
 
 /*
- * Example of the CitationPopover component
+ * Example of rendering CitationPopovers
  */
-export const CitationsDemo: React.FunctionComponent<Props> = ({ parentRef }: Props) => {
-  return (
-    <CitationPopover
-      citation={{
-        id: 1234,
-        type: ENTITY_TYPE.CITATION,
-        attributes: {
-          bounding_boxes: [
-            {
-              page: 1,
-              top: 748,
-              left: 365,
-              height: 20,
-              width: 17,
-            },
-          ],
-          paperId: 1234,
-          paper: {
-            title: 'The Best Paper Ever',
-            authors: [
-              { id: 1, name: 'Author One', url: 'https://www.semanticscholar.org' },
-              { id: 2, name: 'Author Two', url: 'https://www.semanticscholar.org' },
-              { id: 3, name: 'Author Three', url: 'https://www.semanticscholar.org' },
-            ],
-            year: 2021,
-            abstract:
-              'Research has found that baking soda is an underrated leavener for baked goods containing acidic ingredients.',
-            url: 'http://www.semanticscholar.org',
-          },
-        },
-      }}
-      parentRef={parentRef}
-    />
-  );
+export const CitationsDemo: React.FunctionComponent<Props> = ({ annotations, pageIndex, parentRef }: Props) => {
+    function renderCitations(): Array<React.ReactElement> {
+        const entitiesForPage = annotations.get(pageIndex);
+        const citationPopovers: Array<React.ReactElement> = [];
+        if (entitiesForPage) {
+            const citations = entitiesForPage.citations;
+            citations.map((citation, i) => {
+                citationPopovers.push(<CitationPopover key={i} citation={citation} parentRef={parentRef} />)
+            });
+        }
+        return citationPopovers;
+    }
+
+    return (
+        <div>
+            {annotations.get(pageIndex) && renderCitations()}
+        </div>
+    );
 };

@@ -118,7 +118,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                       <HighlightOverlayDemo pageIndex={i} />
                       <TextHighlightDemo pageIndex={i} />
                       <ScrollToDemo pageIndex={i} />
-                      <CitationsDemo parentRef={pdfScrollableRef} />
+                      <CitationsDemo pageIndex={i} annotations={paper.annotations} parentRef={pdfScrollableRef} />
                     </Overlay>
                   </PageWrapper>
                 ))}
