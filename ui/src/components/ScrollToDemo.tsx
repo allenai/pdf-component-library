@@ -11,14 +11,19 @@ type Props = {
  * Example target for the scroll util function
  */
 export const ScrollToDemo: React.FunctionComponent<Props> = ({ pageIndex }: Props) => {
+  const demoFigurePageIndex = 4;
+
   return (
-    <BoundingBox
-      id={`demoFigure_${pageIndex}`}
-      className="reader__sample-figure-scroll-bbox"
-      top={380}
-      left={105}
-      height={110}
-      width={600}
-    />
+    (pageIndex === demoFigurePageIndex && (
+      <BoundingBox
+        id="demoFigure"
+        className="reader__sample-figure-scroll-bbox"
+        top={100}
+        left={250}
+        height={340}
+        width={320}
+      />
+    )) ||
+    null
   );
 };
