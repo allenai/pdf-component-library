@@ -10,12 +10,16 @@ import { HighlightOverlayDemo } from './components/HighlightOverlayDemo';
 import { Outline } from './components/Outline';
 import { ScrollToDemo } from './components/ScrollToDemo';
 import { TextHighlightDemo } from './components/TextHighlightDemo';
+import { scaleRawBoundingBoxWithContext } from './library/components/BoundingBox';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
-import { PaperAnnotated } from './types/paper';
+import { BoundingBox as BoundingBoxType } from './library/types';
+import { Citation } from './types/citations';
+import { ENTITY_TYPE } from './types/entity';
+import { Annotations, PaperAnnotated } from './types/paper';
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
@@ -23,6 +27,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const transformContext = React.useContext(TransformContext);
   const { pageSize, numPages } = documentContext;
   const { scale, rotation } = transformContext;
+  const [isLoadingAnnotations, setIsLoadingAnnotations] = React.useState(true);
   const [isLoadingJson, setIsLoadingJson] = React.useState(false);
   const [paper, setPaper] = React.useState<PaperAnnotated>();
 
@@ -44,6 +49,52 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       });
     }
   }, [paper]);
+
+  // Attaches annotation data to paper
+  React.useEffect(() => {
+    // Run once, after paper and PDF document have loaded
+    if (!paper || !pageSize.height || !pageSize.width) {
+      return;
+    }
+    initAnnotations();
+    // This state change forces child components to rerender
+    // using the updated annotation data
+    setIsLoadingAnnotations(false);
+  }, [paper, pageSize]);
+
+  function initAnnotations() {
+    if (!paper) {
+      return;
+    }
+    // Start with all entities in raw format
+    const rawEntities = paper.entities;
+    rawEntities.map(entity => {
+      // Add Citations to Annotation map
+      if (entity.type === ENTITY_TYPE.CITATION) {
+        const boxes: Array<BoundingBoxType> = entity.attributes.bounding_boxes;
+        boxes.map(box => {
+          if (typeof box.page === 'number') {
+            let annotationsForPage = paper.annotations.get(box.page);
+            if (!annotationsForPage) {
+              paper.annotations.set(box.page, new Annotations());
+              annotationsForPage = paper.annotations.get(box.page);
+            }
+
+            // Transform raw bounding box data with respect to page size, scale, and rotation
+            const scaledBox = scaleRawBoundingBoxWithContext(
+              box,
+              documentContext,
+              transformContext
+            );
+            const citation = new Citation(entity, entity.attributes.paper_id, [scaledBox]);
+            if (annotationsForPage) {
+              annotationsForPage.citations.push(citation);
+            }
+          }
+        });
+      }
+    });
+  }
 
   return (
     <BrowserRouter>

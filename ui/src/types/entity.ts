@@ -6,6 +6,7 @@ export enum ENTITY_TYPE {
 
 export class EntityAttributes {
   bounding_boxes: Array<BoundingBox>;
+  [key: string]: any;
 
   constructor(boundingBoxes?: Array<BoundingBox>) {
     this.bounding_boxes = boundingBoxes ? boundingBoxes : [];
