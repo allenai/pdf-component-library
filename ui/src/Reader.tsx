@@ -5,20 +5,19 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { CitationPopover } from './components/CitationPopover';
+import { CitationsDemo } from './components/CitationsDemo';
 import { Header } from './components/Header';
+import { HighlightOverlayDemo } from './components/HighlightOverlayDemo';
 import { Outline } from './components/Outline';
-import { BoundingBox } from './library/components/BoundingBox';
+import { ScrollToDemo } from './components/ScrollToDemo';
+import { TextHighlightDemo } from './components/TextHighlightDemo';
 import { DocumentWrapper } from './library/components/DocumentWrapper';
-import { HighlightOverlay } from './library/components/HighlightOverlay';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
 import { UiContext } from './library/context/UiContext';
 import { computePageSize } from './library/scale';
-import { Size } from './library/types';
-import { ENTITY_TYPE } from './types/entity';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
@@ -29,8 +28,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const { isShowingHighlightOverlay, isShowingTextHighlight, setErrorMessage, setIsLoading } =
-    React.useContext(UiContext);
+  const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
   const { rotation, scale } = React.useContext(TransformContext);
   const { numPages, pageSize, setNumPages, setPageSize } = React.useContext(DocumentContext);
 
@@ -53,121 +51,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   function onPdfLoadError(error: unknown): void {
     setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
-  }
-
-  // TODO: #29079 remove this once we have real data
-  function getDemoBoundingBoxSizes(): Array<Size> {
-    return [
-      {
-        top: 280,
-        left: 250,
-        height: 20,
-        width: 420,
-      },
-      {
-        top: 300,
-        left: 130,
-        height: 55,
-        width: 540,
-      },
-      {
-        top: 355,
-        left: 130,
-        height: 20,
-        width: 225,
-      },
-    ];
-  }
-
-  // TODO: #29079 remove this once we have real data and UI design
-  function renderHighlightOverlayBoundingBox(sizeProps: Size, index: number): React.ReactElement {
-    const props = {
-      ...sizeProps,
-      className: 'reader__sample-highlight-overlay__bbox',
-      isHighlighted: false,
-      key: index,
-    };
-
-    return <BoundingBox {...props} />;
-  }
-
-  // TODO: #29079 remove this once we have real data and UI design
-  function renderTextHighlightBoundingBox(sizeProps: Size, index: number): React.ReactElement {
-    const props = {
-      ...sizeProps,
-      className: 'reader__sample-text-highlight__bbox',
-      isHighlighted: true,
-      key: index,
-    };
-
-    return <BoundingBox {...props} />;
-  }
-
-  // TODO: #29079 remove this once we have real data and UI design
-  function renderOverlay(index: number): React.ReactElement {
-    const pageNumber = index + 1;
-
-    // example of highlight overlay with unmasked bounding boxes
-    if (isShowingHighlightOverlay) {
-      return (
-        <HighlightOverlay pageNumber={pageNumber}>
-          {getDemoBoundingBoxSizes().map((prop, i) => renderHighlightOverlayBoundingBox(prop, i))}
-        </HighlightOverlay>
-      );
-    }
-
-    // example of standard overlay with "highlighted" bounding boxes
-    if (isShowingTextHighlight) {
-      return (
-        <Overlay>
-          {getDemoBoundingBoxSizes().map((prop, i) => renderTextHighlightBoundingBox(prop, i))}
-        </Overlay>
-      );
-    }
-
-    return (
-      // example of standard overlay with citation popover
-      <Overlay>
-        <BoundingBox
-          id={`demoFigure_${index}`}
-          className="reader__sample-figure-scroll-bbox"
-          top={380}
-          left={105}
-          height={110}
-          width={600}
-        />
-        <CitationPopover
-          citation={{
-            id: 1234,
-            type: ENTITY_TYPE.CITATION,
-            attributes: {
-              boundingBoxes: [
-                {
-                  page: 1,
-                  top: 748,
-                  left: 365,
-                  height: 20,
-                  width: 17,
-                },
-              ],
-              paper: {
-                title: 'The Best Paper Ever',
-                authors: [
-                  { id: 1, name: 'Author One', url: 'https://www.semanticscholar.org' },
-                  { id: 2, name: 'Author Two', url: 'https://www.semanticscholar.org' },
-                  { id: 3, name: 'Author Three', url: 'https://www.semanticscholar.org' },
-                ],
-                year: 2021,
-                abstract:
-                  'Research has found that baking soda is an underrated leavener for baked goods containing acidic ingredients.',
-                url: 'http://www.semanticscholar.org',
-              },
-            },
-          }}
-          parentRef={pdfScrollableRef}
-        />
-      </Overlay>
-    );
   }
 
   return (
@@ -193,7 +76,12 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                   scale={scale}
                   rotation={rotation}
                   pageSize={pageSize}>
-                  {renderOverlay(i)}
+                  <Overlay>
+                    <HighlightOverlayDemo pageIndex={i} />
+                    <TextHighlightDemo pageIndex={i} />
+                    <ScrollToDemo pageIndex={i} />
+                    <CitationsDemo parentRef={pdfScrollableRef} />
+                  </Overlay>
                 </PageWrapper>
               ))}
             </div>
