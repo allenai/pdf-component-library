@@ -83,7 +83,11 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
               key={i}
               onVisibleChange={handleVisibleChange}>
               <BoundingBox
-                className={classNames('reader__popover__bbox', `rotate${transformContext.rotation}`, isPopoverVisible ? 'selected' : '')}
+                className={classNames(
+                  'reader__popover__bbox',
+                  `rotate${transformContext.rotation}`,
+                  isPopoverVisible ? 'selected' : ''
+                )}
                 top={box.top}
                 left={box.left}
                 height={box.height}
