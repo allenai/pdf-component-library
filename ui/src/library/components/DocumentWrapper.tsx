@@ -2,9 +2,9 @@ import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { DocumentProps } from 'react-pdf';
 import { Document } from 'react-pdf/dist/esm/entry.webpack';
+
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
-
 import { computePageSize } from '../scale';
 
 type Props = {
@@ -60,9 +60,8 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
-      {...rest}
-    >
+      {...rest}>
       {children}
-    </Document >
+    </Document>
   );
-}
+};

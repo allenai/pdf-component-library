@@ -27,8 +27,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const { isShowingHighlightOverlay, isShowingTextHighlight } =
-    React.useContext(UiContext);
+  const { isShowingHighlightOverlay, isShowingTextHighlight } = React.useContext(UiContext);
   const { rotation, scale } = React.useContext(TransformContext);
   const { numPages, pageSize } = React.useContext(DocumentContext);
 
@@ -154,10 +153,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           <div className="reader__header">
             <Header />
           </div>
-          <DocumentWrapper
-            className="reader__main"
-            file={TEST_PDF_URL}
-            inputRef={pdfContentRef}>
+          <DocumentWrapper className="reader__main" file={TEST_PDF_URL} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
