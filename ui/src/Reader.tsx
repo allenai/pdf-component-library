@@ -15,9 +15,16 @@ import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
 import { TransformContext } from './library/context/TransformContext';
+import { PaperAnnotated } from './types/paper';
+import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
-  const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
+  const documentContext = React.useContext(DocumentContext);
+  const transformContext = React.useContext(TransformContext);
+  const { pageSize, numPages } = documentContext;
+  const { scale, rotation } = transformContext;
+  const [isLoadingJson, setIsLoadingJson] = React.useState(false);
+  const [paper, setPaper] = React.useState<PaperAnnotated>();
 
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
@@ -25,8 +32,18 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const { rotation, scale } = React.useContext(TransformContext);
-  const { numPages, pageSize } = React.useContext(DocumentContext);
+  // Retrieves sample paper data from local JSON file
+  React.useEffect(() => {
+    // Run once on initial page load. Don't run again if we are in the process of retreiving
+    // or have already retrieved the JSON data
+    if (!paper && !isLoadingJson) {
+      setIsLoadingJson(true);
+      loadJSON('data/samplePaper_short.json', (data: string) => {
+        setIsLoadingJson(false);
+        setPaper(new PaperAnnotated(JSON.parse(data)));
+      });
+    }
+  }, [paper]);
 
   return (
     <BrowserRouter>
@@ -35,26 +52,28 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           <div className="reader__header">
             <Header />
           </div>
-          <DocumentWrapper className="reader__main" file={TEST_PDF_URL} inputRef={pdfContentRef}>
-            <Outline parentRef={pdfContentRef} />
-            <div className="reader__page-list" ref={pdfScrollableRef}>
-              {Array.from({ length: numPages }).map((_, i) => (
-                <PageWrapper
-                  key={i}
-                  pageIndex={i}
-                  scale={scale}
-                  rotation={rotation}
-                  pageSize={pageSize}>
-                  <Overlay>
-                    <HighlightOverlayDemo pageIndex={i} />
-                    <TextHighlightDemo pageIndex={i} />
-                    <ScrollToDemo pageIndex={i} />
-                    <CitationsDemo parentRef={pdfScrollableRef} />
-                  </Overlay>
-                </PageWrapper>
-              ))}
-            </div>
-          </DocumentWrapper>
+          {paper && (
+            <DocumentWrapper className="reader__main" file={paper.pdfUrl} inputRef={pdfContentRef}>
+              <Outline parentRef={pdfContentRef} />
+              <div className="reader__page-list" ref={pdfScrollableRef}>
+                {Array.from({ length: numPages }).map((_, i) => (
+                  <PageWrapper
+                    key={i}
+                    pageIndex={i}
+                    scale={scale}
+                    rotation={rotation}
+                    pageSize={pageSize}>
+                    <Overlay>
+                      <HighlightOverlayDemo pageIndex={i} />
+                      <TextHighlightDemo pageIndex={i} />
+                      <ScrollToDemo pageIndex={i} />
+                      <CitationsDemo parentRef={pdfScrollableRef} />
+                    </Overlay>
+                  </PageWrapper>
+                ))}
+              </div>
+            </DocumentWrapper>
+          )}
         </div>
       </Route>
     </BrowserRouter>
