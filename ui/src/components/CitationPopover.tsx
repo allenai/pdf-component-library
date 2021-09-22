@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { BoundingBox } from '../library/components/BoundingBox';
 import { TransformContext } from '../library/context/TransformContext';
-import { Author, Citation } from '../types/citations';
+import { Author, Citation, CitationPaper } from '../types/citations';
 
 type Props = {
   citation: Citation;
@@ -53,14 +53,24 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     });
   }
 
-  function renderPopoverContent(): React.ReactFragment {
-    const { abstract, authors, title, url, year } = citation.attributes.paper;
+  function renderPaperSummary(paper: CitationPaper): React.ReactFragment {
+    const { abstract, authors, title, url, year } = paper;
     return (
       <div className="reader__popover__citation">
-        <p className="reader__popover__citation-title">{renderLink(title, url)}</p>
-        <p className="reader__popover__citation-authors">{renderAuthorNames(authors)}</p>
-        <p className="reader__popover__citation-year">{year}</p>
-        <p className="reader__popover__citation-abstract">{abstract}</p>
+        {title && <p className="reader__popover__citation-title">{renderLink(title, url)}</p>}
+        {authors && authors.length && (
+          <p className="reader__popover__citation-authors">{renderAuthorNames(authors)}</p>
+        )}
+        {year && <p className="reader__popover__citation-year">{year}</p>}
+        {abstract && <p className="reader__popover__citation-abstract">{abstract}</p>}
+      </div>
+    );
+  }
+
+  function renderPopoverContent() {
+    return (
+      <div className="reader__popover__citation">
+        {citation.attributes.paper && renderPaperSummary(citation.attributes.paper)}
       </div>
     );
   }
@@ -71,7 +81,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         // Create a BoundingBox/Popover pair for each bounding box in the citation.
         // This accounts for citations that span multiple pages and avoids buggy popover placement
         // behavior that occurs when the inner BoundingBox is placed in a loop.
-        citation.attributes.boundingBoxes.map((box, i) => {
+        citation.attributes.bounding_boxes.map((box, i) => {
           return (
             <Popover
               // Passing this ref mounts the popover "inside" the scrollable content area

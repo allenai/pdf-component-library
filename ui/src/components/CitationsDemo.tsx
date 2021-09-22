@@ -17,7 +17,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({ parentRef }: Pro
         id: 1234,
         type: ENTITY_TYPE.CITATION,
         attributes: {
-          boundingBoxes: [
+          bounding_boxes: [
             {
               page: 1,
               top: 748,
@@ -26,6 +26,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({ parentRef }: Pro
               width: 17,
             },
           ],
+          paperId: 1234,
           paper: {
             title: 'The Best Paper Ever',
             authors: [

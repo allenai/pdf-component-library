@@ -4,10 +4,22 @@ export enum ENTITY_TYPE {
   CITATION = 'citation',
 }
 
-export type Entity = {
-  id: number;
+export class EntityAttributes {
+  bounding_boxes: Array<BoundingBox>;
+
+  constructor(boundingBoxes?: Array<BoundingBox>) {
+    this.bounding_boxes = boundingBoxes ? boundingBoxes : [];
+  }
+}
+
+export class Entity {
+  id: number | string;
   type: ENTITY_TYPE;
-  attributes: {
-    boundingBoxes: Array<BoundingBox>;
-  };
-};
+  attributes: EntityAttributes;
+
+  constructor(id: number | string, type: ENTITY_TYPE, attributes?: EntityAttributes) {
+    this.id = id;
+    this.type = type;
+    this.attributes = attributes ? attributes : new EntityAttributes();
+  }
+}
