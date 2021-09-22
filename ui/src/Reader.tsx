@@ -27,6 +27,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const transformContext = React.useContext(TransformContext);
   const { pageSize, numPages } = documentContext;
   const { scale, rotation } = transformContext;
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [isLoadingAnnotations, setIsLoadingAnnotations] = React.useState(true);
   const [isLoadingJson, setIsLoadingJson] = React.useState(false);
   const [paper, setPaper] = React.useState<PaperAnnotated>();
@@ -118,7 +119,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                       <HighlightOverlayDemo pageIndex={i} />
                       <TextHighlightDemo pageIndex={i} />
                       <ScrollToDemo pageIndex={i} />
-                      <CitationsDemo pageIndex={i} annotations={paper.annotations} parentRef={pdfScrollableRef} />
+                      <CitationsDemo
+                        pageIndex={i}
+                        annotations={paper.annotations}
+                        parentRef={pdfScrollableRef}
+                      />
                     </Overlay>
                   </PageWrapper>
                 ))}

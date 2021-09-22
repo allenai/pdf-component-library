@@ -71,18 +71,24 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     return (
       <div className="reader__popover__citation">
         {title && <p className="reader__popover__citation-title">{renderLink(title, url)}</p>}
-        {authors && authors.length && <p className="reader__popover__citation-authors">{renderAuthorNames(authors)}</p>}
+        {authors && authors.length && (
+          <p className="reader__popover__citation-authors">{renderAuthorNames(authors)}</p>
+        )}
         {year && <p className="reader__popover__citation-year">{year}</p>}
-        {shortenedAbstract && <p className="reader__popover__citation-abstract">{`${shortenedAbstract}...`}</p>}
+        {shortenedAbstract && (
+          <p className="reader__popover__citation-abstract">{`${shortenedAbstract}...`}</p>
+        )}
       </div>
     );
   }
 
   function renderPopoverContent(): React.ReactNode {
-    return (<div className="reader__popover__citation">
-      {isLoading && <p className="popover__citation-loading">Loading...</p>}
-      {paper && renderPaperSummary(paper)}
-    </div>);
+    return (
+      <div className="reader__popover__citation">
+        {isLoading && <p className="popover__citation-loading">Loading...</p>}
+        {paper && renderPaperSummary(paper)}
+      </div>
+    );
   }
 
   return (
@@ -103,7 +109,11 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
               key={i}
               onVisibleChange={handleVisibleChange}>
               <BoundingBox
-                className={classNames('reader__popover__bbox', `rotate${transformContext.rotation}`, isPopoverVisible ? 'selected' : '')}
+                className={classNames(
+                  'reader__popover__bbox',
+                  `rotate${transformContext.rotation}`,
+                  isPopoverVisible ? 'selected' : ''
+                )}
                 top={box.top}
                 left={box.left}
                 height={box.height}

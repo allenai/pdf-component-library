@@ -6,6 +6,7 @@ export enum ENTITY_TYPE {
 
 export class EntityAttributes {
   bounding_boxes: Array<BoundingBox>;
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   [key: string]: any;
 
   constructor(boundingBoxes?: Array<BoundingBox>) {
