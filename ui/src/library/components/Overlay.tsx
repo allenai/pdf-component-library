@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CitationPopover } from '../../components/CitationPopover';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
@@ -6,7 +7,7 @@ import { isSideways } from '../rotate';
 import { BoundingBox } from './BoundingBox';
 
 type Props = {
-  children?: React.ReactElement<typeof BoundingBox> | Array<React.ReactElement<typeof BoundingBox>>;
+  children?: React.ReactElement | Array<React.ReactElement>;
 };
 
 export const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {

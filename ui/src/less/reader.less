@@ -63,6 +63,7 @@ body {
 
 
 .reader__popover__bbox {
+  min-height: 12px;
   border-bottom: 1px rgba(51, 51, 51, 0.7) dotted;
   
   &:hover {
@@ -77,7 +78,12 @@ body {
 
 .reader__popover__citation {
   min-width: 270px;
-  max-width: 310px;
+  max-width: 350px;
+
+  &.reader__popover__citation-loading {
+    text-align: center;
+    height: 25px;
+  }
 
   .reader__popover__citation-title {
     font-weight: bold;
