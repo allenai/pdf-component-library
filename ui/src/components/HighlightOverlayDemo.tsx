@@ -15,6 +15,10 @@ type Props = {
  */
 export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex }: Props) => {
   const { isShowingHighlightOverlay } = React.useContext(UiContext);
+  if (!isShowingHighlightOverlay) {
+    return null;
+  }
+
   // TODO: #28926 subtask choose between pageNumber/pageIndex
   const pageNumber = pageIndex + 1;
 
@@ -91,11 +95,8 @@ export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex
   }
 
   return (
-    (isShowingHighlightOverlay && (
-      <HighlightOverlay pageNumber={pageNumber}>
-        {renderHighlightOverlayBoundingBoxes()}
-      </HighlightOverlay>
-    )) ||
-    null
+    <HighlightOverlay pageNumber={pageNumber}>
+      {renderHighlightOverlayBoundingBoxes()}
+    </HighlightOverlay>
   );
 };

@@ -14,6 +14,9 @@ type Props = {
  */
 export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }: Props) => {
   const { isShowingTextHighlight } = React.useContext(UiContext);
+  if (!isShowingTextHighlight) {
+    return null;
+  }
 
   function getBoundingBoxProps(): Array<BoundingBoxType> {
     return [
@@ -81,5 +84,5 @@ export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }:
     return boxes;
   }
 
-  return (isShowingTextHighlight && <div>{renderHighlightedBoundingBoxes()}</div>) || null;
+  return <div>{renderHighlightedBoundingBoxes()}</div>;
 };
