@@ -51,20 +51,30 @@ body {
   }
 }
 
-@overlay-bbox-color: #ff0000;
-.reader__sample-overlay__bbox {
-  border: solid 1px @overlay-bbox-color;
-  background-color: fadeout(@overlay-bbox-color, 50%);
-}
-
 .reader__outline-drawer {
   position: absolute;
 }
 
 
 .reader__popover__bbox {
-  border-bottom: 1px rgba(51, 51, 51, 0.7) dotted;
+  border: 1px transparent dotted;
+
+  &.rotate0 {
+    border-bottom-color: @dark-grey
+  }
   
+  &.rotate90 {
+    border-left-color: @dark-grey;
+  }
+
+  &.rotate180 {
+    border-top-color: @dark-grey;
+  }
+
+  &.rotate270 {
+    border-right-color: @dark-grey;
+  }
+
   &:hover {
     background-color: rgba(19, 92, 202, 0.2);
     cursor: pointer;
