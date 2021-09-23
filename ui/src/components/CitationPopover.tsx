@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 
 import { BoundingBox } from '../library/components/BoundingBox';
+import { TransformContext } from '../library/context/TransformContext';
 import { Author, Citation } from '../types/citations';
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 
 export const CitationPopover: React.FunctionComponent<Props> = ({ citation, parentRef }: Props) => {
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
+  const transformContext = React.useContext(TransformContext);
 
   // Handler triggered when Ant Popover is shown or hidden
   function handleVisibleChange(isVisible: boolean) {
@@ -81,7 +83,11 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
               key={i}
               onVisibleChange={handleVisibleChange}>
               <BoundingBox
-                className={classNames('reader__popover__bbox', isPopoverVisible ? 'selected' : '')}
+                className={classNames(
+                  'reader__popover__bbox',
+                  `rotate${transformContext.rotation}`,
+                  isPopoverVisible ? 'selected' : ''
+                )}
                 top={box.top}
                 left={box.left}
                 height={box.height}
