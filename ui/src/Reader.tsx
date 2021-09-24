@@ -14,9 +14,9 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
-import { TransformContext } from './library/context/TransformContext';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
+  const { numPages } = React.useContext(DocumentContext);
   const TEST_PDF_URL = 'https://arxiv.org/pdf/math/0008020v2.pdf';
 
   // ref for the div in which the Document component renders
@@ -24,9 +24,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
-
-  const { rotation, scale } = React.useContext(TransformContext);
-  const { numPages, pageSize } = React.useContext(DocumentContext);
 
   return (
     <BrowserRouter>
@@ -39,12 +36,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
-                <PageWrapper
-                  key={i}
-                  pageIndex={i}
-                  scale={scale}
-                  rotation={rotation}
-                  pageSize={pageSize}>
+                <PageWrapper key={i} pageIndex={i}>
                   <Overlay>
                     <HighlightOverlayDemo pageIndex={i} />
                     <TextHighlightDemo pageIndex={i} />
