@@ -1,34 +1,51 @@
-import { Citation } from './citations';
-import { Entity } from './entity';
+import { Size } from '../library/scale';
+import { Citation, makeCitation } from './citations';
+import { BoundingBoxRaw, boundingBoxRawToScaled, ENTITY_TYPE, EntityRaw } from './entity';
 
-export class PaperRaw {
+// Raw Paper data as returned from our data source
+export type PaperRaw = {
   pdfUrl: string;
-  entities: Array<Entity>;
+  entities: Array<EntityRaw>;
+};
 
-  constructor(pdfUrl?: string, entities?: Array<Entity>) {
-    this.pdfUrl = pdfUrl ? pdfUrl : '';
-    this.entities = entities ? entities : [];
-  }
-}
-
-export class Annotations {
+// Stores the annotations for a particular page. Currently only
+// citations are supported.
+export type Annotations = {
   citations: Array<Citation>;
+};
 
-  constructor(citations?: Array<Citation>) {
-    this.citations = citations ? citations : [];
-  }
-}
-
-export class PaperAnnotated extends PaperRaw {
+// Stores a map of page indexes to the annotations for that page
+export type PaperAnnotated = {
+  pdfUrl: string;
   annotations: Map<number, Annotations>;
+};
 
-  constructor(paperRaw?: PaperRaw) {
-    if (paperRaw) {
-      super(paperRaw.pdfUrl, paperRaw.entities);
-    } else {
-      super();
+export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, Annotations> {
+  // Start with all entities in raw format
+  const annotations = new Map<number, Annotations>();
+  const entitiesRaw = paperRaw.entities;
+  entitiesRaw.map(entity => {
+    // For the time being, we only support Citation Annotations
+    // Add Citations to Annotation map
+    if (entity.type === ENTITY_TYPE.CITATION) {
+      const boxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
+      boxesRaw.map(box => {
+        // Transform raw bounding box data with respect to page size
+        const boxScaled = boundingBoxRawToScaled(box, pageSize.height, pageSize.width);
+        const citation = makeCitation(entity.attributes.paper_id, boxScaled);
+
+        // If this bounding box is associated with a page, add it to
+        // the map of page indexes to annotations
+        if (typeof box.page === 'number') {
+          const annotationsForPage = annotations.get(box.page);
+          if (!annotationsForPage) {
+            annotations.set(box.page, { citations: [citation] });
+          } else {
+            annotationsForPage.citations.push(citation);
+          }
+        }
+      });
     }
-
-    this.annotations = new Map<number, Annotations>();
-  }
+  });
+  return annotations;
 }

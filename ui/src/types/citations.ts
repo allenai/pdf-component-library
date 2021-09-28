@@ -1,50 +1,44 @@
 import { BoundingBox } from '../library/types';
-import { Entity, ENTITY_TYPE, EntityAttributes } from './entity';
+import { EntityAttributesRaw, EntityRaw } from './entity';
 
+// Raw citation attributes in the same format as our data source
+export type CitationAttributesRaw = {
+  paperId: string;
+} & EntityAttributesRaw;
+
+// Raw citation entity in the same format as our data source
+export type CitationRaw = {
+  attributes: CitationAttributesRaw;
+} & EntityRaw;
+
+// UI model for author listing data displayed in CitationPopover popover
 export type Author = {
   id: number;
   name: string;
-  url?: string;
+  url: string;
 };
 
-export class CitationAttributes extends EntityAttributes {
-  paperId: number;
-  paper?: CitationPaper;
+// UI model for citation paper data displayed in the CitationPopover popover
+export type CitationPaper = {
+  abstract: string;
+  authors: Array<Author>;
+  title: string;
+  url: string;
+  year: number;
+};
 
-  constructor(paperId: number, boundingBoxes: Array<BoundingBox>) {
-    super();
-    this.paperId = paperId;
-    this.bounding_boxes = boundingBoxes;
-  }
-}
+// UI model for bounding box and citation paper associated with a CitationPopover
+export type Citation = {
+  boundingBox: BoundingBox;
+  paperId: string;
+  paper: CitationPaper | null;
+};
 
-export class Citation extends Entity {
-  attributes: CitationAttributes;
-
-  constructor(entity: Entity, paperId: number, boundingBoxes: Array<BoundingBox>) {
-    super(entity.id, ENTITY_TYPE.CITATION);
-    this.attributes = new CitationAttributes(paperId, boundingBoxes);
-  }
-}
-
-export class CitationPaper {
-  abstract?: string;
-  authors?: Array<Author>;
-  title?: string;
-  url?: string;
-  year?: number;
-
-  constructor(
-    abstract?: string,
-    authors?: Array<Author>,
-    title?: string,
-    url?: string,
-    year?: number
-  ) {
-    this.abstract = abstract ? abstract : '';
-    this.authors = authors ? authors : [];
-    this.title = title ? title : '';
-    this.url = url ? url : '';
-    this.year = year ? year : undefined;
-  }
+// Create a new Citation object
+export function makeCitation(paperId: string, boundingBox: BoundingBox): Citation {
+  return {
+    boundingBox,
+    paperId,
+    paper: null,
+  };
 }
