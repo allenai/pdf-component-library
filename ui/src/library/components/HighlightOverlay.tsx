@@ -6,12 +6,12 @@ import { BoundingBoxProps, computeStyleWithContext } from './BoundingBox';
 
 type Props = {
   children?: React.ReactElement<BoundingBoxProps> | Array<React.ReactElement<BoundingBoxProps>>;
-  pageNumber: number;
+  pageIndex: number;
 };
 
 export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
-  pageNumber,
+  pageIndex,
 }: Props) => {
   const documentContext = React.useContext(DocumentContext);
   const transformContext = React.useContext(TransformContext);
@@ -47,7 +47,7 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
     });
   };
 
-  const maskId = `highlight-overlay-mask-${pageNumber}`;
+  const maskId = `highlight-overlay-mask-${pageIndex}`;
 
   return (
     <div className="reader__page-highlight-overlay" style={pageStyle}>
