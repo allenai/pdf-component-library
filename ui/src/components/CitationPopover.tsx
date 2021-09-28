@@ -13,10 +13,12 @@ type Props = {
 };
 
 export const CitationPopover: React.FunctionComponent<Props> = ({ citation, parentRef }: Props) => {
+  const ABSTRACT_MAX_LENGTH = 300;
   const transformContext = React.useContext(TransformContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
   const [paper, setPaper] = React.useState<CitationPaper>();
+
 
   // Handler triggered when Ant Popover is shown or hidden
   function handleVisibleChange(isVisible: boolean) {
@@ -66,7 +68,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
 
   function renderPaperSummary(paper: CitationPaper): React.ReactElement | null {
     const { abstract, authors, title, url, year } = paper;
-    const shortenedAbstract = abstract ? abstract.substring(0, 300) : null;
+    const shortenedAbstract = abstract ? abstract.substring(0, ABSTRACT_MAX_LENGTH) : null;
     return (
       <div className="reader__popover__citation">
         {title && <p className="reader__popover__citation-title">{renderLink(title, url)}</p>}
