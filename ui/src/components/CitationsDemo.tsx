@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { Annotations } from '../types/paper';
+import { PaperAnnotated } from '../types/paper';
 import { CitationPopover } from './CitationPopover';
 
 type Props = {
   // TODO: #28926 subtask choose between pageNumber/pageIndex
   pageIndex: number;
-  annotations: Map<number, Annotations>;
+  paperAnnotated: PaperAnnotated | undefined;
   parentRef: React.RefObject<HTMLDivElement>;
 };
 
@@ -14,13 +14,13 @@ type Props = {
  * Example of rendering CitationPopovers
  */
 export const CitationsDemo: React.FunctionComponent<Props> = ({
-  annotations,
+  paperAnnotated,
   pageIndex,
   parentRef,
 }: Props) => {
   function renderCitations(): Array<React.ReactElement> {
-    const entitiesForPage = annotations.get(pageIndex);
     const citationPopovers: Array<React.ReactElement> = [];
+    const entitiesForPage = paperAnnotated && paperAnnotated.annotations.get(pageIndex);
     if (entitiesForPage) {
       const citations = entitiesForPage.citations;
       citations.map((citation, i) => {
@@ -32,5 +32,9 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
     return citationPopovers;
   }
 
-  return <React.Fragment>{annotations.get(pageIndex) && renderCitations()}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {paperAnnotated && paperAnnotated.annotations.get(pageIndex) && renderCitations()}
+    </React.Fragment>
+  );
 };

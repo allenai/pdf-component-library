@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import { BoundingBox } from '../library/components/BoundingBox';
 import { TransformContext } from '../library/context/TransformContext';
-import { BoundingBox as BoundingBoxType } from '../library/types';
 import { Author, Citation, CitationPaper } from '../types/citations';
 import { loadJSON } from '../utils';
 
@@ -24,7 +23,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     setIsPopoverVisible(isVisible);
     if (isVisible && !paper) {
       setIsLoading(true);
-      loadJSON(`data/citationPapers/${citation.attributes.paperId}.json`, (data: string) => {
+      loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
         const citationPaperData: CitationPaper = JSON.parse(data);
         setPaper(citationPaperData);
         setIsLoading(false);
@@ -92,37 +91,28 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   }
 
   return (
-    <div>
-      {
-        // Create a BoundingBox/Popover pair for each bounding box in the citation.
-        // This accounts for citations that span multiple pages and avoids buggy popover placement
-        // behavior that occurs when the inner BoundingBox is placed in a loop.
-        citation.attributes.bounding_boxes.map((box: BoundingBoxType, i: number) => {
-          return (
-            <Popover
-              // Passing this ref mounts the popover "inside" the scrollable content area
-              // instead of using the entire browser height.
-              //@ts-ignore there's something wonky with the types here
-              getPopupContainer={() => parentRef.current}
-              content={renderPopoverContent()}
-              trigger="click"
-              key={i}
-              onVisibleChange={handleVisibleChange}>
-              <BoundingBox
-                className={classNames(
-                  'reader__popover__bbox',
-                  `rotate${transformContext.rotation}`,
-                  isPopoverVisible ? 'selected' : ''
-                )}
-                top={box.top}
-                left={box.left}
-                height={box.height}
-                width={box.width}
-              />
-            </Popover>
-          );
-        })
-      }
-    </div>
+    // Create a BoundingBox/Popover pair for each bounding box in the citation.
+    // This accounts for citations that span multiple pages and avoids buggy popover placement
+    // behavior that occurs when the inner BoundingBox is placed in a loop.
+    <Popover
+      // Passing this ref mounts the popover "inside" the scrollable content area
+      // instead of using the entire browser height.
+      //@ts-ignore there's something wonky with the types here
+      getPopupContainer={() => parentRef.current}
+      content={renderPopoverContent()}
+      trigger="click"
+      onVisibleChange={handleVisibleChange}>
+      <BoundingBox
+        className={classNames(
+          'reader__popover__bbox',
+          `rotate${transformContext.rotation}`,
+          isPopoverVisible ? 'selected' : ''
+        )}
+        top={citation.boundingBox.top}
+        left={citation.boundingBox.left}
+        height={citation.boundingBox.height}
+        width={citation.boundingBox.width}
+      />
+    </Popover>
   );
 };
