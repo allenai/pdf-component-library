@@ -14,13 +14,11 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
-import { TransformContext } from './library/context/TransformContext';
 import { Annotations, getAnnotations, PaperAnnotated, PaperRaw } from './types/paper';
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageSize, numPages } = React.useContext(DocumentContext);
-  const { scale, rotation } = React.useContext(TransformContext);
   const [paperRaw, setPaperRaw] = React.useState<PaperRaw>();
   const [paperAnnotated, setPaperAnnotated] = React.useState<PaperAnnotated>();
 
@@ -73,10 +71,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper
                     key={i}
-                    pageIndex={i}
-                    scale={scale}
-                    rotation={rotation}
-                    pageSize={pageSize}>
+                    pageIndex={i}>
                     <Overlay>
                       <HighlightOverlayDemo pageIndex={i} />
                       <TextHighlightDemo pageIndex={i} />
