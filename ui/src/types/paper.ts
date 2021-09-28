@@ -28,11 +28,11 @@ export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, 
     // For the time being, we only support Citation Annotations
     // Add Citations to Annotation map
     if (entity.type === ENTITY_TYPE.CITATION) {
-      const boxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
-      boxesRaw.map(box => {
+      const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
+      boundingBoxesRaw.map(box => {
         // Transform raw bounding box data with respect to page size
-        const boxScaled = boundingBoxRawToScaled(box, pageSize.height, pageSize.width);
-        const citation = makeCitation(entity.attributes.paper_id, boxScaled);
+        const boundingBoxScaled = boundingBoxRawToScaled(box, pageSize.height, pageSize.width);
+        const citation = makeCitation(entity.attributes.paper_id, boundingBoxScaled);
 
         // If this bounding box is associated with a page, add it to
         // the map of page indexes to annotations
