@@ -26,7 +26,7 @@ export type EntityRaw = {
 };
 
 // Calculate a bounding box's pixel coordinates from the raw bounding box's coorditate ratios scaled to the page size
-export function boundingBoxRawToScaled(
+export function scaleRawBoundingBox(
   boundingBoxRaw: BoundingBoxRaw,
   pageHeight: number,
   pageWidth: number

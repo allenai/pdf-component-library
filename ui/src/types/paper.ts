@@ -1,6 +1,6 @@
 import { Size } from '../library/scale';
 import { Citation, makeCitation } from './citations';
-import { BoundingBoxRaw, boundingBoxRawToScaled, ENTITY_TYPE, EntityRaw } from './entity';
+import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
 
 // Raw Paper data as returned from our data source
 export type PaperRaw = {
@@ -31,7 +31,7 @@ export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, 
       const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
       boundingBoxesRaw.map(box => {
         // Transform raw bounding box data with respect to page size
-        const boundingBoxScaled = boundingBoxRawToScaled(box, pageSize.height, pageSize.width);
+        const boundingBoxScaled = scaleRawBoundingBox(box, pageSize.height, pageSize.width);
         const citation = makeCitation(entity.attributes.paper_id, boundingBoxScaled);
 
         // If this bounding box is associated with a page, add it to
