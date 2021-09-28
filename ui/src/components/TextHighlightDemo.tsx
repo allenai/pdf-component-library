@@ -84,5 +84,5 @@ export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }:
     return boxes;
   }
 
-  return <div>{renderHighlightedBoundingBoxes()}</div>;
+  return <React.Fragment>{renderHighlightedBoundingBoxes()}</React.Fragment>;
 };
