@@ -21,7 +21,6 @@ import { loadJSON } from './utils';
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageSize, numPages } = React.useContext(DocumentContext);
   const { scale, rotation } = React.useContext(TransformContext);
-  const [isLoadingJson, setIsLoadingJson] = React.useState(false);
   const [paperRaw, setPaperRaw] = React.useState<PaperRaw>();
   const [paperAnnotated, setPaperAnnotated] = React.useState<PaperAnnotated>();
 
@@ -31,23 +30,18 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
+  // Runs once on initial load
   // Retrieves sample paper data from local JSON file
   React.useEffect(() => {
-    // Run once on initial page load. Don't run again if we are in the process of retreiving
-    // or have already retrieved the JSON data
-    if (!paperRaw && !isLoadingJson) {
-      setIsLoadingJson(true);
-      loadJSON('data/samplePaper_short.json', (data: string) => {
-        const paperRaw = JSON.parse(data);
-        setPaperRaw(paperRaw);
-        setIsLoadingJson(false);
-        setPaperAnnotated({
-          pdfUrl: paperRaw.pdfUrl,
-          annotations: new Map<number, Annotations>(),
-        });
+    loadJSON('data/samplePaper_short.json', (data: string) => {
+      const paperRaw = JSON.parse(data);
+      setPaperRaw(paperRaw);
+      setPaperAnnotated({
+        pdfUrl: paperRaw.pdfUrl,
+        annotations: new Map<number, Annotations>(),
       });
-    }
-  }, [paperRaw]);
+    });
+  }, []);
 
   // Attaches annotation data to paper
   React.useEffect(() => {
