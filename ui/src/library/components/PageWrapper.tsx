@@ -16,8 +16,7 @@ type PageProps = {
   error?: string | React.ReactElement | RenderFunction;
   loading?: string | React.ReactElement | RenderFunction;
   noData?: string | React.ReactElement | RenderFunction;
-  pageIndex?: number;
-  pageNumber?: number;
+  pageIndex: number;
 };
 type Props = {
   className?: string;
@@ -30,7 +29,6 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   loading,
   noData,
   pageIndex,
-  pageNumber,
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
   const { pageSize } = React.useContext(DocumentContext);
@@ -54,15 +52,11 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     };
   }
 
-  // Click events from the Outline only give pageNumber, so we need to be clever when setting the ID.
-  // TODO: #28926 subtask- Settle on one to use--pageIndex or pageNumber. react-pdf seems to prefer the latter
-  const pageNumberForId = pageNumber ? pageNumber : pageIndex ? pageIndex + 1 : 1;
-
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
-    <div id={generatePageId(pageNumberForId)} className="reader__page" style={computeStyle()}>
+    <div id={generatePageId(pageIndex)} className="reader__page" style={computeStyle()}>
       {children}
       <Page
         width={isSideways(rotation) ? pageSize.height : pageSize.width}
@@ -70,7 +64,6 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         loading={loading}
         noData={noData}
         pageIndex={pageIndex}
-        pageNumber={pageNumber}
         scale={scale}
         onClick={onClick}
         rotate={rotation}
