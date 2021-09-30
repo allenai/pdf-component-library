@@ -109,6 +109,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
           `rotate${transformContext.rotation}`,
           isPopoverVisible ? 'selected' : ''
         )}
+        page={citation.boundingBox.page}
         top={citation.boundingBox.top}
         left={citation.boundingBox.left}
         height={citation.boundingBox.height}
