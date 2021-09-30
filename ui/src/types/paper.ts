@@ -26,22 +26,22 @@ export function transformRawAnnotations(annotationsRaw: AnnotationsRaw, pageSize
     if (entity.type === ENTITY_TYPE.CITATION) {
       const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
       boundingBoxesRaw.map(box => {
-        // Transform raw bounding box data with respect to page size
+        // Scale raw bounding box data with respect to page size
         const boundingBoxScaled = scaleRawBoundingBox(box, pageSize.height, pageSize.width);
         const citation = makeCitation(entity.attributes.paper_id, boundingBoxScaled);
-
-        // If this bounding box is associated with a page, add it to
-        // the map of page indexes to annotations
-        if (typeof box.page === 'number') {
-          const annotationsForPage = pageToAnnotationsMap.get(box.page);
-          if (!annotationsForPage) {
-            pageToAnnotationsMap.set(box.page, { citations: [citation] });
-          } else {
-            annotationsForPage.citations.push(citation);
-          }
-        }
+        addCitationToPage(citation, pageToAnnotationsMap);
       });
     }
   });
   return pageToAnnotationsMap;
+}
+
+function addCitationToPage(citation: Citation, pageToAnnotationsMap: PageToAnnotationsMap) {
+  const pageIndex = citation.boundingBox.page;
+  const annotationsForPage = pageToAnnotationsMap.get(pageIndex);
+  if (!annotationsForPage) {
+    pageToAnnotationsMap.set(pageIndex, { citations: [citation] });
+  } else {
+    annotationsForPage.citations.push(citation);
+  }
 }
