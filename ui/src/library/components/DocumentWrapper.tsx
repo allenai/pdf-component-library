@@ -15,10 +15,14 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
   const { setNumPages, setPageSize } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
+  function getFirstPage(pdfDoc: PDFDocumentProxy) {
+    // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
+    return pdfDoc.getPage(1);
+  }
+
   // TODO: #28926 Improve performance by using callbacks for load handlers
   function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
-    // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
-    pdfDoc.getPage(1).then(page => {
+    getFirstPage(pdfDoc).then(page => {
       setPageSize(
         computePageSize({
           userUnit: page.userUnit,
