@@ -14,12 +14,19 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
-import { Annotations, AnnotationsRaw, PageToAnnotationsMap, transformRawAnnotations } from './types/annotations';
+import {
+  Annotations,
+  AnnotationsRaw,
+  PageToAnnotationsMap,
+  transformRawAnnotations,
+} from './types/annotations';
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageSize, numPages } = React.useContext(DocumentContext);
-  const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(new Map<number, Annotations>());
+  const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
+    new Map<number, Annotations>()
+  );
   const [annotationsRaw, setAnnotationsRaw] = React.useState<AnnotationsRaw>();
 
   // ref for the div in which the Document component renders
@@ -29,7 +36,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   // TODO: #28639 Get PDF URL from query parameters instead of hardcoding
-  const pdfUrl = "https://arxiv.org/pdf/1512.02595v1.pdf";
+  const pdfUrl = 'https://arxiv.org/pdf/1512.02595v1.pdf';
 
   // Runs once on initial load
   // Retrieves sample annotation data from local JSON file
@@ -54,10 +61,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       <Route path="/">
         <div className="reader__container">
           <Header />
-          <DocumentWrapper
-            className="reader__main"
-            file={pdfUrl}
-            inputRef={pdfContentRef}>
+          <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (

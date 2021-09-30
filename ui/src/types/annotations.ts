@@ -16,7 +16,10 @@ export type Annotations = {
 // Stores a map of page indexes to the annotations for that page
 export type PageToAnnotationsMap = Map<number, Annotations>;
 
-export function transformRawAnnotations(annotationsRaw: AnnotationsRaw, pageSize: Size): PageToAnnotationsMap {
+export function transformRawAnnotations(
+  annotationsRaw: AnnotationsRaw,
+  pageSize: Size
+): PageToAnnotationsMap {
   // Start with all entities in raw format
   const pageToAnnotationsMap = new Map<number, Annotations>();
   const entitiesRaw = annotationsRaw.entities;

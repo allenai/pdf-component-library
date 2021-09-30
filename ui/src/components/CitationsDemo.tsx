@@ -32,9 +32,5 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
     return citationPopovers;
   }
 
-  return (
-    <React.Fragment>
-      {annotations.get(pageIndex) && renderCitations()}
-    </React.Fragment>
-  );
+  return <React.Fragment>{annotations.get(pageIndex) && renderCitations()}</React.Fragment>;
 };
