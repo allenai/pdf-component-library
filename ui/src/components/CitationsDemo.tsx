@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { PageToAnnotationsMap } from '../types/paper';
+import { PageToAnnotationsMap } from '../types/annotations';
 import { CitationPopover } from './CitationPopover';
 
 type Props = {

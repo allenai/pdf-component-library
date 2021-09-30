@@ -14,7 +14,7 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
-import { Annotations, AnnotationsRaw, PageToAnnotationsMap, transformRawAnnotations } from './types/paper';
+import { Annotations, AnnotationsRaw, PageToAnnotationsMap, transformRawAnnotations } from './types/annotations';
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
