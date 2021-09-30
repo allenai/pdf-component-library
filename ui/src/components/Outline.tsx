@@ -23,8 +23,9 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
 
   // Convert from pageNumber to pageIndex
   // pageNumber is 1-indexed, pageIndex is 0-indexed
+  // Returns -1 if if given a pageNumber <= 0
   function convertPageNumberToPageIndex(pageNumber: number): number {
-    return pageNumber - 1;
+    return Math.max(-1, pageNumber - 1);
   }
 
   function handleHideOutline(): void {
