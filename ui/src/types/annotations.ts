@@ -31,8 +31,10 @@ export function transformRawAnnotations(
       boundingBoxesRaw.map(box => {
         // Scale raw bounding box data with respect to page size
         const boundingBoxScaled = scaleRawBoundingBox(box, pageSize.height, pageSize.width);
-        const citation = makeCitation(entity.attributes.paper_id, boundingBoxScaled);
-        addCitationToPage(citation, pageToAnnotationsMap);
+        const citation = makeCitation(entity.id, entity.attributes.paper_id, boundingBoxScaled);
+        if (citation) {
+          addCitationToPage(citation, pageToAnnotationsMap);
+        }
       });
     }
   });

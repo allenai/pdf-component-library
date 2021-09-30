@@ -25,7 +25,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
       const citations = entitiesForPage.citations;
       citations.map((citation, i) => {
         citationPopovers.push(
-          <CitationPopover key={i} citation={citation} parentRef={parentRef} />
+          <CitationPopover key={citation.id} citation={citation} parentRef={parentRef} />
         );
       });
     }

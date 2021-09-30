@@ -29,14 +29,21 @@ export type CitationPaper = {
 
 // UI model for bounding box and citation paper associated with a CitationPopover
 export type Citation = {
+  id: number;
   boundingBox: BoundingBox;
   paperId: string;
   paper: CitationPaper | null;
 };
 
 // Create a new Citation object
-export function makeCitation(paperId: string, boundingBox: BoundingBox): Citation {
+export function makeCitation(idString: string, paperId: string, boundingBox: BoundingBox): Citation | null {
+  const id = parseInt(idString);
+  if (isNaN(id)) {
+    return null;
+  }
+
   return {
+    id,
     boundingBox,
     paperId,
     paper: null,
