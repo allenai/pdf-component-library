@@ -2,9 +2,8 @@ import { Size } from '../library/scale';
 import { Citation, makeCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
 
-// Raw Paper data as returned from our data source
-export type PaperRaw = {
-  pdfUrl: string;
+// Raw annotation/entity data as returned from our data source
+export type AnnotationsRaw = {
   entities: Array<EntityRaw>;
 };
 
@@ -15,15 +14,12 @@ export type Annotations = {
 };
 
 // Stores a map of page indexes to the annotations for that page
-export type PaperAnnotated = {
-  pdfUrl: string;
-  annotations: Map<number, Annotations>;
-};
+export type PageToAnnotationsMap = Map<number, Annotations>;
 
-export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, Annotations> {
+export function transformRawAnnotations(annotationsRaw: AnnotationsRaw, pageSize: Size): PageToAnnotationsMap {
   // Start with all entities in raw format
-  const annotations = new Map<number, Annotations>();
-  const entitiesRaw = paperRaw.entities;
+  const pageToAnnotationsMap = new Map<number, Annotations>();
+  const entitiesRaw = annotationsRaw.entities;
   entitiesRaw.map(entity => {
     // For the time being, we only support Citation Annotations
     // Add Citations to Annotation map
@@ -37,9 +33,9 @@ export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, 
         // If this bounding box is associated with a page, add it to
         // the map of page indexes to annotations
         if (typeof box.page === 'number') {
-          const annotationsForPage = annotations.get(box.page);
+          const annotationsForPage = pageToAnnotationsMap.get(box.page);
           if (!annotationsForPage) {
-            annotations.set(box.page, { citations: [citation] });
+            pageToAnnotationsMap.set(box.page, { citations: [citation] });
           } else {
             annotationsForPage.citations.push(citation);
           }
@@ -47,5 +43,5 @@ export function getAnnotations(paperRaw: PaperRaw, pageSize: Size): Map<number, 
       });
     }
   });
-  return annotations;
+  return pageToAnnotationsMap;
 }

@@ -14,13 +14,13 @@ import { DocumentWrapper } from './library/components/DocumentWrapper';
 import { Overlay } from './library/components/Overlay';
 import { PageWrapper } from './library/components/PageWrapper';
 import { DocumentContext } from './library/context/DocumentContext';
-import { Annotations, getAnnotations, PaperAnnotated, PaperRaw } from './types/paper';
+import { Annotations, AnnotationsRaw, PageToAnnotationsMap, transformRawAnnotations } from './types/paper';
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageSize, numPages } = React.useContext(DocumentContext);
-  const [paperRaw, setPaperRaw] = React.useState<PaperRaw>();
-  const [paperAnnotated, setPaperAnnotated] = React.useState<PaperAnnotated>();
+  const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(new Map<number, Annotations>());
+  const [annotationsRaw, setAnnotationsRaw] = React.useState<AnnotationsRaw>();
 
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
@@ -28,63 +28,53 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
+  const pdfUrl = "https://arxiv.org/pdf/1512.02595v1.pdf";
+
   // Runs once on initial load
-  // Retrieves sample paper data from local JSON file
+  // Retrieves sample annotation data from local JSON file
   React.useEffect(() => {
     loadJSON('data/samplePaper_short.json', (data: string) => {
-      const paperRaw = JSON.parse(data);
-      setPaperRaw(paperRaw);
-      setPaperAnnotated({
-        pdfUrl: paperRaw.pdfUrl,
-        annotations: new Map<number, Annotations>(),
-      });
+      setAnnotationsRaw(JSON.parse(data));
     });
   }, []);
 
   // Attaches annotation data to paper
   React.useEffect(() => {
     // Run once, after paper data and PDF document have loaded
-    if (!paperRaw || !pageSize.height || !pageSize.width) {
+    if (!annotationsRaw || !pageSize.height || !pageSize.width) {
       return;
     }
-    const annotations = getAnnotations(paperRaw, pageSize);
-    setPaperAnnotated({
-      pdfUrl: paperRaw.pdfUrl,
-      annotations,
-    });
-  }, [paperRaw, pageSize]);
+
+    setAnnotations(transformRawAnnotations(annotationsRaw, pageSize));
+  }, [annotationsRaw, pageSize]);
 
   return (
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          <div className="reader__header">
-            <Header />
-          </div>
-          {paperRaw && (
-            <DocumentWrapper
-              className="reader__main"
-              file={paperRaw.pdfUrl}
-              inputRef={pdfContentRef}>
-              <Outline parentRef={pdfContentRef} />
-              <div className="reader__page-list" ref={pdfScrollableRef}>
-                {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper key={i} pageIndex={i}>
-                    <Overlay>
-                      <HighlightOverlayDemo pageIndex={i} />
-                      <TextHighlightDemo pageIndex={i} />
-                      <ScrollToDemo pageIndex={i} />
-                      <CitationsDemo
-                        pageIndex={i}
-                        paperAnnotated={paperAnnotated}
-                        parentRef={pdfScrollableRef}
-                      />
-                    </Overlay>
-                  </PageWrapper>
-                ))}
-              </div>
-            </DocumentWrapper>
-          )}
+          <Header />
+          <DocumentWrapper
+            className="reader__main"
+            file={pdfUrl}
+            inputRef={pdfContentRef}>
+            <Outline parentRef={pdfContentRef} />
+            <div className="reader__page-list" ref={pdfScrollableRef}>
+              {Array.from({ length: numPages }).map((_, i) => (
+                <PageWrapper key={i} pageIndex={i}>
+                  <Overlay>
+                    <HighlightOverlayDemo pageIndex={i} />
+                    <TextHighlightDemo pageIndex={i} />
+                    <ScrollToDemo pageIndex={i} />
+                    <CitationsDemo
+                      annotations={annotations}
+                      pageIndex={i}
+                      parentRef={pdfScrollableRef}
+                    />
+                  </Overlay>
+                </PageWrapper>
+              ))}
+            </div>
+          </DocumentWrapper>
         </div>
       </Route>
     </BrowserRouter>
