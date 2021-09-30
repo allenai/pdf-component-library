@@ -51,7 +51,7 @@ describe('<HighlightOverlay/>', () => {
 
   it('renders on its own without issue', () => {
     mountWithContexts(
-      <HighlightOverlay pageNumber={1} />,
+      <HighlightOverlay pageIndex={0} />,
       mockDocumentContext,
       mockTransformContext
     );
@@ -59,7 +59,7 @@ describe('<HighlightOverlay/>', () => {
 
   it('sets mask ID based on page number', () => {
     const wrapper = mountWithContexts(
-      <HighlightOverlay pageNumber={345} />,
+      <HighlightOverlay pageIndex={345} />,
       mockDocumentContext,
       mockTransformContext
     );
@@ -72,7 +72,7 @@ describe('<HighlightOverlay/>', () => {
   describe('pixel size', () => {
     it('matches the pixel size of the page [outer wrapper div]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         mockTransformContext
       );
@@ -86,7 +86,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('matches the pixel size of the page [SVG element]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         mockTransformContext
       );
@@ -101,7 +101,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('matches the pixel size of the page [masked rect elements]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         mockTransformContext
       );
@@ -129,7 +129,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page scaling [outer wrapper div]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -144,7 +144,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page scaling [SVG element]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -160,7 +160,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page scaling [masked rect elements]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -190,7 +190,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page rotation [outer wrapper div]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -205,7 +205,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page rotation [SVG element]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -221,7 +221,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('responds to page rotation [masked rect elements]', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         transformContext
       );
@@ -246,7 +246,7 @@ describe('<HighlightOverlay/>', () => {
   describe('rendering unmasked content', () => {
     it('renders no unmasked rects when no children are given', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1} />,
+        <HighlightOverlay pageIndex={0} />,
         mockDocumentContext,
         mockTransformContext
       );
@@ -257,7 +257,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders 1 unmasked rect when 1 child is given', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1}>
+        <HighlightOverlay pageIndex={0}>
           <BoundingBox top={12} left={34} height={56} width={78} />
         </HighlightOverlay>,
         mockDocumentContext,
@@ -272,7 +272,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders 2 unmasked rects when 2 children are given', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1}>
+        <HighlightOverlay pageIndex={0}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
         </HighlightOverlay>,
@@ -290,7 +290,7 @@ describe('<HighlightOverlay/>', () => {
 
     it('renders no 3 rects when 3 children are given', () => {
       const wrapper = mountWithContexts(
-        <HighlightOverlay pageNumber={1}>
+        <HighlightOverlay pageIndex={0}>
           <BoundingBox top={12} left={34} height={56} width={78} />
           <BoundingBox top={98} left={76} height={54} width={32} />
           <BoundingBox top={101} left={23} height={45} width={67} />

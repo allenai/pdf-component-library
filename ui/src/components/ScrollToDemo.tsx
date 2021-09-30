@@ -3,7 +3,6 @@ import * as React from 'react';
 import { BoundingBox } from '../library/components/BoundingBox';
 
 type Props = {
-  // TODO: #28926 subtask choose between pageNumber/pageIndex
   pageIndex: number;
 };
 

@@ -6,7 +6,6 @@ import { UiContext } from '../library/context/UiContext';
 import { BoundingBox as BoundingBoxType } from '../library/types';
 
 type Props = {
-  // TODO: #28926 subtask choose between pageNumber/pageIndex
   pageIndex: number;
 };
 
@@ -18,9 +17,6 @@ export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex
   if (!isShowingHighlightOverlay) {
     return null;
   }
-
-  // TODO: #28926 subtask choose between pageNumber/pageIndex
-  const pageNumber = pageIndex + 1;
 
   function getBoundingBoxProps(): Array<BoundingBoxType> {
     return [
@@ -95,7 +91,7 @@ export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex
   }
 
   return (
-    <HighlightOverlay pageNumber={pageNumber}>
+    <HighlightOverlay pageIndex={pageIndex}>
       {renderHighlightOverlayBoundingBoxes()}
     </HighlightOverlay>
   );

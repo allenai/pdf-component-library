@@ -5,7 +5,6 @@ import { UiContext } from '../library/context/UiContext';
 import { BoundingBox as BoundingBoxType } from '../library/types';
 
 type Props = {
-  // TODO: #28926 subtask choose between pageNumber/pageIndex
   pageIndex: number;
 };
 

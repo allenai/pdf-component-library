@@ -2,8 +2,8 @@
 // e.g. reader_pg_0, reader_pg_1, etc.
 const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
 
-export function generatePageId(pageNum: number | string): string {
-  return `${PAGE_NAV_TARGET_ID_ROOT}${pageNum}`;
+export function generatePageId(pageIndex: number | string): string {
+  return `${PAGE_NAV_TARGET_ID_ROOT}${pageIndex}`;
 }
 
 export function scrollTo(id: string): void {
@@ -15,6 +15,6 @@ export function scrollTo(id: string): void {
   }
 }
 
-export function scrollToPdfPage(pageNum: number | string): void {
-  scrollTo(generatePageId(pageNum));
+export function scrollToPdfPage(pageIndex: number | string): void {
+  scrollTo(generatePageId(pageIndex));
 }
