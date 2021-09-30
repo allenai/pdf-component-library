@@ -23,7 +23,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
     const entitiesForPage = annotations.get(pageIndex);
     if (entitiesForPage) {
       const citations = entitiesForPage.citations;
-      citations.map((citation, i) => {
+      citations.map(citation => {
         citationPopovers.push(
           <CitationPopover key={citation.id} citation={citation} parentRef={parentRef} />
         );

@@ -36,7 +36,11 @@ export type Citation = {
 };
 
 // Create a new Citation object
-export function makeCitation(idString: string, paperId: string, boundingBox: BoundingBox): Citation | null {
+export function makeCitation(
+  idString: string,
+  paperId: string,
+  boundingBox: BoundingBox
+): Citation | null {
   const id = parseInt(idString);
   if (isNaN(id)) {
     return null;
