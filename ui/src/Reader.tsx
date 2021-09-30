@@ -28,6 +28,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
+  // TODO: #28639 Get PDF URL from query parameters instead of hardcoding
   const pdfUrl = "https://arxiv.org/pdf/1512.02595v1.pdf";
 
   // Runs once on initial load
@@ -40,7 +41,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
   // Attaches annotation data to paper
   React.useEffect(() => {
-    // Run once, after paper data and PDF document have loaded
+    // Don't execute until paper data and PDF document have loaded
     if (!annotationsRaw || !pageSize.height || !pageSize.width) {
       return;
     }
