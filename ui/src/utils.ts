@@ -24,3 +24,15 @@ export function unwrap(value: string | string[] | undefined | null, defaultValue
     return value;
   }
 }
+
+export function loadJSON(path: string, callback: (responseText: string) => void): void {
+  const request = new XMLHttpRequest();
+  request.overrideMimeType('application/json');
+  request.open('GET', path, true);
+  request.onreadystatechange = () => {
+    if (request.readyState === 4 && request.status === 200) {
+      callback(request.responseText);
+    }
+  };
+  request.send(null);
+}

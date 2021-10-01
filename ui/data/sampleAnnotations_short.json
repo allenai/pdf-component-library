@@ -1,0 +1,55 @@
+{
+  "entities": [
+    {
+      "id": "15008337",
+      "type": "citation",
+      "attributes": {
+        "paper_id": "24741d280869ad9c60321f5ab6e5f01b7852507d",
+        "bounding_boxes": [
+          {
+            "page": 0,
+            "left": 0.292484,
+            "top": 0.469697,
+            "width": 0.0147059,
+            "height": 0.00883838
+          }
+        ]
+      },
+      "relationships": {}
+    },
+    {
+      "id": "15008338",
+      "type": "citation",
+      "attributes": {
+        "paper_id": "24741d280869ad9c60321f5ab6e5f01b7852507d",
+        "bounding_boxes": [
+          {
+            "page": 0,
+            "left": 0.772876,
+            "top": 0.64899,
+            "width": 0.0147059,
+            "height": 0.00883838
+          }
+        ]
+      },
+      "relationships": {}
+    },
+    {
+      "id": "15008339",
+      "type": "citation",
+      "attributes": {
+        "paper_id": "24741d280869ad9c60321f5ab6e5f01b7852507d",
+        "bounding_boxes": [
+          {
+            "page": 0,
+            "left": 0.787582,
+            "top": 0.77399,
+            "width": 0.0130719,
+            "height": 0.00883838
+          }
+        ]
+      },
+      "relationships": {}
+    }
+  ]
+}
