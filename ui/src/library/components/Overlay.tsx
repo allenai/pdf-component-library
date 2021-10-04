@@ -12,12 +12,16 @@ type Props = {
 export const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => {
   const { pageSize } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
-  const style = {
-    width: isSideways(rotation) ? pageSize.height : pageSize.width * scale,
-    height: isSideways(rotation) ? pageSize.width : pageSize.height * scale,
-  };
+
+  const computeStyle = React.useCallback(() => {
+    return {
+      width: isSideways(rotation) ? pageSize.height : pageSize.width * scale,
+      height: isSideways(rotation) ? pageSize.width : pageSize.height * scale,
+    };
+  }, [rotation, scale, pageSize, pageSize.height, pageSize.width]);
+
   return (
-    <div className="reader__page-overlay" style={style}>
+    <div className="reader__page-overlay" style={computeStyle()}>
       {children}
     </div>
   );
