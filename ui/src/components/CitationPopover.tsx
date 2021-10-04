@@ -32,7 +32,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     }
   }
 
-  function renderLink(text: string, url?: string): React.ReactNode {
+  const renderLink = React.useCallback((text: string, url?: string) => {
     if (url) {
       return (
         <a href={url} target="_blank" rel="noreferrer">
@@ -41,9 +41,9 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       );
     }
     return <span>{text}</span>;
-  }
+  }, []);
 
-  function renderAuthorNames(authors: Array<Author>): React.ReactNode {
+  const renderAuthorNames = React.useCallback((authors: Array<Author>) => {
     if (!authors || !authors.length) {
       return null;
     }
@@ -63,7 +63,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         </span>
       );
     });
-  }
+  }, []);
 
   const renderPaperSummary = React.useCallback((paper: CitationPaper) => {
     const { abstract, authors, title, url, year } = paper;

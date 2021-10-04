@@ -15,12 +15,16 @@ export const SimpleZoomControl: React.FunctionComponent = () => {
     setScale(scale / ZOOM_MULTIPLIER);
   }, [scale]);
 
+  const renderLabel = React.useCallback(() => {
+    return <span>{PercentFormatter.format(scale)}</span>;
+  }, [scale]);
+
   return (
     <span>
       <a className="hacky-zoom-button" onClick={handleZoomOut}>
         -
       </a>
-      <span>{PercentFormatter.format(scale)}</span>
+      {renderLabel()}
       <a className="hacky-zoom-button" onClick={handleZoomIn}>
         +
       </a>
