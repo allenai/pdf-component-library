@@ -53,7 +53,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     });
   }
 
-  function renderPopoverContent(): React.ReactFragment {
+  const renderPopoverContent = React.useCallback(() => {
     const { abstract, authors, title, url, year } = citation.attributes.paper;
     return (
       <div className="reader__popover__citation">
@@ -63,7 +63,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         <p className="reader__popover__citation-abstract">{abstract}</p>
       </div>
     );
-  }
+  }, [citation]);
 
   return (
     <div>
