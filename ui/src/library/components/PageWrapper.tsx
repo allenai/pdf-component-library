@@ -39,18 +39,22 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return null;
   }
 
-  function onClick(e: unknown): void {
+  const onClick = React.useCallback((e: unknown) => {
     console.log(e);
-  }
+  }, []);
 
-  function computeStyle(): { width: number } | undefined {
+  const getPageWidth = React.useCallback(() => {
+    return (isSideways(rotation) ? pageSize.height : pageSize.width);
+  }, [rotation, pageSize]);
+
+  const computeStyle = React.useCallback(() => {
     if (!pageSize) {
       return undefined;
     }
     return {
-      width: (isSideways(rotation) ? pageSize.height : pageSize.width) * scale,
+      width: getPageWidth() * scale,
     };
-  }
+  }, [scale, pageSize, pageSize.height, pageSize.width]);
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
@@ -59,7 +63,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     <div id={generatePageId(pageIndex)} className="reader__page" style={computeStyle()}>
       {children}
       <Page
-        width={isSideways(rotation) ? pageSize.height : pageSize.width}
+        width={getPageWidth()}
         error={error}
         loading={loading}
         noData={noData}
