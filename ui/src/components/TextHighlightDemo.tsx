@@ -21,24 +21,45 @@ export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }:
     return [
       {
         page: 0,
-        top: 280,
-        left: 250,
-        height: 20,
-        width: 420,
+        top: 170,
+        left: 415,
+        height: 30,
+        width: 110,
       },
       {
         page: 0,
-        top: 300,
-        left: 130,
-        height: 55,
-        width: 540,
+        top: 421,
+        left: 283,
+        height: 15,
+        width: 55,
       },
       {
         page: 0,
-        top: 355,
-        left: 130,
-        height: 20,
-        width: 225,
+        top: 830,
+        left: 387,
+        height: 15,
+        width: 56,
+      },
+      {
+        page: 1,
+        top: 213,
+        left: 315,
+        height: 15,
+        width: 55,
+      },
+      {
+        page: 1,
+        top: 477,
+        left: 395,
+        height: 15,
+        width: 55,
+      },
+      {
+        page: 1,
+        top: 844,
+        left: 618,
+        height: 15,
+        width: 55,
       },
     ];
   }
@@ -62,5 +83,5 @@ export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }:
     return boxes;
   }
 
-  return <div>{renderHighlightedBoundingBoxes()}</div>;
+  return <React.Fragment>{renderHighlightedBoundingBoxes()}</React.Fragment>;
 };

@@ -12,5 +12,5 @@ export type Size = {
 };
 
 export type BoundingBox = {
-  page?: number;
+  page: number;
 } & Size;

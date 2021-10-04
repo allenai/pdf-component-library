@@ -94,3 +94,32 @@ export function computeStyleWithContext(
       };
   }
 }
+
+// Raw bounding box size attributes are designated as a percentage of total page height/width.
+// Bounding boxes need to be scaled relative to the current page size before they can be rendered.
+export function scaleRawBoundingBoxWithContext(
+  box: BoundingBoxType,
+  documentContext: IDocumentContext,
+  transformContext: ITransformContext
+): BoundingBoxType {
+  const { pageSize } = documentContext;
+  const scaledToPageSize = {
+    top: box.top * pageSize.height,
+    left: box.left * pageSize.width,
+    height: box.height * pageSize.height,
+    width: box.width * pageSize.width,
+  };
+
+  const transformedSize = computeStyleWithContext(
+    scaledToPageSize.top,
+    scaledToPageSize.left,
+    scaledToPageSize.height,
+    scaledToPageSize.width,
+    documentContext,
+    transformContext
+  );
+  return {
+    page: box.page,
+    ...transformedSize,
+  };
+}

@@ -58,7 +58,7 @@ export const Header: React.FunctionComponent = () => {
     setIsShowingTextHighlight(false);
     setIsShowingHighlightOverlay(false);
 
-    const id = 'demoFigure_1';
+    const id = 'demoFigure';
     scrollTo(id);
   }, []);
 
