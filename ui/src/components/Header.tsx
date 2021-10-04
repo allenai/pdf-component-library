@@ -20,7 +20,6 @@ export const Header: React.FunctionComponent = () => {
     setIsShowingOutline(true);
   }, []);
 
-
   const handleRotateCW = React.useCallback(() => {
     setRotation(rotateClockwise(rotation));
   }, [rotation]);
@@ -28,7 +27,6 @@ export const Header: React.FunctionComponent = () => {
   const handleRotateCCW = React.useCallback(() => {
     setRotation(rotateCounterClockwise(rotation));
   }, [rotation]);
-
 
   // TODO: #29079 remove this once UI design is finalized
   const handleToggleHighlightOverlay = React.useCallback(() => {

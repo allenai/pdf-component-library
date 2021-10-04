@@ -44,7 +44,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   }, []);
 
   const getPageWidth = React.useCallback(() => {
-    return (isSideways(rotation) ? pageSize.height : pageSize.width);
+    return isSideways(rotation) ? pageSize.height : pageSize.width;
   }, [rotation, pageSize]);
 
   const computeStyle = React.useCallback(() => {
