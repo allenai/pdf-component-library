@@ -14,22 +14,22 @@ type Props = {
 export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) => {
   const { isShowingOutline, setIsShowingOutline } = React.useContext(UiContext);
 
+  const handleHideOutline = React.useCallback(() => {
+    setIsShowingOutline(false);
+  }, []);
+
   // Click events from the Outline only give a pageNumber, not a pageIndex
-  function handleOutlineClick({ pageNumber }: { pageNumber: string }): void {
+  const handleOutlineClick = React.useCallback(({ pageNumber }: { pageNumber: string }) => {
     // Page IDs are based on index, so convert pageNumber to pageIndex before scrolling
     const pageIndex = convertPageNumberToPageIndex(Number.parseInt(pageNumber));
     scrollToPdfPage(pageIndex);
-  }
+  }, []);
 
   // Convert from pageNumber to pageIndex
   // pageNumber is 1-indexed, pageIndex is 0-indexed
   // Returns -1 if if given a pageNumber <= 0
   function convertPageNumberToPageIndex(pageNumber: number): number {
     return Math.max(-1, pageNumber - 1);
-  }
-
-  function handleHideOutline(): void {
-    setIsShowingOutline(false);
   }
 
   return (
