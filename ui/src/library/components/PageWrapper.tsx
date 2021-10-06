@@ -47,14 +47,14 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return isSideways(rotation) ? pageSize.height : pageSize.width;
   }, [rotation, pageSize]);
 
-  const computeStyle = React.useCallback(() => {
+  function computeStyle() {
     if (!pageSize) {
       return undefined;
     }
     return {
       width: getPageWidth() * scale,
     };
-  }, [scale, pageSize, pageSize.height, pageSize.width]);
+  };
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
