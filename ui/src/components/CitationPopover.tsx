@@ -35,7 +35,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     [citation, paper]
   );
 
-  function renderLink(text: string, url?: string) {
+  function renderLink(text: string, url?: string): React.ReactNode {
     if (url) {
       return (
         <a href={url} target="_blank" rel="noreferrer">
@@ -46,7 +46,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     return <span>{text}</span>;
   }
 
-  function renderAuthorNames(authors: Array<Author>) {
+  function renderAuthorNames(authors: Array<Author>): React.ReactNode {
     if (!authors || !authors.length) {
       return null;
     }
@@ -68,7 +68,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     });
   }
 
-  function renderPaperSummary(paper: CitationPaper) {
+  function renderPaperSummary(paper: CitationPaper): React.ReactNode {
     const { abstract, authors, title, url, year } = paper;
     const shortenedAbstract = abstract ? abstract.substring(0, ABSTRACT_MAX_LENGTH) : null;
     return (
