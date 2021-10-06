@@ -54,7 +54,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return {
       width: getPageWidth() * scale,
     };
-  };
+  }
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.

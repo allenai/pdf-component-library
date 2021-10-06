@@ -20,17 +20,20 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   const [paper, setPaper] = React.useState<CitationPaper>();
 
   // Handler triggered when Ant Popover is shown or hidden
-  const handleVisibleChange = React.useCallback((isVisible: boolean) => {
-    setIsPopoverVisible(isVisible);
-    if (isVisible && !paper) {
-      setIsLoading(true);
-      loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
-        const citationPaperData: CitationPaper = JSON.parse(data);
-        setPaper(citationPaperData);
-        setIsLoading(false);
-      });
-    }
-  }, [citation, paper]);
+  const handleVisibleChange = React.useCallback(
+    (isVisible: boolean) => {
+      setIsPopoverVisible(isVisible);
+      if (isVisible && !paper) {
+        setIsLoading(true);
+        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
+          const citationPaperData: CitationPaper = JSON.parse(data);
+          setPaper(citationPaperData);
+          setIsLoading(false);
+        });
+      }
+    },
+    [citation, paper]
+  );
 
   function renderLink(text: string, url?: string) {
     if (url) {
