@@ -20,7 +20,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   const [paper, setPaper] = React.useState<CitationPaper>();
 
   // Handler triggered when Ant Popover is shown or hidden
-  function handleVisibleChange(isVisible: boolean) {
+  const handleVisibleChange = React.useCallback((isVisible: boolean) => {
     setIsPopoverVisible(isVisible);
     if (isVisible && !paper) {
       setIsLoading(true);
@@ -30,9 +30,9 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         setIsLoading(false);
       });
     }
-  }
+  }, [citation, paper]);
 
-  const renderLink = React.useCallback((text: string, url?: string) => {
+  function renderLink(text: string, url?: string) {
     if (url) {
       return (
         <a href={url} target="_blank" rel="noreferrer">
@@ -41,9 +41,9 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       );
     }
     return <span>{text}</span>;
-  }, []);
+  }
 
-  const renderAuthorNames = React.useCallback((authors: Array<Author>) => {
+  function renderAuthorNames(authors: Array<Author>) {
     if (!authors || !authors.length) {
       return null;
     }
@@ -63,9 +63,9 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         </span>
       );
     });
-  }, []);
+  }
 
-  const renderPaperSummary = React.useCallback((paper: CitationPaper) => {
+  function renderPaperSummary(paper: CitationPaper) {
     const { abstract, authors, title, url, year } = paper;
     const shortenedAbstract = abstract ? abstract.substring(0, ABSTRACT_MAX_LENGTH) : null;
     return (
@@ -80,7 +80,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         )}
       </div>
     );
-  }, []);
+  }
 
   const renderPopoverContent = React.useCallback(() => {
     return (
@@ -100,7 +100,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
       getPopupContainer={() => parentRef.current}
-      content={renderPopoverContent()}
+      content={renderPopoverContent}
       trigger="click"
       onVisibleChange={handleVisibleChange}>
       <BoundingBox
