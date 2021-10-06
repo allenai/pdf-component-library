@@ -5,7 +5,6 @@ import { CitationPopover } from './CitationPopover';
 
 type Props = {
   annotations: PageToAnnotationsMap;
-  // TODO: #28926 subtask choose between pageNumber/pageIndex
   pageIndex: number;
   parentRef: React.RefObject<HTMLDivElement>;
 };

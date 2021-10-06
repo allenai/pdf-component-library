@@ -20,8 +20,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
     return pdfDoc.getPage(1);
   }
 
-  // TODO: #28926 Improve performance by using callbacks for load handlers
-  function onPdfLoadSuccess(pdfDoc: PDFDocumentProxy): void {
+  const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy) => {
     getFirstPage(pdfDoc).then(page => {
       setPageSize(
         computePageSize({
@@ -34,13 +33,12 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
     setIsLoading(false);
     setNumPages(pdfDoc.numPages);
     setErrorMessage(null);
-  }
+  }, []);
 
-  // TODO: #28926 Improve performance by using callbacks for load handlers
-  function onPdfLoadError(error: unknown): void {
+  const onPdfLoadError = React.useCallback((error: unknown) => {
     setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
-  }
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function getErrorMessage(error: any): string {

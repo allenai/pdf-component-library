@@ -20,17 +20,20 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   const [paper, setPaper] = React.useState<CitationPaper>();
 
   // Handler triggered when Ant Popover is shown or hidden
-  function handleVisibleChange(isVisible: boolean) {
-    setIsPopoverVisible(isVisible);
-    if (isVisible && !paper) {
-      setIsLoading(true);
-      loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
-        const citationPaperData: CitationPaper = JSON.parse(data);
-        setPaper(citationPaperData);
-        setIsLoading(false);
-      });
-    }
-  }
+  const handleVisibleChange = React.useCallback(
+    (isVisible: boolean) => {
+      setIsPopoverVisible(isVisible);
+      if (isVisible && !paper) {
+        setIsLoading(true);
+        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
+          const citationPaperData: CitationPaper = JSON.parse(data);
+          setPaper(citationPaperData);
+          setIsLoading(false);
+        });
+      }
+    },
+    [citation, paper]
+  );
 
   function renderLink(text: string, url?: string): React.ReactNode {
     if (url) {
@@ -65,7 +68,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     });
   }
 
-  function renderPaperSummary(paper: CitationPaper): React.ReactElement | null {
+  function renderPaperSummary(paper: CitationPaper): React.ReactNode {
     const { abstract, authors, title, url, year } = paper;
     const shortenedAbstract = abstract ? abstract.substring(0, ABSTRACT_MAX_LENGTH) : null;
     return (
@@ -82,14 +85,14 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     );
   }
 
-  function renderPopoverContent(): React.ReactNode {
+  const renderPopoverContent = React.useCallback(() => {
     return (
       <div className="reader__popover__citation">
         {isLoading && <p className="popover__citation-loading">Loading...</p>}
         {paper && renderPaperSummary(paper)}
       </div>
     );
-  }
+  }, [isLoading, paper]);
 
   return (
     // Create a BoundingBox/Popover pair for each bounding box in the citation.
@@ -100,7 +103,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
       getPopupContainer={() => parentRef.current}
-      content={renderPopoverContent()}
+      content={renderPopoverContent}
       trigger="click"
       onVisibleChange={handleVisibleChange}>
       <BoundingBox

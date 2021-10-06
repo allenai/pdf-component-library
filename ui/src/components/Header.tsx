@@ -16,20 +16,20 @@ export const Header: React.FunctionComponent = () => {
   } = React.useContext(UiContext);
   const { rotation, setRotation } = React.useContext(TransformContext);
 
-  function handleShowOutline(): void {
+  const handleShowOutline = React.useCallback(() => {
     setIsShowingOutline(true);
-  }
+  }, []);
 
-  function handleRotateCW(): void {
+  const handleRotateCW = React.useCallback(() => {
     setRotation(rotateClockwise(rotation));
-  }
+  }, [rotation]);
 
-  function handleRotateCCW(): void {
+  const handleRotateCCW = React.useCallback(() => {
     setRotation(rotateCounterClockwise(rotation));
-  }
+  }, [rotation]);
 
   // TODO: #29079 remove this once UI design is finalized
-  function handleToggleHighlightOverlay(): void {
+  const handleToggleHighlightOverlay = React.useCallback(() => {
     // Store new value in a temp variable because state value updates are batched and
     // executed once this function returns. Otherwise we won't get the correct value
     // for isShowingHighlightOverlay down below
@@ -39,10 +39,10 @@ export const Header: React.FunctionComponent = () => {
     if (newVal) {
       setIsShowingTextHighlight(false);
     }
-  }
+  }, [isShowingHighlightOverlay]);
 
   // TODO: #29079 remove this once UI design is finalized
-  function handleToggleTextHighlight(): void {
+  const handleToggleTextHighlight = React.useCallback(() => {
     // Store new value in a temp variable because state value updates are batched and
     // executed once this function returns. Otherwise we won't get the correct value
     // for isShowingTextHighlight down below
@@ -51,16 +51,16 @@ export const Header: React.FunctionComponent = () => {
     if (newVal) {
       setIsShowingHighlightOverlay(false);
     }
-  }
+  }, [isShowingTextHighlight]);
 
   // TODO: #29079 remove this once UI design is finalized and we have real data
-  function handleScrollToFigure(): void {
+  const handleScrollToFigure = React.useCallback(() => {
     setIsShowingTextHighlight(false);
     setIsShowingHighlightOverlay(false);
 
     const id = 'demoFigure';
     scrollTo(id);
-  }
+  }, []);
 
   return (
     <div className="reader__header">
