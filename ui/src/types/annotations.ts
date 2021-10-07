@@ -30,7 +30,11 @@ export function transformRawAnnotations(
       const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
       boundingBoxesRaw.map(box => {
         // Scale raw bounding box data with respect to page size
-        const boundingBoxScaled = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
+        const boundingBoxScaled = scaleRawBoundingBox(
+          box,
+          pageDimensions.height,
+          pageDimensions.width
+        );
         const citation = makeCitation(entity.id, entity.attributes.paper_id, boundingBoxScaled);
         if (citation) {
           addCitationToPage(citation, pageToAnnotationsMap);

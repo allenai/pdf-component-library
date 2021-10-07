@@ -22,17 +22,22 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
     return computePageStyle(pageDimensions, rotation, scale);
   }, [pageDimensions, rotation, scale]);
 
-  const getUnmaskedArea = React.useCallback((
-    boundingBoxes:
-      | React.ReactElement<BoundingBoxProps>
-      | Array<React.ReactElement<BoundingBoxProps>>
-  ) => {
-    const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
-    return boxes.map((box, i) => {
-      const boxStyle = computeBoundingBoxStyle(box.props, pageDimensions, rotation, scale);
-      return <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>;
-    });
-  }, [pageDimensions, rotation, scale]);
+  const getUnmaskedArea = React.useCallback(
+    (
+      boundingBoxes:
+        | React.ReactElement<BoundingBoxProps>
+        | Array<React.ReactElement<BoundingBoxProps>>
+    ) => {
+      const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
+      return boxes.map((box, i) => {
+        const boxStyle = computeBoundingBoxStyle(box.props, pageDimensions, rotation, scale);
+        return (
+          <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>
+        );
+      });
+    },
+    [pageDimensions, rotation, scale]
+  );
 
   return (
     <div className="reader__page-highlight-overlay" style={pageStyle()}>

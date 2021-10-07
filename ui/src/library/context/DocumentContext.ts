@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Dimensions } from '../types';
 
+import { Dimensions } from '../types';
 import { logProviderWarning } from './providerUtils';
 
 export interface IDocumentContext {
