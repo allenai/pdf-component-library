@@ -16,8 +16,11 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
-  const pageStyle = computePageStyle(pageDimensions, rotation, scale);
   const maskId = `highlight-overlay-mask-${pageIndex}`;
+
+  const pageStyle = React.useCallback(() => {
+    return computePageStyle(pageDimensions, rotation, scale);
+  }, [pageDimensions, rotation, scale]);
 
   const getUnmaskedArea = React.useCallback((
     boundingBoxes:
@@ -32,13 +35,13 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div className="reader__page-highlight-overlay" style={pageStyle}>
-      <svg className="page-mask" style={pageStyle}>
+    <div className="reader__page-highlight-overlay" style={pageStyle()}>
+      <svg className="page-mask" style={pageStyle()}>
         <mask id={maskId}>
-          <rect style={pageStyle} fill="white"></rect>
+          <rect style={pageStyle()} fill="white"></rect>
           {children && getUnmaskedArea(children)}
         </mask>
-        <rect style={pageStyle} fill="white" opacity="0.6" mask={`url(#${maskId})`}></rect>
+        <rect style={pageStyle()} fill="white" opacity="0.6" mask={`url(#${maskId})`}></rect>
       </svg>
     </div>
   );
