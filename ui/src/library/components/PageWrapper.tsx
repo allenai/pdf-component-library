@@ -4,8 +4,8 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { isSideways } from '../rotate';
 import { generatePageId } from '../scroll';
+import { computePageStyle, getPageWidth } from '../styleUtils';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 
@@ -43,27 +43,22 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     console.log(e);
   }, []);
 
-  const getPageWidth = React.useCallback(() => {
-    return isSideways(rotation) ? pageSize.height : pageSize.width;
-  }, [rotation, pageSize]);
+  const getWidth = React.useCallback(() => {
+    return getPageWidth(pageSize, rotation);
+  }, [pageSize, rotation]);
 
-  function computeStyle() {
-    if (!pageSize) {
-      return undefined;
-    }
-    return {
-      width: getPageWidth() * scale,
-    };
-  }
+  const pageStyle = React.useCallback(() => {
+    return computePageStyle(pageSize, rotation, scale);
+  }, [pageSize, rotation, scale]);
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
-    <div id={generatePageId(pageIndex)} className="reader__page" style={computeStyle()}>
+    <div id={generatePageId(pageIndex)} className="reader__page" style={pageStyle()}>
       {children}
       <Page
-        width={getPageWidth()}
+        width={getWidth()}
         error={error}
         loading={loading}
         noData={noData}
