@@ -13,12 +13,12 @@ export const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => 
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
 
-  const overlayStyle = React.useCallback(() => {
+  const getOverlayStyle = React.useCallback(() => {
     return computePageStyle(pageDimensions, rotation, scale);
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div className="reader__page-overlay" style={overlayStyle()}>
+    <div className="reader__page-overlay" style={getOverlayStyle()}>
       {children}
     </div>
   );

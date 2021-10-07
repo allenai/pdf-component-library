@@ -34,11 +34,11 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
     className
   );
 
-  const boundingBoxStyle = React.useCallback(() => {
+  const getBoundingBoxStyle = React.useCallback(() => {
     return computeBoundingBoxStyle(boxSize, pageDimensions, rotation, scale);
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div id={id} className={componentClassName} style={boundingBoxStyle()} onClick={onClick} />
+    <div id={id} className={componentClassName} style={getBoundingBoxStyle()} onClick={onClick} />
   );
 };
