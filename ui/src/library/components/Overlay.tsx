@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { isSideways } from '../rotate';
+import { computePageStyle } from '../styleUtils';
 import { BoundingBox } from './BoundingBox';
 
 type Props = {
@@ -13,13 +13,12 @@ export const Overlay: React.FunctionComponent<Props> = ({ children }: Props) => 
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
 
-  const style = {
-    width: isSideways(rotation) ? pageDimensions.height : pageDimensions.width * scale,
-    height: isSideways(rotation) ? pageDimensions.width : pageDimensions.height * scale,
-  };
+  const overlayStyle = React.useCallback(() => {
+    return computePageStyle(pageDimensions, rotation, scale);
+  }, [pageDimensions, rotation, scale]);
 
   return (
-    <div className="reader__page-overlay" style={style}>
+    <div className="reader__page-overlay" style={overlayStyle()}>
       {children}
     </div>
   );
