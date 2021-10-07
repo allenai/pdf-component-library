@@ -1,9 +1,4 @@
-import { Dimensions } from "./types";
-
-export type Point = {
-  x: number;
-  y: number;
-};
+import { Dimensions, Point } from "./types";
 
 // TODO: augh this name is terrible, it's the data from react-pdf/pdfjs that
 //       we need to compute the pixel size of the PDF's page(s).
