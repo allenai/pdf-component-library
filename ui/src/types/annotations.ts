@@ -1,4 +1,4 @@
-import { Size } from '../library/scale';
+import { Dimensions } from '../library/types';
 import { Citation, makeCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
 
@@ -18,7 +18,7 @@ export type PageToAnnotationsMap = Map<number, Annotations>;
 
 export function transformRawAnnotations(
   annotationsRaw: AnnotationsRaw,
-  pageSize: Size
+  pageDimensions: Dimensions
 ): PageToAnnotationsMap {
   // Start with all entities in raw format
   const pageToAnnotationsMap = new Map<number, Annotations>();
@@ -30,7 +30,11 @@ export function transformRawAnnotations(
       const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
       boundingBoxesRaw.map(box => {
         // Scale raw bounding box data with respect to page size
-        const boundingBoxScaled = scaleRawBoundingBox(box, pageSize.height, pageSize.width);
+        const boundingBoxScaled = scaleRawBoundingBox(
+          box,
+          pageDimensions.height,
+          pageDimensions.width
+        );
         const citation = makeCitation(entity.id, entity.attributes.paper_id, boundingBoxScaled);
         if (citation) {
           addCitationToPage(citation, pageToAnnotationsMap);

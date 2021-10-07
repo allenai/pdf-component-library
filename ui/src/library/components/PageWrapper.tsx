@@ -4,8 +4,8 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { isSideways } from '../rotate';
 import { generatePageId } from '../scroll';
+import { computePageStyle, getPageWidth } from '../styleUtils';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 
@@ -31,11 +31,11 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   pageIndex,
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
-  const { pageSize } = React.useContext(DocumentContext);
+  const { pageDimensions } = React.useContext(DocumentContext);
 
   // Don't display until we have page size data
   // TODO: Handle this nicer so we display either the loading or error treatment
-  if (!pageSize) {
+  if (!pageDimensions) {
     return null;
   }
 
@@ -43,27 +43,22 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     console.log(e);
   }, []);
 
-  const getPageWidth = React.useCallback(() => {
-    return isSideways(rotation) ? pageSize.height : pageSize.width;
-  }, [rotation, pageSize]);
+  const getWidth = React.useCallback(() => {
+    return getPageWidth(pageDimensions, rotation);
+  }, [pageDimensions, rotation]);
 
-  function computeStyle() {
-    if (!pageSize) {
-      return undefined;
-    }
-    return {
-      width: getPageWidth() * scale,
-    };
-  }
+  const getPageStyle = React.useCallback(() => {
+    return computePageStyle(pageDimensions, rotation, scale);
+  }, [pageDimensions, rotation, scale]);
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
-    <div id={generatePageId(pageIndex)} className="reader__page" style={computeStyle()}>
+    <div id={generatePageId(pageIndex)} className="reader__page" style={getPageStyle()}>
       {children}
       <Page
-        width={getPageWidth()}
+        width={getWidth()}
         error={error}
         loading={loading}
         noData={noData}

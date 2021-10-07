@@ -5,14 +5,14 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
-import { computePageSize } from '../scale';
+import { computePageDimensions } from '../scale';
 
 type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
-  const { setNumPages, setPageSize } = React.useContext(DocumentContext);
+  const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: PDFDocumentProxy) {
@@ -22,8 +22,8 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
 
   const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy) => {
     getFirstPage(pdfDoc).then(page => {
-      setPageSize(
-        computePageSize({
+      setPageDimensions(
+        computePageDimensions({
           userUnit: page.userUnit,
           topLeft: { x: page.view[0], y: page.view[1] },
           bottomRight: { x: page.view[2], y: page.view[3] },

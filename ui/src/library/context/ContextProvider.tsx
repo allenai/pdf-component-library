@@ -1,8 +1,7 @@
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
-import { Size } from '../scale';
-import { Nullable } from '../types';
+import { Dimensions, Nullable } from '../types';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';
 import { IUiContext, UiContext } from './UiContext';
@@ -13,13 +12,13 @@ type Props = {
 
 function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
-  const [pageSize, setPageSize] = React.useState<Size>({ height: 0, width: 0 });
+  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
 
   return {
     numPages,
-    pageSize,
+    pageDimensions: pageDimensions,
     setNumPages,
-    setPageSize,
+    setPageDimensions: setPageDimensions,
   };
 }
 
