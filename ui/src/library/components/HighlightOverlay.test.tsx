@@ -5,23 +5,23 @@ import * as React from 'react';
 import { IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
-import { Size } from '../scale';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
+import { Dimensions } from '../types';
 import { BoundingBox } from './BoundingBox';
 import { HighlightOverlay } from './HighlightOverlay';
 
 describe('<HighlightOverlay/>', () => {
   const mockDocumentContext: IDocumentContext = {
     numPages: 2,
-    pageSize: {
+    pageDimensions: {
       height: 1056,
       width: 816,
     },
     setNumPages: (numPages: number) => {
       return numPages;
     },
-    setPageSize: (pageSize: Size) => {
-      return pageSize;
+    setPageDimensions: (pageDimensions: Dimensions) => {
+      return pageDimensions;
     },
   };
   const mockTransformContext: ITransformContext = {
@@ -79,8 +79,8 @@ describe('<HighlightOverlay/>', () => {
 
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockDocumentContext.pageSize.height,
-        mockDocumentContext.pageSize.width
+        mockDocumentContext.pageDimensions.height,
+        mockDocumentContext.pageDimensions.width
       );
     });
 
@@ -94,8 +94,8 @@ describe('<HighlightOverlay/>', () => {
 
       expectHeightWidth(
         svg,
-        mockDocumentContext.pageSize.height,
-        mockDocumentContext.pageSize.width
+        mockDocumentContext.pageDimensions.height,
+        mockDocumentContext.pageDimensions.width
       );
     });
 
@@ -110,13 +110,13 @@ describe('<HighlightOverlay/>', () => {
       expect(maskedRects.length).equals(2);
       expectHeightWidth(
         maskedRects[0],
-        mockDocumentContext.pageSize.height,
-        mockDocumentContext.pageSize.width
+        mockDocumentContext.pageDimensions.height,
+        mockDocumentContext.pageDimensions.width
       );
       expectHeightWidth(
         maskedRects[1],
-        mockDocumentContext.pageSize.height,
-        mockDocumentContext.pageSize.width
+        mockDocumentContext.pageDimensions.height,
+        mockDocumentContext.pageDimensions.width
       );
     });
   });
@@ -137,8 +137,8 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(wrapper.getDOMNode(), 0, 0);
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockDocumentContext.pageSize.height * transformContext.scale,
-        mockDocumentContext.pageSize.width * transformContext.scale
+        mockDocumentContext.pageDimensions.height * transformContext.scale,
+        mockDocumentContext.pageDimensions.width * transformContext.scale
       );
     });
 
@@ -153,8 +153,8 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(svg, 0, 0);
       expectHeightWidth(
         svg,
-        mockDocumentContext.pageSize.height * transformContext.scale,
-        mockDocumentContext.pageSize.width * transformContext.scale
+        mockDocumentContext.pageDimensions.height * transformContext.scale,
+        mockDocumentContext.pageDimensions.width * transformContext.scale
       );
     });
 
@@ -170,14 +170,14 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(maskedRects[0], 0, 0);
       expectHeightWidth(
         maskedRects[0],
-        mockDocumentContext.pageSize.height * transformContext.scale,
-        mockDocumentContext.pageSize.width * transformContext.scale
+        mockDocumentContext.pageDimensions.height * transformContext.scale,
+        mockDocumentContext.pageDimensions.width * transformContext.scale
       );
       expectLeftTop(maskedRects[1], 0, 0);
       expectHeightWidth(
         maskedRects[1],
-        mockDocumentContext.pageSize.height * transformContext.scale,
-        mockDocumentContext.pageSize.width * transformContext.scale
+        mockDocumentContext.pageDimensions.height * transformContext.scale,
+        mockDocumentContext.pageDimensions.width * transformContext.scale
       );
     });
   });
@@ -198,8 +198,8 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(wrapper.getDOMNode(), 0, 0);
       expectHeightWidth(
         wrapper.getDOMNode(),
-        mockDocumentContext.pageSize.width,
-        mockDocumentContext.pageSize.height
+        mockDocumentContext.pageDimensions.width,
+        mockDocumentContext.pageDimensions.height
       );
     });
 
@@ -214,8 +214,8 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(svg, 0, 0);
       expectHeightWidth(
         svg,
-        mockDocumentContext.pageSize.width,
-        mockDocumentContext.pageSize.height
+        mockDocumentContext.pageDimensions.width,
+        mockDocumentContext.pageDimensions.height
       );
     });
 
@@ -231,14 +231,14 @@ describe('<HighlightOverlay/>', () => {
       expectLeftTop(maskedRects[0], 0, 0);
       expectHeightWidth(
         maskedRects[0],
-        mockDocumentContext.pageSize.width,
-        mockDocumentContext.pageSize.height
+        mockDocumentContext.pageDimensions.width,
+        mockDocumentContext.pageDimensions.height
       );
       expectLeftTop(maskedRects[1], 0, 0);
       expectHeightWidth(
         maskedRects[1],
-        mockDocumentContext.pageSize.width,
-        mockDocumentContext.pageSize.height
+        mockDocumentContext.pageDimensions.width,
+        mockDocumentContext.pageDimensions.height
       );
     });
   });

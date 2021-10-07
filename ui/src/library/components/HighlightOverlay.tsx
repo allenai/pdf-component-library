@@ -14,9 +14,9 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
   pageIndex,
 }: Props) => {
-  const { pageSize } = React.useContext(DocumentContext);
+  const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
-  const pageStyle = computePageStyle(pageSize, rotation, scale);
+  const pageStyle = computePageStyle(pageDimensions, rotation, scale);
   const maskId = `highlight-overlay-mask-${pageIndex}`;
 
   const getUnmaskedArea = React.useCallback((
@@ -26,10 +26,10 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   ) => {
     const boxes = Array.isArray(boundingBoxes) ? boundingBoxes : [boundingBoxes];
     return boxes.map((box, i) => {
-      const boxStyle = computeBoundingBoxStyle(box.props, pageSize, rotation, scale);
+      const boxStyle = computeBoundingBoxStyle(box.props, pageDimensions, rotation, scale);
       return <rect style={boxStyle} x={boxStyle.left} y={boxStyle.top} key={i} fill="black"></rect>;
     });
-  }, [pageSize, rotation, scale]);
+  }, [pageDimensions, rotation, scale]);
 
   return (
     <div className="reader__page-highlight-overlay" style={pageStyle}>

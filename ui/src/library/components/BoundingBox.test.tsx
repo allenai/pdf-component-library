@@ -5,22 +5,22 @@ import * as sinon from 'sinon';
 import { IDocumentContext } from '../context/DocumentContext';
 import { ITransformContext } from '../context/TransformContext';
 import { PageRotation } from '../rotate';
-import { Size } from '../scale';
 import { mountWithContexts } from '../testHelper';
+import { Dimensions } from '../types';
 import { BoundingBox } from './BoundingBox';
 
 describe('<BoundingBox/>', () => {
   const mockDocumentContext: IDocumentContext = {
     numPages: 2,
-    pageSize: {
+    pageDimensions: {
       height: 1056,
       width: 816,
     },
     setNumPages: (numPages: number) => {
       return numPages;
     },
-    setPageSize: (pageSize: Size) => {
-      return pageSize;
+    setPageDimensions: (pageDimensions: Dimensions) => {
+      return pageDimensions;
     },
   };
   const mockTransformContext: ITransformContext = {

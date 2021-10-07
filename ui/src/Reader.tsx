@@ -23,7 +23,7 @@ import {
 import { loadJSON } from './utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
-  const { pageSize, numPages } = React.useContext(DocumentContext);
+  const { pageDimensions, numPages } = React.useContext(DocumentContext);
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
@@ -49,12 +49,12 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // Attaches annotation data to paper
   React.useEffect(() => {
     // Don't execute until paper data and PDF document have loaded
-    if (!annotationsRaw || !pageSize.height || !pageSize.width) {
+    if (!annotationsRaw || !pageDimensions.height || !pageDimensions.width) {
       return;
     }
 
-    setAnnotations(transformRawAnnotations(annotationsRaw, pageSize));
-  }, [annotationsRaw, pageSize]);
+    setAnnotations(transformRawAnnotations(annotationsRaw, pageDimensions));
+  }, [annotationsRaw, pageDimensions]);
 
   return (
     <BrowserRouter>

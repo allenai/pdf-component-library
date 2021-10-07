@@ -25,7 +25,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   isHighlighted,
   onClick,
 }: Props) => {
-  const { pageSize } = React.useContext(DocumentContext);
+  const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
@@ -35,8 +35,8 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   );
 
   const boundingBoxStyle = React.useCallback(() => {
-    return computeBoundingBoxStyle(boxSize, pageSize, rotation, scale);
-  }, [pageSize, rotation, scale]);
+    return computeBoundingBoxStyle(boxSize, pageDimensions, rotation, scale);
+  }, [pageDimensions, rotation, scale]);
 
   return (
     <div

@@ -3,8 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
 import { PageRotation } from '../rotate';
-import { Size } from '../scale';
-import { Nullable } from '../types';
+import { Dimensions, Nullable } from '../types';
 import { ContextProvider } from './ContextProvider';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';
@@ -21,21 +20,21 @@ describe('<ContextProvider/>', () => {
 
   describe('<DocumentContext.Provider/>', () => {
     let _setNumPages: (numPages: number) => void;
-    let _setPageSize: (pageSize: Size) => void;
+    let _setPageDimensions: (pageDimensions: Dimensions) => void;
 
     before(() => {
       wrapper = mount(
         <ContextProvider>
           <DocumentContext.Consumer>
             {(args: IDocumentContext) => {
-              const { numPages, pageSize, setNumPages, setPageSize } = args;
+              const { numPages, pageDimensions, setNumPages, setPageDimensions } = args;
               _setNumPages = setNumPages;
-              _setPageSize = setPageSize;
+              _setPageDimensions = setPageDimensions;
               return (
                 <div>
                   <div className="numPages">{numPages}</div>
-                  <div className="pageHeight">{pageSize.height}</div>
-                  <div className="pageWidth">{pageSize.width}</div>
+                  <div className="pageHeight">{pageDimensions.height}</div>
+                  <div className="pageWidth">{pageDimensions.width}</div>
                 </div>
               );
             }}
@@ -52,16 +51,16 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('numPages', 0);
     });
 
-    it('provides a default pageSize with height and width', () => {
+    it('provides a default pageDimensions with height and width', () => {
       expectTextFromClassName('pageHeight', 0);
       expectTextFromClassName('pageWidth', 0);
     });
 
-    it('provides a function to set pageSize', () => {
+    it('provides a function to set pageDimensions', () => {
       expectTextFromClassName('pageHeight', 0);
       expectTextFromClassName('pageWidth', 0);
 
-      _setPageSize({ height: 10, width: 20 });
+      _setPageDimensions({ height: 10, width: 20 });
 
       expectTextFromClassName('pageHeight', 10);
       expectTextFromClassName('pageWidth', 20);

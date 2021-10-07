@@ -31,11 +31,11 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   pageIndex,
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
-  const { pageSize } = React.useContext(DocumentContext);
+  const { pageDimensions } = React.useContext(DocumentContext);
 
   // Don't display until we have page size data
   // TODO: Handle this nicer so we display either the loading or error treatment
-  if (!pageSize) {
+  if (!pageDimensions) {
     return null;
   }
 
@@ -44,12 +44,12 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   }, []);
 
   const getWidth = React.useCallback(() => {
-    return getPageWidth(pageSize, rotation);
-  }, [pageSize, rotation]);
+    return getPageWidth(pageDimensions, rotation);
+  }, [pageDimensions, rotation]);
 
   const pageStyle = React.useCallback(() => {
-    return computePageStyle(pageSize, rotation, scale);
-  }, [pageSize, rotation, scale]);
+    return computePageStyle(pageDimensions, rotation, scale);
+  }, [pageDimensions, rotation, scale]);
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
