@@ -36,7 +36,7 @@ function useTransformContextProps(): ITransformContext {
 
 function useUiContextProps(): IUiContext {
   const [errorMessage, setErrorMessage] = React.useState<Nullable<string>>(null);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
   const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
   const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
@@ -68,3 +68,4 @@ export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Pr
     </DocumentContext.Provider>
   );
 };
+29578;

@@ -189,7 +189,7 @@ describe('<ContextProvider/>', () => {
     });
 
     it('provides a default isLoading', () => {
-      expectTextFromClassName('isLoading', false);
+      expectTextFromClassName('isLoading', true);
     });
 
     it('provides a default isShowingHighlightOverlay', () => {
@@ -217,11 +217,11 @@ describe('<ContextProvider/>', () => {
     });
 
     it('provides a function to set isLoading', () => {
-      expectTextFromClassName('isLoading', false);
-
-      _setIsLoading(true);
-
       expectTextFromClassName('isLoading', true);
+
+      _setIsLoading(false);
+
+      expectTextFromClassName('isLoading', false);
     });
 
     it('provides a function to set isShowingHighlightOverlay', () => {
