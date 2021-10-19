@@ -1,3 +1,4 @@
+import { PDFPageProxy } from 'pdfjs-dist/types/display/api';
 import { Dimensions, Point } from './types';
 
 // TODO: augh this name is terrible, it's the data from react-pdf/pdfjs that
@@ -16,18 +17,17 @@ const DPI = 96;
 const USER_UNIT_DENOMINATOR = 72;
 
 /**
- * Given data from the PDFPageProxy, calculates the screen pixel size of the PDF page at 100% scale
- * @param userUnit the default size of units in 1/72nds of an inch
- * @param view an array of numbers defining the corners of the page as [x1, y1, x2, y2]
+ * Given a PDFPageProxy, calculates the screen pixel size of the PDF page at 100% scale
+ * @param page The PDFPageProxy to calculate size for
  * @returns Pixel size of a page at 100% scale assuming 96DPI display
  */
-export function computePageDimensions({
-  userUnit,
-  topLeft,
-  bottomRight,
-}: PdfPageSizeData): Dimensions {
+export function computePageDimensions(page: PDFPageProxy): Dimensions {
+  const topLeft = { x: page.view[0], y: page.view[1] };
+  const bottomRight = { x: page.view[2], y: page.view[3] };
+  const PPI = (page.userUnit / USER_UNIT_DENOMINATOR) * DPI;
+
   return {
-    height: (bottomRight.y - topLeft.y) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
-    width: (bottomRight.x - topLeft.x) * (userUnit / USER_UNIT_DENOMINATOR) * DPI,
+    height: (bottomRight.y - topLeft.y) * PPI,
+    width: (bottomRight.x - topLeft.x) * PPI,
   };
 }
