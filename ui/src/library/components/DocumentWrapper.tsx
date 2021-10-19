@@ -21,23 +21,23 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
   }
 
   const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy) => {
-    getFirstPage(pdfDoc).then(page => {
-      setPageDimensions(
-        computePageDimensions({
-          userUnit: page.userUnit,
-          topLeft: { x: page.view[0], y: page.view[1] },
-          bottomRight: { x: page.view[2], y: page.view[3] },
-        })
-      );
-    });
-    setIsLoading(false);
     setNumPages(pdfDoc.numPages);
-    setErrorMessage(null);
+    getFirstPage(pdfDoc)
+      .then((page) => {
+        setPageDimensions(computePageDimensions(page));
+        setErrorMessage(null);
+      })
+      .catch((error) => {
+        setErrorMessage(getErrorMessage(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown) => {
-    setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
+    setIsLoading(false);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
