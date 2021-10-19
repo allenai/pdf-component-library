@@ -5,6 +5,7 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
+import { getErrorMessage } from '../errorUtils';
 import { computePageDimensions } from '../scale';
 
 type Props = {
@@ -39,23 +40,6 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
     setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
   }, []);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function getErrorMessage(error: any): string {
-    if (!error) {
-      return 'Unknown error';
-    }
-    if (typeof error === 'string') {
-      return error;
-    }
-    if (error instanceof Error) {
-      return error.message;
-    }
-    if (typeof error.error === 'string') {
-      return error.error;
-    }
-    return error.toString();
-  }
 
   return (
     <Document
