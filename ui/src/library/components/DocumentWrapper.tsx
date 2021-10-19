@@ -23,11 +23,11 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
   const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy) => {
     setNumPages(pdfDoc.numPages);
     getFirstPage(pdfDoc)
-      .then((page) => {
+      .then(page => {
         setPageDimensions(computePageDimensions(page));
         setErrorMessage(null);
       })
-      .catch((error) => {
+      .catch(error => {
         setErrorMessage(getErrorMessage(error));
       })
       .finally(() => {
