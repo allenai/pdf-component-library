@@ -2,9 +2,9 @@ import { Dimensions } from './types';
 
 // Data from react-pdf/pdfjs that we need to compute the pixel size of the PDF's page(s).
 export interface IPDFPageProxy {
-  userUnit: number, // the default size of units in 1/72nds of an inch
-  view: Array<number>, // format: [ top left x coordinate, top left y coordinate, bottom right x, bottomRight y]
-};
+  userUnit: number; // the default size of units in 1/72nds of an inch
+  view: Array<number>; // format: [ top left x coordinate, top left y coordinate, bottom right x, bottomRight y]
+}
 
 // We assume 96 DPI for display
 // TODO: There are more accurate ways to do this, but this is what ScholarPhi does now
