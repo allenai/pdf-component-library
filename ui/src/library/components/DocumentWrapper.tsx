@@ -15,28 +15,29 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
   const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
-  async function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<PDFPageProxy> {
+  function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<PDFPageProxy> {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     return pdfDoc.getPage(1);
   }
 
   const onPdfLoadSuccess = React.useCallback(async (pdfDoc: PDFDocumentProxy) => {
     setNumPages(pdfDoc.numPages);
-
-    const page = await getFirstPage(pdfDoc);
-    const pageDimensions = computePageDimensions({
-      userUnit: page.userUnit,
-      topLeft: { x: page.view[0], y: page.view[1] },
-      bottomRight: { x: page.view[2], y: page.view[3] },
-    });
-    setPageDimensions(pageDimensions);
-    setErrorMessage(null);
-    setIsLoading(false);
+    getFirstPage(pdfDoc)
+      .then((page) => {
+        setPageDimensions(computePageDimensions(page));
+        setErrorMessage(null);
+      })
+      .catch((error) => {
+        setErrorMessage(getErrorMessage(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown) => {
-    setIsLoading(false);
     setErrorMessage(getErrorMessage(error));
+    setIsLoading(false);
   }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
