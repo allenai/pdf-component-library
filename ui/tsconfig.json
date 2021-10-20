@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "dist/lib",
     "target": "es6",
     "lib": ["dom", "dom.iterable", "es2019"],
     "moduleResolution": "node",
@@ -7,6 +8,8 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "declaration": true
+  },
+  "include": ["index.ts", "src/library/components/*"]
 }
