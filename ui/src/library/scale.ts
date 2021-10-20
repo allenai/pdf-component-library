@@ -19,12 +19,11 @@ const USER_UNIT_DENOMINATOR = 72;
  * @returns Pixel size of a page at 100% scale assuming 96DPI display
  */
 export function computePageDimensions(page: IPDFPageProxy): Dimensions {
-  const topLeft = { x: page.view[0], y: page.view[1] };
-  const bottomRight = { x: page.view[2], y: page.view[3] };
+  const [leftPx, topPx, rightPx, bottomPx] = page.view;
   const PPI = (page.userUnit / USER_UNIT_DENOMINATOR) * DPI;
 
   return {
-    height: (bottomRight.y - topLeft.y) * PPI,
-    width: (bottomRight.x - topLeft.x) * PPI,
+    height: (bottomPx - topPx) * PPI,
+    width: (rightPx - leftPx) * PPI,
   };
 }
