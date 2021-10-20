@@ -1,16 +1,29 @@
 import { expect } from 'chai';
 
-import { computePageDimensions, PdfPageSizeData } from './scale';
+import { computePageDimensions, IPDFPageProxy } from './scale';
 
 describe('computePageDimensionsPx', () => {
-  const mockData: PdfPageSizeData = {
-    userUnit: 1,
-    topLeft: { x: 0, y: 0 },
-    bottomRight: { x: 612, y: 792 },
-  };
-  it('computes pixel height and width of the PDF', () => {
-    const output = computePageDimensions(mockData);
+  it('computes pixel height and width of the PDF with standard page size', () => {
+    const mockPageProxy: IPDFPageProxy = {
+      userUnit: 1,
+      view: [0, 0, 612, 792],
+    };
+
+    const output = computePageDimensions(mockPageProxy);
+
     expect(output.height).to.equal(1056);
     expect(output.width).to.equal(816);
+  });
+
+  it('computes pixel height and width of the PDF with nonstandard page size', () => {
+    const mockPageProxy: IPDFPageProxy = {
+      userUnit: 5,
+      view: [2, 7, 119, 1123],
+    };
+
+    const output = computePageDimensions(mockPageProxy);
+
+    expect(output.height).to.equal(7440);
+    expect(output.width).to.equal(780);
   });
 });

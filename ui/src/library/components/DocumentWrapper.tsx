@@ -6,7 +6,7 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack';
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../errorUtils';
-import { computePageDimensions } from '../scale';
+import { computePageDimensions, IPDFPageProxy } from '../scale';
 
 type Props = {
   children?: React.ReactNode;
@@ -16,29 +16,29 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
   const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
-  function getFirstPage(pdfDoc: PDFDocumentProxy) {
+  function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     return pdfDoc.getPage(1);
   }
 
-  const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy) => {
-    getFirstPage(pdfDoc).then(page => {
-      setPageDimensions(
-        computePageDimensions({
-          userUnit: page.userUnit,
-          topLeft: { x: page.view[0], y: page.view[1] },
-          bottomRight: { x: page.view[2], y: page.view[3] },
-        })
-      );
-    });
-    setIsLoading(false);
+  const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy): void => {
     setNumPages(pdfDoc.numPages);
-    setErrorMessage(null);
+    getFirstPage(pdfDoc)
+      .then(page => {
+        setPageDimensions(computePageDimensions(page));
+        setErrorMessage(null);
+      })
+      .catch(error => {
+        setErrorMessage(getErrorMessage(error));
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
-  const onPdfLoadError = React.useCallback((error: unknown) => {
-    setIsLoading(false);
+  const onPdfLoadError = React.useCallback((error: unknown): void => {
     setErrorMessage(getErrorMessage(error));
+    setIsLoading(false);
   }, []);
 
   return (
