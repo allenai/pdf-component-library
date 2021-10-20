@@ -1,13 +1,16 @@
 {
-  "name": "ui",
+  "name": "@allenai/pdf-component-library",
   "version": "0.0.1",
-  "private": true,
-  "license": "UNLICENSED",
+  "description": "pdf-component-library makes it easy to render and parse a PDF",
+  "repository": "git@github.com:allenai/pdf-component-library.git",
+  "license": "Apache-2.0",
   "author": "reviz@allenai.org",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && yarn postBuildCopy && echo '⮕ build complete.'",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
+    "postBuildCopy": "cp ./package.json ./dist && cp -R ./src/library/components/ ./dist && cp ./LICENSE ./dist && echo '⮕ postBuildCopy complete.'",
     "start": "webpack serve --hot --mode development",
     "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json src/**/*.test.ts{,?}"
   },
