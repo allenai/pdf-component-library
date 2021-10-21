@@ -1,6 +1,6 @@
 {
-    "appName": "skiff-template",
-    "contact": "reviz",
-    "team": "reviz",
-    "replicas": { "prod": 2 }
+    "appName": "pdf-reader",
+    "contact": "s2-online",
+    "team": "s2-online",
+    "replicas": { "prod": 1 }
 }
