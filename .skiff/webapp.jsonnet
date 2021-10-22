@@ -108,6 +108,15 @@ function(
         scheme: 'HTTP'
     };
 
+    local namespace = {
+        apiVersion: 'v1',
+        kind: 'Namespace',
+        metadata: {
+            name: namespaceName,
+            labels: namespaceLabels
+        }
+    };
+
     local tls = util.getTLSConfig(fullyQualifiedName, hosts);
     local ingress = {
         apiVersion: 'extensions/v1beta1',
