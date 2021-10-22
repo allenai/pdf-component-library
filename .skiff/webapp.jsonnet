@@ -136,7 +136,10 @@ function(
             labels: labels,
             annotations: annotations + tls.ingressAnnotations + {
                 'kubernetes.io/ingress.class': 'nginx',
-                'nginx.ingress.kubernetes.io/ssl-redirect': 'true'
+                'nginx.ingress.kubernetes.io/ssl-redirect': 'true',
+                'nginx.ingress.kubernetes.io/auth-url': 'https://ai2.login.apps.allenai.org/oauth2/auth',
+                'nginx.ingress.kubernetes.io/auth-signin': 'https://ai2.login.apps.allenai.org/oauth2/start?rd=https://$host$request_uri',
+                'nginx.ingress.kubernetes.io/auth-response-headers': 'X-Auth-Request-User, X-Auth-Request-Email' 
             }
         },
         spec: {
