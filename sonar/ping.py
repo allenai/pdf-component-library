@@ -18,8 +18,7 @@ def is_ok(url: str) -> bool:
 
 def scan():
     """
-    Broadcasts the availability of the proxy's HTTP server once both the
-    API and UI are ready for traffic.
+    Broadcasts the availability of the proxy's HTTP server once UI is ready for traffic.
 
     This script exists solely to ease confusion locally, as both Flask and
     the HTTP server bundled with `create-react-app` output logs telling the
@@ -45,9 +44,8 @@ def scan():
     signal.signal(signal.SIGTERM, handle_interrupt)
 
     last_check = time.perf_counter()
-    is_api_live = False
     is_ui_live = False
-    while (is_api_live != True or is_ui_live != True):
+    while (is_ui_live != True):
         if term is True:
             break
         # We don't use `time.sleep()`, as that'd prevent us from being able
@@ -55,11 +53,9 @@ def scan():
         now = time.perf_counter()
         if (now - last_check >= 5):
             last_check = now
-            if not is_api_live:
-                is_api_live = is_ok("http://api:8000")
             if not is_ui_live:
                 is_ui_live = is_ok("http://ui:3000")
-    if is_api_live and is_ui_live:
+    if is_ui_live:
         print("")
         print("✨ Your local environment is ready:")
         print("")

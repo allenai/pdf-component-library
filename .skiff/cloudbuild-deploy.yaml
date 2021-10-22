@@ -2,19 +2,6 @@
 # It can be attached to a variety of triggers, the default being whenever
 # someone merges changes to the `main` branch.
 steps:
-- id: 'api.build'
-  name: 'gcr.io/cloud-builders/docker'
-  args: [
-    'build',
-    '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME-api:latest',
-    '-t', 'gcr.io/$PROJECT_ID/$REPO_NAME-api:$COMMIT_SHA',
-    '--cache-from', 'gcr.io/$PROJECT_ID/$REPO_NAME-api:latest',
-    '--build-arg', 'FLASK_ENV=production',
-    '--build-arg', 'BUILDKIT_INLINE_CACHE=1',
-    '.',
-  ]
-  dir: 'api'
-  waitFor: [ '-' ]
 - id: 'ui.build'
   name: 'gcr.io/cloud-builders/docker'
   args: [
@@ -53,13 +40,6 @@ steps:
   ]
   waitFor: [ 'ui.compile' ]
   dir: 'proxy'
-- id: 'api.push'
-  name: 'gcr.io/cloud-builders/docker'
-  args: [
-    'push',
-    'gcr.io/$PROJECT_ID/$REPO_NAME-api:$COMMIT_SHA',
-  ]
-  waitFor: [ 'api.build' ]
 - id: 'proxy.push'
   name: 'gcr.io/cloud-builders/docker'
   args: [
@@ -75,7 +55,6 @@ steps:
     '-y',
     '--output-file', './webapp.yaml',
     '--tla-str', 'env=$_ENV',
-    '--tla-str', 'apiImage=gcr.io/$PROJECT_ID/$REPO_NAME-api:$COMMIT_SHA',
     '--tla-str', 'proxyImage=gcr.io/$PROJECT_ID/$REPO_NAME-proxy:$COMMIT_SHA',
     '--tla-str', 'sha=$COMMIT_SHA',
     '--tla-str', 'cause=Automated Skiff Deploy SHA:$COMMIT_SHA BUILD:$BUILD_ID',
@@ -95,12 +74,10 @@ steps:
     'webapp.yaml'
   ]
   dir: '.skiff'
-  waitFor: [ 'api.push', 'proxy.push', 'config' ]
+  waitFor: [ 'proxy.push', 'config' ]
 substitutions:
   _ENV: prod
 images: [
-  'gcr.io/$PROJECT_ID/$REPO_NAME-api:$COMMIT_SHA',
-  'gcr.io/$PROJECT_ID/$REPO_NAME-api:latest',
   'gcr.io/$PROJECT_ID/$REPO_NAME-ui:$COMMIT_SHA',
   'gcr.io/$PROJECT_ID/$REPO_NAME-ui:latest',
   'gcr.io/$PROJECT_ID/$REPO_NAME-proxy:$COMMIT_SHA',

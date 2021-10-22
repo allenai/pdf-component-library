@@ -12,7 +12,7 @@ local config = import '../skiff.json';
 local util = import './util.libsonnet';
 
 function(
-    apiImage, proxyImage, cause, sha, env='prod', branch='', repo='',
+    proxyImage, cause, sha, env='prod', branch='', repo='',
     buildId=''
 )
     // A list of hostnames served by your application. By default your application's
@@ -100,30 +100,12 @@ function(
     // The port the NGINX proxy is bound to.
     local proxyPort = 8080;
 
-    // The port the API (Python Flask application) is bound to.
-    local apiPort = 8000;
-
     // This is used to verify that the proxy (and thereby the UI portion of the
     // application) is healthy. If this fails the application won't receive traffic,
     // and may be restarted.
     local proxyHealthCheck = {
         port: proxyPort,
         scheme: 'HTTP'
-    };
-
-    // This is used to verify that the API is funtional.
-    local apiHealthCheck = {
-        port: apiPort,
-        scheme: 'HTTP'
-    };
-
-    local namespace = {
-        apiVersion: 'v1',
-        kind: 'Namespace',
-        metadata: {
-            name: namespaceName,
-            labels: namespaceLabels
-        }
     };
 
     local tls = util.getTLSConfig(fullyQualifiedName, hosts);
@@ -208,62 +190,6 @@ function(
                     },
                     nodeSelector: nodeSelector,
                     containers: [
-                        {
-                            name: fullyQualifiedName + '-api',
-                            image: apiImage,
-                            args: [ 'start.py', '--prod' ],
-                            # The "probes" below allow Kubernetes to determine
-                            # if your application is working properly.
-                            #
-                            # The readinessProbe is used to determine if
-                            # an instance of your application can accept live
-                            # requests. The configuration below tells Kubernetes
-                            # to stop sending live requests to your application
-                            # if it returns 3 non 2XX responses over 30 seconds.
-                            # When this happens the application instance will
-                            # be taken out of rotation and given time to "catch-up".
-                            # Once it returns a single 2XX, Kubernetes will put
-                            # it back in rotation.
-                            #
-                            # Kubernetes also has a livenessProbe that can be used to restart
-                            # deadlocked processes. You can find out more about it here:
-                            # https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-a-liveness-command
-                            #
-                            # We don't use a livenessProbe as it's easy to cause unnecessary
-                            # restarts, which can be really disruptive to a site's availability.
-                            # If you think your application is likely to be unstable after running
-                            # for long periods send a note to reviz@allenai.org so we can work
-                            # with you to craft the right livenessProbe.
-                            readinessProbe: {
-                                httpGet: apiHealthCheck + {
-                                    path: '/?check=readiness_probe'
-                                },
-                                periodSeconds: 10,
-                                failureThreshold: 3
-                            },
-                            # This tells Kubernetes what CPU and memory resources your API needs.
-                            # We set these values low by default, as most applications receive
-                            # bursts of activity and accordingly don't need dedicated resources
-                            # at all times.
-                            #
-                            # Your application will be allowed to use more resources than what's
-                            # specified below. But your application might be killed if it uses
-                            # more than what's requested. If you know you need more memory
-                            # or that your workload is CPU intensive, consider increasing the
-                            # values below.
-                            #
-                            # For more information about these values, and the current maximums
-                            # that your application can request, see:
-                            # https://skiff.allenai.org/resources.html
-                            resources: {
-                                requests: {
-                                    cpu: 0.1,
-                                    memory: '500M'
-                                },
-                                limits: { }
-                                   + gpuLimits # only the first container should have gpuLimits applied
-                            }
-                        },
                         {
                             name: fullyQualifiedName + '-proxy',
                             image: proxyImage,
