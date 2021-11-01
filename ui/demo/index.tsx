@@ -1,8 +1,6 @@
 /**
  * This is the main entry point for the UI. You should not need to make any
- * changes here unless you want to update the theme.
- *
- * @see https://github.com/allenai/varnish
+ * changes here.
  */
 
 import * as React from 'react';

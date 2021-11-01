@@ -25,7 +25,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        loadJSON(`demo/data/citationPapers/${citation.paperId}.json`, (data: string) => {
+        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
           const citationPaperData: CitationPaper = JSON.parse(data);
           setPaper(citationPaperData);
           setIsLoading(false);
