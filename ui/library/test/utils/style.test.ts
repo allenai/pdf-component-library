@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 
+import { Size } from '../../types';
 import { PageRotation } from '../../utils/rotate';
 import {
   computeBoundingBoxStyle,
@@ -7,7 +8,6 @@ import {
   getPageHeight,
   getPageWidth,
 } from '../../utils/style';
-import { Size } from '../../types';
 
 describe('styleUtil functions', () => {
   const pageDimensions = {

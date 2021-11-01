@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "lib": ["dom", "dom.iterable", "es2019"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2019"
+    ],
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": false,
     "strict": true,

@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import * as React from 'react';
 
-import { IDocumentContext } from '../../context/DocumentContext';
-import { ITransformContext } from '../../context/TransformContext';
-import { PageRotation } from '../../utils/rotate';
-import { mountWithContexts } from '../testHelper';
-import { Dimensions } from '../../types';
 import { BoundingBox } from '../../components/BoundingBox';
 import { Overlay } from '../../components/Overlay';
+import { IDocumentContext } from '../../context/DocumentContext';
+import { ITransformContext } from '../../context/TransformContext';
+import { Dimensions } from '../../types';
+import { PageRotation } from '../../utils/rotate';
+import { mountWithContexts } from '../testHelper';
 
 describe('<Overlay/>', () => {
   const mockDocumentContext: IDocumentContext = {

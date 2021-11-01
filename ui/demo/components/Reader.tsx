@@ -4,12 +4,6 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { CitationsDemo } from './CitationsDemo';
-import { Header } from './Header';
-import { HighlightOverlayDemo } from './HighlightOverlayDemo';
-import { Outline } from './Outline';
-import { ScrollToDemo } from './ScrollToDemo';
-import { TextHighlightDemo } from './TextHighlightDemo';
 import { DocumentWrapper } from '../../library/components/DocumentWrapper';
 import { Overlay } from '../../library/components/Overlay';
 import { PageWrapper } from '../../library/components/PageWrapper';
@@ -21,6 +15,12 @@ import {
   transformRawAnnotations,
 } from '../types/annotations';
 import { loadJSON } from '../utils/utils';
+import { CitationsDemo } from './CitationsDemo';
+import { Header } from './Header';
+import { HighlightOverlayDemo } from './HighlightOverlayDemo';
+import { Outline } from './Outline';
+import { ScrollToDemo } from './ScrollToDemo';
+import { TextHighlightDemo } from './TextHighlightDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageDimensions, numPages } = React.useContext(DocumentContext);
