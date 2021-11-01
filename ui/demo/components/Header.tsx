@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { TransformContext } from '../library/context/TransformContext';
-import { UiContext } from '../library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from '../library/rotate';
-import { scrollTo } from '../library/scroll';
+import { TransformContext } from '../../src/library/context/TransformContext';
+import { UiContext } from '../../src/library/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from '../../src/library/rotate';
+import { scrollTo } from '../../src/library/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 export const Header: React.FunctionComponent = () => {

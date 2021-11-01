@@ -9,8 +9,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { ContextProvider } from './library/context/ContextProvider';
-import { Reader } from './Reader';
+import { ContextProvider } from '../src/library/context/ContextProvider';
+import { Reader } from './components/Reader';
 
 const App = () => (
   <ContextProvider>

@@ -4,23 +4,23 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { CitationsDemo } from './components/CitationsDemo';
-import { Header } from './components/Header';
-import { HighlightOverlayDemo } from './components/HighlightOverlayDemo';
-import { Outline } from './components/Outline';
-import { ScrollToDemo } from './components/ScrollToDemo';
-import { TextHighlightDemo } from './components/TextHighlightDemo';
-import { DocumentWrapper } from './library/components/DocumentWrapper';
-import { Overlay } from './library/components/Overlay';
-import { PageWrapper } from './library/components/PageWrapper';
-import { DocumentContext } from './library/context/DocumentContext';
+import { CitationsDemo } from './CitationsDemo';
+import { Header } from './Header';
+import { HighlightOverlayDemo } from './HighlightOverlayDemo';
+import { Outline } from './Outline';
+import { ScrollToDemo } from './ScrollToDemo';
+import { TextHighlightDemo } from './TextHighlightDemo';
+import { DocumentWrapper } from '../../src/library/components/DocumentWrapper';
+import { Overlay } from '../../src/library/components/Overlay';
+import { PageWrapper } from '../../src/library/components/PageWrapper';
+import { DocumentContext } from '../../src/library/context/DocumentContext';
 import {
   Annotations,
   AnnotationsRaw,
   PageToAnnotationsMap,
   transformRawAnnotations,
-} from './types/annotations';
-import { loadJSON } from './utils';
+} from '../types/annotations';
+import { loadJSON } from '../utils/utils';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageDimensions, numPages } = React.useContext(DocumentContext);
@@ -41,7 +41,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // Runs once on initial load
   // Retrieves sample annotation data from local JSON file
   React.useEffect(() => {
-    loadJSON('data/sampleAnnotations_short.json', (data: string) => {
+    loadJSON('demo/data/sampleAnnotations_short.json', (data: string) => {
       setAnnotationsRaw(JSON.parse(data));
     });
   }, []);

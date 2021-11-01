@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { PercentFormatter } from '../format';
-import { TransformContext } from '../library/context/TransformContext';
+import { PercentFormatter } from '../utils/format';
+import { TransformContext } from '../../src/library/context/TransformContext';
 
 export const SimpleZoomControl: React.FunctionComponent = () => {
   const { scale, setScale } = React.useContext(TransformContext);
