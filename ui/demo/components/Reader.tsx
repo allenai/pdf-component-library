@@ -60,7 +60,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          <Header />
+          <Header fileName="theBestPaper" pdfUrl={pdfUrl} />
           <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>

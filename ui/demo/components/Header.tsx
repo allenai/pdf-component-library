@@ -1,12 +1,18 @@
 import * as React from 'react';
 
-import { TransformContext } from '../../library/context/TransformContext';
-import { UiContext } from '../../library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from '../../library/utils/rotate';
-import { scrollTo } from '../../library/utils/scroll';
+import { Download } from '../library/components/Download';
+import { TransformContext } from '../library/context/TransformContext';
+import { UiContext } from '../library/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from '../library/rotate';
+import { scrollTo } from '../library/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
-export const Header: React.FunctionComponent = () => {
+type Props = {
+  fileName: string;
+  pdfUrl: string;
+};
+
+export const Header: React.FunctionComponent<Props> = ({ fileName, pdfUrl }: Props) => {
   const {
     isShowingHighlightOverlay,
     isShowingTextHighlight,
@@ -84,6 +90,7 @@ export const Header: React.FunctionComponent = () => {
       <div className="header-control">
         <a onClick={handleScrollToFigure}>Scroll to Figure 1</a>
       </div>
+      <Download fileName={fileName} pdfUrl={pdfUrl} />
     </div>
   );
 };
