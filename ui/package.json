@@ -2,7 +2,7 @@
   "name": "ui",
   "version": "0.0.1",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "author": "reviz@allenai.org",
   "scripts": {
     "build": "webpack --mode production",
