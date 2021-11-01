@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { BoundingBox } from '../../src/library/components/BoundingBox';
+import { BoundingBox } from '../../library/components/BoundingBox';
 
 type Props = {
   pageIndex: number;

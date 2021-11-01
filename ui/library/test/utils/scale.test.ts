@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { computePageDimensions, IPDFPageProxy } from './scale';
+import { computePageDimensions, IPDFPageProxy } from '../../utils/scale';
 
 describe('computePageDimensionsPx', () => {
   it('computes pixel height and width of the PDF with standard page size', () => {

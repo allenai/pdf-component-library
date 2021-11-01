@@ -4,8 +4,8 @@ import { Drawer } from 'antd';
 import * as React from 'react';
 import { Outline as PdfOutline } from 'react-pdf/dist/esm/entry.webpack';
 
-import { UiContext } from '../../src/library/context/UiContext';
-import { scrollToPdfPage } from '../../src/library/scroll';
+import { UiContext } from '../../library/context/UiContext';
+import { scrollToPdfPage } from '../../library/utils/scroll';
 
 type Props = {
   parentRef: React.RefObject<HTMLDivElement>;

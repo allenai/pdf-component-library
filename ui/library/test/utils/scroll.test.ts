@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import { generatePageId, scrollTo } from './scroll';
+import { generatePageId, scrollTo } from '../../utils/scroll';
 
 describe('generatePageId', () => {
   it('returns correct ID when given a number', () => {

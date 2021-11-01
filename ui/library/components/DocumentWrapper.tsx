@@ -5,8 +5,8 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
-import { getErrorMessage } from '../errorUtils';
-import { computePageDimensions, IPDFPageProxy } from '../scale';
+import { getErrorMessage } from '../utils/errorMessage';
+import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 
 type Props = {
   children?: React.ReactNode;

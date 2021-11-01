@@ -4,8 +4,8 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { generatePageId } from '../scroll';
-import { computePageStyle, getPageWidth } from '../styleUtils';
+import { generatePageId } from '../utils/scroll';
+import { computePageStyle, getPageWidth } from '../utils/style';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
 

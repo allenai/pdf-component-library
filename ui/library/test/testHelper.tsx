@@ -4,8 +4,8 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { DocumentContext, IDocumentContext } from './context/DocumentContext';
-import { ITransformContext, TransformContext } from './context/TransformContext';
+import { DocumentContext, IDocumentContext } from '../context/DocumentContext';
+import { ITransformContext, TransformContext } from '../context/TransformContext';
 
 export function expectHeightWidth(element: Element, height: number, width: number): void {
   expect(element.getAttribute('style')).to.include(`height: ${height}px;`);

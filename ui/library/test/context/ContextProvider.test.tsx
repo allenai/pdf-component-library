@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import { PageRotation } from '../rotate';
-import { Dimensions, Nullable } from '../types';
-import { ContextProvider } from './ContextProvider';
-import { DocumentContext, IDocumentContext } from './DocumentContext';
-import { ITransformContext, TransformContext } from './TransformContext';
-import { IUiContext, UiContext } from './UiContext';
+import { PageRotation } from '../../utils/rotate';
+import { Dimensions, Nullable } from '../../types';
+import { ContextProvider } from '../../context/ContextProvider';
+import { DocumentContext, IDocumentContext } from '../../context/DocumentContext';
+import { ITransformContext, TransformContext } from '../../context/TransformContext';
+import { IUiContext, UiContext } from '../../context/UiContext';
 
 describe('<ContextProvider/>', () => {
   let wrapper: ReactWrapper;

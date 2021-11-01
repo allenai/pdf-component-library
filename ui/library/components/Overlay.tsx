@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { computePageStyle } from '../styleUtils';
+import { computePageStyle } from '../utils/style';
 import { BoundingBox } from './BoundingBox';
 
 type Props = {

@@ -2,8 +2,8 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
-import { BoundingBox } from '../../src/library/components/BoundingBox';
-import { TransformContext } from '../../src/library/context/TransformContext';
+import { BoundingBox } from '../../library/components/BoundingBox';
+import { TransformContext } from '../../library/context/TransformContext';
 import { Author, Citation, CitationPaper } from '../types/citations';
 import { loadJSON } from '../utils/utils';
 

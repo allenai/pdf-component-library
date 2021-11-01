@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { PageRotation } from '../rotate';
-import { logProviderWarning } from './providerUtils';
+import { PageRotation } from '../utils/rotate';
+import { logProviderWarning } from '../utils/provider';
 
 export interface ITransformContext {
   rotation: PageRotation;

@@ -2,13 +2,13 @@ import { expect } from 'chai';
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import { IDocumentContext } from '../context/DocumentContext';
-import { ITransformContext } from '../context/TransformContext';
-import { PageRotation } from '../rotate';
+import { IDocumentContext } from '../../context/DocumentContext';
+import { ITransformContext } from '../../context/TransformContext';
+import { PageRotation } from '../../utils/rotate';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
-import { Dimensions } from '../types';
-import { BoundingBox } from './BoundingBox';
-import { HighlightOverlay } from './HighlightOverlay';
+import { Dimensions } from '../../types';
+import { BoundingBox } from '../../components/BoundingBox';
+import { HighlightOverlay } from '../../components/HighlightOverlay';
 
 describe('<HighlightOverlay/>', () => {
   const mockDocumentContext: IDocumentContext = {

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { PageRotation } from '../rotate';
+import { PageRotation } from '../utils/rotate';
 import { Dimensions, Nullable } from '../types';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';

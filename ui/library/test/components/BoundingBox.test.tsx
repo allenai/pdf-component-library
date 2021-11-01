@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import * as React from 'react';
 import * as sinon from 'sinon';
 
-import { IDocumentContext } from '../context/DocumentContext';
-import { ITransformContext } from '../context/TransformContext';
-import { PageRotation } from '../rotate';
+import { IDocumentContext } from '../../context/DocumentContext';
+import { ITransformContext } from '../../context/TransformContext';
+import { PageRotation } from '../../utils/rotate';
 import { mountWithContexts } from '../testHelper';
-import { Dimensions } from '../types';
-import { BoundingBox } from './BoundingBox';
+import { Dimensions } from '../../types';
+import { BoundingBox } from '../../components/BoundingBox';
 
 describe('<BoundingBox/>', () => {
   const mockDocumentContext: IDocumentContext = {

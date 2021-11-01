@@ -10,10 +10,10 @@ import { HighlightOverlayDemo } from './HighlightOverlayDemo';
 import { Outline } from './Outline';
 import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
-import { DocumentWrapper } from '../../src/library/components/DocumentWrapper';
-import { Overlay } from '../../src/library/components/Overlay';
-import { PageWrapper } from '../../src/library/components/PageWrapper';
-import { DocumentContext } from '../../src/library/context/DocumentContext';
+import { DocumentWrapper } from '../../library/components/DocumentWrapper';
+import { Overlay } from '../../library/components/Overlay';
+import { PageWrapper } from '../../library/components/PageWrapper';
+import { DocumentContext } from '../../library/context/DocumentContext';
 import {
   Annotations,
   AnnotationsRaw,

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { BoundingBox } from '../../src/library/components/BoundingBox';
-import { HighlightOverlay } from '../../src/library/components/HighlightOverlay';
-import { UiContext } from '../../src/library/context/UiContext';
-import { BoundingBox as BoundingBoxType } from '../../src/library/types';
+import { BoundingBox } from '../../library/components/BoundingBox';
+import { HighlightOverlay } from '../../library/components/HighlightOverlay';
+import { UiContext } from '../../library/context/UiContext';
+import { BoundingBox as BoundingBoxType } from '../../library/types';
 
 type Props = {
   pageIndex: number;
