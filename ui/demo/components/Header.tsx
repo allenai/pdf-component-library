@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Download } from '../library/components/Download';
-import { TransformContext } from '../library/context/TransformContext';
-import { UiContext } from '../library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from '../library/rotate';
-import { scrollTo } from '../library/scroll';
+import { Download } from '../../library/components/Download';
+import { TransformContext } from '../../library/context/TransformContext';
+import { UiContext } from '../../library/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from '../../library/utils/rotate';
+import { scrollTo } from '../../library/utils/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
