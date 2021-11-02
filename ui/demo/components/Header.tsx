@@ -8,11 +8,10 @@ import { scrollTo } from '../../library/utils/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
-  fileName: string;
   pdfUrl: string;
 };
 
-export const Header: React.FunctionComponent<Props> = ({ fileName, pdfUrl }: Props) => {
+export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   const {
     isShowingHighlightOverlay,
     isShowingTextHighlight,
@@ -90,7 +89,7 @@ export const Header: React.FunctionComponent<Props> = ({ fileName, pdfUrl }: Pro
       <div className="header-control">
         <a onClick={handleScrollToFigure}>Scroll to Figure 1</a>
       </div>
-      <Download fileName={fileName} pdfUrl={pdfUrl} />
+      <Download pdfUrl={pdfUrl} />
     </div>
   );
 };

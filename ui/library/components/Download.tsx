@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 type Props = {
-  fileName: string;
   pdfUrl: string;
 };
 
@@ -9,7 +8,7 @@ type Props = {
  * HTML anchor tag allows you to download a file from the same origin.
  * This is a workaround to download a file served from a different origin
  */
-export const Download: React.FunctionComponent<Props> = ({ fileName, pdfUrl }: Props) => {
+export const Download: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   const [fetching, setFetching] = React.useState(false);
 
   const download = () => {
@@ -22,7 +21,7 @@ export const Download: React.FunctionComponent<Props> = ({ fileName, pdfUrl }: P
         const blobURL = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = blobURL;
-        a.download = fileName;
+        a.download = pdfUrl.split('/').pop() || pdfUrl;
         document.body.appendChild(a);
         a.click();
       });
