@@ -28,7 +28,7 @@ module.exports = {
   plugins: [
     // This copies `public/index.html` into the build output directory.
     new HtmlWebpackPlugin({
-      template: 'public/index.html',
+      template: 'demo/public/index.html',
       /* This ensures that links to injected scripts, styles and images start at the
        * root instead of being relative to the current URL. Without this deep
        * URLs that target the URI don't work.
@@ -40,7 +40,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: 'public/**/*',
+          from: 'demo/public/**/*',
           filter: absPathToFile => {
             return absPathToFile !== path.resolve(__dirname, 'public', 'index.html');
           },

@@ -11,7 +11,7 @@ services:
         # (`node_modules`) live at that location.
         volumes:
             - ./ui/src:/usr/local/src/skiff/app/ui/src
-            - ./ui/public:/usr/local/src/skiff/app/ui/public
+            - ./ui/demo/public:/usr/local/src/skiff/app/ui/demo/public
             - ./ui/package.json:/usr/local/src/skiff/app/ui/package.json
             - ./ui/tsconfig.json:/usr/local/src/skiff/app/ui/tsconfig.json
             - ./ui/yarn.lock:/usr/local/src/skiff/app/ui/yarn.lock
