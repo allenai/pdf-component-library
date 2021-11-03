@@ -1,22 +1,6 @@
 name: ci
 on: push
 jobs:
-  ui:
-    # The default is 360 (6 hours).
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ui
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '12.21.0'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
   ui-demo:
     # The default is 360 (6 hours).
     timeout-minutes: 5
@@ -33,3 +17,20 @@ jobs:
       - run: yarn build
       - run: yarn lint
       - run: yarn test
+  ui:
+    # The default is 360 (6 hours).
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12.21.0'
+      - run: yarn install
+      - run: yarn build
+      - run: yarn lint
+      - run: yarn test
+
