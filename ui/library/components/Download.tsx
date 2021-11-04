@@ -1,4 +1,3 @@
-import { Button } from 'antd';
 import * as React from 'react';
 
 type Props = {
@@ -29,8 +28,8 @@ export const Download: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   };
 
   return (
-    <Button disabled={fetching} onClick={() => download()} aria-label="download PDF">
+    <button disabled={fetching} onClick={() => download()} aria-label="download PDF">
       Download
-    </Button>
+    </button>
   );
 };
