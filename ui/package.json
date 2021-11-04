@@ -14,8 +14,11 @@
     "glob-parent": "5.1.2"
   },
   "dependencies": {
+    "@types/react": "17.0.14",
     "@types/react-pdf": "5.0.5",
     "classnames": "^2.3.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "react-pdf": "5.3.2"
   },
   "devDependencies": {
@@ -23,8 +26,6 @@
     "@types/enzyme": "3.10.9",
     "@types/mocha": "8.2.3",
     "@types/node": "11.9.5",
-    "@types/react": "17.0.14",
-    "@types/react-dom": "17.0.9",
     "@types/sinon": "10.0.2",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
@@ -46,8 +47,6 @@
     "mini-css-extract-plugin": "^2.4.3",
     "mocha": "8.4.0",
     "prettier": "2.3.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
     "sinon": "11.1.1",
     "style-loader": "3.1.0",
     "ts-loader": "9.2.3",
@@ -56,9 +55,5 @@
     "webpack": "5.44.0",
     "webpack-cli": "4.7.2",
     "webpack-node-externals": "^3.0.0"
-  },
-  "peerDependencies": {
-    "react": "^16.3.0 || ^17.0.0-0",
-    "react-dom": "^16.3.0 || ^17.0.0-0"
   }
 }
