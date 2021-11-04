@@ -5,10 +5,11 @@
   "license": "UNLICENSED",
   "author": "s2@allenai.org",
   "scripts": {
+    "build": "webpack --mode development",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "start": "webpack serve --hot --mode development",
-    "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json library/**/*.test.ts{,?}"
+    "test": "echo '🚫 Tests are not configured for demo app.'"
   },
   "resolutions": {
     "glob-parent": "5.1.2"
