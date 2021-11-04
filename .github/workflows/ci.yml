@@ -24,9 +24,6 @@ jobs:
       - name: Build demo
         working-directory: ui/demo
         run: yarn build
-      - name: Lint library
+      - name: Lint project
         working-directory: ui
-        run: yarn lint
-      - name: Lint demo
-        working-directory: ui/demo
         run: yarn lint
