@@ -1,4 +1,5 @@
-build
-library/dist
-node_modules
-public
+demo/build/
+demo/node_modules/
+demo/public/
+dist/
+node_modules/
