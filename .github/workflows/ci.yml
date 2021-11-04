@@ -12,3 +12,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '12.21.0'
+      - name: Install library dependencies
+        working-directory: ui
+        run: yarn install
