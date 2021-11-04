@@ -1,4 +1,4 @@
 build
-library/dist
+dist
 node_modules
 public
