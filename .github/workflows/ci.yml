@@ -15,3 +15,6 @@ jobs:
       - name: Install library dependencies
         working-directory: ui
         run: yarn install
+      - name: Install demo dependencies
+        working-directory: ui/demo
+        run: yarn install
