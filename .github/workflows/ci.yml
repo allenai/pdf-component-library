@@ -5,15 +5,32 @@ jobs:
     # The default is 360 (6 hours).
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ui
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
           node-version: '12.21.0'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
+      # Dependencies for library and demo app need to be installed before we can build anything
+      - name: Install library dependencies
+        working-directory: ui
+        run: yarn install
+      - name: Install demo dependencies
+        working-directory: ui/demo
+        run: yarn install
+      - name: Build library
+        working-directory: ui
+        run: yarn build
+      - name: Build demo
+        working-directory: ui/demo
+        run: yarn build
+      - name: Test library
+        working-directory: ui
+        run: yarn test
+      - name: Test demo app
+        working-directory: ui/demo
+        run: yarn test
+      - name: Lint project
+        working-directory: ui
+        run: yarn lint
