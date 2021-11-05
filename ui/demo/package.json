@@ -1,7 +1,6 @@
 {
   "name": "@allenai/pdf-components-demo",
   "version": "0.0.1",
-  "private": true,
   "license": "UNLICENSED",
   "author": "s2@allenai.org",
   "scripts": {
