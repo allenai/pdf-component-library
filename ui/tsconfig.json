@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -11,6 +11,11 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true
-  }
+    "sourceMap": true,
+    "declaration": true,
+    "outDir": "types"
+  },
+  "include": [
+    "library/"
+  ]
 }

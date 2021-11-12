@@ -8,7 +8,7 @@ module.exports = (env, argv) => {
   const isProduction = process.env.NODE_ENV === 'production' || argv.mode === 'production';
 
   return {
-    entry: './library/index.js',
+    entry: './library/index.ts',
     mode: isProduction ? 'production' : 'development',
     module: {
       rules: [
@@ -47,6 +47,11 @@ module.exports = (env, argv) => {
     output: {
       filename: `${bundleName}.js`,
       path: path.resolve(__dirname, 'dist'),
+      library: {
+        name: 'PdfComponents',
+        type: 'umd',
+        export: 'default',
+      }
     },
   };
 };

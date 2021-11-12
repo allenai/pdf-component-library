@@ -4,17 +4,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: ['./index.tsx', './less/main.less'],
+  entry: ['./index.tsx'],
   module: {
     rules: [
-      {
-        test: /\.(less|css)$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'less-loader', options: { lessOptions: { javascriptEnabled: true } } },
-        ],
-      },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',

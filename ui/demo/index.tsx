@@ -5,17 +5,14 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom';
 
-import { ContextProvider } from '../library/context/ContextProvider';
-import { Reader } from './components/Reader';
+// @ts-ignore
+import { rotateClockwise } from '../dist/pdf-components';
+console.info(rotateClockwise);
+
 
 const App = () => (
-  <ContextProvider>
-    <BrowserRouter>
-      <Route path="/" component={Reader} />
-    </BrowserRouter>
-  </ContextProvider>
+  <h1>Yooooooo</h1>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));
