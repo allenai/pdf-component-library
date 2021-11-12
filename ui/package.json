@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "author": "s2@allenai.org",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && cp ./tmp/pdf-components.d.ts ./dist && rm -rf ./tmp",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json library/**/*.test.ts{,?}"
@@ -16,12 +16,12 @@
     "classnames": "^2.3.1"
   },
   "devDependencies": {
-    "@types/react": "17.0.14",
-    "@types/react-pdf": "5.0.5",
     "@types/chai": "4.2.21",
     "@types/enzyme": "3.10.9",
     "@types/mocha": "8.2.3",
     "@types/node": "11.9.5",
+    "@types/react": "17.0.14",
+    "@types/react-pdf": "5.0.5",
     "@types/sinon": "10.0.2",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
@@ -30,6 +30,7 @@
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "9.0.1",
     "css-loader": "5.2.6",
+    "dts-bundle": "^0.7.3",
     "enzyme": "3.11.0",
     "eslint": "7.30.0",
     "eslint-config-prettier": "8.3.0",

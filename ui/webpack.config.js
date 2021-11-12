@@ -2,6 +2,7 @@ const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssPlugin = require('mini-css-extract-plugin');
+const dtsBundle = require('dts-bundle');
 
 module.exports = (env, argv) => {
   const bundleName = 'pdf-components';
@@ -36,6 +37,7 @@ module.exports = (env, argv) => {
       new MiniCssPlugin({
         filename: `${bundleName}.css`,
       }),
+      new DtsBundlePlugin('pdf-components', './tmp/index.d.ts')
     ],
     target: 'node',
     externalsPresets: {
@@ -57,3 +59,15 @@ module.exports = (env, argv) => {
 };
 
 
+function DtsBundlePlugin(bundleName, indexPath) {
+  DtsBundlePlugin.prototype.apply = function (compiler) {
+    compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
+      if (compilation.emittedAssets.has('../tmp/index.d.ts')) {
+        dtsBundle.bundle({
+          name: 'pdf-components',
+          main: indexPath,
+        });
+      }
+    });
+  };
+}
