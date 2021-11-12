@@ -28,9 +28,9 @@ function rotateClockwise(rotation: PageRotation): PageRotation {
  * Tests whether the page is rotated 90 degrees clockwise or counterclockwise from zero,
  * e.g. whether the page "is rotated sideways."
  */
-function isSideways(rotation: PageRotation): boolean {
-    return rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270;
-}
+// function isSideways(rotation: PageRotation): boolean {
+//     return rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270;
+// }
 
 // Works w/ import Components from path (index)
 // export default {
@@ -41,4 +41,8 @@ function isSideways(rotation: PageRotation): boolean {
 
 // export const rotateClockwise = test;
 
-export default { rotateClockwise, isSideways }
+import { BoundingBox } from './BoundingBox';
+
+import { isSideways, rotateCounterClockwise } from "./rotate";
+
+export default { BoundingBox, rotateClockwise, rotateCounterClockwise, isSideways }

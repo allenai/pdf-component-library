@@ -8,15 +8,15 @@ import * as ReactDOM from 'react-dom';
 
 // @ts-ignore
 console.log('test');
-// import { rotateClockwise } from '../dist/pdf-components';
-// console.info(rotateClockwise);
+import { rotateClockwise } from '../dist/pdf-components';
+console.info(rotateClockwise);
 
 // works with TS
 // const test = require('../dist/pdf-components');
 // console.info(test);
 
-const test = require('../dist/pdf-components');
-console.info(test);
+// const test = require('../dist/pdf-components');
+// console.info(test);
 // console.info(rotateClockwise);
 
 const App = () => (

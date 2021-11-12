@@ -39,13 +39,7 @@ module.exports = (env, argv) => {
       }),
       new DtsBundlePlugin('pdf-components', './tmp/index.d.ts')
     ],
-    target: 'node',
-    externalsPresets: {
-      node: true,
-    },
-    externals: [
-      nodeExternals(),
-    ],
+    target: 'web',
     output: {
       filename: `${bundleName}.js`,
       path: path.resolve(__dirname, 'dist'),

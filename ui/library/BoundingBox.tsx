@@ -1,21 +1,10 @@
 import * as React from 'react';
 
-import { BoundingBox as BoundingBoxType } from './types';
 
-type Props = {
-  className?: string;
-  id?: string;
-  isHighlighted?: boolean;
-  onClick?: () => void;
-} & BoundingBoxType;
-
-export type BoundingBoxProps = Props;
-
-export const BoundingBox: React.FunctionComponent<Props> = ({
-  id,
-}: Props) => {
-
+export const BoundingBox: React.FunctionComponent = () => {
   return (
-    <div id={id} className="bbox" />
+    <div id="testBbox" className="bbox">
+      <h2>Hi again!</h2>
+    </div>
   );
 };

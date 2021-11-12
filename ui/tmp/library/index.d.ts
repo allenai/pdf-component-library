@@ -1,3 +1,4 @@
+/// <reference types="react" />
 declare enum PageRotation {
     Rotate0 = 0,
     Rotate90 = 90,
@@ -5,13 +6,11 @@ declare enum PageRotation {
     Rotate270 = 270
 }
 declare function rotateClockwise(rotation: PageRotation): PageRotation;
-/**
- * Tests whether the page is rotated 90 degrees clockwise or counterclockwise from zero,
- * e.g. whether the page "is rotated sideways."
- */
-declare function isSideways(rotation: PageRotation): boolean;
+import { isSideways, rotateCounterClockwise } from "./rotate";
 declare const _default: {
+    BoundingBox: import("react").FunctionComponent<{}>;
     rotateClockwise: typeof rotateClockwise;
+    rotateCounterClockwise: typeof rotateCounterClockwise;
     isSideways: typeof isSideways;
 };
 export default _default;
