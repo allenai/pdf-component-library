@@ -2,47 +2,46 @@
  * PDF Component Library exports
  */
 
-// Components
+import { BoundingBox, Props as BoundingBoxProps } from './src/components/BoundingBox';
+import { DocumentWrapper, Props as DocumentWrapperProps } from './src/components/DocumentWrapper';
+import { DownloadButton, Props as DownloadButtonProps } from './src/components/DownloadButton';
+import { HighlightOverlay, Props as HighlightOverlayProps } from './src/components/HighlightOverlay';
+import { Overlay, Props as OverlayProps } from './src/components/Overlay';
+import { PageWrapper, PageProps, Props as PageWrapperProps } from './src/components/PageWrapper';
 
-enum PageRotation {
-    Rotate0 = 0,
-    Rotate90 = 90,
-    Rotate180 = 180,
-    Rotate270 = 270,
+import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
+import { IDocumentContext, DocumentContext } from './src/context/DocumentContext';
+import { ITransformContext, TransformContext } from './src/context/TransformContext';
+import { IUiContext, UiContext } from './src/context/UiContext';
+
+import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from './src/utils/rotate';
+import { generatePageIdfromIndex, scrollToId, scrollToPdfPageIndex } from './src/utils/scroll';
+import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from './src/utils/style';
+
+export default {
+    // UI Components
+    BoundingBox,
+    DocumentWrapper,
+    DownloadButton,
+    HighlightOverlay,
+    Overlay,
+    // Context Providers 
+    ContextProvider,
+    DocumentContext,
+    TransformContext,
+    UiContext,
+    // Utils: rotation
+    isSideways,
+    PageRotation,
+    rotateClockwise,
+    rotateCounterClockwise,
+    // Utils: scroll
+    generatePageIdfromIndex,
+    scrollToId,
+    scrollToPdfPageIndex,
+    // Utils: style 
+    computeBoundingBoxStyle,
+    computePageStyle,
+    getPageHeight,
+    getPageWidth,
 }
-
-function rotateClockwise(rotation: PageRotation): PageRotation {
-    switch (rotation) {
-        case PageRotation.Rotate0:
-            return PageRotation.Rotate90;
-        case PageRotation.Rotate90:
-            return PageRotation.Rotate180;
-        case PageRotation.Rotate180:
-            return PageRotation.Rotate270;
-        default:
-            return PageRotation.Rotate0;
-    }
-}
-
-/**
- * Tests whether the page is rotated 90 degrees clockwise or counterclockwise from zero,
- * e.g. whether the page "is rotated sideways."
- */
-// function isSideways(rotation: PageRotation): boolean {
-//     return rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270;
-// }
-
-// Works w/ import Components from path (index)
-// export default {
-//     PageRotation,
-//     rotateClockwise,
-//     isSideways
-// }
-
-// export const rotateClockwise = test;
-
-import { BoundingBox } from './BoundingBox';
-
-import { isSideways, rotateCounterClockwise } from "./rotate";
-
-export default { BoundingBox, rotateClockwise, rotateCounterClockwise, isSideways }

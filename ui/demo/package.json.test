@@ -1,0 +1,8 @@
+{
+  "name": "pdf-components",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "author": "s2@allenai.org",
+  "main": "./pdf-components.js",
+  "types": "./index.d.ts"
+}

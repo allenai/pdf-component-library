@@ -6,18 +6,9 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-// @ts-ignore
-console.log('test');
-import { rotateClockwise } from '../dist/pdf-components';
-console.info(rotateClockwise);
-
-// works with TS
-// const test = require('../dist/pdf-components');
-// console.info(test);
-
-// const test = require('../dist/pdf-components');
-// console.info(test);
-// console.info(rotateClockwise);
+import PdfComponents from 'pdf-components';
+console.info(PdfComponents.BoundingBox);
+console.info(PdfComponents.rotateClockwise(PdfComponents.PageRotation.Rotate180));
 
 const App = () => (
   <h1>Yooooooo</h1>

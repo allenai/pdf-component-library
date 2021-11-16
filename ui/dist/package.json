@@ -1,0 +1,6 @@
+{
+    "name": "pdf-components",
+    "license": "Apache-2.0",
+    "main": "./pdf-components.js",
+    "types": "./index.d.ts"
+}

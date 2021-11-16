@@ -37,7 +37,7 @@ module.exports = (env, argv) => {
       new MiniCssPlugin({
         filename: `${bundleName}.css`,
       }),
-      new DtsBundlePlugin('pdf-components', './tmp/index.d.ts')
+      new DtsBundlePlugin(bundleName, './tmp/index.d.ts')
     ],
     target: 'web',
     output: {
@@ -58,7 +58,7 @@ function DtsBundlePlugin(bundleName, indexPath) {
     compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
       if (compilation.emittedAssets.has('../tmp/index.d.ts')) {
         dtsBundle.bundle({
-          name: 'pdf-components',
+          name: bundleName,
           main: indexPath,
         });
       }
