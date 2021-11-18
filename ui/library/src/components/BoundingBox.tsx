@@ -4,8 +4,7 @@ import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 import { BoundingBox as BoundingBoxType } from '../types';
 import { computeBoundingBoxStyle } from '../utils/style';
-
-const classNames = require('classnames');
+import classNames from 'classnames';
 
 export type Props = {
   className?: string;

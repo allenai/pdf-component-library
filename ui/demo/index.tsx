@@ -11,7 +11,10 @@ console.info(PdfComponents.BoundingBox);
 console.info(PdfComponents.rotateClockwise(PdfComponents.PageRotation.Rotate180));
 
 const App = () => (
-  <h1>Yooooooo</h1>
+  <PdfComponents.ContextProvider>
+    <PdfComponents.DownloadButton pdfUrl="." />
+  </PdfComponents.ContextProvider>
+
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

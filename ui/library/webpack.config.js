@@ -9,7 +9,7 @@ module.exports = (env, argv) => {
   const isProduction = process.env.NODE_ENV === 'production' || argv.mode === 'production';
 
   return {
-    entry: './library/index.ts',
+    entry: './index.ts',
     mode: isProduction ? 'production' : 'development',
     module: {
       rules: [
@@ -37,7 +37,7 @@ module.exports = (env, argv) => {
       new MiniCssPlugin({
         filename: `${bundleName}.css`,
       }),
-      new DtsBundlePlugin(bundleName, './tmp/index.d.ts')
+      new DtsBundlePlugin(bundleName, '../tmp/index.d.ts')
     ],
     target: 'web',
     output: {
@@ -49,6 +49,20 @@ module.exports = (env, argv) => {
         export: 'default',
       }
     },
+    externals: {
+      "react": {
+        "commonjs": "react",
+        "commonjs2": "react",
+        "amd": "react",
+        "root": "React"
+      },
+      "react-dom": {
+        "commonjs": "react-dom",
+        "commonjs2": "react-dom",
+        "amd": "react-dom",
+        "root": "ReactDOM"
+      }
+    }
   };
 };
 
@@ -56,7 +70,8 @@ module.exports = (env, argv) => {
 function DtsBundlePlugin(bundleName, indexPath) {
   DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
-      if (compilation.emittedAssets.has('../tmp/index.d.ts')) {
+      console.log(compilation.emittedAssets);
+      if (compilation.emittedAssets.has('../../tmp/index.d.ts')) {
         dtsBundle.bundle({
           name: bundleName,
           main: indexPath,

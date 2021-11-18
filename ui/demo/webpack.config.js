@@ -17,6 +17,11 @@ module.exports = {
   devtool: 'eval-source-map',
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    // alias: {
+    //   'react': path.join(__dirname, 'node_modules/react'),
+    //   'react-dom': path.join(__dirname, 'node_modules/react-dom'),
+    //   'pdf-components': path.join(__dirname, 'node_modules/pdf-components')
+    // }
   },
   plugins: [
     new CleanWebpackPlugin(),
