@@ -1,10 +1,7 @@
 import * as React from 'react';
 
-import PdfComponents from 'pdf-components';
+import { BoundingBox, UiContext } from 'pdf-components';
 import { BoundingBox as BoundingBoxType } from 'pdf-components/src/types';
-// import { BoundingBox } from '../../library/components/BoundingBox';
-// import { UiContext } from '../../library/context/UiContext';
-// import { BoundingBox as BoundingBoxType } from '../../library/types';
 
 type Props = {
   pageIndex: number;
@@ -14,7 +11,7 @@ type Props = {
  * Example of BoundingBoxes used as text highlights
  */
 export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }: Props) => {
-  const { isShowingTextHighlight } = React.useContext(PdfComponents.UiContext);
+  const { isShowingTextHighlight } = React.useContext(UiContext);
   if (!isShowingTextHighlight) {
     return null;
   }
@@ -79,7 +76,7 @@ export const TextHighlightDemo: React.FunctionComponent<Props> = ({ pageIndex }:
           key: i,
         };
 
-        boxes.push(<PdfComponents.BoundingBox {...props} />);
+        boxes.push(<BoundingBox {...props} />);
       }
     });
     return boxes;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import PdfComponents from 'pdf-components';
-// import { BoundingBox } from '../../library/components/BoundingBox';
+import { BoundingBox } from 'pdf-components';
 
 type Props = {
   pageIndex: number;
@@ -24,7 +23,7 @@ export const ScrollToDemo: React.FunctionComponent<Props> = ({ pageIndex }: Prop
   }
 
   return (
-    <PdfComponents.BoundingBox
+    <BoundingBox
       id="demoFigure"
       className="reader__sample-figure-scroll-bbox"
       {...boundingBoxProps}

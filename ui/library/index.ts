@@ -6,6 +6,7 @@ import { BoundingBox, Props as BoundingBoxProps } from './src/components/Boundin
 import { DocumentWrapper, Props as DocumentWrapperProps } from './src/components/DocumentWrapper';
 import { DownloadButton, Props as DownloadButtonProps } from './src/components/DownloadButton';
 import { HighlightOverlay, Props as HighlightOverlayProps } from './src/components/HighlightOverlay';
+import { Outline } from './src/components/Outline';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageWrapper, PageProps, Props as PageWrapperProps } from './src/components/PageWrapper';
 
@@ -20,12 +21,43 @@ import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth 
 
 import './less/index.less';
 
+export {
+    // UI Components
+    BoundingBox,
+    DocumentWrapper,
+    DownloadButton,
+    HighlightOverlay,
+    Outline,
+    Overlay,
+    PageWrapper,
+    // Context Providers 
+    ContextProvider,
+    DocumentContext,
+    TransformContext,
+    UiContext,
+    // Utils: rotation
+    isSideways,
+    PageRotation,
+    rotateClockwise,
+    rotateCounterClockwise,
+    // Utils: scroll
+    generatePageIdfromIndex,
+    scrollToId,
+    scrollToPdfPageIndex,
+    // Utils: style 
+    computeBoundingBoxStyle,
+    computePageStyle,
+    getPageHeight,
+    getPageWidth,
+}
+
 export default {
     // UI Components
     BoundingBox,
     DocumentWrapper,
     DownloadButton,
     HighlightOverlay,
+    Outline,
     Overlay,
     PageWrapper,
     // Context Providers 

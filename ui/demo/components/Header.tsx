@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import PdfComponents from 'pdf-components';
+import { DownloadButton, rotateClockwise, rotateCounterClockwise, scrollToId, TransformContext, UiContext } from 'pdf-components';
 // import { Download } from '../../library/components/Download';
 // import { TransformContext } from '../../library/context/TransformContext';
 // import { UiContext } from '../../library/context/UiContext';
@@ -19,19 +19,19 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingHighlightOverlay,
     setIsShowingOutline,
     setIsShowingTextHighlight,
-  } = React.useContext(PdfComponents.UiContext);
-  const { rotation, setRotation } = React.useContext(PdfComponents.TransformContext);
+  } = React.useContext(UiContext);
+  const { rotation, setRotation } = React.useContext(TransformContext);
 
   const handleShowOutline = React.useCallback(() => {
     setIsShowingOutline(true);
   }, []);
 
   const handleRotateCW = React.useCallback(() => {
-    setRotation(PdfComponents.rotateClockwise(rotation));
+    setRotation(rotateClockwise(rotation));
   }, [rotation]);
 
   const handleRotateCCW = React.useCallback(() => {
-    setRotation(PdfComponents.rotateCounterClockwise(rotation));
+    setRotation(rotateCounterClockwise(rotation));
   }, [rotation]);
 
   // TODO: #29079 remove this once UI design is finalized
@@ -65,7 +65,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingHighlightOverlay(false);
 
     const id = 'demoFigure';
-    PdfComponents.scrollToId(id);
+    scrollToId(id);
   }, []);
 
   return (
@@ -90,7 +90,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
       <div className="header-control">
         <a onClick={handleScrollToFigure}>Scroll to Figure 1</a>
       </div>
-      <PdfComponents.DownloadButton pdfUrl={pdfUrl} />
+      <DownloadButton pdfUrl={pdfUrl} />
     </div>
   );
 };

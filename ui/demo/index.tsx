@@ -6,22 +6,16 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { ContextProvider } from 'pdf-components';
 
 import { Reader } from './components/Reader';
 
-import PdfComponents from 'pdf-components';
-console.info(PdfComponents);
-
 const App = () => (
-  // <PdfComponents.ContextProvider>
-  //   <PdfComponents.DownloadButton pdfUrl="." />
-  // </PdfComponents.ContextProvider>
-
-  <PdfComponents.ContextProvider>
+  <ContextProvider>
     <BrowserRouter>
       <Route path="/" component={Reader} />
     </BrowserRouter>
-  </PdfComponents.ContextProvider>
+  </ContextProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

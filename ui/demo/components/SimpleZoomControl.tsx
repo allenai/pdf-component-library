@@ -1,11 +1,10 @@
 import * as React from 'react';
+import { TransformContext } from 'pdf-components';
 
-import PdfComponents from 'pdf-components';
-// import { TransformContext } from '../../library/context/TransformContext';
 import { PercentFormatter } from '../utils/format';
 
 export const SimpleZoomControl: React.FunctionComponent = () => {
-  const { scale, setScale } = React.useContext(PdfComponents.TransformContext);
+  const { scale, setScale } = React.useContext(TransformContext);
   const ZOOM_MULTIPLIER = 1.2;
 
   const handleZoomIn = React.useCallback(() => {

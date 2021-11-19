@@ -2,9 +2,7 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
-import PdfComponents from 'pdf-components';
-// import { BoundingBox } from '../../library/components/BoundingBox';
-// import { TransformContext } from '../../library/context/TransformContext';
+import { BoundingBox, TransformContext } from 'pdf-components';
 import { Author, Citation, CitationPaper } from '../types/citations';
 import { loadJSON } from '../utils/utils';
 
@@ -15,7 +13,7 @@ type Props = {
 
 export const CitationPopover: React.FunctionComponent<Props> = ({ citation, parentRef }: Props) => {
   const ABSTRACT_MAX_LENGTH = 300;
-  const transformContext = React.useContext(PdfComponents.TransformContext);
+  const transformContext = React.useContext(TransformContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
   const [paper, setPaper] = React.useState<CitationPaper>();
@@ -107,7 +105,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       content={renderPopoverContent}
       trigger="click"
       onVisibleChange={handleVisibleChange}>
-      <PdfComponents.BoundingBox
+      <BoundingBox
         className={classNames(
           'reader__popover__bbox',
           `rotate${transformContext.rotation}`,

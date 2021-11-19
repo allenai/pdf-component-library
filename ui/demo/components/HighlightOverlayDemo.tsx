@@ -1,11 +1,7 @@
 import * as React from 'react';
 
-import PdfComponents from 'pdf-components';
+import { BoundingBox, HighlightOverlay, UiContext } from 'pdf-components';
 import { BoundingBox as BoundingBoxType } from 'pdf-components/src/types';
-// import { BoundingBox } from '../../library/components/BoundingBox';
-// import { HighlightOverlay } from '../../library/components/HighlightOverlay';
-// import { UiContext } from '../../library/context/UiContext';
-// import { BoundingBox as BoundingBoxType } from '../../library/types';
 
 type Props = {
   pageIndex: number;
@@ -15,7 +11,7 @@ type Props = {
  * Example of the HighlightOverlay component
  */
 export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex }: Props) => {
-  const { isShowingHighlightOverlay } = React.useContext(PdfComponents.UiContext);
+  const { isShowingHighlightOverlay } = React.useContext(UiContext);
   if (!isShowingHighlightOverlay) {
     return null;
   }
@@ -86,15 +82,15 @@ export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex
           key: i,
         };
 
-        boxes.push(<PdfComponents.BoundingBox {...props} />);
+        boxes.push(<BoundingBox {...props} />);
       }
     });
     return boxes;
   }
 
   return (
-    <PdfComponents.HighlightOverlay pageIndex={pageIndex}>
+    <HighlightOverlay pageIndex={pageIndex}>
       {renderHighlightOverlayBoundingBoxes()}
-    </PdfComponents.HighlightOverlay>
+    </HighlightOverlay>
   );
 };

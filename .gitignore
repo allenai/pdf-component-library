@@ -12,6 +12,3 @@ ui/demo/build/
 # UI package manager debug output
 ui/*.log
 .skiff/webapp.yaml
-
-# REMOVE BEFORE PUSHING
-ui-final/

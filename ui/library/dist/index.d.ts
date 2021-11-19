@@ -5,25 +5,28 @@
 //   ../react-pdf/dist/Page
 
 declare module 'pdf-components' {
-    import { Props as BoundingBoxProps } from 'pdf-components/src/components/BoundingBox';
-    import { Props as DocumentWrapperProps } from 'pdf-components/src/components/DocumentWrapper';
-    import { Props as DownloadButtonProps } from 'pdf-components/src/components/DownloadButton';
-    import { Props as HighlightOverlayProps } from 'pdf-components/src/components/HighlightOverlay';
-    import { Props as OverlayProps } from 'pdf-components/src/components/Overlay';
-    import { Props as PageWrapperProps } from 'pdf-components/src/components/PageWrapper';
-    import { Props as ContextProviderProps } from 'pdf-components/src/context/ContextProvider';
-    import { IDocumentContext } from 'pdf-components/src/context/DocumentContext';
-    import { ITransformContext } from 'pdf-components/src/context/TransformContext';
-    import { IUiContext } from 'pdf-components/src/context/UiContext';
+    import { BoundingBox, Props as BoundingBoxProps } from 'pdf-components/src/components/BoundingBox';
+    import { DocumentWrapper, Props as DocumentWrapperProps } from 'pdf-components/src/components/DocumentWrapper';
+    import { DownloadButton, Props as DownloadButtonProps } from 'pdf-components/src/components/DownloadButton';
+    import { HighlightOverlay, Props as HighlightOverlayProps } from 'pdf-components/src/components/HighlightOverlay';
+    import { Outline } from 'pdf-components/src/components/Outline';
+    import { Overlay, Props as OverlayProps } from 'pdf-components/src/components/Overlay';
+    import { PageWrapper, Props as PageWrapperProps } from 'pdf-components/src/components/PageWrapper';
+    import { ContextProvider, Props as ContextProviderProps } from 'pdf-components/src/context/ContextProvider';
+    import { IDocumentContext, DocumentContext } from 'pdf-components/src/context/DocumentContext';
+    import { ITransformContext, TransformContext } from 'pdf-components/src/context/TransformContext';
+    import { IUiContext, UiContext } from 'pdf-components/src/context/UiContext';
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from 'pdf-components/src/utils/rotate';
     import { generatePageIdfromIndex, scrollToId, scrollToPdfPageIndex } from 'pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from 'pdf-components/src/utils/style';
     import './less/index.less';
+    export { BoundingBox, DocumentWrapper, DownloadButton, HighlightOverlay, Outline, Overlay, PageWrapper, ContextProvider, DocumentContext, TransformContext, UiContext, isSideways, PageRotation, rotateClockwise, rotateCounterClockwise, generatePageIdfromIndex, scrollToId, scrollToPdfPageIndex, computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         DocumentWrapper: import("react").FunctionComponent<DocumentWrapperProps>;
         DownloadButton: import("react").FunctionComponent<DownloadButtonProps>;
         HighlightOverlay: import("react").FunctionComponent<HighlightOverlayProps>;
+        Outline: import("react").FunctionComponent<{}>;
         Overlay: import("react").FunctionComponent<OverlayProps>;
         PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
         ContextProvider: import("react").FunctionComponent<ContextProviderProps>;
@@ -86,6 +89,11 @@ declare module 'pdf-components/src/components/HighlightOverlay' {
         pageIndex: number;
     };
     export const HighlightOverlay: React.FunctionComponent<Props>;
+}
+
+declare module 'pdf-components/src/components/Outline' {
+    import * as React from 'react';
+    export const Outline: React.FunctionComponent;
 }
 
 declare module 'pdf-components/src/components/Overlay' {
