@@ -1,7 +1,7 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { DocumentProps } from 'react-pdf';
-import { Document } from 'react-pdf/dist/esm/entry.webpack';
+import { Document, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
@@ -11,6 +11,8 @@ import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 export type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
   const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);

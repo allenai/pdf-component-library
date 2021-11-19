@@ -1,8 +1,8 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssPlugin = require('mini-css-extract-plugin');
 const dtsBundle = require('dts-bundle');
+const RemovePlugin = require('remove-files-webpack-plugin');
 
 module.exports = (env, argv) => {
   const bundleName = 'pdf-components';
@@ -25,6 +25,9 @@ module.exports = (env, argv) => {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           exclude: /node_modules/,
+          options: {
+            configFile: './tsconfig.prod.json',
+          }
         },
       ],
     },
@@ -33,11 +36,25 @@ module.exports = (env, argv) => {
       extensions: ['.tsx', '.ts', '.js', '.jsx'],
     },
     plugins: [
-      new CleanWebpackPlugin(),
+      new RemovePlugin({
+        before: {
+          root: './dist',
+          test: [
+            {
+              folder: '.',
+              method: () => true,
+            }
+          ],
+          exclude: [
+            'package.json',
+            'LICENSE'
+          ]
+        }
+      }),
       new MiniCssPlugin({
         filename: `${bundleName}.css`,
       }),
-      new DtsBundlePlugin(bundleName, '../tmp/index.d.ts')
+      new DtsBundlePlugin(bundleName, './tmp/index.d.ts')
     ],
     target: 'web',
     output: {
@@ -71,7 +88,7 @@ function DtsBundlePlugin(bundleName, indexPath) {
   DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
       console.log(compilation.emittedAssets);
-      if (compilation.emittedAssets.has('../../tmp/index.d.ts')) {
+      if (compilation.emittedAssets.has('../tmp/index.d.ts')) {
         dtsBundle.bundle({
           name: bundleName,
           main: indexPath,

@@ -11,11 +11,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true,
-    "declaration": true,
-    "outDir": "tmp"
-  },
-  "include": [
-    "./library"
-  ]
+    "sourceMap": true
+  }
 }

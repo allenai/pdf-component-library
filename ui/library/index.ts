@@ -18,6 +18,8 @@ import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } fro
 import { generatePageIdfromIndex, scrollToId, scrollToPdfPageIndex } from './src/utils/scroll';
 import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from './src/utils/style';
 
+import './less/index.less';
+
 export default {
     // UI Components
     BoundingBox,
@@ -25,6 +27,7 @@ export default {
     DownloadButton,
     HighlightOverlay,
     Overlay,
+    PageWrapper,
     // Context Providers 
     ContextProvider,
     DocumentContext,

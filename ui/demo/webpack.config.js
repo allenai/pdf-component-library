@@ -4,9 +4,17 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: ['./index.tsx'],
+  entry: ['./index.tsx', './less/main.less'],
   module: {
     rules: [
+      {
+        test: /\.(less|css)$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'less-loader', options: { lessOptions: { javascriptEnabled: true } } },
+        ],
+      },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
@@ -17,11 +25,6 @@ module.exports = {
   devtool: 'eval-source-map',
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    // alias: {
-    //   'react': path.join(__dirname, 'node_modules/react'),
-    //   'react-dom': path.join(__dirname, 'node_modules/react-dom'),
-    //   'pdf-components': path.join(__dirname, 'node_modules/pdf-components')
-    // }
   },
   plugins: [
     new CleanWebpackPlugin(),

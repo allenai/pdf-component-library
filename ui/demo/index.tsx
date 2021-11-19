@@ -5,16 +5,23 @@
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import { Reader } from './components/Reader';
 
 import PdfComponents from 'pdf-components';
-console.info(PdfComponents.BoundingBox);
-console.info(PdfComponents.rotateClockwise(PdfComponents.PageRotation.Rotate180));
+console.info(PdfComponents);
 
 const App = () => (
-  <PdfComponents.ContextProvider>
-    <PdfComponents.DownloadButton pdfUrl="." />
-  </PdfComponents.ContextProvider>
+  // <PdfComponents.ContextProvider>
+  //   <PdfComponents.DownloadButton pdfUrl="." />
+  // </PdfComponents.ContextProvider>
 
+  <PdfComponents.ContextProvider>
+    <BrowserRouter>
+      <Route path="/" component={Reader} />
+    </BrowserRouter>
+  </PdfComponents.ContextProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById('root'));

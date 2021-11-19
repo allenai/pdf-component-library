@@ -18,6 +18,7 @@
     "@types/react-dom": "17.0.9",
     "@types/react-pdf": "5.0.5",
     "@types/react-router-dom": "5.1.8",
+    "antd": "^4.16.13",
     "axios": "0.21.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
