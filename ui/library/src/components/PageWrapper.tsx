@@ -4,7 +4,7 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { generatePageId } from '../utils/scroll';
+import { generatePageIdFromIndex } from '../utils/scroll';
 import { computePageStyle, getPageWidth } from '../utils/style';
 import { HighlightOverlay } from './HighlightOverlay';
 import { Overlay } from './Overlay';
@@ -12,13 +12,14 @@ import { Overlay } from './Overlay';
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
  */
-type PageProps = {
+export type PageProps = {
   error?: string | React.ReactElement | RenderFunction;
   loading?: string | React.ReactElement | RenderFunction;
   noData?: string | React.ReactElement | RenderFunction;
   pageIndex: number;
 };
-type Props = {
+
+export type Props = {
   className?: string;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
 } & PageProps;
@@ -55,7 +56,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
-    <div id={generatePageId(pageIndex)} className="reader__page" style={getPageStyle()}>
+    <div id={generatePageIdFromIndex(pageIndex)} className="reader__page" style={getPageStyle()}>
       {children}
       <Page
         width={getWidth()}

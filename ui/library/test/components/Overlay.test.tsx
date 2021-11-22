@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import * as React from 'react';
 
-import { BoundingBox } from '../../components/BoundingBox';
-import { Overlay } from '../../components/Overlay';
-import { IDocumentContext } from '../../context/DocumentContext';
-import { ITransformContext } from '../../context/TransformContext';
-import { Dimensions } from '../../types';
-import { PageRotation } from '../../utils/rotate';
+import { BoundingBox } from '../../src/components/BoundingBox';
+import { Overlay } from '../../src/components/Overlay';
+import { IDocumentContext } from '../../src/context/DocumentContext';
+import { ITransformContext } from '../../src/context/TransformContext';
+import { Dimensions } from '../../src/types';
+import { PageRotation } from '../../src/utils/rotate';
 import { mountWithContexts } from '../testHelper';
 
 describe('<Overlay/>', () => {

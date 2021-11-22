@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
@@ -6,14 +5,14 @@ import { TransformContext } from '../context/TransformContext';
 import { BoundingBox as BoundingBoxType } from '../types';
 import { computeBoundingBoxStyle } from '../utils/style';
 
-type Props = {
+const classNames = require('classnames');
+
+export type Props = {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
   onClick?: () => void;
 } & BoundingBoxType;
-
-export type BoundingBoxProps = Props;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
   top,

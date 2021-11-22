@@ -6,7 +6,7 @@ import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';
 import { IUiContext, UiContext } from './UiContext';
 
-type Props = {
+export type Props = {
   children?: React.ReactElement | Array<React.ReactElement>;
 };
 
