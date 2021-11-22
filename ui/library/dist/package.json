@@ -1,0 +1,8 @@
+{
+    "name": "pdf-components-dist",
+    "version": "0.0.1",
+    "license": "Apache-2.0",
+    "author": "s2@allenai.org",
+    "main": "./pdf-components-dist.js",
+    "types": "./index.d.ts"
+}
