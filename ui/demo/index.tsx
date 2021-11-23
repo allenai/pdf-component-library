@@ -2,12 +2,11 @@
  * This is the main entry point for the UI. You should not need to make any
  * changes here.
  */
-
+import { ContextProvider } from 'pdf-components-dist';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { ContextProvider } from '../library/context/ContextProvider';
 import { Reader } from './components/Reader';
 
 const App = () => (

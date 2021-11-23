@@ -1,6 +1,5 @@
+import { BoundingBox } from 'pdf-components-dist';
 import * as React from 'react';
-
-import { BoundingBox } from '../../library/components/BoundingBox';
 
 type Props = {
   pageIndex: number;

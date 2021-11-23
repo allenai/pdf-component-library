@@ -1,13 +1,8 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
+import { DocumentContext, DocumentWrapper, Overlay, PageWrapper } from 'pdf-components-dist';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { DocumentWrapper } from '../../library/components/DocumentWrapper';
-import { Overlay } from '../../library/components/Overlay';
-import { PageWrapper } from '../../library/components/PageWrapper';
-import { DocumentContext } from '../../library/context/DocumentContext';
 import {
   Annotations,
   AnnotationsRaw,

@@ -1,9 +1,5 @@
+import { BoundingBox, HighlightOverlay, UiContext } from 'pdf-components-dist';
 import * as React from 'react';
-
-import { BoundingBox } from '../../library/components/BoundingBox';
-import { HighlightOverlay } from '../../library/components/HighlightOverlay';
-import { UiContext } from '../../library/context/UiContext';
-import { BoundingBox as BoundingBoxType } from '../../library/types';
 
 type Props = {
   pageIndex: number;
@@ -17,6 +13,15 @@ export const HighlightOverlayDemo: React.FunctionComponent<Props> = ({ pageIndex
   if (!isShowingHighlightOverlay) {
     return null;
   }
+
+  // TODO: import type from pdf-components-dist
+  type BoundingBoxType = {
+    page: number,
+    top: number,
+    left: number,
+    height: number,
+    width: number,
+  };
 
   function getBoundingBoxProps(): Array<BoundingBoxType> {
     return [

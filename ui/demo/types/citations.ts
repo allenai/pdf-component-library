@@ -1,5 +1,6 @@
-import { BoundingBox } from '../../library/types';
 import { EntityAttributesRaw, EntityRaw } from './entity';
+// TODO update this import
+import { BoundingBox } from 'pdf-components-dist/src/types';
 
 // Raw citation attributes in the same format as our data source
 export type CitationAttributesRaw = {

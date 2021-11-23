@@ -1,6 +1,7 @@
-import { Dimensions } from '../../library/types';
 import { Citation, makeCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
+// TODO update this import module
+import { Dimensions } from 'pdf-components-dist/src/types';
 
 // Raw annotation/entity data as returned from our data source
 export type AnnotationsRaw = {
