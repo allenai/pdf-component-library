@@ -11,7 +11,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '12.21.0'
+          node-version: '12.22.6'
       # Dependencies for library and demo app need to be installed before we can build anything
       - name: Install library dependencies
         working-directory: ui
