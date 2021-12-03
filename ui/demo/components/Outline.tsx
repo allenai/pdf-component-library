@@ -1,11 +1,9 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import { Drawer } from 'antd';
 import * as React from 'react';
 import { Outline as PdfOutline } from 'react-pdf/dist/esm/entry.webpack';
 
-import { UiContext } from '../../library/context/UiContext';
-import { scrollToPdfPage } from '../../library/utils/scroll';
+import { UiContext } from '../../library/src/context/UiContext';
+import { scrollToPdfPageIndex } from '../../library/src/utils/scroll';
 
 type Props = {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -22,7 +20,7 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
   const handleOutlineClick = React.useCallback(({ pageNumber }: { pageNumber: string }) => {
     // Page IDs are based on index, so convert pageNumber to pageIndex before scrolling
     const pageIndex = convertPageNumberToPageIndex(Number.parseInt(pageNumber));
-    scrollToPdfPage(pageIndex);
+    scrollToPdfPageIndex(pageIndex);
   }, []);
 
   // Convert from pageNumber to pageIndex

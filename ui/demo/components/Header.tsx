@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { Download } from '../../library/components/Download';
-import { TransformContext } from '../../library/context/TransformContext';
-import { UiContext } from '../../library/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from '../../library/utils/rotate';
-import { scrollTo } from '../../library/utils/scroll';
+import { DownloadButton } from '../../library/src/components/DownloadButton';
+import { TransformContext } from '../../library/src/context/TransformContext';
+import { UiContext } from '../../library/src/context/UiContext';
+import { rotateClockwise, rotateCounterClockwise } from '../../library/src/utils/rotate';
+import { scrollToId } from '../../library/src/utils/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
@@ -64,7 +64,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingHighlightOverlay(false);
 
     const id = 'demoFigure';
-    scrollTo(id);
+    scrollToId(id);
   }, []);
 
   return (
@@ -89,7 +89,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
       <div className="header-control">
         <a onClick={handleScrollToFigure}>Scroll to Figure 1</a>
       </div>
-      <Download pdfUrl={pdfUrl} />
+      <DownloadButton pdfUrl={pdfUrl} />
     </div>
   );
 };
