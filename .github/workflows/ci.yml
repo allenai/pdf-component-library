@@ -14,19 +14,19 @@ jobs:
           node-version: '12.22.6'
       # Dependencies for library and demo app need to be installed before we can build anything
       - name: Install library dependencies
-        working-directory: ui
+        working-directory: ui/library
         run: yarn install
       - name: Install demo dependencies
         working-directory: ui/demo
         run: yarn install
       - name: Build library
-        working-directory: ui
+        working-directory: ui/library
         run: yarn build
       - name: Build demo
         working-directory: ui/demo
         run: yarn build
       - name: Test library
-        working-directory: ui
+        working-directory: ui/library
         run: yarn test
       - name: Test demo app
         working-directory: ui/demo
