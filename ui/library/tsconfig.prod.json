@@ -6,6 +6,9 @@
     "outDir": "tmp"
   },
   "include": [
-    "./src",
+    "./src"
+  ],
+  "types": [
+    "jest"
   ]
 }

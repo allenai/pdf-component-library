@@ -11,6 +11,6 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true,
+    "sourceMap": true
   }
 }
