@@ -11,26 +11,35 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '12.21.0'
+          node-version: '12.22.6'
       # Dependencies for library and demo app need to be installed before we can build anything
-      - name: Install library dependencies
-        working-directory: ui
-        run: yarn install
       - name: Install demo dependencies
         working-directory: ui/demo
         run: yarn install
+      - name: Link demo packages
+        working-directory: ui/demo
+        run: yarn link-deps
+      - name: Install library dependencies
+        working-directory: ui/library
+        run: yarn install
+      - name: Link library packages
+        working-directory: ui/library
+        run: yarn link-deps
       - name: Build library
-        working-directory: ui
+        working-directory: ui/library
         run: yarn build
       - name: Build demo
         working-directory: ui/demo
         run: yarn build
       - name: Test library
-        working-directory: ui
+        working-directory: ui/library
         run: yarn test
       - name: Test demo app
         working-directory: ui/demo
         run: yarn test
-      - name: Lint project
-        working-directory: ui
+      - name: Lint library
+        working-directory: ui/library
+        run: yarn lint
+      - name: Lint demo
+        working-directory: ui/demo
         run: yarn lint

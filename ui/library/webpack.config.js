@@ -1,5 +1,4 @@
 const path = require('path');
-const nodeExternals = require('webpack-node-externals');
 const MiniCssPlugin = require('mini-css-extract-plugin');
 const dtsBundle = require('dts-bundle');
 const RemovePlugin = require('remove-files-webpack-plugin');
@@ -25,9 +24,6 @@ module.exports = (env, argv) => {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           exclude: /node_modules/,
-          options: {
-            configFile: './tsconfig.prod.json',
-          }
         },
       ],
     },
@@ -83,7 +79,6 @@ module.exports = (env, argv) => {
   };
 };
 
-
 function DtsBundlePlugin(bundleName, indexPath) {
   DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
@@ -97,13 +92,3 @@ function DtsBundlePlugin(bundleName, indexPath) {
     });
   };
 }
-
-    // target: 'node',
-    // externalsPresets: {
-    //   node: true,
-    // },
-    // externals: [
-    //   nodeExternals(),
-    // ],
-
-
