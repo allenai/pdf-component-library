@@ -1,11 +1,10 @@
+import classNames from 'classnames';
 import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 import { BoundingBox as BoundingBoxType } from '../types';
 import { computeBoundingBoxStyle } from '../utils/style';
-
-const classNames = require('classnames');
 
 export type Props = {
   className?: string;
