@@ -1,5 +1,3 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
