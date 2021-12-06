@@ -15,10 +15,16 @@ jobs:
       # Dependencies for library and demo app need to be installed before we can build anything
       - name: Install demo dependencies
         working-directory: ui/demo
-        run: yarn install && yarn link-deps
+        run: yarn install
+      - name: Link demo packages
+        working-directory: ui/demo
+        run: yarn link-deps
       - name: Install library dependencies
         working-directory: ui/library
-        run: yarn install && yarn link-deps
+        run: yarn link-deps
+      - name: Link library packages
+        working-directory: ui/library
+        run: yarn link-deps
       - name: Build library
         working-directory: ui/library
         run: yarn build
