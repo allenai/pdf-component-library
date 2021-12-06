@@ -1,9 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  entry: ['./demo/index.tsx', './demo/less/main.less'],
+  entry: ['./index.tsx', './less/main.less'],
   module: {
     rules: [
       {
@@ -26,9 +27,10 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     // This copies `public/index.html` into the build output directory.
     new HtmlWebpackPlugin({
-      template: 'demo/public/index.html',
+      template: 'public/index.html',
       /* This ensures that links to injected scripts, styles and images start at the
        * root instead of being relative to the current URL. Without this deep
        * URLs that target the URI don't work.
@@ -40,7 +42,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: 'demo/public/**/*',
+          from: 'public/**/*',
           filter: absPathToFile => {
             return absPathToFile !== path.resolve(__dirname, 'public', 'index.html');
           },

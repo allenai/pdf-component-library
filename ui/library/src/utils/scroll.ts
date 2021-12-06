@@ -2,11 +2,11 @@
 // e.g. reader_pg_0, reader_pg_1, etc.
 const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
 
-export function generatePageId(pageIndex: number | string): string {
+export function generatePageIdFromIndex(pageIndex: number | string): string {
   return `${PAGE_NAV_TARGET_ID_ROOT}${pageIndex}`;
 }
 
-export function scrollTo(id: string): void {
+export function scrollToId(id: string): void {
   const element = document.getElementById(id);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
@@ -15,6 +15,6 @@ export function scrollTo(id: string): void {
   }
 }
 
-export function scrollToPdfPage(pageIndex: number | string): void {
-  scrollTo(generatePageId(pageIndex));
+export function scrollToPdfPageIndex(pageIndex: number | string): void {
+  scrollToId(generatePageIdFromIndex(pageIndex));
 }

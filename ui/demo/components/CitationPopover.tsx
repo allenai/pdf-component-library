@@ -2,8 +2,8 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
-import { BoundingBox } from '../../library/components/BoundingBox';
-import { TransformContext } from '../../library/context/TransformContext';
+import { BoundingBox } from '../../library/src/components/BoundingBox';
+import { TransformContext } from '../../library/src/context/TransformContext';
 import { Author, Citation, CitationPaper } from '../types/citations';
 import { loadJSON } from '../utils/utils';
 
@@ -25,7 +25,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        loadJSON(`demo/data/citationPapers/${citation.paperId}.json`, (data: string) => {
+        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
           const citationPaperData: CitationPaper = JSON.parse(data);
           setPaper(citationPaperData);
           setIsLoading(false);

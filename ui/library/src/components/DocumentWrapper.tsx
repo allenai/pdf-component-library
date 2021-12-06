@@ -8,7 +8,7 @@ import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 
-type Props = {
+export type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 

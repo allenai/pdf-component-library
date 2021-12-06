@@ -1,6 +1,5 @@
+dist/
 node_modules/
-build/
-public/
 package.json
 tsconfig.json
 webpack.config.js

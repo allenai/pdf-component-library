@@ -5,7 +5,7 @@ import { TransformContext } from '../context/TransformContext';
 import { computePageStyle } from '../utils/style';
 import { BoundingBox } from './BoundingBox';
 
-type Props = {
+export type Props = {
   children?: React.ReactElement<typeof BoundingBox> | Array<React.ReactElement<typeof BoundingBox>>;
 };
 

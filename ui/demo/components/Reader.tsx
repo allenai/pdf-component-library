@@ -1,13 +1,11 @@
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
-
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { DocumentWrapper } from '../../library/components/DocumentWrapper';
-import { Overlay } from '../../library/components/Overlay';
-import { PageWrapper } from '../../library/components/PageWrapper';
-import { DocumentContext } from '../../library/context/DocumentContext';
+import { DocumentWrapper } from '../../library/src/components/DocumentWrapper';
+import { Overlay } from '../../library/src/components/Overlay';
+import { PageWrapper } from '../../library/src/components/PageWrapper';
+import { DocumentContext } from '../../library/src/context/DocumentContext';
 import {
   Annotations,
   AnnotationsRaw,
@@ -41,7 +39,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // Runs once on initial load
   // Retrieves sample annotation data from local JSON file
   React.useEffect(() => {
-    loadJSON('demo/data/sampleAnnotations_short.json', (data: string) => {
+    loadJSON('data/sampleAnnotations_short.json', (data: string) => {
       setAnnotationsRaw(JSON.parse(data));
     });
   }, []);

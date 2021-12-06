@@ -2,12 +2,12 @@ import { expect } from 'chai';
 import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 
-import { BoundingBox } from '../../components/BoundingBox';
-import { HighlightOverlay } from '../../components/HighlightOverlay';
-import { IDocumentContext } from '../../context/DocumentContext';
-import { ITransformContext } from '../../context/TransformContext';
-import { Dimensions } from '../../types';
-import { PageRotation } from '../../utils/rotate';
+import { BoundingBox } from '../../src/components/BoundingBox';
+import { HighlightOverlay } from '../../src/components/HighlightOverlay';
+import { IDocumentContext } from '../../src/context/DocumentContext';
+import { ITransformContext } from '../../src/context/TransformContext';
+import { Dimensions } from '../../src/types';
+import { PageRotation } from '../../src/utils/rotate';
 import { expectHeightWidth, expectLeftTop, mountWithContexts } from '../testHelper';
 
 describe('<HighlightOverlay/>', () => {

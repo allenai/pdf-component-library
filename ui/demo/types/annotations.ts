@@ -1,4 +1,4 @@
-import { Dimensions } from '../../library/types';
+import { Dimensions } from '../../library/src/types';
 import { Citation, makeCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
 

@@ -6,14 +6,12 @@ import { TransformContext } from '../context/TransformContext';
 import { BoundingBox as BoundingBoxType } from '../types';
 import { computeBoundingBoxStyle } from '../utils/style';
 
-type Props = {
+export type Props = {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
   onClick?: () => void;
 } & BoundingBoxType;
-
-export type BoundingBoxProps = Props;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
   top,

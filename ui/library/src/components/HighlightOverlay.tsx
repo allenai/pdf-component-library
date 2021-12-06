@@ -3,9 +3,9 @@ import * as React from 'react';
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 import { computeBoundingBoxStyle, computePageStyle } from '../utils/style';
-import { BoundingBoxProps } from './BoundingBox';
+import { Props as BoundingBoxProps } from './BoundingBox';
 
-type Props = {
+export type Props = {
   children?: React.ReactElement<BoundingBoxProps> | Array<React.ReactElement<BoundingBoxProps>>;
   pageIndex: number;
 };

@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 
-import { Size } from '../../types';
-import { PageRotation } from '../../utils/rotate';
+import { Size } from '../../src/types';
+import { PageRotation } from '../../src/utils/rotate';
 import {
   computeBoundingBoxStyle,
   computePageStyle,
   getPageHeight,
   getPageWidth,
-} from '../../utils/style';
+} from '../../src/utils/style';
 
 describe('styleUtil functions', () => {
   const pageDimensions = {
