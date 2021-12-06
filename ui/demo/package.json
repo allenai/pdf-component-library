@@ -5,6 +5,7 @@
   "author": "s2@allenai.org",
   "scripts": {
     "build": "webpack --mode development",
+    "link-deps": "cd ./node_modules/react && yarn link && cd ../react-dom && yarn link",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "start": "webpack serve --hot --mode development",
