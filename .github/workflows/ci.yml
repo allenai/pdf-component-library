@@ -21,7 +21,7 @@ jobs:
         run: yarn link-deps
       - name: Install library dependencies
         working-directory: ui/library
-        run: yarn link-deps
+        run: yarn install
       - name: Link library packages
         working-directory: ui/library
         run: yarn link-deps
