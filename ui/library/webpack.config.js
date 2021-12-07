@@ -82,7 +82,6 @@ module.exports = (env, argv) => {
 function DtsBundlePlugin(bundleName, indexPath) {
   DtsBundlePlugin.prototype.apply = function (compiler) {
     compiler.hooks.afterEmit.tap('Bundle .d.ts files', compilation => {
-      console.log(compilation.emittedAssets);
       if (compilation.emittedAssets.has('../tmp/index.d.ts')) {
         dtsBundle.bundle({
           name: bundleName,
