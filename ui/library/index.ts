@@ -18,6 +18,7 @@ import { ContextProvider, Props as ContextProviderProps } from './src/context/Co
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
+import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from './src/types';
 import {
   isSideways,
   PageRotation,
@@ -32,34 +33,42 @@ import {
   getPageWidth,
 } from './src/utils/style';
 
+export type {
+  BoundingBoxProps,
+  BoundingBoxType,
+  ContextProviderProps,
+  Dimensions,
+  DocumentWrapperProps,
+  DownloadButtonProps,
+  HighlightOverlayProps,
+  IDocumentContext,
+  ITransformContext,
+  IUiContext,
+  Nullable,
+  Origin,
+  OverlayProps,
+  PageProps,
+  PageRotation,
+  PageWrapperProps,
+  Size,
+};
+
 export {
   BoundingBox,
-  BoundingBoxProps,
   computeBoundingBoxStyle,
   computePageStyle,
   ContextProvider,
-  ContextProviderProps,
   DocumentContext,
   DocumentWrapper,
-  DocumentWrapperProps,
   DownloadButton,
-  DownloadButtonProps,
   generatePageIdFromIndex,
   getPageHeight,
   getPageWidth,
   HighlightOverlay,
-  HighlightOverlayProps,
-  IDocumentContext,
   isSideways,
-  ITransformContext,
-  IUiContext,
   Outline,
   Overlay,
-  OverlayProps,
-  PageProps,
-  PageRotation,
   PageWrapper,
-  PageWrapperProps,
   rotateClockwise,
   rotateCounterClockwise,
   scrollToId,
