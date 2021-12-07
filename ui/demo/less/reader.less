@@ -99,3 +99,8 @@ body {
     font-weight: 300;
   }
 }
+
+// HACK: avoid text mis-alignment
+.react-pdf__Page__textContent>span {
+  height: 0em!important;
+}
