@@ -1,4 +1,4 @@
-import { BoundingBox } from '../../library/src/types';
+import { BoundingBoxType as BoundingBox } from 'pdf-components-dist';
 
 // Raw BoundingBoxes top, left, height, and width attributes are expressed as a ratio of the
 // page height/width and need to be scaled according to page size before they can be rendered

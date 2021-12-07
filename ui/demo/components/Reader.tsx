@@ -1,11 +1,8 @@
+import { DocumentContext, DocumentWrapper, Overlay, PageWrapper } from 'pdf-components-dist';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { DocumentWrapper } from '../../library/src/components/DocumentWrapper';
-import { Overlay } from '../../library/src/components/Overlay';
-import { PageWrapper } from '../../library/src/components/PageWrapper';
-import { DocumentContext } from '../../library/src/context/DocumentContext';
 import {
   Annotations,
   AnnotationsRaw,
