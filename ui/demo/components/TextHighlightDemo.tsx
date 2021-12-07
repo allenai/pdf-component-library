@@ -1,8 +1,6 @@
 import * as React from 'react';
 
-import { BoundingBox } from '../../library/src/components/BoundingBox';
-import { UiContext } from '../../library/src/context/UiContext';
-import { BoundingBox as BoundingBoxType } from '../../library/src/types';
+import { BoundingBox, BoundingBoxType, UiContext } from 'pdf-components-dist';
 
 type Props = {
   pageIndex: number;

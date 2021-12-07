@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { TransformContext } from 'pdf-components-dist';
 
-import { TransformContext } from '../../library/src/context/TransformContext';
 import { PercentFormatter } from '../utils/format';
 
 export const SimpleZoomControl: React.FunctionComponent = () => {

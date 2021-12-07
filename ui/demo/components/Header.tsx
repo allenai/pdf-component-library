@@ -1,10 +1,6 @@
 import * as React from 'react';
+import { DownloadButton, rotateClockwise, rotateCounterClockwise, scrollToId, TransformContext, UiContext } from 'pdf-components-dist';
 
-import { DownloadButton } from '../../library/src/components/DownloadButton';
-import { TransformContext } from '../../library/src/context/TransformContext';
-import { UiContext } from '../../library/src/context/UiContext';
-import { rotateClockwise, rotateCounterClockwise } from '../../library/src/utils/rotate';
-import { scrollToId } from '../../library/src/utils/scroll';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
