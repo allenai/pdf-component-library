@@ -1,5 +1,12 @@
+import {
+  DownloadButton,
+  rotateClockwise,
+  rotateCounterClockwise,
+  scrollToId,
+  TransformContext,
+  UiContext,
+} from 'pdf-components-dist';
 import * as React from 'react';
-import { DownloadButton, rotateClockwise, rotateCounterClockwise, scrollToId, TransformContext, UiContext } from 'pdf-components-dist';
 
 import { SimpleZoomControl } from './SimpleZoomControl';
 

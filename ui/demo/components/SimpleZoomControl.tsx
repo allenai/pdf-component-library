@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { TransformContext } from 'pdf-components-dist';
+import * as React from 'react';
 
 import { PercentFormatter } from '../utils/format';
 

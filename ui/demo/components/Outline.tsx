@@ -1,7 +1,6 @@
 import { Drawer } from 'antd';
-import * as React from 'react';
-
 import { Outline as PdfOutline, UiContext } from 'pdf-components-dist';
+import * as React from 'react';
 
 type Props = {
   parentRef: React.RefObject<HTMLDivElement>;
