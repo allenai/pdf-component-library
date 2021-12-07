@@ -16,18 +16,24 @@ jobs:
       - name: Install demo dependencies
         working-directory: ui/demo
         run: yarn install
-      - name: Link demo packages
+      - name: Create link to demo's react
         working-directory: ui/demo
-        run: yarn link-deps
+        run: yarn link:react
       - name: Install library dependencies
         working-directory: ui/library
         run: yarn install
-      - name: Link library packages
+      - name: Point library to demo react link
         working-directory: ui/library
-        run: yarn link-deps
+        run: yarn link:react
       - name: Build library
         working-directory: ui/library
         run: yarn build
+      - name: Create link to freshly built library
+        working-directory: ui/library
+        run: yarn link:lib
+      - name: Point demo app to library link
+        working-directory: ui/demo
+        run: yarn link:lib
       - name: Build demo
         working-directory: ui/demo
         run: yarn build
