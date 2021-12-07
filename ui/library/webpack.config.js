@@ -56,6 +56,7 @@ module.exports = (env, argv) => {
     output: {
       filename: `${bundleName}.js`,
       path: path.resolve(__dirname, 'dist'),
+      globalObject: 'this',
       library: {
         name: 'PdfComponentsDist',
         type: 'umd',
