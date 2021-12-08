@@ -17,10 +17,12 @@ declare module 'pdf-components-dist' {
     import { DocumentContext, IDocumentContext } from 'pdf-components-dist/src/context/DocumentContext';
     import { ITransformContext, TransformContext } from 'pdf-components-dist/src/context/TransformContext';
     import { IUiContext, UiContext } from 'pdf-components-dist/src/context/UiContext';
+    import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from 'pdf-components-dist/src/types';
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from 'pdf-components-dist/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from 'pdf-components-dist/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from 'pdf-components-dist/src/utils/style';
-    export { BoundingBox, BoundingBoxProps, computeBoundingBoxStyle, computePageStyle, ContextProvider, ContextProviderProps, DocumentContext, DocumentWrapper, DocumentWrapperProps, DownloadButton, DownloadButtonProps, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, HighlightOverlayProps, IDocumentContext, isSideways, ITransformContext, IUiContext, Outline, Overlay, OverlayProps, PageProps, PageRotation, PageWrapper, PageWrapperProps, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, Nullable, Origin, OverlayProps, PageProps, PageRotation, PageWrapperProps, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -176,6 +178,22 @@ declare module 'pdf-components-dist/src/context/UiContext' {
     export const UiContext: React.Context<IUiContext>;
 }
 
+declare module 'pdf-components-dist/src/types' {
+    export type Nullable<T> = T | null;
+    export type Dimensions = {
+        height: number;
+        width: number;
+    };
+    export type Origin = {
+        top: number;
+        left: number;
+    };
+    export type Size = Dimensions & Origin;
+    export type BoundingBox = {
+        page: number;
+    } & Size;
+}
+
 declare module 'pdf-components-dist/src/utils/rotate' {
     export enum PageRotation {
         Rotate0 = 0,
@@ -205,21 +223,5 @@ declare module 'pdf-components-dist/src/utils/style' {
     export function computePageStyle(pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
     export function getPageHeight(pageDimensions: Dimensions, rotation: PageRotation): number;
     export function getPageWidth(pageDimensions: Dimensions, rotation: PageRotation): number;
-}
-
-declare module 'pdf-components-dist/src/types' {
-    export type Nullable<T> = T | null;
-    export type Dimensions = {
-        height: number;
-        width: number;
-    };
-    export type Origin = {
-        top: number;
-        left: number;
-    };
-    export type Size = Dimensions & Origin;
-    export type BoundingBox = {
-        page: number;
-    } & Size;
 }
 
