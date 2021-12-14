@@ -1,12 +1,12 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 import { DocumentProps } from 'react-pdf';
-// Import from webpack entrypoint to load PDFjs worker
-import { Document, pdfjs } from 'react-pdf/dist/esm/entry.webpack';
+import { Document } from 'react-pdf/dist/esm/entry.webpack';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
+import { initPdfWorker } from '../utils/pdfWorker';
 import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 
 export type Props = {
@@ -14,9 +14,7 @@ export type Props = {
 } & DocumentProps;
 
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
-  // Set PDFjs worker source or else none of this will work once imported into demo app.
-  // Possibly related to issue #30125
-  pdfjs.GlobalWorkerOptions.workerSrc = 'node_modules/pdfjs-dist/build/pdf.worker.min.js';
+  initPdfWorker();
 
   const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);

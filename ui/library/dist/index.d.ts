@@ -5,43 +5,47 @@
 //   ../react-pdf/dist/Page
 
 declare module 'pdf-components-dist' {
+    import './less/index.less';
     import { BoundingBox, Props as BoundingBoxProps } from 'pdf-components-dist/src/components/BoundingBox';
     import { DocumentWrapper, Props as DocumentWrapperProps } from 'pdf-components-dist/src/components/DocumentWrapper';
     import { DownloadButton, Props as DownloadButtonProps } from 'pdf-components-dist/src/components/DownloadButton';
     import { HighlightOverlay, Props as HighlightOverlayProps } from 'pdf-components-dist/src/components/HighlightOverlay';
+    import { Outline } from 'pdf-components-dist/src/components/Outline';
     import { Overlay, Props as OverlayProps } from 'pdf-components-dist/src/components/Overlay';
-    import { PageWrapper, Props as PageWrapperProps } from 'pdf-components-dist/src/components/PageWrapper';
+    import { PageProps, PageWrapper, Props as PageWrapperProps } from 'pdf-components-dist/src/components/PageWrapper';
     import { ContextProvider, Props as ContextProviderProps } from 'pdf-components-dist/src/context/ContextProvider';
-    import { IDocumentContext, DocumentContext } from 'pdf-components-dist/src/context/DocumentContext';
+    import { DocumentContext, IDocumentContext } from 'pdf-components-dist/src/context/DocumentContext';
     import { ITransformContext, TransformContext } from 'pdf-components-dist/src/context/TransformContext';
     import { IUiContext, UiContext } from 'pdf-components-dist/src/context/UiContext';
+    import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from 'pdf-components-dist/src/types';
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from 'pdf-components-dist/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from 'pdf-components-dist/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from 'pdf-components-dist/src/utils/style';
-    import './less/index.less';
-    export { BoundingBox, DocumentWrapper, DownloadButton, HighlightOverlay, Overlay, PageWrapper, ContextProvider, DocumentContext, TransformContext, UiContext, isSideways, PageRotation, rotateClockwise, rotateCounterClockwise, generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex, computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, Nullable, Origin, OverlayProps, PageProps, PageRotation, PageWrapperProps, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
-        DocumentWrapper: import("react").FunctionComponent<DocumentWrapperProps>;
-        DownloadButton: import("react").FunctionComponent<DownloadButtonProps>;
-        HighlightOverlay: import("react").FunctionComponent<HighlightOverlayProps>;
-        Overlay: import("react").FunctionComponent<OverlayProps>;
-        PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
-        ContextProvider: import("react").FunctionComponent<ContextProviderProps>;
-        DocumentContext: import("react").Context<IDocumentContext>;
-        TransformContext: import("react").Context<ITransformContext>;
-        UiContext: import("react").Context<IUiContext>;
-        isSideways: typeof isSideways;
-        PageRotation: typeof PageRotation;
-        rotateClockwise: typeof rotateClockwise;
-        rotateCounterClockwise: typeof rotateCounterClockwise;
-        generatePageIdFromIndex: typeof generatePageIdFromIndex;
-        scrollToId: typeof scrollToId;
-        scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
         computePageStyle: typeof computePageStyle;
+        ContextProvider: import("react").FunctionComponent<ContextProviderProps>;
+        DocumentContext: import("react").Context<IDocumentContext>;
+        DocumentWrapper: import("react").FunctionComponent<DocumentWrapperProps>;
+        DownloadButton: import("react").FunctionComponent<DownloadButtonProps>;
+        generatePageIdFromIndex: typeof generatePageIdFromIndex;
         getPageHeight: typeof getPageHeight;
         getPageWidth: typeof getPageWidth;
+        HighlightOverlay: import("react").FunctionComponent<HighlightOverlayProps>;
+        isSideways: typeof isSideways;
+        Outline: import("react").FunctionComponent<{}>;
+        Overlay: import("react").FunctionComponent<OverlayProps>;
+        PageRotation: typeof PageRotation;
+        PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
+        rotateClockwise: typeof rotateClockwise;
+        rotateCounterClockwise: typeof rotateCounterClockwise;
+        scrollToId: typeof scrollToId;
+        scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
+        TransformContext: import("react").Context<ITransformContext>;
+        UiContext: import("react").Context<IUiContext>;
     };
     export default _default;
 }
@@ -87,6 +91,11 @@ declare module 'pdf-components-dist/src/components/HighlightOverlay' {
         pageIndex: number;
     };
     export const HighlightOverlay: React.FunctionComponent<Props>;
+}
+
+declare module 'pdf-components-dist/src/components/Outline' {
+    import * as React from 'react';
+    export const Outline: React.FunctionComponent;
 }
 
 declare module 'pdf-components-dist/src/components/Overlay' {
@@ -169,6 +178,22 @@ declare module 'pdf-components-dist/src/context/UiContext' {
     export const UiContext: React.Context<IUiContext>;
 }
 
+declare module 'pdf-components-dist/src/types' {
+    export type Nullable<T> = T | null;
+    export type Dimensions = {
+        height: number;
+        width: number;
+    };
+    export type Origin = {
+        top: number;
+        left: number;
+    };
+    export type Size = Dimensions & Origin;
+    export type BoundingBox = {
+        page: number;
+    } & Size;
+}
+
 declare module 'pdf-components-dist/src/utils/rotate' {
     export enum PageRotation {
         Rotate0 = 0,
@@ -198,21 +223,5 @@ declare module 'pdf-components-dist/src/utils/style' {
     export function computePageStyle(pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
     export function getPageHeight(pageDimensions: Dimensions, rotation: PageRotation): number;
     export function getPageWidth(pageDimensions: Dimensions, rotation: PageRotation): number;
-}
-
-declare module 'pdf-components-dist/src/types' {
-    export type Nullable<T> = T | null;
-    export type Dimensions = {
-        height: number;
-        width: number;
-    };
-    export type Origin = {
-        top: number;
-        left: number;
-    };
-    export type Size = Dimensions & Origin;
-    export type BoundingBox = {
-        page: number;
-    } & Size;
 }
 
