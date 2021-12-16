@@ -5,15 +5,47 @@ jobs:
     # The default is 360 (6 hours).
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ui
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
         with:
-          node-version: '12.21.0'
-      - run: yarn install
-      - run: yarn build
-      - run: yarn lint
-      - run: yarn test
+          node-version: '12.22.6'
+      # Dependencies for library and demo app need to be installed before we can build anything
+      - name: Install demo dependencies
+        working-directory: ui/demo
+        run: yarn install
+      - name: Create link to demo's react
+        working-directory: ui/demo
+        run: yarn link:react
+      - name: Install library dependencies
+        working-directory: ui/library
+        run: yarn install
+      - name: Point library to demo react link
+        working-directory: ui/library
+        run: yarn link:react
+      - name: Build library
+        working-directory: ui/library
+        run: yarn build
+      - name: Create link to freshly built library
+        working-directory: ui/library
+        run: yarn link:lib
+      - name: Point demo app to library link
+        working-directory: ui/demo
+        run: yarn link:lib
+      - name: Build demo
+        working-directory: ui/demo
+        run: yarn build
+      - name: Test library
+        working-directory: ui/library
+        run: yarn test
+      - name: Test demo app
+        working-directory: ui/demo
+        run: yarn test
+      - name: Lint library
+        working-directory: ui/library
+        run: yarn lint
+      - name: Lint demo
+        working-directory: ui/demo
+        run: yarn lint

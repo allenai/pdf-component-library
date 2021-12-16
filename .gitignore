@@ -3,10 +3,11 @@ __pycache__
 **/*.pyc
 
 # UI dependencies
-ui/node_modules/
+ui/demo/node_modules
+ui/library/node_modules/
 
 # UI build output
-ui/build/
+ui/demo/build/
 
 # UI package manager debug output
 ui/*.log
