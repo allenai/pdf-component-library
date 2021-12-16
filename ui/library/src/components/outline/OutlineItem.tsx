@@ -1,4 +1,4 @@
-import { Destination, OutlineNode } from './OutlineNodeType';
+import { Destination, OutlineNode } from '../../types';
 
 import * as React from 'react';
 

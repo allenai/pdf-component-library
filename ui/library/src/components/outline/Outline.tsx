@@ -1,9 +1,9 @@
 
-import { Destination, OutlineNode } from './OutlineNodeType';
+import { Destination, OutlineNode } from '../../types';
 import { DocumentContext } from '../../context/DocumentContext';
 import { OutlineItem } from './OutlineItem';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
-import { scrollTo } from '../../utils/scroll';
+import { scrollToId, scrollToPdfPageIndex } from '../../utils/scroll';
 import { UiContext } from '../../context/UiContext';
 
 import * as React from 'react';
@@ -28,10 +28,12 @@ export const Outline: React.FunctionComponent<Props> = ({pdf, parentRef, classNa
 
   // TODO
   function clickHandler (dest: Destination) {
-    // pdf.getDestination(dest!.toString()).then(kk => {
-    // })
+    
+    pdf.getDestination(dest!.toString()).then(kk => {
+      console.log(kk)
+    })
     // not working
-    scrollTo(dest!.toString())
+    // scrollTo(dest!.toString())
   }
 
   const handleHideOutline = () => {
