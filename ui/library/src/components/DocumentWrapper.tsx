@@ -3,7 +3,6 @@ import { Document } from 'react-pdf/dist/esm/entry.webpack';
 import { DocumentContext } from '../context/DocumentContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
-import { Outline } from './outline/Outline';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import { UiContext } from '../context/UiContext';
 
@@ -17,9 +16,8 @@ export type Props = {
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
   initPdfWorker();
 
-  const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
+  const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } = React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
-  const [ pdfDocProxy, setPdfDocProxy ] = React.useState<PDFDocumentProxy>();
 
   function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
@@ -49,14 +47,12 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
     setIsLoading(false);
   }, []);
 
-  console.log("pdfDocProxy is <<<<<<<>>>>>>>>>><<<<<<<>>>>", pdfDocProxy)
   return (
     <Document
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
       {...rest}>
-      {!!pdfDocProxy && !!rest.inputRef && <Outline pdf={pdfDocProxy} parentRef={rest.inputRef}/>}
       {children}
     </Document>
   );
