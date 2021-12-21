@@ -20,7 +20,8 @@ export const Outline: React.FunctionComponent<Props> = ({ pdf, className }: Prop
   });
 
   function clickHandler(dest: Destination) {
-    pdf.getDestination(dest!.toString()).then(destArray => {
+    if (!dest) return;
+    pdf.getDestination(dest.toString()).then(destArray => {
       /*
         destArray returned by getDestination contains 5 items:
         1. Reference to the page where dest locates at
