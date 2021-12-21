@@ -1,11 +1,10 @@
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-const READER_HEADER_CLASSNAME = 'reader__header';
 const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
 
-const HEIGHT_POINTS = 792;
-const WIDTH_POINTS = 612;
+const PDF_HEIGHT_POINTS = 792;
+const PDF_WIDTH_POINTS = 612;
 
 export function generatePageIdFromIndex(pageIndex: number | string): string {
   return `${PAGE_NAV_TARGET_ID_ROOT}${pageIndex}`;
@@ -20,46 +19,59 @@ export function scrollToId(id: string): void {
   }
 }
 
-export function scrollToPosition(pageIndex: number, leftPoints: number, bottomPoints: number) {
-  const targetDiv = document.getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME).item(0);
-  if (!targetDiv) {
-    console.error(`Could not find scroll target with classname ${SCROLLABLE_TARGET_DIV_CLASSNAME}`);
-    return;
-  }
-
-  const [unitHeight, unitWidth, unitHeightWithMargins, unitWidthWithMargins, marginTop, marginLeft] = getUnitsOfAPage();
-  const bottomPixels = unitHeight * bottomPoints / HEIGHT_POINTS;
-  const leftPixels = unitWidth * leftPoints / WIDTH_POINTS;
-  
-  targetDiv.scrollTo({
-    top: unitHeightWithMargins * pageIndex + marginTop + (unitHeight - bottomPixels),
-    left: leftPixels,
-    behavior: 'smooth'
-  })
-}
-
 export function scrollToPdfPageIndex(pageIndex: number | string): void {
   scrollToId(generatePageIdFromIndex(pageIndex));
 }
 
 /**
- * Fetch unit length and unit width of a page
- * @returns [paperHeight, paperWidth, paperHeightIncludingMargins, paperWidthIncludingMargins, topMargin, leftMargin]
+ * Scroll PDF document to a specific position
+ * @param pageIndex The index of the page where the position locates at
+ * @param leftPoints The horizontal distance between the origin and the position (measured in PDF coordinate systems)
+ * @param bottomPoints The vertical distance between the origin and the position (measured in PDF coordinate systems)
+ * @returns
  */
-function getUnitsOfAPage(): number[] {
-  const unitPageElement = document.getElementById(generatePageIdFromIndex(0));
-  const headerElement = document.getElementsByClassName(READER_HEADER_CLASSNAME).item(0);
-  
-  if (unitPageElement && headerElement) {
-    const style = getComputedStyle(unitPageElement as Element)
-    return [
-      unitPageElement.clientHeight,
-      unitPageElement.clientWidth,
-      unitPageElement.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom),
-      unitPageElement.offsetWidth + parseInt(style.marginLeft) + parseInt(style.marginRight),
-      parseInt(style.marginTop),
-      parseInt(style.marginLeft)
-    ];
+export function scrollToPosition(
+  pageIndex: number,
+  leftPoints: number,
+  bottomPoints: number
+): void {
+  const targetDiv: Element | null = document
+    .getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME)
+    .item(0);
+  if (!targetDiv) {
+    console.error(`Cannot find scroll target with classname ${SCROLLABLE_TARGET_DIV_CLASSNAME}`);
+    return;
   }
-  return [0, 0, 0, 0, 0, 0];
+
+  const [height, width, heightWithMargins, , marginTop] = getPageUnitsInPixels();
+  const bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
+  const leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
+
+  targetDiv.scrollTo({
+    top: heightWithMargins * pageIndex + marginTop + (height - bottomPixels),
+    left: leftPixels,
+    behavior: 'smooth',
+  });
+}
+
+/**
+ * Get lengths, widths, and margins of a page
+ * @returns [height, width, heightWithMargins, widthWithMargins, topMargin, leftMargin]
+ */
+function getPageUnitsInPixels(): number[] {
+  const firstPage = document.getElementById(generatePageIdFromIndex(0));
+  if (!firstPage) {
+    console.error(`Cannot get the first page of this document.`);
+    return [0, 0, 0, 0, 0, 0];
+  }
+
+  const style = getComputedStyle(firstPage as Element);
+  return [
+    firstPage.clientHeight,
+    firstPage.clientWidth,
+    firstPage.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom),
+    firstPage.offsetWidth + parseInt(style.marginLeft) + parseInt(style.marginRight),
+    parseInt(style.marginTop),
+    parseInt(style.marginLeft),
+  ];
 }

@@ -1,13 +1,13 @@
-import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
-import { Document } from 'react-pdf/dist/esm/entry.webpack';
-import { DocumentContext } from '../context/DocumentContext';
-import { getErrorMessage } from '../utils/errorMessage';
-import { initPdfWorker } from '../utils/pdfWorker';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
-import { UiContext } from '../context/UiContext';
-
 import * as React from 'react';
 import { DocumentProps } from 'react-pdf';
+import { Document } from 'react-pdf/dist/esm/entry.webpack';
+
+import { DocumentContext } from '../context/DocumentContext';
+import { UiContext } from '../context/UiContext';
+import { getErrorMessage } from '../utils/errorMessage';
+import { initPdfWorker } from '../utils/pdfWorker';
+import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 
 export type Props = {
   children?: React.ReactNode;
@@ -16,7 +16,8 @@ export type Props = {
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
   initPdfWorker();
 
-  const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } = React.useContext(DocumentContext);
+  const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
+    React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
@@ -38,8 +39,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
         setIsLoading(false);
       });
 
-    if (!pdfDocProxy)
-      setPdfDocProxy(pdfDoc)
+    if (!pdfDocProxy) setPdfDocProxy(pdfDoc);
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown): void => {

@@ -18,7 +18,6 @@ export type BoundingBox = {
   page: number;
 } & Size;
 
-
 export type Destination = Nullable<string> | any[];
 export type OutlineNode = {
   title: string;
@@ -31,4 +30,4 @@ export type OutlineNode = {
   newWindow: boolean | undefined;
   count: number | undefined;
   items: any[];
-}
+};

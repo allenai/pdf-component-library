@@ -19,7 +19,15 @@ import { ContextProvider, Props as ContextProviderProps } from './src/context/Co
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
-import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size, OutlineNode, Destination } from './src/types';
+import {
+  BoundingBox as BoundingBoxType,
+  Destination,
+  Dimensions,
+  Nullable,
+  Origin,
+  OutlineNode,
+  Size,
+} from './src/types';
 import {
   isSideways,
   PageRotation,
@@ -48,8 +56,8 @@ export type {
   IUiContext,
   Nullable,
   Origin,
-  OverlayProps,
   OutlineNode,
+  OverlayProps,
   PageProps,
   PageRotation,
   PageWrapperProps,
