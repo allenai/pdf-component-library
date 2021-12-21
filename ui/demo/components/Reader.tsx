@@ -13,6 +13,7 @@ import { loadJSON } from '../utils/utils';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { HighlightOverlayDemo } from './HighlightOverlayDemo';
+import { Outline } from './Outline';
 import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
 
@@ -56,6 +57,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <Header pdfUrl={pdfUrl} />
           <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
+            <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
                 <PageWrapper key={i} pageIndex={i}>
