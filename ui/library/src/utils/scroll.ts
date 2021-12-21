@@ -67,11 +67,28 @@ export function scrollToPosition(
     marginLeft,
     marginRight,
   } = getPagePropertiesInPixels();
-  const bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
-  const leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
+  // When papers are rotated, the heights and widths would be switched automatically
+  // However, leftPoints and bottomPoints remain the same
+  let marginTopPixels = marginTop;
+  let bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
+  let leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
+
+  if (rotation == PageRotation.Rotate90) {
+    marginTopPixels = marginLeft;
+    bottomPixels = height * (PDF_WIDTH_POINTS - leftPoints) / PDF_WIDTH_POINTS;
+    leftPixels = (width * bottomPoints) / PDF_HEIGHT_POINTS;
+  } else if (rotation == PageRotation.Rotate180) {
+    marginTopPixels = marginBottom;
+    bottomPixels = height * (PDF_HEIGHT_POINTS - bottomPoints) / PDF_HEIGHT_POINTS;
+    leftPixels = width * (PDF_WIDTH_POINTS - leftPoints) / PDF_WIDTH_POINTS;
+  } else if (rotation == PageRotation.Rotate270) {
+    marginTopPixels = marginRight;
+    bottomPixels = height * leftPoints / PDF_WIDTH_POINTS;
+    leftPixels = width * (PDF_HEIGHT_POINTS - bottomPoints) / PDF_HEIGHT_POINTS;
+  }
 
   targetDiv.scrollTo({
-    top: heightWithMargins * pageIndex + marginTop + (height - bottomPixels),
+    top: heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels),
     left: leftPixels,
     behavior: 'smooth',
   });
