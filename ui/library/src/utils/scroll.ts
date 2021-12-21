@@ -24,10 +24,10 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
 }
 
 /**
- * Scroll PDF document to a specific position
+ * Scroll PDF document to a specific position.
  * @param pageIndex The index of the page where the position locates at
- * @param leftPoints The horizontal distance between the origin and the position (measured in PDF coordinate systems)
- * @param bottomPoints The vertical distance between the origin and the position (measured in PDF coordinate systems)
+ * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
+ * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
  * @returns
  */
 export function scrollToPosition(
@@ -43,6 +43,16 @@ export function scrollToPosition(
     return;
   }
 
+  /*
+    Vertical scroll distance is calculated as:
+    = total number of previous pages * page height including top/down margins
+    + margin top of a page
+    + the distance from page top to the specified position
+
+    Notice that the scroll distance is measured in pixels,
+    so leftPoints/bottomPoints should be transformed from points to pixels first.
+  */
+
   const [height, width, heightWithMargins, , marginTop] = getPageUnitsInPixels();
   const bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
   const leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
@@ -55,7 +65,7 @@ export function scrollToPosition(
 }
 
 /**
- * Get lengths, widths, and margins of a page
+ * Get lengths, widths, and margins of a page.
  * @returns [height, width, heightWithMargins, widthWithMargins, topMargin, leftMargin]
  */
 function getPageUnitsInPixels(): number[] {

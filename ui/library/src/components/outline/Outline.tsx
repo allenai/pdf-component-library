@@ -21,6 +21,16 @@ export const Outline: React.FunctionComponent<Props> = ({ pdf, className }: Prop
 
   function clickHandler(dest: Destination) {
     pdf.getDestination(dest!.toString()).then(destArray => {
+      /*
+        destArray returned by getDestination contains 5 items:
+        1. Reference to the page where dest locates at
+        2. Type of dest; currently only "XYZ" is handled
+        3. X -- distance from left measured in points
+        4. Y -- distance from bottom measured in points
+        5. Scale
+        
+        Reference: https://github.com/mozilla/pdf.js/blob/d3e1d7090ac6f582d0c277e8768ac63bbbaa1134/web/base_viewer.js#L1152
+      */
       const [ref, , leftPoints, bottomPoints] = destArray;
       pdf.getPageIndex(new Ref(ref)).then(refObj => {
         scrollToPosition(parseInt(refObj.toString()), leftPoints, bottomPoints);
