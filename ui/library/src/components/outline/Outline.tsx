@@ -1,27 +1,28 @@
 import classnames from 'classnames';
-import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
+import { DocumentContext } from '../../context/DocumentContext';
 import { Destination, OutlineNode } from '../../types';
 import { scrollToPosition } from '../../utils/scroll';
 import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 
 type Props = {
-  pdf: PDFDocumentProxy;
   className?: string;
 };
 
-export const Outline: React.FunctionComponent<Props> = ({ pdf, className }: Props) => {
-  const [outline, setOutline] = React.useState<Array<OutlineNode>>();
+export const Outline: React.FunctionComponent<Props> = ({ className }: Props) => {
+  const { pdfDocProxy } = React.useContext(DocumentContext);
+  if (!pdfDocProxy) return null;
 
-  pdf.getOutline().then((outlineArray: Array<OutlineNode>) => {
+  const [outline, setOutline] = React.useState<Array<OutlineNode>>();
+  pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
     if (!outline) setOutline(outlineArray);
   });
 
-  function clickHandler(dest: Destination) {
+  const clickHandler = (dest: Destination): void => {
     if (!dest) return;
-    pdf.getDestination(dest.toString()).then(destArray => {
+    pdfDocProxy.getDestination(dest.toString()).then(destArray => {
       /*
         destArray returned by getDestination contains 5 items:
         1. Reference to the page where dest locates at
@@ -33,11 +34,11 @@ export const Outline: React.FunctionComponent<Props> = ({ pdf, className }: Prop
         Reference: https://github.com/mozilla/pdf.js/blob/d3e1d7090ac6f582d0c277e8768ac63bbbaa1134/web/base_viewer.js#L1152
       */
       const [ref, , leftPoints, bottomPoints] = destArray;
-      pdf.getPageIndex(new Ref(ref)).then(refObj => {
+      pdfDocProxy.getPageIndex(new Ref(ref)).then(refObj => {
         scrollToPosition(parseInt(refObj.toString()), leftPoints, bottomPoints);
       });
     });
-  }
+  };
 
   return (
     <div className={classnames('react-pdf__Outline', className)}>

@@ -1,5 +1,5 @@
 import { Drawer } from 'antd';
-import { DocumentContext, Outline as PdfOutline, UiContext } from 'pdf-components-dist';
+import { Outline as PdfOutline, UiContext } from 'pdf-components-dist';
 import * as React from 'react';
 
 type Props = {
@@ -7,7 +7,6 @@ type Props = {
 };
 
 export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) => {
-  const { pdfDocProxy } = React.useContext(DocumentContext);
   const { isShowingOutline, setIsShowingOutline } = React.useContext(UiContext);
 
   const handleHideOutline = React.useCallback(() => {
@@ -26,7 +25,7 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
       //@ts-ignore there's something wonky with the types here
       getContainer={parentRef.current}
       className="reader__outline-drawer">
-      {!!pdfDocProxy && <PdfOutline pdf={pdfDocProxy} />}
+      <PdfOutline />
     </Drawer>
   );
 };
