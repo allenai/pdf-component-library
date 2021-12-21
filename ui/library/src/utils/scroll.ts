@@ -1,3 +1,6 @@
+import { PageProperties } from '../components/types/Page';
+import { PageRotation } from '../utils/rotate';
+
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
@@ -33,7 +36,8 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
 export function scrollToPosition(
   pageIndex: number,
   leftPoints: number,
-  bottomPoints: number
+  bottomPoints: number,
+  rotation: PageRotation = PageRotation.Rotate0
 ): void {
   const targetDiv: Element | null = document
     .getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME)
@@ -53,7 +57,16 @@ export function scrollToPosition(
     so leftPoints/bottomPoints should be transformed from points to pixels first.
   */
 
-  const [height, width, heightWithMargins, , marginTop] = getPageUnitsInPixels();
+  const {
+    width,
+    height,
+    widthWithMargins,
+    heightWithMargins,
+    marginTop,
+    marginBottom,
+    marginLeft,
+    marginRight,
+  } = getPagePropertiesInPixels();
   const bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
   const leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
 
@@ -66,22 +79,36 @@ export function scrollToPosition(
 
 /**
  * Get lengths, widths, and margins of a page.
- * @returns [height, width, heightWithMargins, widthWithMargins, topMargin, leftMargin]
+ * @returns
  */
-function getPageUnitsInPixels(): number[] {
+function getPagePropertiesInPixels(): PageProperties {
   const firstPage = document.getElementById(generatePageIdFromIndex(0));
   if (!firstPage) {
     console.error(`Cannot get the first page of this document.`);
-    return [0, 0, 0, 0, 0, 0];
+    const emptyPageProperties: PageProperties = {
+      width: 0,
+      height: 0,
+      widthWithMargins: 0,
+      heightWithMargins: 0,
+      marginTop: 0,
+      marginBottom: 0,
+      marginLeft: 0,
+      marginRight: 0,
+    }
+    return emptyPageProperties;
   }
 
   const style = getComputedStyle(firstPage as Element);
-  return [
-    firstPage.clientHeight,
-    firstPage.clientWidth,
-    firstPage.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom),
-    firstPage.offsetWidth + parseInt(style.marginLeft) + parseInt(style.marginRight),
-    parseInt(style.marginTop),
-    parseInt(style.marginLeft),
-  ];
+  const pageProperties: PageProperties = {
+    width: firstPage.clientWidth,
+    height: firstPage.clientHeight,
+    widthWithMargins: firstPage.offsetWidth + parseInt(style.marginTop) + parseInt(style.marginBottom),
+    heightWithMargins: firstPage.offsetHeight + parseInt(style.marginLeft) + parseInt(style.marginRight),
+    marginTop: parseInt(style.marginTop),
+    marginBottom: parseInt(style.marginBottom),
+    marginLeft: parseInt(style.marginLeft),
+    marginRight: parseInt(style.marginRight),
+  }
+
+  return pageProperties;
 }

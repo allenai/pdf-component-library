@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import { Destination, OutlineNode } from '../../types';
+import { NodeDestination, OutlineNode } from '../types/Outline';
 
 type Props = {
   items?: Array<OutlineNode>;
   className?: string;
-  onClick?: (dest: Destination) => void;
+  onClick?: (dest: NodeDestination) => void;
 };
 
 export const OutlineItem: React.FunctionComponent<Props> = ({

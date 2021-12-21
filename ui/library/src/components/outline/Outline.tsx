@@ -2,9 +2,10 @@ import classnames from 'classnames';
 import * as React from 'react';
 
 import { DocumentContext } from '../../context/DocumentContext';
-import { Destination, OutlineNode } from '../../types';
+import { NodeDestination, OutlineNode } from '../types/Outline';
 import { scrollToPosition } from '../../utils/scroll';
 import { OutlineItem } from './OutlineItem';
+import { TransformContext } from '../../context/TransformContext';
 import Ref from './Ref';
 
 type Props = {
@@ -15,12 +16,13 @@ export const Outline: React.FunctionComponent<Props> = ({ className }: Props) =>
   const { pdfDocProxy } = React.useContext(DocumentContext);
   if (!pdfDocProxy) return null;
 
+  const { rotation } = React.useContext(TransformContext);
   const [outline, setOutline] = React.useState<Array<OutlineNode>>();
   pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
     if (!outline) setOutline(outlineArray);
   });
-
-  const clickHandler = (dest: Destination): void => {
+  
+  const clickHandler = (dest: NodeDestination): void => {
     if (!dest) return;
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {
       /*
@@ -35,7 +37,7 @@ export const Outline: React.FunctionComponent<Props> = ({ className }: Props) =>
       */
       const [ref, , leftPoints, bottomPoints] = destArray;
       pdfDocProxy.getPageIndex(new Ref(ref)).then(refObj => {
-        scrollToPosition(parseInt(refObj.toString()), leftPoints, bottomPoints);
+        scrollToPosition(parseInt(refObj.toString()), leftPoints, bottomPoints, rotation);
       });
     });
   };

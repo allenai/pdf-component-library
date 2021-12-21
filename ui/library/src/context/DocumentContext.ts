@@ -1,7 +1,7 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
-import { Dimensions } from '../types';
+import { Dimensions } from '../components/types/types';
 import { logProviderWarning } from '../utils/provider';
 
 export interface IDocumentContext {
