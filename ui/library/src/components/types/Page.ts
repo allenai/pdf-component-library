@@ -1,7 +1,7 @@
 export type PageReference = {
   num: number;
   gen: number;
-}
+};
 
 export type PageProperties = {
   width: number;
@@ -12,4 +12,4 @@ export type PageProperties = {
   marginBottom: number;
   marginLeft: number;
   marginRight: number;
-}
+};

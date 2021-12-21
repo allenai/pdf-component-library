@@ -2,10 +2,10 @@ import classnames from 'classnames';
 import * as React from 'react';
 
 import { DocumentContext } from '../../context/DocumentContext';
-import { NodeDestination, OutlineNode } from '../types/Outline';
-import { scrollToPosition } from '../../utils/scroll';
-import { OutlineItem } from './OutlineItem';
 import { TransformContext } from '../../context/TransformContext';
+import { scrollToPosition } from '../../utils/scroll';
+import { NodeDestination, OutlineNode } from '../types/Outline';
+import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 
 type Props = {
@@ -21,7 +21,7 @@ export const Outline: React.FunctionComponent<Props> = ({ className }: Props) =>
   pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
     if (!outline) setOutline(outlineArray);
   });
-  
+
   const clickHandler = (dest: NodeDestination): void => {
     if (!dest) return;
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {

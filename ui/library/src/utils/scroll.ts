@@ -57,16 +57,8 @@ export function scrollToPosition(
     so leftPoints/bottomPoints should be transformed from points to pixels first.
   */
 
-  const {
-    width,
-    height,
-    widthWithMargins,
-    heightWithMargins,
-    marginTop,
-    marginBottom,
-    marginLeft,
-    marginRight,
-  } = getPagePropertiesInPixels();
+  const { width, height, heightWithMargins, marginTop, marginBottom, marginLeft, marginRight } =
+    getPagePropertiesInPixels();
   // When papers are rotated, the heights and widths would be switched automatically
   // However, leftPoints and bottomPoints remain the same
   let marginTopPixels = marginTop;
@@ -75,16 +67,16 @@ export function scrollToPosition(
 
   if (rotation == PageRotation.Rotate90) {
     marginTopPixels = marginLeft;
-    bottomPixels = height * (PDF_WIDTH_POINTS - leftPoints) / PDF_WIDTH_POINTS;
+    bottomPixels = (height * (PDF_WIDTH_POINTS - leftPoints)) / PDF_WIDTH_POINTS;
     leftPixels = (width * bottomPoints) / PDF_HEIGHT_POINTS;
   } else if (rotation == PageRotation.Rotate180) {
     marginTopPixels = marginBottom;
-    bottomPixels = height * (PDF_HEIGHT_POINTS - bottomPoints) / PDF_HEIGHT_POINTS;
-    leftPixels = width * (PDF_WIDTH_POINTS - leftPoints) / PDF_WIDTH_POINTS;
+    bottomPixels = (height * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
+    leftPixels = (width * (PDF_WIDTH_POINTS - leftPoints)) / PDF_WIDTH_POINTS;
   } else if (rotation == PageRotation.Rotate270) {
     marginTopPixels = marginRight;
-    bottomPixels = height * leftPoints / PDF_WIDTH_POINTS;
-    leftPixels = width * (PDF_HEIGHT_POINTS - bottomPoints) / PDF_HEIGHT_POINTS;
+    bottomPixels = (height * leftPoints) / PDF_WIDTH_POINTS;
+    leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
   targetDiv.scrollTo({
@@ -111,7 +103,7 @@ function getPagePropertiesInPixels(): PageProperties {
       marginBottom: 0,
       marginLeft: 0,
       marginRight: 0,
-    }
+    };
     return emptyPageProperties;
   }
 
@@ -119,13 +111,15 @@ function getPagePropertiesInPixels(): PageProperties {
   const pageProperties: PageProperties = {
     width: firstPage.clientWidth,
     height: firstPage.clientHeight,
-    widthWithMargins: firstPage.offsetWidth + parseInt(style.marginTop) + parseInt(style.marginBottom),
-    heightWithMargins: firstPage.offsetHeight + parseInt(style.marginLeft) + parseInt(style.marginRight),
+    widthWithMargins:
+      firstPage.offsetWidth + parseInt(style.marginTop) + parseInt(style.marginBottom),
+    heightWithMargins:
+      firstPage.offsetHeight + parseInt(style.marginLeft) + parseInt(style.marginRight),
     marginTop: parseInt(style.marginTop),
     marginBottom: parseInt(style.marginBottom),
     marginLeft: parseInt(style.marginLeft),
     marginRight: parseInt(style.marginRight),
-  }
+  };
 
   return pageProperties;
 }

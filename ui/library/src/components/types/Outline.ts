@@ -1,4 +1,4 @@
-import { Nullable } from './types'
+import { Nullable } from './types';
 
 export type NodeDestination = Nullable<string> | any[];
 export type OutlineNode = {
