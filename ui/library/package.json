@@ -15,7 +15,6 @@
     "glob-parent": "5.1.2"
   },
   "dependencies": {
-    "antd": "4.16.7",
     "classnames": "2.3.1"
   },
   "devDependencies": {
