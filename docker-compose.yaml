@@ -7,14 +7,11 @@ services:
             - proxy
     ui:
         build: ./ui
-        # We can't mount the entire UI directory, since JavaScript dependencies
-        # (`node_modules`) live at that location.
         volumes:
-            - ./ui/src:/usr/local/src/skiff/app/ui/src
-            - ./ui/demo/public:/usr/local/src/skiff/app/ui/demo/public
-            - ./ui/package.json:/usr/local/src/skiff/app/ui/package.json
-            - ./ui/tsconfig.json:/usr/local/src/skiff/app/ui/tsconfig.json
-            - ./ui/yarn.lock:/usr/local/src/skiff/app/ui/yarn.lock
+            - ./ui:/usr/local/src/skiff/app/ui
+            - 'ui_demo_node_modules:/usr/local/src/skiff/app/ui/demo/node_modules'
+            - 'ui_library_node_modules:/usr/local/src/skiff/app/ui/library/node_modules'
+            - 'ui_library_dist:/usr/local/src/skiff/app/ui/library/dist'
         environment:
             - NODE_ENV=development
     proxy:
@@ -23,3 +20,7 @@ services:
             - 8080:8080
         depends_on:
             - ui
+volumes:
+    ui_demo_node_modules:
+    ui_library_node_modules:
+    ui_library_dist:
