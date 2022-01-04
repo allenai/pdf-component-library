@@ -1,6 +1,6 @@
+import { BoundingBox, TransformContext } from '@allenai/pdf-components';
 import { Popover } from 'antd';
 import classNames from 'classnames';
-import { BoundingBox, TransformContext } from 'pdf-components-dist';
 import * as React from 'react';
 
 import { Author, Citation, CitationPaper } from '../types/citations';

@@ -4,7 +4,7 @@ const dtsBundle = require('dts-bundle');
 const RemovePlugin = require('remove-files-webpack-plugin');
 
 module.exports = (env, argv) => {
-  const bundleName = 'pdf-components-dist';
+  const bundleName = '@allenai/pdf-components';
   const isProduction = process.env.NODE_ENV === 'production' || argv.mode === 'production';
 
   return {

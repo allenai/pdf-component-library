@@ -3,7 +3,7 @@
  * changes here.
  */
 
-import { ContextProvider } from 'pdf-components-dist';
+import { ContextProvider } from '@allenai/pdf-components';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';

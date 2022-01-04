@@ -4,15 +4,13 @@
 # server that's distributed with the UI build tools is used.
 FROM node:14.15.1
 
-# Setup a spot for our code
-WORKDIR /usr/local/src/skiff/app/ui
-
-# Install dependencies for demo
+# Setup a spot for our code and
+# Install dependencies for demo and create a link to the demo's react dependency
 WORKDIR /usr/local/src/skiff/app/ui/demo
 COPY ./demo/package.json ./demo/yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-# Install dependencies for library
+# Install dependencies for library and point library to demo react link
 WORKDIR /usr/local/src/skiff/app/ui/library
 COPY ./library/package.json ./library/yarn.lock ./
 RUN yarn install --frozen-lockfile
@@ -21,15 +19,14 @@ RUN yarn install --frozen-lockfile
 WORKDIR /usr/local/src/skiff/app/ui
 COPY . .
 
-# build the library
-WORKDIR /usr/local/src/skiff/app/ui/library
-RUN yarn build
+# link the demo 'react' dependency to the 'library' to fulfill the peer dependency
+# and build the library and create a link for it
+RUN cd ./demo && yarn link:react \
+    && cd ../library && yarn link:react \
+    && yarn build && yarn link:lib && cd ../demo && yarn link:lib
 
-# setup and start the demo
 WORKDIR /usr/local/src/skiff/app/ui/demo
-RUN yarn link:react
-RUN yarn link:lib
 
-# ENTRYPOINT [ "yarn" ]
-# CMD [ "start" ]
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT [ "yarn" ]
+CMD [ "start" ]
+# ENTRYPOINT ["tail", "-f", "/dev/null"]

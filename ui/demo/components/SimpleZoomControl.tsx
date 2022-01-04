@@ -1,4 +1,4 @@
-import { TransformContext } from 'pdf-components-dist';
+import { TransformContext } from '@allenai/pdf-components';
 import * as React from 'react';
 
 import { PercentFormatter } from '../utils/format';
