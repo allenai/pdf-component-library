@@ -3,8 +3,10 @@ __pycache__
 **/*.pyc
 
 # UI dependencies
-ui/demo/node_modules
-ui/library/node_modules/
+node_modules
+
+# UI library build output
+ui/library/dist
 
 # UI build output
 ui/demo/build/
