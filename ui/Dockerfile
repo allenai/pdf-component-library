@@ -29,4 +29,3 @@ WORKDIR /usr/local/src/skiff/app/ui/demo
 
 ENTRYPOINT [ "yarn" ]
 CMD [ "start" ]
-# ENTRYPOINT ["tail", "-f", "/dev/null"]
