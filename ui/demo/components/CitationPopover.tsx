@@ -21,14 +21,22 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   // Handler triggered when Ant Popover is shown or hidden
   const handleVisibleChange = React.useCallback(
     (isVisible: boolean) => {
+      // Problem HERE!!!!!
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
-          const citationPaperData: CitationPaper = JSON.parse(data);
-          setPaper(citationPaperData);
-          setIsLoading(false);
-        });
+        // loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
+        //   const citationPaperData: CitationPaper = JSON.parse(data);
+        //   setPaper(citationPaperData);
+        //   setIsLoading(false);
+        // });
+        
+        fetch(`https://scholarphi.semanticscholar.org/api/v0/paper/${citation.paperId}`).then(response => response.json())
+        .then(data => {
+          console.log(data)
+            setPaper(data.paper);
+            setIsLoading(false);
+        })
       }
     },
     [citation, paper]

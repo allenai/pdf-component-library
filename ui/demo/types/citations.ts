@@ -12,6 +12,20 @@ export type CitationRaw = {
   attributes: CitationAttributesRaw;
 } & EntityRaw;
 
+
+// --------- real s2airs data format ----------
+
+export type RawMention = {
+  boundingBoxes: Array<BoundingBox>
+}
+
+export type RawCitation = {
+  citedPaperId: string,
+  mentions: Array<RawMention>
+}
+
+// --------- real s2airs data format ----------
+
 // UI model for author listing data displayed in CitationPopover popover
 export type Author = {
   id: number;
@@ -30,7 +44,7 @@ export type CitationPaper = {
 
 // UI model for bounding box and citation paper associated with a CitationPopover
 export type Citation = {
-  id: number;
+  id: string;
   boundingBox: BoundingBox;
   paperId: string;
   paper: CitationPaper | null;
@@ -41,14 +55,10 @@ export function makeCitation(
   idString: string,
   paperId: string,
   boundingBox: BoundingBox
-): Citation | null {
-  const id = parseInt(idString);
-  if (isNaN(id)) {
-    return null;
-  }
+): Citation {
 
   return {
-    id,
+    id: idString,
     boundingBox,
     paperId,
     paper: null,

@@ -8,7 +8,9 @@ import {
   AnnotationsRaw,
   PageToAnnotationsMap,
   transformRawAnnotations,
+  generateCitations
 } from '../types/annotations';
+import { RawCitation } from '../types/citations';
 import { loadJSON } from '../utils/utils';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
@@ -22,8 +24,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
-  const [annotationsRaw, setAnnotationsRaw] = React.useState<AnnotationsRaw>();
-
+  const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
+  const [pdfUrl, setPdfUrl] = React.useState<string>();
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
 
@@ -31,31 +33,49 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
   // TODO: #28639 Get PDF URL from query parameters instead of hardcoding
-  const pdfUrl = 'https://arxiv.org/pdf/1512.02595v1.pdf';
-
+  // const pdfUrl = 'https://arxiv.org/pdf/1512.02595v1.pdf';
+  
   // Runs once on initial load
   // Retrieves sample annotation data from local JSON file
+  // React.useEffect(() => {
+  //   loadJSON('data/sampleAnnotations_short.json', (data: string) => {
+  //     setAnnotationsRaw(JSON.parse(data));
+  //   });
+  // }, []);
+
+  const s2airsSampleUrl = 'https://development.semanticscholar.org/api/1/paper/5dd3e0e7f1da307d5a7c8cda460f3aa3845e1b3c/pdf-data'
+
   React.useEffect(() => {
-    loadJSON('data/sampleAnnotations_short.json', (data: string) => {
-      setAnnotationsRaw(JSON.parse(data));
-    });
-  }, []);
+    // already have data
+    if (pdfUrl)
+      return
+
+    fetch(s2airsSampleUrl)
+      .then(response => response.json())
+      .then(data => {
+        setPdfUrl(data.pdfUrl)
+        setRawCitations(data.citations)
+      })
+  }, [pageDimensions])
+
+
 
   // Attaches annotation data to paper
   React.useEffect(() => {
     // Don't execute until paper data and PDF document have loaded
-    if (!annotationsRaw || !pageDimensions.height || !pageDimensions.width) {
+    if (!rawCitations || !pageDimensions.height || !pageDimensions.width) {
       return;
     }
 
-    setAnnotations(transformRawAnnotations(annotationsRaw, pageDimensions));
-  }, [annotationsRaw, pageDimensions]);
+    setAnnotations(generateCitations(rawCitations, pageDimensions))
+  }, [rawCitations, pageDimensions]);
+
 
   return (
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          <Header pdfUrl={pdfUrl} />
+          {!!pdfUrl && <Header pdfUrl={pdfUrl} />}
           <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
