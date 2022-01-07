@@ -12,17 +12,16 @@ export type CitationRaw = {
   attributes: CitationAttributesRaw;
 } & EntityRaw;
 
-
 // --------- real s2airs data format ----------
 
 export type RawMention = {
-  boundingBoxes: Array<BoundingBox>
-}
+  boundingBoxes: Array<BoundingBox>;
+};
 
 export type RawCitation = {
-  citedPaperId: string,
-  mentions: Array<RawMention>
-}
+  citedPaperId: string;
+  mentions: Array<RawMention>;
+};
 
 // --------- real s2airs data format ----------
 
@@ -56,11 +55,26 @@ export function makeCitation(
   paperId: string,
   boundingBox: BoundingBox
 ): Citation {
-
   return {
     id: idString,
     boundingBox,
     paperId,
     paper: null,
   };
+}
+
+export function makeAuthors(rawAuthors: any[]): Array<Author> {
+  const result = rawAuthors.map(authorArray => {
+    const authorInfo = authorArray[0];
+    return {
+      id: authorInfo.ids[0],
+      name: authorInfo.name,
+      url: `https://www.semanticscholar.org/author/${authorInfo.ids[0]}`,
+    };
+  });
+  return result;
+}
+
+export function makePaperUrl(paperId: string): string {
+  return `https://www.semanticscholar.org/paper/${paperId}`;
 }

@@ -55,16 +55,15 @@ export function generateCitations(
   rawCitations.map((item, itemIndex) => {
     item.mentions.map((mentionItem, mentionItemIndex) => {
       mentionItem.boundingBoxes.map((box, boxIndex) => {
-        const scaledBox = scaleRawBoundingBox(
-          box,
-          pageDimensions.height,
-          pageDimensions.width
+        const scaledBox = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
+        const citation = makeCitation(
+          `${itemIndex}-${mentionItemIndex}-${boxIndex}`,
+          item.citedPaperId,
+          scaledBox
         );
-        const citation = makeCitation(`${itemIndex}-${mentionItemIndex}-${boxIndex}`, item.citedPaperId, scaledBox);
-        if (citation)
-          addCitationToPage(citation, pageToAnnotationsMap);
-      })
-    })
+        if (citation) addCitationToPage(citation, pageToAnnotationsMap);
+      });
+    });
   });
 
   return pageToAnnotationsMap;

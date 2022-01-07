@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { BoundingBox, TransformContext } from 'pdf-components-dist';
 import * as React from 'react';
 
-import { Author, Citation, CitationPaper } from '../types/citations';
-import { loadJSON } from '../utils/utils';
+import { Author, Citation, CitationPaper, makeAuthors, makePaperUrl } from '../types/citations';
 
 type Props = {
   citation: Citation;
@@ -21,22 +20,24 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   // Handler triggered when Ant Popover is shown or hidden
   const handleVisibleChange = React.useCallback(
     (isVisible: boolean) => {
-      // Problem HERE!!!!!
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        // loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
-        //   const citationPaperData: CitationPaper = JSON.parse(data);
-        //   setPaper(citationPaperData);
-        //   setIsLoading(false);
-        // });
-        
-        fetch(`https://scholarphi.semanticscholar.org/api/v0/paper/${citation.paperId}`).then(response => response.json())
-        .then(data => {
-          console.log(data)
-            setPaper(data.paper);
+        fetch(`https://development.semanticscholar.org/api/1/paper/${citation.paperId}`)
+          .then(response => response.json())
+          .then(data => {
+            // This is a bit hacked method since it saves the work defining specific type for Paper object
+            const citationPaper: CitationPaper = {
+              abstract: data.paper.paperAbstract.text,
+              authors: makeAuthors(data.paper.authors),
+              title: data.paper.title.text,
+              url: makePaperUrl(data.paper.id),
+              year: parseInt(data.paper.year.text),
+            };
+
+            setPaper(citationPaper);
             setIsLoading(false);
-        })
+          });
       }
     },
     [citation, paper]

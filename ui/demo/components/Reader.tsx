@@ -3,15 +3,8 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import {
-  Annotations,
-  AnnotationsRaw,
-  PageToAnnotationsMap,
-  transformRawAnnotations,
-  generateCitations
-} from '../types/annotations';
+import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
 import { RawCitation } from '../types/citations';
-import { loadJSON } from '../utils/utils';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { HighlightOverlayDemo } from './HighlightOverlayDemo';
@@ -32,33 +25,20 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  // TODO: #28639 Get PDF URL from query parameters instead of hardcoding
-  // const pdfUrl = 'https://arxiv.org/pdf/1512.02595v1.pdf';
-  
-  // Runs once on initial load
-  // Retrieves sample annotation data from local JSON file
-  // React.useEffect(() => {
-  //   loadJSON('data/sampleAnnotations_short.json', (data: string) => {
-  //     setAnnotationsRaw(JSON.parse(data));
-  //   });
-  // }, []);
-
-  const s2airsSampleUrl = 'https://development.semanticscholar.org/api/1/paper/5dd3e0e7f1da307d5a7c8cda460f3aa3845e1b3c/pdf-data'
+  const s2airsSampleUrl =
+    'https://development.semanticscholar.org/api/1/paper/5dd3e0e7f1da307d5a7c8cda460f3aa3845e1b3c/pdf-data';
 
   React.useEffect(() => {
-    // already have data
-    if (pdfUrl)
-      return
+    // If data has been loaded then return directly to prevent sending multiple requests
+    if (pdfUrl) return;
 
     fetch(s2airsSampleUrl)
       .then(response => response.json())
       .then(data => {
-        setPdfUrl(data.pdfUrl)
-        setRawCitations(data.citations)
-      })
-  }, [pageDimensions])
-
-
+        setPdfUrl(data.pdfUrl);
+        setRawCitations(data.citations);
+      });
+  }, [pageDimensions]);
 
   // Attaches annotation data to paper
   React.useEffect(() => {
@@ -67,9 +47,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
       return;
     }
 
-    setAnnotations(generateCitations(rawCitations, pageDimensions))
+    setAnnotations(generateCitations(rawCitations, pageDimensions));
   }, [rawCitations, pageDimensions]);
-
 
   return (
     <BrowserRouter>
