@@ -78,4 +78,3 @@ export function makeAuthors(rawAuthors: any[]): Array<Author> {
 export function makePaperUrl(paperId: string): string {
   return `https://development.semanticscholar.org/paper/${paperId}`;
 }
-
