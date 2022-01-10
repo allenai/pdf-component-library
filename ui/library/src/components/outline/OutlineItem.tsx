@@ -13,12 +13,16 @@ export const OutlineItem: React.FunctionComponent<Props> = ({
   className,
   onClick,
 }: Props) => {
-  if (!items || !items.length) return null;
+  if (!items || !items.length) {
+    return null;
+  }
 
   function renderItem(item: OutlineNode) {
     const clickHandler = (event: any) => {
       event.preventDefault();
-      if (onClick) onClick(item.dest);
+      if (onClick) {
+        onClick(item.dest);
+      }
     };
 
     // If an item has sub titles, render <OutlineItem />

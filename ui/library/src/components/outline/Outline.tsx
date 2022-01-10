@@ -14,16 +14,22 @@ type Props = {
 
 export const Outline: React.FunctionComponent<Props> = ({ className }: Props) => {
   const { pdfDocProxy } = React.useContext(DocumentContext);
-  if (!pdfDocProxy) return null;
+  if (!pdfDocProxy) {
+    return null;
+  }
 
   const { rotation } = React.useContext(TransformContext);
   const [outline, setOutline] = React.useState<Array<OutlineNode>>();
   pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
-    if (!outline) setOutline(outlineArray);
+    if (!outline) {
+      setOutline(outlineArray);
+    }
   });
 
   const clickHandler = (dest: NodeDestination): void => {
-    if (!dest) return;
+    if (!dest) {
+      return;
+    }
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {
       /*
         destArray returned by getDestination contains 5 items:

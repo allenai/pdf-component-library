@@ -39,7 +39,9 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
         setIsLoading(false);
       });
 
-    if (!pdfDocProxy) setPdfDocProxy(pdfDoc);
+    if (!pdfDocProxy) {
+      setPdfDocProxy(pdfDoc);
+    }
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown): void => {
