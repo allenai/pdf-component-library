@@ -64,17 +64,16 @@ export function makeCitation(
 }
 
 export function makeAuthors(rawAuthors: any[]): Array<Author> {
-  const result = rawAuthors.map(authorArray => {
-    const authorInfo = authorArray[0];
+  const result = rawAuthors.map(authorItem => {
     return {
-      id: authorInfo.ids[0],
-      name: authorInfo.name,
-      url: `https://development.semanticscholar.org/author/${authorInfo.ids[0]}`,
+      id: authorItem.authorId,
+      name: authorItem.name,
+      url: `https://semanticscholar.org/author/${authorItem.authorId}`,
     };
   });
   return result;
 }
 
 export function makePaperUrl(paperId: string): string {
-  return `https://development.semanticscholar.org/paper/${paperId}`;
+  return `https://semanticscholar.org/paper/${paperId}`;
 }

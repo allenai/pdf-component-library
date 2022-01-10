@@ -23,16 +23,16 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        fetch(`https://development.semanticscholar.org/api/1/paper/${citation.paperId}`)
+        fetch(`https://api.semanticscholar.org/graph/v1/paper/${citation.paperId}?fields=abstract,authors,title,year`)
           .then(response => response.json())
           .then(data => {
-            // This is a bit hacked method since it saves the work defining specific type for Paper object
+            // HACKED: saves the work defining types for Paper object
             const citationPaper: CitationPaper = {
-              abstract: data.paper.paperAbstract.text,
-              authors: makeAuthors(data.paper.authors),
-              title: data.paper.title.text,
-              url: makePaperUrl(data.paper.id),
-              year: parseInt(data.paper.year.text),
+              abstract: data.abstract,
+              authors: makeAuthors(data.authors),
+              title: data.title,
+              url: makePaperUrl(data.paperId),
+              year: parseInt(data.year),
             };
 
             setPaper(citationPaper);
