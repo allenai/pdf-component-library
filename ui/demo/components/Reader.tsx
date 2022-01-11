@@ -18,27 +18,27 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     new Map<number, Annotations>()
   );
   const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
-  const [pdfUrl, setPdfUrl] = React.useState<string>();
+
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
 
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const sampleUrl =
-    'https://development.semanticscholar.org/api/1/paper/5dd3e0e7f1da307d5a7c8cda460f3aa3845e1b3c/pdf-data';
+  const samplePdfUrl = 'https://arxiv.org/pdf/2111.05685.pdf';
+  const sampleS2airsUrl =
+    'http://s2airs.dev.s2.allenai.org/v1/pdf_data?pdf_sha=ed1b1acd7a36b22397f052d10426f1531cfc18ce';
 
   React.useEffect(() => {
     // If data has been loaded then return directly to prevent sending multiple requests
-    if (pdfUrl) {
+    if (rawCitations) {
       return;
     }
 
-    fetch(sampleUrl, { referrer: '' })
+    fetch(sampleS2airsUrl, { referrer: '' })
       .then(response => response.json())
       .then(data => {
-        setPdfUrl(data.pdfUrl);
-        setRawCitations(data.citations);
+        setRawCitations(data[0].citations);
       });
   }, [pageDimensions]);
 
@@ -56,8 +56,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          {!!pdfUrl && <Header pdfUrl={pdfUrl} />}
-          <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
+          <Header pdfUrl={samplePdfUrl} />
+          <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
