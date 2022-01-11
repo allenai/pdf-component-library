@@ -112,9 +112,9 @@ function getPagePropertiesInPixels(): PageProperties {
     width: firstPage.clientWidth,
     height: firstPage.clientHeight,
     widthWithMargins:
-      firstPage.offsetWidth + parseInt(style.marginTop) + parseInt(style.marginBottom),
+      firstPage.offsetWidth + parseInt(style.marginLeft) + parseInt(style.marginRight),
     heightWithMargins:
-      firstPage.offsetHeight + parseInt(style.marginLeft) + parseInt(style.marginRight),
+      firstPage.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom),
     marginTop: parseInt(style.marginTop),
     marginBottom: parseInt(style.marginBottom),
     marginLeft: parseInt(style.marginLeft),
