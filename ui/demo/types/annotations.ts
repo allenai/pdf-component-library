@@ -1,6 +1,6 @@
 import { Dimensions } from 'pdf-components-dist';
 
-import { Citation, makeCitation } from './citations';
+import { Citation, makeCitation, RawCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
 
 // Raw annotation/entity data as returned from our data source
@@ -43,6 +43,29 @@ export function transformRawAnnotations(
       });
     }
   });
+  return pageToAnnotationsMap;
+}
+
+export function generateCitations(
+  rawCitations: Array<RawCitation>,
+  pageDimensions: Dimensions
+): PageToAnnotationsMap {
+  const pageToAnnotationsMap = new Map<number, Annotations>();
+
+  rawCitations.map((item, itemIndex) => {
+    item.mentions.map((mentionItem, mentionItemIndex) => {
+      mentionItem.boundingBoxes.map((box, boxIndex) => {
+        const scaledBox = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
+        const citation = makeCitation(
+          `${itemIndex}-${mentionItemIndex}-${boxIndex}`,
+          item.citedPaperId,
+          scaledBox
+        );
+        if (citation) addCitationToPage(citation, pageToAnnotationsMap);
+      });
+    });
+  });
+
   return pageToAnnotationsMap;
 }
 

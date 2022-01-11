@@ -3,8 +3,7 @@ import classNames from 'classnames';
 import { BoundingBox, TransformContext } from 'pdf-components-dist';
 import * as React from 'react';
 
-import { Author, Citation, CitationPaper } from '../types/citations';
-import { loadJSON } from '../utils/utils';
+import { Author, Citation, CitationPaper, makeAuthors, makePaperUrl } from '../types/citations';
 
 type Props = {
   citation: Citation;
@@ -24,11 +23,23 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
-        loadJSON(`data/citationPapers/${citation.paperId}.json`, (data: string) => {
-          const citationPaperData: CitationPaper = JSON.parse(data);
-          setPaper(citationPaperData);
-          setIsLoading(false);
-        });
+        fetch(
+          `https://api.semanticscholar.org/graph/v1/paper/${citation.paperId}?fields=abstract,authors,title,year`
+        )
+          .then(response => response.json())
+          .then(data => {
+            // HACKED: saves the work defining types for Paper object
+            const citationPaper: CitationPaper = {
+              abstract: data.abstract,
+              authors: makeAuthors(data.authors),
+              title: data.title,
+              url: makePaperUrl(data.paperId),
+              year: parseInt(data.year),
+            };
+
+            setPaper(citationPaper);
+            setIsLoading(false);
+          });
       }
     },
     [citation, paper]
