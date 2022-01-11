@@ -25,14 +25,16 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const s2airsSampleUrl =
+  const sampleUrl =
     'https://development.semanticscholar.org/api/1/paper/5dd3e0e7f1da307d5a7c8cda460f3aa3845e1b3c/pdf-data';
 
   React.useEffect(() => {
     // If data has been loaded then return directly to prevent sending multiple requests
-    if (pdfUrl) return;
+    if (pdfUrl) {
+      return;
+    }
 
-    fetch(s2airsSampleUrl)
+    fetch(sampleUrl, { referrer: '' })
       .then(response => response.json())
       .then(data => {
         setPdfUrl(data.pdfUrl);
