@@ -3,13 +3,8 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import {
-  Annotations,
-  AnnotationsRaw,
-  PageToAnnotationsMap,
-  transformRawAnnotations,
-} from '../types/annotations';
-import { loadJSON } from '../utils/utils';
+import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
+import { RawCitation } from '../types/citations';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { HighlightOverlayDemo } from './HighlightOverlayDemo';
@@ -22,7 +17,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
-  const [annotationsRaw, setAnnotationsRaw] = React.useState<AnnotationsRaw>();
+  const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
 
   // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
@@ -30,33 +25,39 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  // TODO: #28639 Get PDF URL from query parameters instead of hardcoding
-  const pdfUrl = 'https://arxiv.org/pdf/1512.02595v1.pdf';
+  const samplePdfUrl = 'https://arxiv.org/pdf/2111.05685.pdf';
+  const sampleS2airsUrl =
+    'http://s2airs.dev.s2.allenai.org/v1/pdf_data?pdf_sha=ed1b1acd7a36b22397f052d10426f1531cfc18ce';
 
-  // Runs once on initial load
-  // Retrieves sample annotation data from local JSON file
   React.useEffect(() => {
-    loadJSON('data/sampleAnnotations_short.json', (data: string) => {
-      setAnnotationsRaw(JSON.parse(data));
-    });
-  }, []);
+    // If data has been loaded then return directly to prevent sending multiple requests
+    if (rawCitations) {
+      return;
+    }
+
+    fetch(sampleS2airsUrl, { referrer: '' })
+      .then(response => response.json())
+      .then(data => {
+        setRawCitations(data[0].citations);
+      });
+  }, [pageDimensions]);
 
   // Attaches annotation data to paper
   React.useEffect(() => {
     // Don't execute until paper data and PDF document have loaded
-    if (!annotationsRaw || !pageDimensions.height || !pageDimensions.width) {
+    if (!rawCitations || !pageDimensions.height || !pageDimensions.width) {
       return;
     }
 
-    setAnnotations(transformRawAnnotations(annotationsRaw, pageDimensions));
-  }, [annotationsRaw, pageDimensions]);
+    setAnnotations(generateCitations(rawCitations, pageDimensions));
+  }, [rawCitations, pageDimensions]);
 
   return (
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          <Header pdfUrl={pdfUrl} />
-          <DocumentWrapper className="reader__main" file={pdfUrl} inputRef={pdfContentRef}>
+          <Header pdfUrl={samplePdfUrl} />
+          <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
             <div className="reader__page-list" ref={pdfScrollableRef}>
               {Array.from({ length: numPages }).map((_, i) => (
