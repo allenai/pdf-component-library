@@ -3,8 +3,8 @@ import { PageRotation } from '../utils/rotate';
 
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
-const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
+export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
+export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
@@ -31,7 +31,6 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
  * @param pageIndex The index of the page where the position locates at
  * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
- * @returns
  */
 export function scrollToPosition(
   pageIndex: number,
@@ -50,11 +49,11 @@ export function scrollToPosition(
   /*
     Vertical scroll distance is calculated as:
     = total number of previous pages * page height including top/down margins
-    + margin top of a page
-    + the distance from page top to the specified position
+    + the margin top of current page
+    + the distance from the page top to the specified position
 
     Notice that the scroll distance is measured in pixels,
-    so leftPoints/bottomPoints should be transformed from points to pixels first.
+    so leftPoints/bottomPoints has to be transformed from points to pixels first.
   */
 
   const { width, height, heightWithMargins, marginTop, marginBottom, marginLeft, marginRight } =
@@ -80,15 +79,15 @@ export function scrollToPosition(
   }
 
   targetDiv.scrollTo({
-    top: heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels),
-    left: leftPixels,
+    top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
+    left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
 }
 
 /**
  * Get lengths, widths, and margins of a page.
- * @returns
+ * @returns a PageProperties object
  */
 function getPagePropertiesInPixels(): PageProperties {
   const firstPage = document.getElementById(generatePageIdFromIndex(0));
@@ -109,12 +108,12 @@ function getPagePropertiesInPixels(): PageProperties {
 
   const style = getComputedStyle(firstPage as Element);
   const pageProperties: PageProperties = {
-    width: firstPage.clientWidth,
-    height: firstPage.clientHeight,
+    width: parseInt(style.width),
+    height: parseInt(style.height),
     widthWithMargins:
-      firstPage.offsetWidth + parseInt(style.marginLeft) + parseInt(style.marginRight),
+      parseInt(style.width) + parseInt(style.marginLeft) + parseInt(style.marginRight),
     heightWithMargins:
-      firstPage.offsetHeight + parseInt(style.marginTop) + parseInt(style.marginBottom),
+      parseInt(style.height) + parseInt(style.marginTop) + parseInt(style.marginBottom),
     marginTop: parseInt(style.marginTop),
     marginBottom: parseInt(style.marginBottom),
     marginLeft: parseInt(style.marginLeft),
