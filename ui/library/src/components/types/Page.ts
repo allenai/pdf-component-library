@@ -3,11 +3,14 @@ export type PageReference = {
   gen: number;
 };
 
+// The definitions here are aligned with CSS properties
+// TODO: show a picture about what these properties are in WIKI page
 export type PageProperties = {
   width: number;
   height: number;
   widthWithMargins: number;
   heightWithMargins: number;
+  // CSS margins, not document margin
   marginTop: number;
   marginBottom: number;
   marginLeft: number;
