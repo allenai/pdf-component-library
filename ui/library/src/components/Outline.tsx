@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Outline as PdfOutline } from 'react-pdf/dist/esm/entry.webpack';
+import { Outline as PdfOutline } from 'react-pdf';
 
 import { scrollToPdfPageIndex } from '../utils/scroll';
 
