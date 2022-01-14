@@ -13,6 +13,8 @@ declare module 'pdf-components-dist' {
     import { Outline } from 'pdf-components-dist/src/components/Outline';
     import { Overlay, Props as OverlayProps } from 'pdf-components-dist/src/components/Overlay';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from 'pdf-components-dist/src/components/PageWrapper';
+    import { ZoomInButton } from 'pdf-components-dist/src/components/ZoomInButton';
+    import { ZoomOutButton } from 'pdf-components-dist/src/components/ZoomOutButton';
     import { ContextProvider, Props as ContextProviderProps } from 'pdf-components-dist/src/context/ContextProvider';
     import { DocumentContext, IDocumentContext } from 'pdf-components-dist/src/context/DocumentContext';
     import { ITransformContext, TransformContext } from 'pdf-components-dist/src/context/TransformContext';
@@ -22,7 +24,7 @@ declare module 'pdf-components-dist' {
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from 'pdf-components-dist/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from 'pdf-components-dist/src/utils/style';
     export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, Nullable, Origin, OverlayProps, PageProps, PageRotation, PageWrapperProps, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -46,6 +48,8 @@ declare module 'pdf-components-dist' {
         scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
         TransformContext: import("react").Context<ITransformContext>;
         UiContext: import("react").Context<IUiContext>;
+        ZoomInButton: import("react").FunctionComponent<{}>;
+        ZoomOutButton: import("react").FunctionComponent<{}>;
     };
     export default _default;
 }
@@ -128,6 +132,16 @@ declare module 'pdf-components-dist/src/components/PageWrapper' {
     export const PageWrapper: React.FunctionComponent<Props>;
 }
 
+declare module 'pdf-components-dist/src/components/ZoomInButton' {
+    import * as React from 'react';
+    export const ZoomInButton: React.FunctionComponent;
+}
+
+declare module 'pdf-components-dist/src/components/ZoomOutButton' {
+    import * as React from 'react';
+    export const ZoomOutButton: React.FunctionComponent;
+}
+
 declare module 'pdf-components-dist/src/context/ContextProvider' {
     import * as React from 'react';
     export type Props = {
@@ -154,8 +168,10 @@ declare module 'pdf-components-dist/src/context/TransformContext' {
     export interface ITransformContext {
         rotation: PageRotation;
         scale: number;
+        zoomMultiplier: number;
         setRotation: (rotation: PageRotation) => void;
         setScale: (scale: number) => void;
+        setZoomMultiplier: (zoom: number) => void;
     }
     export const TransformContext: React.Context<ITransformContext>;
 }
