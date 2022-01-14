@@ -49,7 +49,7 @@ export const Outline: React.FunctionComponent<Props> = ({ className }: Props) =>
   };
 
   return (
-    <div className={classnames('react-pdf__Outline', className)}>
+    <div className={className}>
       {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
     </div>
   );
