@@ -25,9 +25,9 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const samplePdfUrl = 'https://arxiv.org/pdf/2111.05685.pdf';
+  const samplePdfUrl = 'https://arxiv.org/pdf/2112.07873.pdf';
   const sampleS2airsUrl =
-    'http://s2airs.dev.s2.allenai.org/v1/pdf_data?pdf_sha=ed1b1acd7a36b22397f052d10426f1531cfc18ce';
+    'http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=9b79eb8d21c8a832daedbfc6d8c31bebe0da3ed5';
 
   React.useEffect(() => {
     // If data has been loaded then return directly to prevent sending multiple requests
