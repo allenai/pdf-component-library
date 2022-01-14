@@ -85,7 +85,8 @@ describe('<ContextProvider/>', () => {
         <ContextProvider>
           <TransformContext.Consumer>
             {(args: ITransformContext) => {
-              const { rotation, scale, zoomMultiplier, setRotation, setScale, setZoomMultiplier } = args;
+              const { rotation, scale, zoomMultiplier, setRotation, setScale, setZoomMultiplier } =
+                args;
               _setRotation = setRotation;
               _setScale = setScale;
               _setZoomMultiplier = setZoomMultiplier;
