@@ -48,7 +48,7 @@ declare module 'pdf-components-dist' {
         scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
         TransformContext: import("react").Context<ITransformContext>;
         UiContext: import("react").Context<IUiContext>;
-        ZoomInButton: import("react").FunctionComponent<{}>;
+        ZoomInButton: import("react").FunctionComponent<import("./src/components/ZoomInButton").Props>;
         ZoomOutButton: import("react").FunctionComponent<{}>;
     };
     export default _default;
@@ -134,11 +134,17 @@ declare module 'pdf-components-dist/src/components/PageWrapper' {
 
 declare module 'pdf-components-dist/src/components/ZoomInButton' {
     import * as React from 'react';
-    export const ZoomInButton: React.FunctionComponent;
+    export type Props = {
+        children?: React.ReactNode;
+    };
+    export const ZoomInButton: React.FunctionComponent<Props>;
 }
 
 declare module 'pdf-components-dist/src/components/ZoomOutButton' {
     import * as React from 'react';
+    export type Props = {
+        children?: React.ReactNode;
+    };
     export const ZoomOutButton: React.FunctionComponent;
 }
 
