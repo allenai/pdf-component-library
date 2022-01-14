@@ -2,16 +2,20 @@ import * as React from 'react';
 
 import { TransformContext } from '../context/TransformContext';
 
-export const ZoomOutButton: React.FunctionComponent = () => {
-  const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
+export type Props = {
+    children?: React.ReactNode;
+};
 
-  const handleZoomOut = React.useCallback(() => {
-    setScale(scale / zoomMultiplier);
-  }, [scale, zoomMultiplier]);
+export const ZoomOutButton: React.FunctionComponent = ({ children }: Props) => {
+    const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
 
-  return (
-    <a className="reader__zoom-btn zoom-out" onClick={handleZoomOut}>
-      -
-    </a>
-  );
+    const handleZoomOut = React.useCallback(() => {
+        setScale(scale / zoomMultiplier);
+    }, [scale, zoomMultiplier]);
+
+    return (
+        <a className="reader__zoom-btn zoom-out" onClick={handleZoomOut}>
+            {children ? children : '-'}
+        </a>
+    );
 };
