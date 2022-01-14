@@ -14,6 +14,8 @@ import {
 import { Outline } from './src/components/Outline';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
+import { ZoomInButton } from './src/components/ZoomInButton';
+import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
@@ -75,6 +77,8 @@ export {
   scrollToPdfPageIndex,
   TransformContext,
   UiContext,
+  ZoomInButton,
+  ZoomOutButton,
 };
 
 export default {
@@ -100,4 +104,6 @@ export default {
   scrollToPdfPageIndex,
   TransformContext,
   UiContext,
+  ZoomInButton,
+  ZoomOutButton,
 };
