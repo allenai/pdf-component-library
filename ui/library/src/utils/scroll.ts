@@ -47,7 +47,7 @@ export function scrollToPosition(
   }
 
   /*
-    Vertical scroll distance is calculated as:
+    Vertical scroll distance is calculated as
     = total number of previous pages * page height including top/down margins
     + the margin top of current page
     + the distance from the page top to the specified position
@@ -56,10 +56,10 @@ export function scrollToPosition(
     so leftPoints/bottomPoints has to be transformed from points to pixels first.
   */
 
-  const { width, height, heightWithMargins, marginTop, marginBottom, marginLeft, marginRight } =
+  const { width, height, marginTop, marginBottom, marginLeft, marginRight } =
     getPagePropertiesInPixels();
-  // When papers are rotated, the heights and widths would be switched automatically
-  // However, leftPoints and bottomPoints remain the same
+  const heightWithMargins = height + marginTop + marginBottom;
+  // When a paper is rotated, its height and width would be switched automatically. However, leftPoints and bottomPoints remain the same.
   let marginTopPixels = marginTop;
   let bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
   let leftPixels = (width * leftPoints) / PDF_WIDTH_POINTS;
@@ -89,15 +89,13 @@ export function scrollToPosition(
  * Get lengths, widths, and margins of a page.
  * @returns a PageProperties object
  */
-function getPagePropertiesInPixels(): PageProperties {
+export function getPagePropertiesInPixels(): PageProperties {
   const firstPage = document.getElementById(generatePageIdFromIndex(0));
   if (!firstPage) {
     console.error(`Cannot get the first page of this document.`);
     const emptyPageProperties: PageProperties = {
       width: 0,
       height: 0,
-      widthWithMargins: 0,
-      heightWithMargins: 0,
       marginTop: 0,
       marginBottom: 0,
       marginLeft: 0,
@@ -110,10 +108,6 @@ function getPagePropertiesInPixels(): PageProperties {
   const pageProperties: PageProperties = {
     width: parseInt(style.width),
     height: parseInt(style.height),
-    widthWithMargins:
-      parseInt(style.width) + parseInt(style.marginLeft) + parseInt(style.marginRight),
-    heightWithMargins:
-      parseInt(style.height) + parseInt(style.marginTop) + parseInt(style.marginBottom),
     marginTop: parseInt(style.marginTop),
     marginBottom: parseInt(style.marginBottom),
     marginLeft: parseInt(style.marginLeft),

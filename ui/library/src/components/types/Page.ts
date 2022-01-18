@@ -8,8 +8,6 @@ export type PageReference = {
 export type PageProperties = {
   width: number;
   height: number;
-  widthWithMargins: number;
-  heightWithMargins: number;
   // CSS margins, not document margin
   marginTop: number;
   marginBottom: number;

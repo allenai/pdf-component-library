@@ -67,6 +67,10 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('pageWidth', 0);
     });
 
+    it('initiates pdfDocProxy as undefined', () => {
+      expectTextFromClassName('pdfDocObject', 'false');
+    });
+
     it('provides a function to set pageDimensions', () => {
       expectTextFromClassName('pageHeight', 0);
       expectTextFromClassName('pageWidth', 0);
