@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Page } from 'react-pdf/dist/esm/entry.webpack';
+import { Page } from 'react-pdf';
 import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';

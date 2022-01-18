@@ -20,4 +20,7 @@
   position: absolute;
   z-index: 10;
 }
+.react-pdf__Page__textContent > span {
+  height: 0em!important;
+}
 
