@@ -1,7 +1,6 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
-import { DocumentProps } from 'react-pdf';
-import { Document } from 'react-pdf/dist/esm/entry.webpack';
+import { Document, DocumentProps } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { UiContext } from '../context/UiContext';
