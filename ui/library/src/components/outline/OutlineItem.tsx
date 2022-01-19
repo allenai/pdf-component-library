@@ -4,15 +4,10 @@ import { NodeDestination, OutlineNode } from '../types/Outline';
 
 type Props = {
   items?: Array<OutlineNode>;
-  className?: string;
   onClick?: (dest: NodeDestination) => void;
 };
 
-export const OutlineItem: React.FunctionComponent<Props> = ({
-  items,
-  className,
-  onClick,
-}: Props) => {
+export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: Props) => {
   if (!items || !items.length) {
     return null;
   }
@@ -31,10 +26,10 @@ export const OutlineItem: React.FunctionComponent<Props> = ({
         <a href="#" onClick={clickHandler}>
           {item.title}
         </a>
-        <OutlineItem items={item.items} className={className} onClick={onClick} />
+        <OutlineItem items={item.items} onClick={onClick} />
       </li>
     );
   }
 
-  return <ul className={className}>{items.map(item => renderItem(item))}</ul>;
+  return <ul>{items.map(item => renderItem(item))}</ul>;
 };

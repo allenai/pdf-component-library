@@ -7,11 +7,7 @@ import { NodeDestination, OutlineNode } from '../types/Outline';
 import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 
-type Props = {
-  className?: string;
-};
-
-export const Outline: React.FunctionComponent<Props> = ({ className }: Props) => {
+export const Outline: React.FunctionComponent = () => {
   const { pdfDocProxy } = React.useContext(DocumentContext);
   if (!pdfDocProxy) {
     return null;
@@ -49,7 +45,7 @@ export const Outline: React.FunctionComponent<Props> = ({ className }: Props) =>
   };
 
   return (
-    <div className={className}>
+    <div>
       {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
     </div>
   );
