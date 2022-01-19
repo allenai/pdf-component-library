@@ -15,11 +15,11 @@ declare module 'pdf-components-dist' {
     import { OutlineItem } from 'pdf-components-dist/src/components/outline/OutlineItem';
     import { Overlay, Props as OverlayProps } from 'pdf-components-dist/src/components/Overlay';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from 'pdf-components-dist/src/components/PageWrapper';
-    import { ZoomInButton } from 'pdf-components-dist/src/components/ZoomInButton';
-    import { ZoomOutButton } from 'pdf-components-dist/src/components/ZoomOutButton';
     import { NodeDestination, OutlineNode } from 'pdf-components-dist/src/components/types/Outline';
     import { PageProperties, PageReference } from 'pdf-components-dist/src/components/types/Page';
     import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from 'pdf-components-dist/src/components/types/types';
+    import { ZoomInButton } from 'pdf-components-dist/src/components/ZoomInButton';
+    import { ZoomOutButton } from 'pdf-components-dist/src/components/ZoomOutButton';
     import { ContextProvider, Props as ContextProviderProps } from 'pdf-components-dist/src/context/ContextProvider';
     import { DocumentContext, IDocumentContext } from 'pdf-components-dist/src/context/DocumentContext';
     import { ITransformContext, TransformContext } from 'pdf-components-dist/src/context/TransformContext';
@@ -151,22 +151,6 @@ declare module 'pdf-components-dist/src/components/PageWrapper' {
     export const PageWrapper: React.FunctionComponent<Props>;
 }
 
-declare module 'pdf-components-dist/src/components/ZoomInButton' {
-    import * as React from 'react';
-    export type Props = {
-        children?: React.ReactNode;
-    };
-    export const ZoomInButton: React.FunctionComponent<Props>;
-}
-
-declare module 'pdf-components-dist/src/components/ZoomOutButton' {
-    import * as React from 'react';
-    export type Props = {
-        children?: React.ReactNode;
-    };
-    export const ZoomOutButton: React.FunctionComponent;
-}
-
 declare module 'pdf-components-dist/src/components/types/Outline' {
     import { Nullable } from 'pdf-components-dist/src/components/types/types';
     export type NodeDestination = Nullable<string> | any[];
@@ -213,6 +197,22 @@ declare module 'pdf-components-dist/src/components/types/types' {
     export type BoundingBox = {
         page: number;
     } & Size;
+}
+
+declare module 'pdf-components-dist/src/components/ZoomInButton' {
+    import * as React from 'react';
+    export type Props = {
+        children?: React.ReactNode;
+    };
+    export const ZoomInButton: React.FunctionComponent<Props>;
+}
+
+declare module 'pdf-components-dist/src/components/ZoomOutButton' {
+    import * as React from 'react';
+    export type Props = {
+        children?: React.ReactNode;
+    };
+    export const ZoomOutButton: React.FunctionComponent;
 }
 
 declare module 'pdf-components-dist/src/context/ContextProvider' {
