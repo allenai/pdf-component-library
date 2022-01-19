@@ -44,9 +44,5 @@ export const Outline: React.FunctionComponent = () => {
     });
   };
 
-  return (
-    <div>
-      {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
-    </div>
-  );
+  return <div>{!!outline && <OutlineItem items={outline} onClick={clickHandler} />}</div>;
 };
