@@ -24,6 +24,8 @@ import {
   Origin,
   Size,
 } from './src/components/types/types';
+import { ZoomInButton } from './src/components/ZoomInButton';
+import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
@@ -89,6 +91,8 @@ export {
   scrollToPdfPageIndex,
   TransformContext,
   UiContext,
+  ZoomInButton,
+  ZoomOutButton,
 };
 
 export default {
@@ -115,4 +119,6 @@ export default {
   scrollToPdfPageIndex,
   TransformContext,
   UiContext,
+  ZoomInButton,
+  ZoomOutButton,
 };

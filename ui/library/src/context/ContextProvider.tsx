@@ -29,12 +29,15 @@ function useDocumentContextProps(): IDocumentContext {
 function useTransformContextProps(): ITransformContext {
   const [rotation, setRotation] = React.useState<PageRotation>(PageRotation.Rotate0);
   const [scale, setScale] = React.useState<number>(1.0);
+  const [zoomMultiplier, setZoomMultiplier] = React.useState<number>(1.2);
 
   return {
     rotation,
     scale,
     setRotation,
     setScale,
+    setZoomMultiplier,
+    zoomMultiplier,
   };
 }
 

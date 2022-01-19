@@ -1,19 +1,10 @@
-import { TransformContext } from 'pdf-components-dist';
+import { TransformContext, ZoomInButton, ZoomOutButton } from 'pdf-components-dist';
 import * as React from 'react';
 
 import { PercentFormatter } from '../utils/format';
 
 export const SimpleZoomControl: React.FunctionComponent = () => {
-  const { scale, setScale } = React.useContext(TransformContext);
-  const ZOOM_MULTIPLIER = 1.2;
-
-  const handleZoomIn = React.useCallback(() => {
-    setScale(scale * ZOOM_MULTIPLIER);
-  }, [scale]);
-
-  const handleZoomOut = React.useCallback(() => {
-    setScale(scale / ZOOM_MULTIPLIER);
-  }, [scale]);
+  const { scale } = React.useContext(TransformContext);
 
   const renderLabel = React.useCallback(() => {
     return <span>{PercentFormatter.format(scale)}</span>;
@@ -21,13 +12,9 @@ export const SimpleZoomControl: React.FunctionComponent = () => {
 
   return (
     <span>
-      <a className="hacky-zoom-button" onClick={handleZoomOut}>
-        -
-      </a>
+      <ZoomOutButton />
       {renderLabel()}
-      <a className="hacky-zoom-button" onClick={handleZoomIn}>
-        +
-      </a>
+      <ZoomInButton />
     </span>
   );
 };

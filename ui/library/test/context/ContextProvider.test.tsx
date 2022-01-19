@@ -101,19 +101,23 @@ describe('<ContextProvider/>', () => {
   describe('<TransformContext.Provider/>', () => {
     let _setRotation: (rotation: PageRotation) => void;
     let _setScale: (scale: number) => void;
+    let _setZoomMultiplier: (zoom: number) => void;
 
     before(() => {
       wrapper = mount(
         <ContextProvider>
           <TransformContext.Consumer>
             {(args: ITransformContext) => {
-              const { rotation, scale, setRotation, setScale } = args;
+              const { rotation, scale, zoomMultiplier, setRotation, setScale, setZoomMultiplier } =
+                args;
               _setRotation = setRotation;
               _setScale = setScale;
+              _setZoomMultiplier = setZoomMultiplier;
               return (
                 <div>
                   <div className="scale">{scale}</div>
                   <div className="rotation">{rotation}</div>
+                  <div className="zoom">{zoomMultiplier}</div>
                 </div>
               );
             }}
@@ -134,6 +138,10 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('scale', 1);
     });
 
+    it('provides a default zoom multiplier', () => {
+      expectTextFromClassName('zoom', 1.2);
+    });
+
     it('provides a function to set rotation', () => {
       expectTextFromClassName('rotation', 0);
 
@@ -148,6 +156,14 @@ describe('<ContextProvider/>', () => {
       _setScale(1.2);
 
       expectTextFromClassName('scale', 1.2);
+    });
+
+    it('provides a function to set zoom multiplier', () => {
+      expectTextFromClassName('zoom', 1.2);
+
+      _setZoomMultiplier(2.5);
+
+      expectTextFromClassName('zoom', 2.5);
     });
   });
 
