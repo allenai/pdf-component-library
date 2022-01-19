@@ -1,6 +1,7 @@
+import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
-import { Dimensions, Nullable } from '../types';
+import { Dimensions, Nullable } from '../components/types/types';
 import { PageRotation } from '../utils/rotate';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';
@@ -13,12 +14,15 @@ export type Props = {
 function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
   const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
+  const [pdfDocProxy, setPdfDocProxy] = React.useState<PDFDocumentProxy>();
 
   return {
     numPages,
     pageDimensions: pageDimensions,
+    pdfDocProxy,
     setNumPages,
     setPageDimensions: setPageDimensions,
+    setPdfDocProxy,
   };
 }
 

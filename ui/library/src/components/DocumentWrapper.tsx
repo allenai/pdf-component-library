@@ -15,7 +15,8 @@ export type Props = {
 export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
   initPdfWorker();
 
-  const { setNumPages, setPageDimensions } = React.useContext(DocumentContext);
+  const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
+    React.useContext(DocumentContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
@@ -36,6 +37,10 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
       .finally(() => {
         setIsLoading(false);
       });
+
+    if (!pdfDocProxy) {
+      setPdfDocProxy(pdfDoc);
+    }
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown): void => {

@@ -1,4 +1,4 @@
-import { Dimensions } from '../types';
+import { Dimensions } from '../components/types/types';
 
 // Data from react-pdf/pdfjs that we need to compute the pixel size of the PDF's page(s).
 export interface IPDFPageProxy {

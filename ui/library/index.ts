@@ -11,14 +11,23 @@ import {
   HighlightOverlay,
   Props as HighlightOverlayProps,
 } from './src/components/HighlightOverlay';
-import { Outline } from './src/components/Outline';
+import { Outline } from './src/components/outline/Outline';
+import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
+import { NodeDestination, OutlineNode } from './src/components/types/Outline';
+import { PageProperties, PageReference } from './src/components/types/Page';
+import {
+  BoundingBox as BoundingBoxType,
+  Dimensions,
+  Nullable,
+  Origin,
+  Size,
+} from './src/components/types/types';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
-import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from './src/types';
 import {
   isSideways,
   PageRotation,
@@ -44,10 +53,14 @@ export type {
   IDocumentContext,
   ITransformContext,
   IUiContext,
+  NodeDestination,
   Nullable,
   Origin,
+  OutlineNode,
   OverlayProps,
+  PageProperties,
   PageProps,
+  PageReference,
   PageRotation,
   PageWrapperProps,
   Size,
@@ -67,6 +80,7 @@ export {
   HighlightOverlay,
   isSideways,
   Outline,
+  OutlineItem,
   Overlay,
   PageWrapper,
   rotateClockwise,
@@ -91,6 +105,7 @@ export default {
   HighlightOverlay,
   isSideways,
   Outline,
+  OutlineItem,
   Overlay,
   PageRotation,
   PageWrapper,
