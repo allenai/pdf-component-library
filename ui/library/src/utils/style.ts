@@ -1,4 +1,4 @@
-import { Dimensions, Size } from '../types';
+import { Dimensions, Size } from '../components/types/types';
 import { isSideways, PageRotation } from './rotate';
 
 // Computes the style for a bounding box, accounting for page roation and page scaling/zoom

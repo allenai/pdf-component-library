@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
+import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
 import { ContextProvider } from '../../src/context/ContextProvider';
@@ -21,20 +22,30 @@ describe('<ContextProvider/>', () => {
   describe('<DocumentContext.Provider/>', () => {
     let _setNumPages: (numPages: number) => void;
     let _setPageDimensions: (pageDimensions: Dimensions) => void;
+    let _setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
 
     before(() => {
       wrapper = mount(
         <ContextProvider>
           <DocumentContext.Consumer>
             {(args: IDocumentContext) => {
-              const { numPages, pageDimensions, setNumPages, setPageDimensions } = args;
+              const {
+                numPages,
+                pageDimensions,
+                pdfDocProxy,
+                setNumPages,
+                setPageDimensions,
+                setPdfDocProxy,
+              } = args;
               _setNumPages = setNumPages;
               _setPageDimensions = setPageDimensions;
+              _setPdfDocProxy = setPdfDocProxy;
               return (
                 <div>
                   <div className="numPages">{numPages}</div>
                   <div className="pageHeight">{pageDimensions.height}</div>
                   <div className="pageWidth">{pageDimensions.width}</div>
+                  <div className="pdfDocObject">{pdfDocProxy ? 'true' : 'false'}</div>
                 </div>
               );
             }}
@@ -56,6 +67,10 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('pageWidth', 0);
     });
 
+    it('initiates pdfDocProxy as undefined', () => {
+      expectTextFromClassName('pdfDocObject', 'false');
+    });
+
     it('provides a function to set pageDimensions', () => {
       expectTextFromClassName('pageHeight', 0);
       expectTextFromClassName('pageWidth', 0);
@@ -72,6 +87,14 @@ describe('<ContextProvider/>', () => {
       _setNumPages(15);
 
       expectTextFromClassName('numPages', 15);
+    });
+
+    it('provides a function to setPdfDocProxy', () => {
+      expectTextFromClassName('pdfDocObject', 'false');
+
+      _setPdfDocProxy({} as PDFDocumentProxy);
+
+      expectTextFromClassName('pdfDocObject', 'true');
     });
   });
 

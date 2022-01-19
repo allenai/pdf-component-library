@@ -3,8 +3,8 @@ import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
-import { BoundingBox as BoundingBoxType } from '../types';
 import { computeBoundingBoxStyle } from '../utils/style';
+import { BoundingBox as BoundingBoxType } from './types/types';
 
 export type Props = {
   className?: string;
