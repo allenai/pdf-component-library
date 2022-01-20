@@ -9,12 +9,13 @@ import Ref from './Ref';
 
 export const Outline: React.FunctionComponent = () => {
   const { pdfDocProxy } = React.useContext(DocumentContext);
+  const { rotation } = React.useContext(TransformContext);
+  const [outline, setOutline] = React.useState<Array<OutlineNode>>();
+
   if (!pdfDocProxy) {
     return null;
   }
 
-  const { rotation } = React.useContext(TransformContext);
-  const [outline, setOutline] = React.useState<Array<OutlineNode>>();
   if (!outline) {
     pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
       setOutline(outlineArray);
