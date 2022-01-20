@@ -12,20 +12,23 @@ export const Outline: React.FunctionComponent = () => {
   const { rotation } = React.useContext(TransformContext);
   const [outline, setOutline] = React.useState<Array<OutlineNode>>();
 
-  if (!pdfDocProxy) {
-    return null;
-  }
-
-  if (!outline) {
-    pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
-      setOutline(outlineArray);
-    });
-  }
-
-  const clickHandler = (dest: NodeDestination): void => {
-    if (!dest) {
+  React.useEffect(() => {
+    if (!pdfDocProxy) {
       return;
     }
+
+    if (!outline) {
+      pdfDocProxy.getOutline().then((outlineArray: Array<OutlineNode>) => {
+        setOutline(outlineArray);
+      });
+    }
+  }, [pdfDocProxy]);
+
+  const clickHandler = (dest: NodeDestination): void => {
+    if (!dest || !pdfDocProxy) {
+      return;
+    }
+
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {
       /*
         destArray returned by getDestination contains 5 items:
