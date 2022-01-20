@@ -38,7 +38,9 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
         setIsLoading(false);
       });
 
-    if (!pdfDocProxy) {
+    if (!pdfDoc) {
+      console.info("Setting pdfDocProxy");
+      console.info(pdfDoc);
       setPdfDocProxy(pdfDoc);
     }
   }, []);

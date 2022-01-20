@@ -12,7 +12,10 @@ export const Outline: React.FunctionComponent = () => {
   const { rotation } = React.useContext(TransformContext);
   const [outline, setOutline] = React.useState<Array<OutlineNode>>();
 
+  console.info("Rendering outline");
   React.useEffect(() => {
+    console.info("In effect. pdfDocProxy is");
+    console.info(pdfDocProxy);
     if (!pdfDocProxy) {
       return;
     }
