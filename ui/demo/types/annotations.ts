@@ -1,7 +1,6 @@
-import { Dimensions } from 'pdf-components-dist';
+import { Dimensions, scaleRawBoundingBox } from 'pdf-components-dist';
 
 import { Citation, makeCitation, RawCitation } from './citations';
-import { scaleRawBoundingBox } from './entity';
 
 // Stores the annotations for a particular page. Currently only
 // citations are supported.
@@ -18,15 +17,15 @@ export function generateCitations(
 ): PageToAnnotationsMap {
   const pageToAnnotationsMap = new Map<number, Annotations>();
   // Start with all Citations in raw format
-  rawCitations.map((item, itemIndex) => {
-    item.mentions.map((mentionItem, mentionItemIndex) => {
+  rawCitations.map((rawCitation, citationIndex) => {
+    rawCitation.mentions.map((mention, mentionIndex) => {
       // Add all Citation Mentions to Annotation map
-      mentionItem.boundingBoxes.map((box, boxIndex) => {
+      mention.boundingBoxes.map((box, boxIndex) => {
         // Scale raw bounding box data with respect to page size
         const scaledBox = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
         const citation = makeCitation(
-          `${itemIndex}-${mentionItemIndex}-${boxIndex}`,
-          item.citedPaperId,
+          `${citationIndex}-${mentionIndex}-${boxIndex}`,
+          rawCitation.citedPaperId,
           scaledBox
         );
         if (citation) {
