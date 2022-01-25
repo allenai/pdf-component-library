@@ -4,7 +4,7 @@ import * as React from 'react';
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
 import { computeBoundingBoxStyle } from '../utils/style';
-import { BoundingBox as BoundingBoxType } from './types/types';
+import { BoundingBox as BoundingBoxType } from './types/boundingBox';
 
 export type Props = {
   className?: string;
