@@ -1,4 +1,4 @@
-import { PageProperties } from '../components/types/Page';
+import { PageProperties } from '../components/types/page';
 import { PageRotation } from '../utils/rotate';
 
 // Each page div is ID'd according to page index
