@@ -1,4 +1,4 @@
-import { PageReference } from '../types/pagee';
+import { PageReference } from '../types/page';
 
 /**
  * This class is the definition of the first item when Destination is returned as an array.
