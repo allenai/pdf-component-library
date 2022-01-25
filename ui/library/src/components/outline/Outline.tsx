@@ -3,7 +3,7 @@ import * as React from 'react';
 import { DocumentContext } from '../../context/DocumentContext';
 import { TransformContext } from '../../context/TransformContext';
 import { scrollToPosition } from '../../utils/scroll';
-import { NodeDestination, OutlineNode } from '../types/outline';
+import { NodeDestination, OutlineNode } from '../types/outlinee';
 import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 

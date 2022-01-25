@@ -23,8 +23,8 @@ import {
   scaleRawBoundingBox,
   Size,
 } from './src/components/types/boundingBox';
-import { NodeDestination, OutlineNode } from './src/components/types/outline';
-import { PageProperties, PageReference } from './src/components/types/page';
+import { NodeDestination, OutlineNode } from './src/components/types/outlinee';
+import { PageProperties, PageReference } from './src/components/types/pagee';
 import { Nullable } from './src/components/types/utils';
 import { ZoomInButton } from './src/components/ZoomInButton';
 import { ZoomOutButton } from './src/components/ZoomOutButton';
