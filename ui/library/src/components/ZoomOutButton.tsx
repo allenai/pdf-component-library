@@ -14,8 +14,8 @@ export const ZoomOutButton: React.FunctionComponent = ({ children }: Props) => {
   }, [scale, zoomMultiplier]);
 
   return (
-    <button className="reader__zoom-btn zoom-out" onClick={handleZoomOut}>
+    <a className="reader__zoom-btn zoom-out" onClick={handleZoomOut}>
       {children ? children : '-'}
-    </button>
+    </a>
   );
 };
