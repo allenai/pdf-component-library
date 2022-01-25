@@ -1,7 +1,5 @@
 import { BoundingBoxType as BoundingBox } from 'pdf-components-dist';
 
-import { EntityAttributesRaw, EntityRaw } from './entity';
-
 // Raw citation attributes in S2airs format
 export type RawMention = {
   boundingBoxes: Array<BoundingBox>;

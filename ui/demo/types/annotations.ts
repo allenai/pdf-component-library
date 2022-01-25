@@ -1,12 +1,7 @@
 import { Dimensions } from 'pdf-components-dist';
 
 import { Citation, makeCitation, RawCitation } from './citations';
-import { EntityRaw, scaleRawBoundingBox } from './entity';
-
-// Raw annotation/entity data as returned from our data source
-export type AnnotationsRaw = {
-  entities: Array<EntityRaw>;
-};
+import { scaleRawBoundingBox } from './entity';
 
 // Stores the annotations for a particular page. Currently only
 // citations are supported.
