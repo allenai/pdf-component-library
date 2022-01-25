@@ -15,9 +15,10 @@ declare module 'pdf-components-dist' {
     import { OutlineItem } from 'pdf-components-dist/src/components/outline/OutlineItem';
     import { Overlay, Props as OverlayProps } from 'pdf-components-dist/src/components/Overlay';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from 'pdf-components-dist/src/components/PageWrapper';
-    import { NodeDestination, OutlineNode } from 'pdf-components-dist/src/components/types/Outline';
-    import { PageProperties, PageReference } from 'pdf-components-dist/src/components/types/Page';
-    import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from 'pdf-components-dist/src/components/types/types';
+    import { BoundingBox as BoundingBoxType, Dimensions, Origin, RawBoundingBox, scaleRawBoundingBox, Size } from 'pdf-components-dist/src/components/types/boundingBox';
+    import { NodeDestination, OutlineNode } from 'pdf-components-dist/src/components/types/outline';
+    import { PageProperties, PageReference } from 'pdf-components-dist/src/components/types/page';
+    import { Nullable } from 'pdf-components-dist/src/components/types/utils';
     import { ZoomInButton } from 'pdf-components-dist/src/components/ZoomInButton';
     import { ZoomOutButton } from 'pdf-components-dist/src/components/ZoomOutButton';
     import { ContextProvider, Props as ContextProviderProps } from 'pdf-components-dist/src/context/ContextProvider';
@@ -27,8 +28,8 @@ declare module 'pdf-components-dist' {
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from 'pdf-components-dist/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from 'pdf-components-dist/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from 'pdf-components-dist/src/utils/style';
-    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -52,6 +53,7 @@ declare module 'pdf-components-dist' {
         PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
         rotateClockwise: typeof rotateClockwise;
         rotateCounterClockwise: typeof rotateCounterClockwise;
+        scaleRawBoundingBox: typeof scaleRawBoundingBox;
         scrollToId: typeof scrollToId;
         scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
         TransformContext: import("react").Context<ITransformContext>;
@@ -64,7 +66,7 @@ declare module 'pdf-components-dist' {
 
 declare module 'pdf-components-dist/src/components/BoundingBox' {
     import * as React from 'react';
-    import { BoundingBox as BoundingBoxType } from 'pdf-components-dist/src/components/types/types';
+    import { BoundingBox as BoundingBoxType } from 'pdf-components-dist/src/components/types/boundingBox';
     export type Props = {
         className?: string;
         id?: string;
@@ -112,7 +114,7 @@ declare module 'pdf-components-dist/src/components/outline/Outline' {
 
 declare module 'pdf-components-dist/src/components/outline/OutlineItem' {
     import * as React from 'react';
-    import { NodeDestination, OutlineNode } from 'pdf-components-dist/src/components/types/Outline';
+    import { NodeDestination, OutlineNode } from 'pdf-components-dist/src/components/types/outline';
     type Props = {
         items?: Array<OutlineNode>;
         onClick?: (dest: NodeDestination) => void;
@@ -151,8 +153,25 @@ declare module 'pdf-components-dist/src/components/PageWrapper' {
     export const PageWrapper: React.FunctionComponent<Props>;
 }
 
-declare module 'pdf-components-dist/src/components/types/Outline' {
-    import { Nullable } from 'pdf-components-dist/src/components/types/types';
+declare module 'pdf-components-dist/src/components/types/boundingBox' {
+    export type Dimensions = {
+        height: number;
+        width: number;
+    };
+    export type Origin = {
+        top: number;
+        left: number;
+    };
+    export type Size = Dimensions & Origin;
+    export type BoundingBox = {
+        page: number;
+    } & Size;
+    export type RawBoundingBox = BoundingBox;
+    export function scaleRawBoundingBox(boundingBoxRaw: RawBoundingBox, pageHeight: number, pageWidth: number): BoundingBox;
+}
+
+declare module 'pdf-components-dist/src/components/types/outline' {
+    import { Nullable } from 'pdf-components-dist/src/components/types/utils';
     export type NodeDestination = Nullable<string> | any[];
     export type OutlineNode = {
         title: string;
@@ -168,7 +187,7 @@ declare module 'pdf-components-dist/src/components/types/Outline' {
     };
 }
 
-declare module 'pdf-components-dist/src/components/types/Page' {
+declare module 'pdf-components-dist/src/components/types/page' {
     export type PageReference = {
         num: number;
         gen: number;
@@ -183,20 +202,8 @@ declare module 'pdf-components-dist/src/components/types/Page' {
     };
 }
 
-declare module 'pdf-components-dist/src/components/types/types' {
+declare module 'pdf-components-dist/src/components/types/utils' {
     export type Nullable<T> = T | null;
-    export type Dimensions = {
-        height: number;
-        width: number;
-    };
-    export type Origin = {
-        top: number;
-        left: number;
-    };
-    export type Size = Dimensions & Origin;
-    export type BoundingBox = {
-        page: number;
-    } & Size;
 }
 
 declare module 'pdf-components-dist/src/components/ZoomInButton' {
@@ -226,7 +233,7 @@ declare module 'pdf-components-dist/src/context/ContextProvider' {
 declare module 'pdf-components-dist/src/context/DocumentContext' {
     import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
     import * as React from 'react';
-    import { Dimensions } from 'pdf-components-dist/src/components/types/types';
+    import { Dimensions } from 'pdf-components-dist/src/components/types/boundingBox';
     export interface IDocumentContext {
         numPages: number;
         pageDimensions: Dimensions;
@@ -254,7 +261,7 @@ declare module 'pdf-components-dist/src/context/TransformContext' {
 
 declare module 'pdf-components-dist/src/context/UiContext' {
     import * as React from 'react';
-    import { Nullable } from 'pdf-components-dist/src/components/types/types';
+    import { Nullable } from 'pdf-components-dist/src/components/types/utils';
     export interface IUiContext {
         errorMessage: Nullable<string>;
         isLoading: boolean;
@@ -287,7 +294,7 @@ declare module 'pdf-components-dist/src/utils/rotate' {
 }
 
 declare module 'pdf-components-dist/src/utils/scroll' {
-    import { PageProperties } from 'pdf-components-dist/src/components/types/Page';
+    import { PageProperties } from 'pdf-components-dist/src/components/types/page';
     import { PageRotation } from 'pdf-components-dist/src/utils/rotate';
     export const PAGE_NAV_TARGET_ID_ROOT = "reader_pg_";
     export const SCROLLABLE_TARGET_DIV_CLASSNAME = "reader__page-list";
@@ -309,7 +316,7 @@ declare module 'pdf-components-dist/src/utils/scroll' {
 }
 
 declare module 'pdf-components-dist/src/utils/style' {
-    import { Dimensions, Size } from 'pdf-components-dist/src/components/types/types';
+    import { Dimensions, Size } from 'pdf-components-dist/src/components/types/boundingBox';
     import { PageRotation } from 'pdf-components-dist/src/utils/rotate';
     export function computeBoundingBoxStyle(boundingBoxSize: Size, pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
     export function computePageStyle(pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
