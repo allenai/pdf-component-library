@@ -4,7 +4,8 @@ const dtsBundle = require('dts-bundle');
 const RemovePlugin = require('remove-files-webpack-plugin');
 
 module.exports = (env, argv) => {
-  const bundleName = 'pdf-components-dist';
+  const fileName = 'pdf-components';
+  const packageName = `@allenai/${fileName}`;
   const isProduction = process.env.NODE_ENV === 'production' || argv.mode === 'production';
 
   return {
@@ -48,18 +49,18 @@ module.exports = (env, argv) => {
         }
       }),
       new MiniCssPlugin({
-        filename: `${bundleName}.css`,
+        filename: `${fileName}.css`,
       }),
-      new DtsBundlePlugin(bundleName, './tmp/index.d.ts')
+      new DtsBundlePlugin(packageName, './tmp/index.d.ts')
     ],
     target: 'web',
     output: {
-      filename: `${bundleName}.js`,
+      filename: `${fileName}.js`,
       path: path.resolve(__dirname, 'dist'),
       globalObject: 'this',
       publicPath: '',
       library: {
-        name: 'PdfComponentsDist',
+        name: 'PdfComponents',
         type: 'umd',
         export: 'default',
       }
