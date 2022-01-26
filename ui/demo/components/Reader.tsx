@@ -1,4 +1,4 @@
-import { DocumentContext, DocumentWrapper, Overlay, PageWrapper } from 'pdf-components-dist';
+import { DocumentContext, DocumentWrapper, Overlay, PageWrapper } from '@allenai/pdf-components';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';

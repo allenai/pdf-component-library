@@ -1,4 +1,4 @@
-import { BoundingBox } from 'pdf-components-dist';
+import { BoundingBox } from '@allenai/pdf-components';
 import * as React from 'react';
 
 type Props = {

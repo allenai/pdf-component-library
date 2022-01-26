@@ -1,4 +1,4 @@
-import { BoundingBoxType as BoundingBox } from 'pdf-components-dist';
+import { BoundingBoxType as BoundingBox } from '@allenai/pdf-components';
 
 import { EntityAttributesRaw, EntityRaw } from './entity';
 

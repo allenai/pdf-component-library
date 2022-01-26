@@ -1,4 +1,4 @@
-import { Dimensions } from 'pdf-components-dist';
+import { Dimensions } from '@allenai/pdf-components';
 
 import { Citation, makeCitation, RawCitation } from './citations';
 import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
