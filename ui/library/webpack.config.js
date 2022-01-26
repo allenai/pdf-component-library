@@ -60,7 +60,7 @@ module.exports = (env, argv) => {
       globalObject: 'this',
       publicPath: '',
       library: {
-        name: 'PdfComponents',
+        name: '@allenai/pdf-components',
         type: 'umd',
         export: 'default',
       }
