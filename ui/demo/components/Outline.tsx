@@ -1,5 +1,5 @@
-import { Drawer } from 'antd';
 import { Outline as PdfOutline, UiContext } from '@allenai/pdf-components';
+import { Drawer } from 'antd';
 import * as React from 'react';
 
 type Props = {
