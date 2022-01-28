@@ -5,8 +5,8 @@
   "author": "s2@allenai.org",
   "scripts": {
     "build": "webpack --mode development",
+    "link:lib": "yarn link @allenai/pdf-components",
     "link:react": "cd ./node_modules/react && yarn link && cd ../react-dom && yarn link",
-    "link:lib": "yarn link pdf-components-dist",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "start": "webpack serve --hot --mode development",

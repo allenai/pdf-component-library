@@ -1,4 +1,4 @@
-import { BoundingBox, BoundingBoxType, HighlightOverlay, UiContext } from 'pdf-components-dist';
+import { BoundingBox, BoundingBoxType, HighlightOverlay, UiContext } from '@allenai/pdf-components';
 import * as React from 'react';
 
 type Props = {

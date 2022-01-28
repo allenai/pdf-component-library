@@ -1,4 +1,4 @@
-import { BoundingBoxType as BoundingBox } from 'pdf-components-dist';
+import { BoundingBoxType as BoundingBox } from '@allenai/pdf-components';
 
 // Raw citation attributes in S2airs format
 export type RawMention = {

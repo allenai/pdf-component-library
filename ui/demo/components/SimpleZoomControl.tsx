@@ -1,4 +1,4 @@
-import { TransformContext, ZoomInButton, ZoomOutButton } from 'pdf-components-dist';
+import { TransformContext, ZoomInButton, ZoomOutButton } from '@allenai/pdf-components';
 import * as React from 'react';
 
 import { PercentFormatter } from '../utils/format';
