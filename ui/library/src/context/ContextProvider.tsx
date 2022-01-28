@@ -1,7 +1,8 @@
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
-import { Dimensions, Nullable } from '../components/types/types';
+import { Dimensions } from '../components/types/boundingBox';
+import { Nullable } from '../components/types/utils';
 import { PageRotation } from '../utils/rotate';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
 import { ITransformContext, TransformContext } from './TransformContext';

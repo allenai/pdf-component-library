@@ -1,29 +1,15 @@
 import { BoundingBoxType as BoundingBox } from '@allenai/pdf-components';
 
-import { EntityAttributesRaw, EntityRaw } from './entity';
-
-// Raw citation attributes in the same format as our data source
-export type CitationAttributesRaw = {
-  paperId: string;
-} & EntityAttributesRaw;
-
-// Raw citation entity in the same format as our data source
-export type CitationRaw = {
-  attributes: CitationAttributesRaw;
-} & EntityRaw;
-
-// --------- real s2airs data format ----------
-
+// Raw citation attributes in S2airs format
 export type RawMention = {
   boundingBoxes: Array<BoundingBox>;
 };
 
+// Raw citation entity in S2airs format
 export type RawCitation = {
   citedPaperId: string;
   mentions: Array<RawMention>;
 };
-
-// --------- real s2airs data format ----------
 
 // UI model for author listing data displayed in CitationPopover popover
 export type Author = {

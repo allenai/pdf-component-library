@@ -15,15 +15,17 @@ import { Outline } from './src/components/outline/Outline';
 import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
-import { NodeDestination, OutlineNode } from './src/components/types/Outline';
-import { PageProperties, PageReference } from './src/components/types/Page';
 import {
   BoundingBox as BoundingBoxType,
   Dimensions,
-  Nullable,
   Origin,
+  RawBoundingBox,
+  scaleRawBoundingBox,
   Size,
-} from './src/components/types/types';
+} from './src/components/types/boundingBox';
+import { NodeDestination, OutlineNode } from './src/components/types/outline';
+import { PageProperties, PageReference } from './src/components/types/page';
+import { Nullable } from './src/components/types/utils';
 import { ZoomInButton } from './src/components/ZoomInButton';
 import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
@@ -65,6 +67,7 @@ export type {
   PageReference,
   PageRotation,
   PageWrapperProps,
+  RawBoundingBox,
   Size,
 };
 
@@ -87,6 +90,7 @@ export {
   PageWrapper,
   rotateClockwise,
   rotateCounterClockwise,
+  scaleRawBoundingBox,
   scrollToId,
   scrollToPdfPageIndex,
   TransformContext,
@@ -115,6 +119,7 @@ export default {
   PageWrapper,
   rotateClockwise,
   rotateCounterClockwise,
+  scaleRawBoundingBox,
   scrollToId,
   scrollToPdfPageIndex,
   TransformContext,

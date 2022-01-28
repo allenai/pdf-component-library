@@ -1,12 +1,6 @@
-import { Dimensions } from '@allenai/pdf-components';
+import { Dimensions, scaleRawBoundingBox } from '@allenai/pdf-components';
 
 import { Citation, makeCitation, RawCitation } from './citations';
-import { BoundingBoxRaw, ENTITY_TYPE, EntityRaw, scaleRawBoundingBox } from './entity';
-
-// Raw annotation/entity data as returned from our data source
-export type AnnotationsRaw = {
-  entities: Array<EntityRaw>;
-};
 
 // Stores the annotations for a particular page. Currently only
 // citations are supported.
@@ -17,51 +11,26 @@ export type Annotations = {
 // Stores a map of page indexes to the annotations for that page
 export type PageToAnnotationsMap = Map<number, Annotations>;
 
-export function transformRawAnnotations(
-  annotationsRaw: AnnotationsRaw,
-  pageDimensions: Dimensions
-): PageToAnnotationsMap {
-  // Start with all entities in raw format
-  const pageToAnnotationsMap = new Map<number, Annotations>();
-  const entitiesRaw = annotationsRaw.entities;
-  entitiesRaw.map(entity => {
-    // For the time being, we only support Citation Annotations
-    // Add Citations to Annotation map
-    if (entity.type === ENTITY_TYPE.CITATION) {
-      const boundingBoxesRaw: Array<BoundingBoxRaw> = entity.attributes.bounding_boxes;
-      boundingBoxesRaw.map(box => {
-        // Scale raw bounding box data with respect to page size
-        const boundingBoxScaled = scaleRawBoundingBox(
-          box,
-          pageDimensions.height,
-          pageDimensions.width
-        );
-        const citation = makeCitation(entity.id, entity.attributes.paper_id, boundingBoxScaled);
-        if (citation) {
-          addCitationToPage(citation, pageToAnnotationsMap);
-        }
-      });
-    }
-  });
-  return pageToAnnotationsMap;
-}
-
 export function generateCitations(
   rawCitations: Array<RawCitation>,
   pageDimensions: Dimensions
 ): PageToAnnotationsMap {
   const pageToAnnotationsMap = new Map<number, Annotations>();
-
-  rawCitations.map((item, itemIndex) => {
-    item.mentions.map((mentionItem, mentionItemIndex) => {
-      mentionItem.boundingBoxes.map((box, boxIndex) => {
+  // Start with all Citations in raw format
+  rawCitations.map((rawCitation, citationIndex) => {
+    rawCitation.mentions.map((mention, mentionIndex) => {
+      // Add all Citation Mentions to Annotation map
+      mention.boundingBoxes.map((box, boxIndex) => {
+        // Scale raw bounding box data with respect to page size
         const scaledBox = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
         const citation = makeCitation(
-          `${itemIndex}-${mentionItemIndex}-${boxIndex}`,
-          item.citedPaperId,
+          `${citationIndex}-${mentionIndex}-${boxIndex}`,
+          rawCitation.citedPaperId,
           scaledBox
         );
-        if (citation) addCitationToPage(citation, pageToAnnotationsMap);
+        if (citation) {
+          addCitationToPage(citation, pageToAnnotationsMap);
+        }
       });
     });
   });

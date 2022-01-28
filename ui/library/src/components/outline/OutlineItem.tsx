@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { NodeDestination, OutlineNode } from '../types/Outline';
+import { NodeDestination, OutlineNode } from '../types/outline';
 
 type Props = {
   items?: Array<OutlineNode>;
