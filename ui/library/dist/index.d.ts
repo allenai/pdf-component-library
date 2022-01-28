@@ -15,9 +15,10 @@ declare module '@allenai/pdf-components' {
     import { OutlineItem } from '@allenai/pdf-components/src/components/outline/OutlineItem';
     import { Overlay, Props as OverlayProps } from '@allenai/pdf-components/src/components/Overlay';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from '@allenai/pdf-components/src/components/PageWrapper';
-    import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/Outline';
-    import { PageProperties, PageReference } from '@allenai/pdf-components/src/components/types/Page';
-    import { BoundingBox as BoundingBoxType, Dimensions, Nullable, Origin, Size } from '@allenai/pdf-components/src/components/types/types';
+    import { BoundingBox as BoundingBoxType, Dimensions, Origin, RawBoundingBox, scaleRawBoundingBox, Size } from '@allenai/pdf-components/src/components/types/boundingBox';
+    import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
+    import { PageProperties, PageReference } from '@allenai/pdf-components/src/components/types/page';
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     import { ZoomInButton } from '@allenai/pdf-components/src/components/ZoomInButton';
     import { ZoomOutButton } from '@allenai/pdf-components/src/components/ZoomOutButton';
     import { ContextProvider, Props as ContextProviderProps } from '@allenai/pdf-components/src/context/ContextProvider';
@@ -27,8 +28,8 @@ declare module '@allenai/pdf-components' {
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from '@allenai/pdf-components/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from '@allenai/pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from '@allenai/pdf-components/src/utils/style';
-    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -65,7 +66,7 @@ declare module '@allenai/pdf-components' {
 
 declare module '@allenai/pdf-components/src/components/BoundingBox' {
     import * as React from 'react';
-    import { BoundingBox as BoundingBoxType } from '@allenai/pdf-components/src/components/types/types';
+    import { BoundingBox as BoundingBoxType } from '@allenai/pdf-components/src/components/types/boundingBox';
     export type Props = {
         className?: string;
         id?: string;
@@ -113,7 +114,7 @@ declare module '@allenai/pdf-components/src/components/outline/Outline' {
 
 declare module '@allenai/pdf-components/src/components/outline/OutlineItem' {
     import * as React from 'react';
-    import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/Outline';
+    import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
     type Props = {
         items?: Array<OutlineNode>;
         onClick?: (dest: NodeDestination) => void;
@@ -152,8 +153,25 @@ declare module '@allenai/pdf-components/src/components/PageWrapper' {
     export const PageWrapper: React.FunctionComponent<Props>;
 }
 
-declare module '@allenai/pdf-components/src/components/types/Outline' {
-    import { Nullable } from '@allenai/pdf-components/src/components/types/types';
+declare module '@allenai/pdf-components/src/components/types/boundingBox' {
+    export type Dimensions = {
+        height: number;
+        width: number;
+    };
+    export type Origin = {
+        top: number;
+        left: number;
+    };
+    export type Size = Dimensions & Origin;
+    export type BoundingBox = {
+        page: number;
+    } & Size;
+    export type RawBoundingBox = BoundingBox;
+    export function scaleRawBoundingBox(boundingBoxRaw: RawBoundingBox, pageHeight: number, pageWidth: number): BoundingBox;
+}
+
+declare module '@allenai/pdf-components/src/components/types/outline' {
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     export type NodeDestination = Nullable<string> | any[];
     export type OutlineNode = {
         title: string;
@@ -169,7 +187,7 @@ declare module '@allenai/pdf-components/src/components/types/Outline' {
     };
 }
 
-declare module '@allenai/pdf-components/src/components/types/Page' {
+declare module '@allenai/pdf-components/src/components/types/page' {
     export type PageReference = {
         num: number;
         gen: number;
@@ -184,7 +202,7 @@ declare module '@allenai/pdf-components/src/components/types/Page' {
     };
 }
 
-declare module '@allenai/pdf-components/src/components/types/types' {
+declare module '@allenai/pdf-components/src/components/types/utils' {
     export type Nullable<T> = T | null;
 }
 
@@ -215,7 +233,7 @@ declare module '@allenai/pdf-components/src/context/ContextProvider' {
 declare module '@allenai/pdf-components/src/context/DocumentContext' {
     import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
     import * as React from 'react';
-    import { Dimensions } from '@allenai/pdf-components/src/components/types/types';
+    import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
     export interface IDocumentContext {
         numPages: number;
         pageDimensions: Dimensions;
@@ -243,7 +261,7 @@ declare module '@allenai/pdf-components/src/context/TransformContext' {
 
 declare module '@allenai/pdf-components/src/context/UiContext' {
     import * as React from 'react';
-    import { Nullable } from '@allenai/pdf-components/src/components/types/types';
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     export interface IUiContext {
         errorMessage: Nullable<string>;
         isLoading: boolean;
@@ -276,7 +294,7 @@ declare module '@allenai/pdf-components/src/utils/rotate' {
 }
 
 declare module '@allenai/pdf-components/src/utils/scroll' {
-    import { PageProperties } from '@allenai/pdf-components/src/components/types/Page';
+    import { PageProperties } from '@allenai/pdf-components/src/components/types/page';
     import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
     export const PAGE_NAV_TARGET_ID_ROOT = "reader_pg_";
     export const SCROLLABLE_TARGET_DIV_CLASSNAME = "reader__page-list";
@@ -298,7 +316,7 @@ declare module '@allenai/pdf-components/src/utils/scroll' {
 }
 
 declare module '@allenai/pdf-components/src/utils/style' {
-    import { Dimensions, Size } from '@allenai/pdf-components/src/components/types/types';
+    import { Dimensions, Size } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
     export function computeBoundingBoxStyle(boundingBoxSize: Size, pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
     export function computePageStyle(pageDimensions: Dimensions, rotation: PageRotation, scale: number): Size;
