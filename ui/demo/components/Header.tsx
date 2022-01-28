@@ -5,7 +5,7 @@ import {
   scrollToId,
   TransformContext,
   UiContext,
-} from 'pdf-components-dist';
+} from '@allenai/pdf-components';
 import * as React from 'react';
 
 import { SimpleZoomControl } from './SimpleZoomControl';

@@ -4,7 +4,7 @@
   "license": "Apache-2.0",
   "author": "s2@allenai.org",
   "scripts": {
-    "build": "webpack --mode production && cp ./tmp/pdf-components-dist.d.ts ./dist/index.d.ts && rm -rf ./tmp",
+    "build": "webpack --mode production && cp ./tmp/@allenai/pdf-components.d.ts ./dist/index.d.ts && rm -rf ./tmp",
     "link:lib": "cd dist && yarn link",
     "link:react": "yarn link react && yarn link react-dom",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
