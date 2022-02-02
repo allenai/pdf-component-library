@@ -21,7 +21,7 @@ steps:
     '-e', 'NODE_ENV=production',
     # This ensures the build artifacts end up on the host, so that they can be included and
     # eventually served by the proxy.
-    '-v', '/workspace/proxy/dist:/usr/local/src/skiff/app/ui/build',
+    '-v', '/workspace/proxy/dist:/usr/local/src/skiff/app/ui/demo/build',
     'gcr.io/$PROJECT_ID/$REPO_NAME-ui:$COMMIT_SHA',
     'build',
   ]
