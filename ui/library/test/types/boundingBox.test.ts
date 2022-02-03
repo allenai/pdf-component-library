@@ -18,17 +18,21 @@ describe('scaleRawBoundingBox', () => {
       width: 0,
     };
 
+    const expectedResult: BoundingBox = {
+      page: 0,
+      top: 0,
+      left: 0,
+      height: 0,
+      width: 0,
+    };
+
     const result: BoundingBox = scaleRawBoundingBox(
       rawBoundingBox,
       pageDimensions.height,
       pageDimensions.width
     );
 
-    expect(result.page).equals(0);
-    expect(result.top).equals(0);
-    expect(result.left).equals(0);
-    expect(result.height).equals(0);
-    expect(result.width).equals(0);
+    expect(result).to.deep.equal(expectedResult);
   });
 
   it('returns a boundingBox with scaled attributes (boundingBox props > 0, pageDimensions == 0)', () => {
@@ -41,17 +45,20 @@ describe('scaleRawBoundingBox', () => {
       width: 0.02,
     };
 
+    const expectedResult: BoundingBox = {
+      page: 3,
+      top: 0,
+      left: 0,
+      height: 0,
+      width: 0,
+    };
+
     const result: BoundingBox = scaleRawBoundingBox(
       rawBoundingBox,
       pageDimensions.height,
       pageDimensions.width
     );
-
-    expect(result.page).equals(3);
-    expect(result.top).equals(0);
-    expect(result.left).equals(0);
-    expect(result.height).equals(0);
-    expect(result.width).equals(0);
+    expect(result).to.deep.equal(expectedResult);
   });
 
   it('returns a boundingBox with scaled attributes (boundingBox props > 0, pageDimensions > 0)', () => {
@@ -64,16 +71,20 @@ describe('scaleRawBoundingBox', () => {
       width: 0.02,
     };
 
+    const expectedResult: BoundingBox = {
+      page: 3,
+      top: 10,
+      left: 40,
+      height: 1,
+      width: 4,
+    };
+
     const result: BoundingBox = scaleRawBoundingBox(
       rawBoundingBox,
       pageDimensions.height,
       pageDimensions.width
     );
 
-    expect(result.page).equals(3);
-    expect(result.top).equals(10);
-    expect(result.left).equals(40);
-    expect(result.height).equals(1);
-    expect(result.width).equals(4);
+    expect(result).to.deep.equal(expectedResult);
   });
 });
