@@ -5,7 +5,6 @@ __pycache__
 # UI dependencies
 node_modules
 
-
 # UI build output
 ui/demo/build/
 
