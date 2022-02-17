@@ -5,12 +5,28 @@ See Design Document [here](https://docs.google.com/document/d/1U7NwejFSXNhoXuSdP
 This is a temporary repository for the PDF Component Library and what will probably become the "Hello World" template for Semantic Reader. This is a private repo intended mainly as an easy place to develop the components, and once the actual "library" takes shape and is in a place where we want to start publishing it, we can split that code into a new OSS repository for publishing to NPM with a clean git history. Same goes for the "Hello World" app--the Reader and supporting example UI can probably be moved to a new OSS repo for being the "Hello World" app that we publish to the world with a clean git history.
 
 ## How to Run
-1. `cd /ui` (everything important is in here)
-2. `yarn install` (if you just cloned or added a new dependency)
-3. `yarn start`
-4. Point your browser at `http://0.0.0.0:3000`
+To start a version of the application locally for development purposes, run
+this command:
 
-The docker-compose instruction below will fire up the whole stack and may not tell you about build errors accumulating in your changes.
+```
+~ docker-compose up --build
+```
+
+This process launches 2 services, the `ui` and a `proxy` responsible
+for forwarding traffic to the appropriate services. You'll see output
+from each.
+
+It might take a minute or two for your application to start, particularly
+if it's the first time you've executed this command. Be patience and wait
+for a clear message indicating that all of the required services have
+started up.
+
+As you make changes the running application will be automatically updated.
+Simply refresh your browser to see them.
+
+Sometimes one portion of your application will crash due to errors in the code.
+When this occurs resolve the related issue and re-run `docker-compose up --build`
+to start things back up.
 
 # The Original Skiff Readme
 
@@ -47,29 +63,6 @@ Start by opening `skiff.json` and updating the `appName`, `contact` and
 
 After commiting and pushing these changes make sure to submit a
 [request to be onboarded](https://github.com/allenai/skiff/issues/new/choose).
-
-To start a version of the application locally for development purposes, run
-this command:
-
-```
-~ docker-compose up --build
-```
-
-This process launches 3 services, the `ui`, `api` and a `proxy` responsible
-for forwarding traffic to the appropriate services. You'll see output
-from each.
-
-It might take a minute or two for your application to start, particularly
-if it's the first time you've executed this command. Be patience and wait
-for a clear message indicating that all of the required services have
-started up.
-
-As you make changes the running application will be automatically updated.
-Simply refresh your browser to see them.
-
-Sometimes one portion of your application will crash due to errors in the code.
-When this occurs resolve the related issue and re-run `docker-compose up --build`
-to start things back up.
 
 ## Installing Third Party Packages
 
