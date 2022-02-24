@@ -9,7 +9,9 @@ export type Props = {
 export const ZoomOutButton: React.FunctionComponent = ({ children }: Props) => {
   const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
 
-  const handleZoomOut = React.useCallback(() => {
+  const handleZoomOut = React.useCallback((event): void => {
+    event.preventDefault();
+    event.stopPropagation();
     setScale(scale / zoomMultiplier);
   }, [scale, zoomMultiplier]);
 
