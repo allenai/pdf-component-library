@@ -234,11 +234,15 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
     import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
     import * as React from 'react';
     import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
+    import { OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     export interface IDocumentContext {
         numPages: number;
+        outline: Nullable<Array<OutlineNode>>;
         pageDimensions: Dimensions;
         pdfDocProxy?: PDFDocumentProxy;
         setNumPages: (numPages: number) => void;
+        setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
         setPageDimensions: (pageDimensions: Dimensions) => void;
         setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
     }
