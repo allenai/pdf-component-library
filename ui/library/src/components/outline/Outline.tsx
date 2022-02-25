@@ -8,9 +8,8 @@ import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 
 export const Outline: React.FunctionComponent = () => {
-  const { pdfDocProxy } = React.useContext(DocumentContext);
+  const { outline, pdfDocProxy, setOutline } = React.useContext(DocumentContext);
   const { rotation } = React.useContext(TransformContext);
-  const [outline, setOutline] = React.useState<Array<OutlineNode>>();
 
   if (!pdfDocProxy) {
     return null;
