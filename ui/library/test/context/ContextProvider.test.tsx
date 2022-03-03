@@ -3,6 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
+import { OutlineNode } from '../../src/components/types/outline';
 import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
@@ -21,6 +22,7 @@ describe('<ContextProvider/>', () => {
 
   describe('<DocumentContext.Provider/>', () => {
     let _setNumPages: (numPages: number) => void;
+    let _setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
     let _setPageDimensions: (pageDimensions: Dimensions) => void;
     let _setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
 
@@ -31,21 +33,25 @@ describe('<ContextProvider/>', () => {
             {(args: IDocumentContext) => {
               const {
                 numPages,
+                outline,
                 pageDimensions,
                 pdfDocProxy,
                 setNumPages,
+                setOutline,
                 setPageDimensions,
                 setPdfDocProxy,
               } = args;
               _setNumPages = setNumPages;
+              _setOutline = setOutline;
               _setPageDimensions = setPageDimensions;
               _setPdfDocProxy = setPdfDocProxy;
               return (
                 <div>
                   <div className="numPages">{numPages}</div>
+                  <div className="outline">{outline === null ? 'null' : outline.length}</div>
                   <div className="pageHeight">{pageDimensions.height}</div>
                   <div className="pageWidth">{pageDimensions.width}</div>
-                  <div className="pdfDocObject">{pdfDocProxy ? 'true' : 'false'}</div>
+                  <div className="pdfDocProxy">{pdfDocProxy ? 'true' : 'false'}</div>
                 </div>
               );
             }}
@@ -62,13 +68,46 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('numPages', 0);
     });
 
+    it('provides a default outline', () => {
+      expectTextFromClassName('outline', 'null');
+    });
+
     it('provides a default pageDimensions with height and width', () => {
       expectTextFromClassName('pageHeight', 0);
       expectTextFromClassName('pageWidth', 0);
     });
 
-    it('initiates pdfDocProxy as undefined', () => {
-      expectTextFromClassName('pdfDocObject', 'false');
+    it('provides a default pdfDocProxy', () => {
+      expectTextFromClassName('pdfDocProxy', 'false');
+    });
+
+    it('provides a function to set numPages', () => {
+      expectTextFromClassName('numPages', 0);
+
+      _setNumPages(15);
+
+      expectTextFromClassName('numPages', 15);
+    });
+
+    it('provides a function to set outline', () => {
+      const outlineNode = {
+        title: 'Title',
+        bold: true,
+        italic: false,
+        color: [],
+        dest: {},
+        url: null,
+        unsafeUrl: 'test.com',
+        newWindow: true,
+        count: 5,
+        items: null,
+      };
+
+      expectTextFromClassName('outline', 'null');
+
+      _setOutline([outlineNode]);
+
+      expectTextFromClassName('outline', 1);
     });
 
     it('provides a function to set pageDimensions', () => {
@@ -81,20 +120,12 @@ describe('<ContextProvider/>', () => {
       expectTextFromClassName('pageWidth', 20);
     });
 
-    it('provides a function to set numPages', () => {
-      expectTextFromClassName('numPages', 0);
-
-      _setNumPages(15);
-
-      expectTextFromClassName('numPages', 15);
-    });
-
     it('provides a function to setPdfDocProxy', () => {
-      expectTextFromClassName('pdfDocObject', 'false');
+      expectTextFromClassName('pdfDocProxy', 'false');
 
       _setPdfDocProxy({} as PDFDocumentProxy);
 
-      expectTextFromClassName('pdfDocObject', 'true');
+      expectTextFromClassName('pdfDocProxy', 'true');
     });
   });
 

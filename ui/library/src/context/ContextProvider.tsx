@@ -2,6 +2,7 @@ import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
 
 import { Dimensions } from '../components/types/boundingBox';
+import { OutlineNode } from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
 import { PageRotation } from '../utils/rotate';
 import { DocumentContext, IDocumentContext } from './DocumentContext';
@@ -14,14 +15,17 @@ export type Props = {
 
 function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
+  const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
   const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
   const [pdfDocProxy, setPdfDocProxy] = React.useState<PDFDocumentProxy>();
 
   return {
     numPages,
+    outline,
     pageDimensions: pageDimensions,
     pdfDocProxy,
     setNumPages,
+    setOutline,
     setPageDimensions: setPageDimensions,
     setPdfDocProxy,
   };
