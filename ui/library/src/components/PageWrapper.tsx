@@ -17,6 +17,7 @@ export type PageProps = {
   loading?: string | React.ReactElement | RenderFunction;
   noData?: string | React.ReactElement | RenderFunction;
   pageIndex: number;
+  renderAnnotationLayer?: boolean;
 };
 
 export type Props = {
@@ -30,6 +31,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   loading,
   noData,
   pageIndex,
+  renderAnnotationLayer,
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
   const { pageDimensions } = React.useContext(DocumentContext);
@@ -67,7 +69,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         scale={scale}
         onClick={onClick}
         rotate={rotation}
-        renderAnnotationLayer={false}
+        renderAnnotationLayer={renderAnnotationLayer || false}
       />
     </div>
   );
