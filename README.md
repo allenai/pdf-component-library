@@ -37,3 +37,20 @@ installed on your local machine.
 
 ## License
 This project is licensed under the Apache License 2.0.
+
+## User guide
+### DocumentWrapper
+TODO
+
+### PageWrapper
+Displays a page. Should be placed inside `<DocumentWrapper />`. Alternatively, it can have `pdf` prop passed, which can be obtained from `<DocumentWrapper />`'s `onLoadSuccess` callback function, however some advanced functions like linking between pages inside a document may not be working correctly.
+
+#### Props
+| Prop name               | Description                                                                                                                                                                                                                                                                                      | Default value                                 | Example values                                                                                                                                                                                                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| className          | Class name(s) that will be added to rendered element along with the default.                                                        | n/a                                                   | <ul><li>String:<br />`"custom-class-name-1 custom-class-name-2"`</li><li>Array of strings:<br />`["custom-class-name-1", "custom-class-name-2"]`</li></ul>|
+| error                   | What the component should display in case of an error.                                                          | `"Failed to load the page."`                  | <ul><li>String:<br />`"An error occurred!"`</li><li>React element:<br />`<div>An error occurred!</div>`</li><li>Function:<br />`this.renderError`</li></ul>|
+ loading                 | What the component should display while loading.                                                       | `"Loading page…"`                             | <ul><li>String:<br />`"Please wait!"`</li><li>React element:<br />`<div>Please wait!</div>`</li><li>Function:<br />`this.renderLoader`</li></ul>|
+ | noData                  | What the component should display in case of no data.                                                          | `"No page specified."`                        | <ul><li>String:<br />`"Please select a page."`</li><li>React element:<br />`<div>Please select a page.</div>`</li><li>Function:<br />`this.renderNoData`</li></ul>|
+ | pageIndex               | Which page from PDF file should be displayed, by page index.| `0`                                           | `1` |
+ | renderAnnotationLayer   | Whether annotations (e.g. links) should be rendered.                                                      | `true`                                        | `false`|
