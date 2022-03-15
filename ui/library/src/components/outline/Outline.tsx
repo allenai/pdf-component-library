@@ -37,9 +37,9 @@ export const Outline: React.FunctionComponent = () => {
         Reference: https://github.com/mozilla/pdf.js/blob/d3e1d7090ac6f582d0c277e8768ac63bbbaa1134/web/base_viewer.js#L1152
       */
       // The second and the fifth items are left out intentionally for not being used in scrolling function.
-      const [ref, , leftPoints, bottomPoints] = destArray;
+      const [ref, , , bottomPoints] = destArray;
       pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
-        scrollToPosition(parseInt(refInfo.toString()), leftPoints, bottomPoints, rotation);
+        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
       });
     });
   };
