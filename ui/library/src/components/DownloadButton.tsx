@@ -8,7 +8,7 @@ export type Props = {
  * HTML anchor tag allows you to download a file from the same origin.
  * This is a workaround to download a file served from a different origin
  */
-export const DownloadButton: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
+export const DownloadButton: React.FunctionComponent<Props> = ({ pdfUrl, ...extraProps }: Props) => {
   const [fetching, setFetching] = React.useState(false);
 
   const download = () => {
@@ -28,7 +28,7 @@ export const DownloadButton: React.FunctionComponent<Props> = ({ pdfUrl }: Props
   };
 
   return (
-    <button disabled={fetching} onClick={() => download()} aria-label="Download PDF">
+    <button disabled={fetching} onClick={() => download()} aria-label="Download PDF" {...extraProps}>
       Download
     </button>
   );
