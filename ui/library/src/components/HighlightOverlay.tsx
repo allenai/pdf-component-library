@@ -13,6 +13,7 @@ export type Props = {
 export const HighlightOverlay: React.FunctionComponent<Props> = ({
   children,
   pageIndex,
+  ...extraProps
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
@@ -40,7 +41,7 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <div className="reader__page-highlight-overlay" style={getPageStyle()}>
+    <div className="reader__page-highlight-overlay" style={getPageStyle()} {...extraProps}>
       <svg className="page-mask" style={getPageStyle()}>
         <mask id={maskId}>
           <rect style={getPageStyle()} fill="white"></rect>
