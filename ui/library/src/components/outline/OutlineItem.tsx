@@ -22,7 +22,7 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
 
     // If an item has sub titles, render <OutlineItem />
     return (
-      <li key={item.title}>
+      <li key={item.title} className="reader__outline-item">
         <a href="#" onClick={clickHandler}>
           {item.title}
         </a>
@@ -31,5 +31,5 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
     );
   }
 
-  return <ul>{items.map(item => renderItem(item))}</ul>;
+  return <ul className="reader__outline-items">{items.map(item => renderItem(item))}</ul>;
 };
