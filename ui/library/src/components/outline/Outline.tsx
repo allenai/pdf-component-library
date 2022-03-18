@@ -44,7 +44,9 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
     });
   };
 
-  return <div {...extraProps}>
-    {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
-  </div>;
+  return (
+    <div className="reader__outline" {...extraProps}>
+      {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
+    </div>
+  );
 };
