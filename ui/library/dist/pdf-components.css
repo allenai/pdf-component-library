@@ -1,3 +1,11 @@
+/*
+  Notice that any styling changes would not be reflected to the pdf-components.less in scholar:
+  https://github.com/allenai/scholar/blob/main/online/webapp/app/less/vendor/@allenai/pdf-components.less
+  Any changes to this file should be manually synced up to the pdf-components.less currently.
+
+  There is an ongoing work (https://github.com/allenai/pdf-component-library/issues/72)
+  to update the web config in S2 so that the styling changes in this file can be applied automatically.
+*/
 .reader__page {
   background-color: #ffffff;
   margin: 24px;
