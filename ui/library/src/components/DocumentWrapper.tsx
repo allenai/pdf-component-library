@@ -12,7 +12,7 @@ export type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 
-export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...rest }: Props) => {
+export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...extraProps }: Props) => {
   initPdfWorker();
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
@@ -53,7 +53,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...r
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
-      {...rest}>
+      {...extraProps}>
       {children}
     </Document>
   );
