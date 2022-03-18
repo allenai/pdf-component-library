@@ -6,7 +6,10 @@ export type Props = {
   children?: React.ReactNode;
 };
 
-export const ZoomInButton: React.FunctionComponent<Props> = ({ children, ...extraProps }: Props) => {
+export const ZoomInButton: React.FunctionComponent<Props> = ({
+  children,
+  ...extraProps
+}: Props) => {
   const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
 
   const handleZoomIn = React.useCallback(

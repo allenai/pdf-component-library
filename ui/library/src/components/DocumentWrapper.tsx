@@ -12,7 +12,10 @@ export type Props = {
   children?: React.ReactNode;
 } & DocumentProps;
 
-export const DocumentWrapper: React.FunctionComponent<Props> = ({ children, ...extraProps }: Props) => {
+export const DocumentWrapper: React.FunctionComponent<Props> = ({
+  children,
+  ...extraProps
+}: Props) => {
   initPdfWorker();
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
