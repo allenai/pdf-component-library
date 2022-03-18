@@ -22,6 +22,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   id,
   isHighlighted,
   onClick,
+  ...extraProps
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
@@ -37,6 +38,12 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div id={id} className={componentClassName} style={getBoundingBoxStyle()} onClick={onClick} />
+    <div
+      id={id}
+      className={componentClassName}
+      style={getBoundingBoxStyle()}
+      onClick={onClick}
+      {...extraProps}
+    />
   );
 };

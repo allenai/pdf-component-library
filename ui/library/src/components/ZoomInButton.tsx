@@ -6,7 +6,10 @@ export type Props = {
   children?: React.ReactNode;
 };
 
-export const ZoomInButton: React.FunctionComponent<Props> = ({ children }: Props) => {
+export const ZoomInButton: React.FunctionComponent<Props> = ({
+  children,
+  ...extraProps
+}: Props) => {
   const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
 
   const handleZoomIn = React.useCallback(
@@ -19,7 +22,7 @@ export const ZoomInButton: React.FunctionComponent<Props> = ({ children }: Props
   );
 
   return (
-    <button className="reader__zoom-btn zoom-in" onClick={handleZoomIn}>
+    <button className="reader__zoom-btn zoom-in" onClick={handleZoomIn} {...extraProps}>
       {children ? children : '+'}
     </button>
   );

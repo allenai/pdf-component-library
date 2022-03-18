@@ -7,7 +7,7 @@ import { NodeDestination, OutlineNode } from '../types/outline';
 import { OutlineItem } from './OutlineItem';
 import Ref from './Ref';
 
-export const Outline: React.FunctionComponent = () => {
+export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
   const { outline, pdfDocProxy, setOutline } = React.useContext(DocumentContext);
   const { rotation } = React.useContext(TransformContext);
 
@@ -44,5 +44,9 @@ export const Outline: React.FunctionComponent = () => {
     });
   };
 
-  return <div>{!!outline && <OutlineItem items={outline} onClick={clickHandler} />}</div>;
+  return (
+    <div className="reader__outline" {...extraProps}>
+      {!!outline && <OutlineItem items={outline} onClick={clickHandler} />}
+    </div>
+  );
 };

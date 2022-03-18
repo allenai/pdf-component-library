@@ -30,6 +30,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   loading,
   noData,
   pageIndex,
+  ...extraProps
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
   const { pageDimensions } = React.useContext(DocumentContext);
@@ -56,7 +57,11 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
-    <div id={generatePageIdFromIndex(pageIndex)} className="reader__page" style={getPageStyle()}>
+    <div
+      id={generatePageIdFromIndex(pageIndex)}
+      className="reader__page"
+      style={getPageStyle()}
+      {...extraProps}>
       {children}
       <Page
         width={getWidth()}
