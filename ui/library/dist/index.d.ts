@@ -88,9 +88,9 @@ declare module '@allenai/pdf-components/src/components/DocumentWrapper' {
 declare module '@allenai/pdf-components/src/components/DownloadButton' {
     import * as React from 'react';
     export type Props = {
+        className?: string;
+        children?: React.ReactNode;
         pdfUrl: string;
-        icon?: React.ReactNode;
-        classname?: string;
     };
     /**
       * HTML anchor tag allows you to download a file from the same origin.
