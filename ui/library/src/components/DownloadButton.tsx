@@ -1,6 +1,8 @@
 import * as React from 'react';
 
 export type Props = {
+  className?: string;
+  children?: React.ReactNode;
   pdfUrl: string;
 };
 
@@ -10,6 +12,8 @@ export type Props = {
  */
 export const DownloadButton: React.FunctionComponent<Props> = ({
   pdfUrl,
+  children,
+  className,
   ...extraProps
 }: Props) => {
   const [fetching, setFetching] = React.useState(false);
@@ -35,9 +39,9 @@ export const DownloadButton: React.FunctionComponent<Props> = ({
       disabled={fetching}
       onClick={() => download()}
       aria-label="Download PDF"
-      className="reader__download-btn"
+      className={`reader__download-btn ${className}`}
       {...extraProps}>
-      Download
+      {children ? children : 'Download'}
     </button>
   );
 };
