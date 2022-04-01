@@ -26,6 +26,9 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
+
+  const [ isActive, setIsActive ] = React.useState(false);
+  
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
@@ -38,12 +41,16 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div
-      id={id}
-      className={componentClassName}
-      style={getBoundingBoxStyle()}
-      onClick={onClick}
-      {...extraProps}
-    />
+    <React.Fragment>
+      <div className="reader__page-over__bounding-box-highlighted-border" style={getBoundingBoxStyle()}></div>
+      <div
+        id={id}
+        className={componentClassName}
+        style={getBoundingBoxStyle()}
+        onClick={onClick}
+        {...extraProps}
+      >
+      </div>
+    </React.Fragment>
   );
 };

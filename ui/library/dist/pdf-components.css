@@ -20,8 +20,15 @@
   z-index: 10;
 }
 .reader__page-overlay__bounding-box-highlighted {
-  background-color: #ccb300;
-  opacity: 0.2;
+  background-color: #1857B6;
+  mix-blend-mode: screen;
+}
+.reader__page-over__bounding-box-highlighted-border {
+  pointer-events: none;
+  border-bottom: 2px dotted #5492EF;
+  margin-top: 3px;
+  position: absolute;
+  z-index: 10;
 }
 .reader__page-highlight-overlay {
   pointer-events: none;
@@ -30,5 +37,9 @@
 }
 .react-pdf__Page__textContent > span {
   height: 0em!important;
+}
+.reader__download-btn {
+  align-items: center;
+  display: flex;
 }
 

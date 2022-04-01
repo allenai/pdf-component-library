@@ -24,9 +24,18 @@
 }
 
 .reader__page-overlay__bounding-box-highlighted {
-  background-color: @pdflib-highlight-background;
-  opacity: .2;
+  background-color: @primary-blue;
+  mix-blend-mode: screen;
 }
+
+.reader__page-over__bounding-box-highlighted-border {
+  pointer-events: none;
+  border-bottom: 2px dotted @primary-blue;
+  margin-top: 3px;
+  position: absolute;
+  z-index: @z-index-bbox-overlay;
+}
+
 
 .reader__page-highlight-overlay {
   pointer-events: none;
@@ -37,4 +46,9 @@
 // HACK: avoid mis-alignment of selected texts
 .react-pdf__Page__textContent>span {
   height: 0em!important;
+}
+
+.reader__download-btn {
+  align-items: center;
+  display: flex;
 }

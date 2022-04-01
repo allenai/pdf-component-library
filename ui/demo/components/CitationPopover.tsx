@@ -109,7 +109,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
     // This accounts for citations that span multiple pages and avoids buggy popover placement
     // behavior that occurs when the inner BoundingBox is placed in a loop.
     <Popover
-      // Passing this ref mounts the popover "inside" the scrollable content area
+    // Passing this ref mounts the popover "inside" the scrollable content area
       // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
       getPopupContainer={() => parentRef.current}
@@ -127,6 +127,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         left={citation.boundingBox.left}
         height={citation.boundingBox.height}
         width={citation.boundingBox.width}
+        isHighlighted={true}
       />
     </Popover>
   );
