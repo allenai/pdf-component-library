@@ -20,7 +20,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
   // Handler triggered when Ant Popover is shown or hidden
   const handleVisibleChange = React.useCallback(
     (isVisible: boolean) => {
-      setIsPopoverVisible(  isVisible);
+      setIsPopoverVisible(isVisible);
       if (isVisible && !paper) {
         setIsLoading(true);
         fetch(
