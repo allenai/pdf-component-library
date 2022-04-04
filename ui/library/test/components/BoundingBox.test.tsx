@@ -41,21 +41,18 @@ describe('<BoundingBox/>', () => {
       mockTransformContext
     );
 
-     const boundingBox = wrapper.getDOMNode()
+    const boundingBox = wrapper.getDOMNode();
 
-     const underlineDot = boundingBox[0];
+    const underlineDot = boundingBox[0];
 
-     const box = boundingBox[1];
+    const box = boundingBox[1];
 
     expect(underlineDot).to.have.property(
       'className',
       'reader__page-over__bounding-box-highlighted-border'
     );
 
-    expect(box).to.have.property(
-      'className',
-      'reader__page-overlay__bounding-box'
-    );
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
 
     expect(box.getAttribute('style')).to.include('top: 192px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');
@@ -73,7 +70,7 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-    const boundingBox = wrapper.getDOMNode()
+    const boundingBox = wrapper.getDOMNode();
 
     const underlineDot = boundingBox[0];
 
@@ -84,11 +81,8 @@ describe('<BoundingBox/>', () => {
       'reader__page-over__bounding-box-highlighted-border'
     );
 
-    expect(box).to.have.property(
-      'className',
-      'reader__page-overlay__bounding-box'
-    );
-    
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
+
     expect(box.getAttribute('style')).to.include('top: 96px;');
     expect(box.getAttribute('style')).to.include('left: 768px;');
     expect(box.getAttribute('style')).to.include('height: 192px;');
@@ -105,8 +99,7 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-   
-    const boundingBox = wrapper.getDOMNode()
+    const boundingBox = wrapper.getDOMNode();
 
     const underlineDot = boundingBox[0];
 
@@ -117,10 +110,7 @@ describe('<BoundingBox/>', () => {
       'reader__page-over__bounding-box-highlighted-border'
     );
 
-    expect(box).to.have.property(
-      'className',
-      'reader__page-overlay__bounding-box'
-    );
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
 
     expect(box.getAttribute('style')).to.include('top: 768px;');
     expect(box.getAttribute('style')).to.include('left: 528px;');
@@ -138,7 +128,7 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-    const boundingBox = wrapper.getDOMNode()
+    const boundingBox = wrapper.getDOMNode();
 
     const underlineDot = boundingBox[0];
 
@@ -149,10 +139,7 @@ describe('<BoundingBox/>', () => {
       'reader__page-over__bounding-box-highlighted-border'
     );
 
-    expect(box).to.have.property(
-      'className',
-      'reader__page-overlay__bounding-box'
-    );
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
 
     expect(box.getAttribute('style')).to.include('top: 528px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');
@@ -171,7 +158,7 @@ describe('<BoundingBox/>', () => {
       transformContext
     );
 
-    const boundingBox = wrapper.getDOMNode()
+    const boundingBox = wrapper.getDOMNode();
 
     const box = boundingBox[1];
 
@@ -187,7 +174,7 @@ describe('<BoundingBox/>', () => {
       <BoundingBox page={0} top={192} left={192} height={96} width={96} onClick={spy} />,
       mockDocumentContext,
       mockTransformContext
-    )
+    );
 
     wrapper.find('.reader__page-overlay__bounding-box').simulate('click');
     expect(spy.called).to.equal(true);
