@@ -63,7 +63,7 @@ body {
   border: 1px transparent dotted;
 
   &.rotate0 {
-    border-bottom-color: @dark-grey
+    border-bottom-color: @primary-blue;
   }
   
   &.rotate90 {
@@ -79,12 +79,12 @@ body {
   }
 
   &:hover {
-    background-color: rgba(19, 92, 202, 0.2);
-    cursor: pointer;
+    background-color: @cornflower-blue;
+    mix-blend-mode: screen;
   }
 
   &.selected {
-    background-color: rgba(19, 92, 202, 0.3);
+    background-color: @cornflower-blue;
   }
 }
 

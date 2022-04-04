@@ -10,6 +10,7 @@ export type Props = {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
+  isPopoverVisible?: boolean;
   onClick?: () => void;
 } & BoundingBoxType;
 
@@ -21,6 +22,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
   id,
   isHighlighted,
+  isPopoverVisible,
   onClick,
   ...extraProps
 }: Props) => {
@@ -30,6 +32,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
     isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
+    isPopoverVisible === true ? 'selected' : '',
     className
   );
 
@@ -38,12 +41,16 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div
-      id={id}
-      className={componentClassName}
-      style={getBoundingBoxStyle()}
-      onClick={onClick}
-      {...extraProps}
-    />
+    <React.Fragment>
+      <div className="reader__page-over__bounding-box-highlighted-border" style={getBoundingBoxStyle()}></div>
+      <div
+        id={id}
+        className={componentClassName}
+        style={getBoundingBoxStyle()}
+        onClick={onClick}
+        {...extraProps}
+      >
+      </div>
+    </React.Fragment>
   );
 };
