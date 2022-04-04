@@ -26,9 +26,6 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
-
-  const [ isActive, setIsActive ] = React.useState(false);
-  
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
