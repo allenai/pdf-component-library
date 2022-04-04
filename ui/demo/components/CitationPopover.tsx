@@ -127,7 +127,6 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
         left={citation.boundingBox.left}
         height={citation.boundingBox.height}
         width={citation.boundingBox.width}
-        isPopoverVisible={isPopoverVisible}
       />
     </Popover>
   );
