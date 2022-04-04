@@ -25,10 +25,14 @@
 }
 .reader__page-over__bounding-box-highlighted-border {
   pointer-events: none;
-  border-bottom: 2px dotted #5492EF;
+  border-bottom: 2px dotted #1857B6;
   margin-top: 3px;
   position: absolute;
   z-index: 10;
+}
+.reader__page-over__bounding-box-highlighted-border:hover {
+  background-color: #5492EF;
+  mix-blend-mode: screen;
 }
 .reader__page-highlight-overlay {
   pointer-events: none;
