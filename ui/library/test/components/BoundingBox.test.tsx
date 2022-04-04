@@ -49,7 +49,7 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-over__bounding-box-highlighted-border'
+      'reader__page-over__bounding-box-underline'
     );
 
     expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
@@ -78,7 +78,7 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-over__bounding-box-highlighted-border'
+      'reader__page-over__bounding-box-underline'
     );
 
     expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
@@ -107,7 +107,7 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-over__bounding-box-highlighted-border'
+      'reader__page-over__bounding-box-underline'
     );
 
     expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
@@ -136,7 +136,7 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-over__bounding-box-highlighted-border'
+      'reader__page-over__bounding-box-underline'
     );
 
     expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');

@@ -32,7 +32,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
     isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
-    isPopoverVisible === true ? 'selected' : '',
+    isPopoverVisible === true ? 'reader__page-overlay__bounding-box--selected' : '',
     className
   );
 
@@ -43,7 +43,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   return (
     <React.Fragment>
       <div
-        className="reader__page-over__bounding-box-highlighted-border"
+        className="reader__page-over__bounding-box-underline"
         style={getBoundingBoxStyle()}></div>
       <div
         id={id}

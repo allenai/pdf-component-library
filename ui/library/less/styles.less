@@ -11,36 +11,36 @@
 
 .reader__page-overlay__bounding-box {
   position: absolute;
-  z-index: @z-index-bbox-overlay;
+  z-index: @z-index-boundingbox-overlay;
 }
 
 .reader__page-overlay__bounding-box-highlighted {
-  background-color: @primary-blue;
+  background-color: @initial-blue;
   mix-blend-mode: screen;
 
   &:hover {
-    background-color: @cornflower-blue;
+    background-color: @hover-active-blue;
     mix-blend-mode: screen;
   }
 
   &.selected {
-    background-color: @cornflower-blue;
+    background-color: @hover-active-blue;
     mix-blend-mode: screen;
   }
 }
 
-.reader__page-over__bounding-box-highlighted-border {
+.reader__page-over__bounding-box-underline {
   pointer-events: none;
-  border-bottom: 2px dotted @primary-blue;
+  border-bottom: 2px dotted @initial-blue;
   margin-top: 3px;
   position: absolute;
-  z-index: @z-index-bbox-overlay;
+  z-index: @z-index-boundingbox-overlay;
 }
 
 .reader__page-highlight-overlay {
   pointer-events: none;
   position: absolute;
-  z-index: @z-index-bbox-overlay;
+  z-index: @z-index-boundingbox-overlay;
 }
 
 // HACK: avoid mis-alignment of selected texts

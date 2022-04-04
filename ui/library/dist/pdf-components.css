@@ -23,7 +23,7 @@
   background-color: #5492EF;
   mix-blend-mode: screen;
 }
-.reader__page-over__bounding-box-highlighted-border {
+.reader__page-over__bounding-box-underline {
   pointer-events: none;
   border-bottom: 2px dotted #1857B6;
   margin-top: 3px;
