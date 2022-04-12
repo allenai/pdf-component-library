@@ -43,7 +43,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   return (
     <React.Fragment>
       <div
-        className="reader__page-over__bounding-box-underline"
+        className="reader__page-overlay__bounding-box-underline"
         style={getBoundingBoxStyle()}></div>
       <div
         id={id}
