@@ -39,7 +39,7 @@ export const DownloadButton: React.FunctionComponent<Props> = ({
       disabled={fetching}
       onClick={() => download()}
       aria-label="Download PDF"
-      className={`reader__download-button ${className}`}
+      className={`reader__download-btn ${className}`}
       {...extraProps}>
       {children ? children : 'Download'}
     </button>
