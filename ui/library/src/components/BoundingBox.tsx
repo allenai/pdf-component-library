@@ -31,8 +31,8 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
-    isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
-    isPopoverVisible === true ? 'reader__page-overlay__bounding-box--selected' : '',
+    isHighlighted === true ? 'reader__page-overlay__bounding-box-selected' : '',
+    isPopoverVisible === true ? 'reader__page-overlay__bounding-box-selected' : '',
     className
   );
 
