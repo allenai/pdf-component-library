@@ -1,3 +1,11 @@
+/*
+  Notice that any styling changes would not be reflected to the pdf-components.less in scholar:
+  https://github.com/allenai/scholar/blob/main/online/webapp/app/less/vendor/@allenai/pdf-components.less
+  Any changes to this file should be manually synced up to the pdf-components.less currently.
+
+  There is an ongoing work (https://github.com/allenai/pdf-component-library/issues/72)
+  to update the web config in S2 so that the styling changes in this file can be applied automatically.
+*/
 .reader__page {
   background-color: #ffffff;
   margin: 24px;
@@ -12,23 +20,8 @@
   z-index: 10;
 }
 .reader__page-overlay__bounding-box-highlighted {
-  background-color: #1857B6;
-  mix-blend-mode: screen;
-}
-.reader__page-overlay__bounding-box-highlighted:hover {
-  background-color: #5492EF;
-  mix-blend-mode: screen;
-}
-.reader__page-overlay__bounding-box-highlighted.selected {
-  background-color: #5492EF;
-  mix-blend-mode: screen;
-}
-.reader__page-overlay__bounding-box-underline {
-  pointer-events: none;
-  border-bottom: 2px dashed #1857B6;
-  margin-top: 3px;
-  position: absolute;
-  z-index: 10;
+  background-color: #ccb300;
+  opacity: 0.2;
 }
 .reader__page-highlight-overlay {
   pointer-events: none;
@@ -37,9 +30,5 @@
 }
 .react-pdf__Page__textContent > span {
   height: 0em!important;
-}
-.reader__download-btn {
-  align-items: center;
-  display: flex;
 }
 
