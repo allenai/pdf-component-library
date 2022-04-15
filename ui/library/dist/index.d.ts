@@ -71,6 +71,7 @@ declare module '@allenai/pdf-components/src/components/BoundingBox' {
         className?: string;
         id?: string;
         isHighlighted?: boolean;
+        isPopoverVisible?: boolean;
         onClick?: () => void;
     } & BoundingBoxType;
     export const BoundingBox: React.FunctionComponent<Props>;
@@ -329,3 +330,4 @@ declare module '@allenai/pdf-components/src/utils/style' {
     export function getPageHeight(pageDimensions: Dimensions, rotation: PageRotation): number;
     export function getPageWidth(pageDimensions: Dimensions, rotation: PageRotation): number;
 }
+

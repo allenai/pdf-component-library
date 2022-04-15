@@ -1,3 +1,6 @@
+@bounding-box-padding: 3px;
+@bounding-box-border: 2px dotted @initial-blue;
+
 .reader__page {
   background-color: @pdflib-page-background;
   margin: 24px;
@@ -18,6 +21,10 @@
   background-color: @initial-blue;
   mix-blend-mode: screen;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   &:hover &  &.selected  {
     background-color: @hover-active-blue;
     mix-blend-mode: screen;
@@ -26,10 +33,27 @@
 
 .reader__page-overlay__bounding-box-underline {
   pointer-events: none;
-  border-bottom: 2px dotted @initial-blue;
-  margin-top: 3px;
   position: absolute;
   z-index: @z-index-bounding-box-overlay;
+  
+  &.rotate0 {
+    border-bottom: @bounding-box-border;
+    margin-top: @bounding-box-padding;
+  }
+  &.rotate90 {
+    border-left: @bounding-box-border;
+    margin-left: -1 * @bounding-box-padding;
+  }
+
+  &.rotate180 {
+    border-top: @bounding-box-border;
+    margin-top: -1 * @bounding-box-padding;
+  }
+
+  &.rotate270 {
+    border-right: @bounding-box-border;
+    margin-left: @bounding-box-padding;
+  }
 }
 
 .reader__page-highlight-overlay {

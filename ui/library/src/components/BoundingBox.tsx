@@ -32,7 +32,6 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   const componentClassName = classNames(
     'reader__page-overlay__bounding-box',
     isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
-    isPopoverVisible === true ? 'reader__page-overlay__bounding-box-selected' : '',
     className
   );
 
@@ -40,12 +39,16 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
     return computeBoundingBoxStyle(boxSize, pageDimensions, rotation, scale);
   }, [pageDimensions, rotation, scale]);
 
+  const rotationClassName = React.useCallback(() => {
+    return  `rotate${rotation}`;
+  }, [rotation]);
+
   return (
     <React.Fragment>
-      <div className="reader__page-overlay__bounding-box-underline" style={getBoundingBoxStyle()} />
+      <div className={`reader__page-overlay__bounding-box-underline ${rotationClassName()}`} style={getBoundingBoxStyle()} />
       <div
         id={id}
-        className={componentClassName}
+        className={`${componentClassName}  ${rotationClassName()}`}
         style={getBoundingBoxStyle()}
         onClick={onClick}
         {...extraProps}
