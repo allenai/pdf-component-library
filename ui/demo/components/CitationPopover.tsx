@@ -1,4 +1,4 @@
-import { BoundingBox, TransformContext } from '@allenai/pdf-components';
+import { BoundingBox } from '@allenai/pdf-components';
 import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -12,7 +12,6 @@ type Props = {
 
 export const CitationPopover: React.FunctionComponent<Props> = ({ citation, parentRef }: Props) => {
   const ABSTRACT_MAX_LENGTH = 300;
-  const transformContext = React.useContext(TransformContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
   const [paper, setPaper] = React.useState<CitationPaper>();
@@ -117,10 +116,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       trigger="click"
       onVisibleChange={handleVisibleChange}>
       <BoundingBox
-        className={classNames(
-          'reader__popover__bbox',
-          isPopoverVisible ? 'selected' : ''
-        )}
+        className={classNames('reader__popover__bbox', isPopoverVisible ? 'selected' : '')}
         page={citation.boundingBox.page}
         top={citation.boundingBox.top}
         left={citation.boundingBox.left}
