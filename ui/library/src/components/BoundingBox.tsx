@@ -44,13 +44,13 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
     <React.Fragment>
       <div
         className="reader__page-overlay__bounding-box-underline"
-        style={getBoundingBoxStyle()}></div>
+        style={getBoundingBoxStyle()}/>
       <div
         id={id}
         className={componentClassName}
         style={getBoundingBoxStyle()}
         onClick={onClick}
-        {...extraProps}></div>
+        {...extraProps}/>
     </React.Fragment>
   );
 };
