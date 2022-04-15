@@ -41,14 +41,28 @@ describe('<BoundingBox/>', () => {
       mockTransformContext
     );
 
-    expect(wrapper.getDOMNode()).to.have.property(
+    const boundingBox = wrapper.getDOMNode();
+
+    const boxUnderline = boundingBox[0];
+
+    const box = boundingBox[1];
+
+    expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box'
+      'reader__page-overlay__bounding-box-underline rotate0'
     );
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('left: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 96px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 96px;');
+
+    expect(boxUnderline.getAttribute('style')).to.include('top: 192px;');
+    expect(boxUnderline.getAttribute('style')).to.include('left: 192px;');
+    expect(boxUnderline.getAttribute('style')).to.include('height: 96px;');
+    expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
+
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate0');
+
+    expect(box.getAttribute('style')).to.include('top: 192px;');
+    expect(box.getAttribute('style')).to.include('left: 192px;');
+    expect(box.getAttribute('style')).to.include('height: 96px;');
+    expect(box.getAttribute('style')).to.include('width: 96px;');
   });
 
   it('renders at the right spot when rotated 90 degrees', () => {
@@ -61,14 +75,28 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-    expect(wrapper.getDOMNode()).to.have.property(
+    const boundingBox = wrapper.getDOMNode();
+
+    const boxUnderline = boundingBox[0];
+
+    const box = boundingBox[1];
+
+    expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box'
+      'reader__page-overlay__bounding-box-underline rotate90'
     );
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 96px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('left: 768px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 96px;');
+
+    expect(boxUnderline.getAttribute('style')).to.include('top: 96px;');
+    expect(boxUnderline.getAttribute('style')).to.include('left: 768px;');
+    expect(boxUnderline.getAttribute('style')).to.include('height: 192px;');
+    expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
+
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate90');
+
+    expect(box.getAttribute('style')).to.include('top: 96px;');
+    expect(box.getAttribute('style')).to.include('left: 768px;');
+    expect(box.getAttribute('style')).to.include('height: 192px;');
+    expect(box.getAttribute('style')).to.include('width: 96px;');
   });
 
   it('renders at the right spot when rotated 180 degrees', () => {
@@ -81,14 +109,28 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-    expect(wrapper.getDOMNode()).to.have.property(
+    const boundingBox = wrapper.getDOMNode();
+
+    const boxUnderline = boundingBox[0];
+
+    const box = boundingBox[1];
+
+    expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box'
+      'reader__page-overlay__bounding-box-underline rotate180'
     );
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 768px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('left: 528px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 96px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 192px;');
+
+    expect(boxUnderline.getAttribute('style')).to.include('top: 768px;');
+    expect(boxUnderline.getAttribute('style')).to.include('left: 528px;');
+    expect(boxUnderline.getAttribute('style')).to.include('height: 96px;');
+    expect(boxUnderline.getAttribute('style')).to.include('width: 192px;');
+
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate180');
+
+    expect(box.getAttribute('style')).to.include('top: 768px;');
+    expect(box.getAttribute('style')).to.include('left: 528px;');
+    expect(box.getAttribute('style')).to.include('height: 96px;');
+    expect(box.getAttribute('style')).to.include('width: 192px;');
   });
 
   it('renders at the right spot when rotated 270 degrees', () => {
@@ -101,14 +143,28 @@ describe('<BoundingBox/>', () => {
       }
     );
 
-    expect(wrapper.getDOMNode()).to.have.property(
+    const boundingBox = wrapper.getDOMNode();
+
+    const boxUnderline = boundingBox[0];
+
+    const box = boundingBox[1];
+
+    expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box'
+      'reader__page-overlay__bounding-box-underline rotate270'
     );
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 528px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('left: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 96px;');
+
+    expect(boxUnderline.getAttribute('style')).to.include('top: 528px;');
+    expect(boxUnderline.getAttribute('style')).to.include('left: 192px;');
+    expect(boxUnderline.getAttribute('style')).to.include('height: 192px;');
+    expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
+
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate270');
+
+    expect(box.getAttribute('style')).to.include('top: 528px;');
+    expect(box.getAttribute('style')).to.include('left: 192px;');
+    expect(box.getAttribute('style')).to.include('height: 192px;');
+    expect(box.getAttribute('style')).to.include('width: 96px;');
   });
 
   it('responds to page scaling', () => {
@@ -122,10 +178,14 @@ describe('<BoundingBox/>', () => {
       transformContext
     );
 
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('top: 384px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('left: 384px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('height: 192px;');
-    expect(wrapper.getDOMNode().getAttribute('style')).to.include('width: 192px;');
+    const boundingBox = wrapper.getDOMNode();
+
+    const box = boundingBox[1];
+
+    expect(box.getAttribute('style')).to.include('top: 384px;');
+    expect(box.getAttribute('style')).to.include('left: 384px;');
+    expect(box.getAttribute('style')).to.include('height: 192px;');
+    expect(box.getAttribute('style')).to.include('width: 192px;');
   });
 
   it('can do something when clicked', () => {
@@ -136,7 +196,7 @@ describe('<BoundingBox/>', () => {
       mockTransformContext
     );
 
-    wrapper.simulate('click');
+    wrapper.find('.reader__page-overlay__bounding-box').simulate('click');
     expect(spy.called).to.equal(true);
   });
 });
