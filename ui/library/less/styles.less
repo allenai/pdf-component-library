@@ -22,15 +22,14 @@
   mix-blend-mode: screen;
 
   &:hover {
-    background-color: @hover-active-blue;
     cursor: pointer;
+  }
+
+  &:hover, &.selected  {
+    background-color: @hover-active-blue;
     mix-blend-mode: screen;
   }
 
-  &.selected  {
-    background-color: @hover-active-blue;
-    mix-blend-mode: screen;
-  }
 }
 
 .reader__page-overlay__bounding-box-underline {
