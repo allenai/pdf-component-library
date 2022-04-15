@@ -22,10 +22,12 @@
   mix-blend-mode: screen;
 
   &:hover {
+    background-color: @hover-active-blue;
     cursor: pointer;
+    mix-blend-mode: screen;
   }
 
-  &:hover &  &.selected  {
+  &.selected  {
     background-color: @hover-active-blue;
     mix-blend-mode: screen;
   }

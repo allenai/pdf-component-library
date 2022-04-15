@@ -16,9 +16,11 @@
   mix-blend-mode: screen;
 }
 .reader__page-overlay__bounding-box-highlighted:hover {
+  background-color: #5492EF;
   cursor: pointer;
+  mix-blend-mode: screen;
 }
-.reader__page-overlay__bounding-box-highlighted:hover .reader__page-overlay__bounding-box-highlighted .reader__page-overlay__bounding-box-highlighted.selected {
+.reader__page-overlay__bounding-box-highlighted.selected {
   background-color: #5492EF;
   mix-blend-mode: screen;
 }
