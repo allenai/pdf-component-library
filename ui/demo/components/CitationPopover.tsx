@@ -119,7 +119,6 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       <BoundingBox
         className={classNames(
           'reader__popover__bbox',
-          `rotate${transformContext.rotation}`,
           isPopoverVisible ? 'selected' : ''
         )}
         page={citation.boundingBox.page}

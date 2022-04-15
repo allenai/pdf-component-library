@@ -71,7 +71,6 @@ declare module '@allenai/pdf-components/src/components/BoundingBox' {
         className?: string;
         id?: string;
         isHighlighted?: boolean;
-        isPopoverVisible?: boolean;
         onClick?: () => void;
     } & BoundingBoxType;
     export const BoundingBox: React.FunctionComponent<Props>;

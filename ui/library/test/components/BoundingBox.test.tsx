@@ -49,10 +49,10 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline'
+      'reader__page-overlay__bounding-box-underline rotate0'
     );
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate0');
 
     expect(box.getAttribute('style')).to.include('top: 192px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');
@@ -78,10 +78,10 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline'
+      'reader__page-overlay__bounding-box-underline rotate90'
     );
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate90');
 
     expect(box.getAttribute('style')).to.include('top: 96px;');
     expect(box.getAttribute('style')).to.include('left: 768px;');
@@ -107,10 +107,10 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline'
+      'reader__page-overlay__bounding-box-underline rotate180'
     );
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate180');
 
     expect(box.getAttribute('style')).to.include('top: 768px;');
     expect(box.getAttribute('style')).to.include('left: 528px;');
@@ -136,10 +136,10 @@ describe('<BoundingBox/>', () => {
 
     expect(underlineDot).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline'
+      'reader__page-overlay__bounding-box-underline rotate270'
     );
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box');
+    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate270');
 
     expect(box.getAttribute('style')).to.include('top: 528px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');

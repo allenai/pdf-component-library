@@ -10,7 +10,6 @@ export type Props = {
   className?: string;
   id?: string;
   isHighlighted?: boolean;
-  isPopoverVisible?: boolean;
   onClick?: () => void;
 } & BoundingBoxType;
 
@@ -22,7 +21,6 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   className,
   id,
   isHighlighted,
-  isPopoverVisible,
   onClick,
   ...extraProps
 }: Props) => {
@@ -48,7 +46,7 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
       <div className={`reader__page-overlay__bounding-box-underline ${rotationClassName()}`} style={getBoundingBoxStyle()} />
       <div
         id={id}
-        className={`${componentClassName}  ${rotationClassName()}`}
+        className={`${componentClassName} ${rotationClassName()}`}
         style={getBoundingBoxStyle()}
         onClick={onClick}
         {...extraProps}
