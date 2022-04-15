@@ -38,12 +38,15 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   }, [pageDimensions, rotation, scale]);
 
   const rotationClassName = React.useCallback(() => {
-    return  `rotate${rotation}`;
+    return `rotate${rotation}`;
   }, [rotation]);
 
   return (
     <React.Fragment>
-      <div className={`reader__page-overlay__bounding-box-underline ${rotationClassName()}`} style={getBoundingBoxStyle()} />
+      <div
+        className={`reader__page-overlay__bounding-box-underline ${rotationClassName()}`}
+        style={getBoundingBoxStyle()}
+      />
       <div
         id={id}
         className={`${componentClassName} ${rotationClassName()}`}
