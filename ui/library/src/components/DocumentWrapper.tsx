@@ -7,6 +7,8 @@ import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
 import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
+import { scrollToPosition } from '../utils/scroll';
+import Ref from './outline/Ref';
 
 export type Props = {
   children?: React.ReactNode;
@@ -51,11 +53,32 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     setIsLoading(false);
   }, []);
 
+  const onItemClicked = (param: any): void => {
+    if (!pdfDocProxy) {
+      return;
+    }
+
+    // Scroll to the destination of the item
+    pdfDocProxy.getDestination(param.dest).then(destArray => {
+      if (!destArray) {
+        return;
+      }
+
+      const [ref, , , bottomPoints] = destArray;
+      pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
+        console.log(refInfo);
+        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints);
+      });
+    });
+  };
+
   return (
     <Document
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
+      // @ts-ignore: an object with { dest, pageIndex, pageNumber } is passed to the handler function but tslint thinks it should be { pageNumber }
+      onItemClick={onItemClicked}
       {...extraProps}>
       {children}
     </Document>
