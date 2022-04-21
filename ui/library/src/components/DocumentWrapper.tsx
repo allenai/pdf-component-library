@@ -1,4 +1,4 @@
-import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
+import { PDFDocumentProxy } from 'pdfjs-dist';
 import * as React from 'react';
 import { Document, DocumentProps } from 'react-pdf';
 

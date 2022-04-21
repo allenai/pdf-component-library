@@ -26,6 +26,8 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
       return;
     }
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {
+      if (!destArray)
+        return
       /*
         destArray returned by getDestination contains 5 items:
         1. Reference to the page where dest locates at
