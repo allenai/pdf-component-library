@@ -3,7 +3,7 @@
  */
 
 import './less/index.less';
-
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import { BoundingBox, Props as BoundingBoxProps } from './src/components/BoundingBox';
 import { DocumentWrapper, Props as DocumentWrapperProps } from './src/components/DocumentWrapper';
 import { DownloadButton, Props as DownloadButtonProps } from './src/components/DownloadButton';

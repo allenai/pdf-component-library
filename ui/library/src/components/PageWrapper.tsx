@@ -41,10 +41,6 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return null;
   }
 
-  const onClick = React.useCallback((e: unknown) => {
-    console.log(e);
-  }, []);
-
   const getWidth = React.useCallback(() => {
     return getPageWidth(pageDimensions, rotation);
   }, [pageDimensions, rotation]);
@@ -70,9 +66,8 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         noData={noData}
         pageIndex={pageIndex}
         scale={scale}
-        onClick={onClick}
         rotate={rotation}
-        renderAnnotationLayer={false}
+        renderAnnotationLayer={true}
       />
     </div>
   );
