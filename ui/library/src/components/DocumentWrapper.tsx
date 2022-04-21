@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Document, DocumentProps } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
+import { TransformContext } from '../context/TransformContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
@@ -22,6 +23,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
     React.useContext(DocumentContext);
+  const { rotation } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
@@ -66,8 +68,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
       const [ref, , , bottomPoints] = destArray;
       pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
-        console.log(refInfo);
-        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints);
+        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
       });
     });
   };
