@@ -1,12 +1,15 @@
-import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
+import { PDFDocumentProxy } from 'pdfjs-dist';
 import * as React from 'react';
 import { Document, DocumentProps } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
+import { TransformContext } from '../context/TransformContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
 import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
+import { scrollToPosition } from '../utils/scroll';
+import { Destination, Ref } from './types/destination';
 
 export type Props = {
   children?: React.ReactNode;
@@ -20,6 +23,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
     React.useContext(DocumentContext);
+  const { rotation } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
@@ -51,11 +55,34 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     setIsLoading(false);
   }, []);
 
+  const onItemClicked = (param: Destination): void => {
+    if (!pdfDocProxy) {
+      return;
+    }
+
+    // Scroll to the destination of the item
+    pdfDocProxy.getDestination(param.dest).then(destArray => {
+      if (!destArray) {
+        return;
+      }
+
+      const [ref, , , bottomPoints] = destArray;
+      pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
+        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+      });
+    });
+  };
+
   return (
     <Document
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
+      externalLinkTarget="_blank"
+      // @ts-ignore: the arguments should be { dest, pageIndex, pageNumber }
+      // @types/react-pdf hasn't updated the function signature
+      // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/d73eb652e0ba8f89395a0ef2ba69cf1e640ce5be/types/react-pdf/dist/Document.d.ts#L72
+      onItemClick={onItemClicked}
       {...extraProps}>
       {children}
     </Document>

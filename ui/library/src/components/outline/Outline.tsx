@@ -3,9 +3,9 @@ import * as React from 'react';
 import { DocumentContext } from '../../context/DocumentContext';
 import { TransformContext } from '../../context/TransformContext';
 import { scrollToPosition } from '../../utils/scroll';
+import { Ref } from '../types/destination';
 import { NodeDestination, OutlineNode } from '../types/outline';
 import { OutlineItem } from './OutlineItem';
-import Ref from './Ref';
 
 export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
   const { outline, pdfDocProxy, setOutline } = React.useContext(DocumentContext);
@@ -26,6 +26,9 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
       return;
     }
     pdfDocProxy.getDestination(dest.toString()).then(destArray => {
+      if (!destArray) {
+        return;
+      }
       /*
         destArray returned by getDestination contains 5 items:
         1. Reference to the page where dest locates at
