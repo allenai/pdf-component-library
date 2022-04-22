@@ -3,7 +3,7 @@
 //   ../react
 //   ../react-pdf
 //   ../react-pdf/dist/Page
-//   ../pdfjs-dist/types/display/api
+//   ../pdfjs-dist
 
 declare module '@allenai/pdf-components' {
     import './less/index.less';
@@ -233,7 +233,7 @@ declare module '@allenai/pdf-components/src/context/ContextProvider' {
 }
 
 declare module '@allenai/pdf-components/src/context/DocumentContext' {
-    import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
+    import { PDFDocumentProxy } from 'pdfjs-dist';
     import * as React from 'react';
     import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
