@@ -3,9 +3,9 @@ import * as React from 'react';
 import { DocumentContext } from '../../context/DocumentContext';
 import { TransformContext } from '../../context/TransformContext';
 import { scrollToPosition } from '../../utils/scroll';
+import { Ref } from '../types/destination';
 import { NodeDestination, OutlineNode } from '../types/outline';
 import { OutlineItem } from './OutlineItem';
-import Ref from './Ref';
 
 export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
   const { outline, pdfDocProxy, setOutline } = React.useContext(DocumentContext);

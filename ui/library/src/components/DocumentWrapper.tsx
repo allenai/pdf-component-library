@@ -9,7 +9,7 @@ import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
 import { computePageDimensions, IPDFPageProxy } from '../utils/scale';
 import { scrollToPosition } from '../utils/scroll';
-import Ref from './outline/Ref';
+import { Destination, Ref } from './types/destination';
 
 export type Props = {
   children?: React.ReactNode;
@@ -55,7 +55,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     setIsLoading(false);
   }, []);
 
-  const onItemClicked = (param: any): void => {
+  const onItemClicked = (param: Destination): void => {
     if (!pdfDocProxy) {
       return;
     }
