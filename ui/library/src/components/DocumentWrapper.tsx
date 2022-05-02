@@ -57,7 +57,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     }
   }, []);
 
-  const onPdfLoadError = React.useCallback((error: unknown): void => {
+  const onPdfLoadError = React.useCallback((error: Error): void => {
     setErrorMessage(getErrorMessage(error));
     setIsLoading(false);
     if (onLoadError) {
