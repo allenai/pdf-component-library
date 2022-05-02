@@ -17,6 +17,9 @@ export type Props = {
 
 export const DocumentWrapper: React.FunctionComponent<Props> = ({
   children,
+  onLoadError,
+  onLoadSuccess,
+  onItemClick,
   ...extraProps
 }: Props) => {
   initPdfWorker();
@@ -48,29 +51,42 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     if (!pdfDocProxy) {
       setPdfDocProxy(pdfDoc);
     }
+
+    if (onLoadSuccess) {
+      onLoadSuccess(pdfDoc);
+    }
   }, []);
 
   const onPdfLoadError = React.useCallback((error: unknown): void => {
     setErrorMessage(getErrorMessage(error));
     setIsLoading(false);
+    if (onLoadError) {
+      onLoadError(error);
+    }
   }, []);
 
   const onItemClicked = (param: Destination): void => {
-    if (!pdfDocProxy) {
-      return;
-    }
-
-    // Scroll to the destination of the item
-    pdfDocProxy.getDestination(param.dest).then(destArray => {
-      if (!destArray) {
+    try {
+      if (!pdfDocProxy) {
         return;
       }
 
-      const [ref, , , bottomPoints] = destArray;
-      pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
-        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+      // Scroll to the destination of the item
+      pdfDocProxy.getDestination(param.dest).then(destArray => {
+        if (!destArray) {
+          return;
+        }
+
+        const [ref, , , bottomPoints] = destArray;
+        pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
+          scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+        });
       });
-    });
+    } finally {
+      if (onItemClick) {
+        onItemClick(param);
+      }
+    }
   };
 
   return (
