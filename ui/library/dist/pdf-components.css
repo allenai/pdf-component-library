@@ -218,7 +218,7 @@
 }
 .reader__page-overlay__bounding-box {
   position: absolute;
-  z-index: 10;
+  z-index: 1;
 }
 .reader__page-overlay__bounding-box-highlighted {
   background-color: #1857B6;
@@ -235,7 +235,7 @@
 .reader__page-overlay__bounding-box-underline {
   pointer-events: none;
   position: absolute;
-  z-index: 10;
+  z-index: 1;
 }
 .reader__page-overlay__bounding-box-underline.rotate0 {
   border-bottom: 2px dotted #1857B6;
@@ -256,7 +256,7 @@
 .reader__page-highlight-overlay {
   pointer-events: none;
   position: absolute;
-  z-index: 10;
+  z-index: 1;
 }
 .react-pdf__Page__textContent > span {
   height: 0em!important;
