@@ -239,19 +239,15 @@
 }
 .reader__page-overlay__bounding-box-underline.rotate0 {
   border-bottom: 2px dotted #1857B6;
-  margin-top: 3px;
 }
 .reader__page-overlay__bounding-box-underline.rotate90 {
   border-left: 2px dotted #1857B6;
-  margin-left: -3px;
 }
 .reader__page-overlay__bounding-box-underline.rotate180 {
   border-top: 2px dotted #1857B6;
-  margin-top: -3px;
 }
 .reader__page-overlay__bounding-box-underline.rotate270 {
   border-right: 2px dotted #1857B6;
-  margin-left: 3px;
 }
 .reader__page-highlight-overlay {
   pointer-events: none;
