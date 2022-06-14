@@ -1,14 +1,15 @@
 import { expect } from 'chai';
 import { mount, ReactWrapper } from 'enzyme';
-import { PDFDocumentProxy } from 'pdfjs-dist/types/display/api';
 import * as React from 'react';
+import { pdfjs } from 'react-pdf';
 
+import { Dimensions } from '../../src/components/types/boundingBox';
 import { OutlineNode } from '../../src/components/types/outline';
+import { Nullable } from '../../src/components/types/utils';
 import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
-import { Dimensions, Nullable } from '../../src/types';
 import { PageRotation } from '../../src/utils/rotate';
 
 describe('<ContextProvider/>', () => {
@@ -24,7 +25,7 @@ describe('<ContextProvider/>', () => {
     let _setNumPages: (numPages: number) => void;
     let _setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
     let _setPageDimensions: (pageDimensions: Dimensions) => void;
-    let _setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
+    let _setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
 
     before(() => {
       wrapper = mount(
@@ -123,7 +124,7 @@ describe('<ContextProvider/>', () => {
     it('provides a function to setPdfDocProxy', () => {
       expectTextFromClassName('pdfDocProxy', 'false');
 
-      _setPdfDocProxy({} as PDFDocumentProxy);
+      _setPdfDocProxy({} as pdfjs.PDFDocumentProxy);
 
       expectTextFromClassName('pdfDocProxy', 'true');
     });
