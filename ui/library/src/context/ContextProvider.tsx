@@ -1,5 +1,5 @@
-import { PDFDocumentProxy } from 'pdfjs-dist';
 import * as React from 'react';
+import { pdfjs } from 'react-pdf';
 
 import { Dimensions } from '../components/types/boundingBox';
 import { OutlineNode } from '../components/types/outline';
@@ -17,7 +17,7 @@ function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
   const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
   const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
-  const [pdfDocProxy, setPdfDocProxy] = React.useState<PDFDocumentProxy>();
+  const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
 
   return {
     numPages,
