@@ -1,5 +1,5 @@
-import { PDFDocumentProxy } from 'pdfjs-dist';
 import * as React from 'react';
+import { pdfjs } from 'react-pdf';
 
 import { Dimensions } from '../components/types/boundingBox';
 import { OutlineNode } from '../components/types/outline';
@@ -10,11 +10,11 @@ export interface IDocumentContext {
   numPages: number;
   outline: Nullable<Array<OutlineNode>>;
   pageDimensions: Dimensions; // Scaled at 100%
-  pdfDocProxy?: PDFDocumentProxy;
+  pdfDocProxy?: pdfjs.PDFDocumentProxy;
   setNumPages: (numPages: number) => void;
   setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
   setPageDimensions: (pageDimensions: Dimensions) => void;
-  setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
+  setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
 }
 
 export const DocumentContext = React.createContext<IDocumentContext>({

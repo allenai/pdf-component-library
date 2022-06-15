@@ -1,6 +1,5 @@
-import { PDFDocumentProxy } from 'pdfjs-dist';
 import * as React from 'react';
-import { Document, DocumentProps } from 'react-pdf';
+import { Document, DocumentProps, pdfjs } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
@@ -26,12 +25,12 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
   const { rotation } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
-  function getFirstPage(pdfDoc: PDFDocumentProxy): Promise<IPDFPageProxy> {
+  function getFirstPage(pdfDoc: pdfjs.PDFDocumentProxy): Promise<IPDFPageProxy> {
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     return pdfDoc.getPage(1);
   }
 
-  const onPdfLoadSuccess = React.useCallback((pdfDoc: PDFDocumentProxy): void => {
+  const onPdfLoadSuccess = React.useCallback((pdfDoc: pdfjs.PDFDocumentProxy): void => {
     setNumPages(pdfDoc.numPages);
     getFirstPage(pdfDoc)
       .then(page => {
