@@ -4,7 +4,6 @@ import { PageRotation } from '../utils/rotate';
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
@@ -33,19 +32,12 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
  */
 export function scrollToPosition(
+  scrollTarget: HTMLDivElement,
   pageIndex: number,
   leftPoints: number,
   bottomPoints: number,
   rotation: PageRotation = PageRotation.Rotate0
 ): void {
-  const targetDiv: Element | null = document
-    .getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME)
-    .item(0);
-  if (!targetDiv) {
-    console.error(`Cannot find scroll target with classname ${SCROLLABLE_TARGET_DIV_CLASSNAME}`);
-    return;
-  }
-
   /*
     Vertical scroll distance is calculated as
     = total number of previous pages * page height including top/down margins
@@ -78,7 +70,7 @@ export function scrollToPosition(
     leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
-  targetDiv.scrollTo({
+  scrollTarget.scrollTo({
     top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
