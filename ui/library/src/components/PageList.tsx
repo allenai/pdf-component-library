@@ -16,8 +16,6 @@ export const PageList: React.FunctionComponent<Props> = ({ className, pageElemen
   const scrollTargetRef = React.createRef<HTMLDivElement>();
 
   React.useEffect(() => {
-    console.log('>>>>', scrollTargetRef);
-
     if (!scrollTarget && scrollTargetRef.current) {
       setScrollTarget(scrollTargetRef.current);
     }
