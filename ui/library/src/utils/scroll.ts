@@ -27,9 +27,11 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
 
 /**
  * Scroll PDF document to a specific position.
+ * @param scrollTarget The target <div> element to scroll
  * @param pageIndex The index of the page where the position locates at
  * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
+ * @param rotation The rotation degree of the document
  */
 export function scrollToPosition(
   scrollTarget: HTMLDivElement,
@@ -49,8 +51,9 @@ export function scrollToPosition(
   */
 
   const { width, height, marginTop, marginBottom, marginLeft, marginRight } =
-    getPagePropertiesInPixels();
+    getPagePropertiesInPixels(scrollTarget);
   const heightWithMargins = height + marginTop + marginBottom;
+
   // When a paper is rotated, its height and width would be switched automatically. However, leftPoints and bottomPoints remain the same.
   let marginTopPixels = marginTop;
   let bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
@@ -79,11 +82,11 @@ export function scrollToPosition(
 
 /**
  * Get lengths, widths, and margins of a page.
+ * @param pageList The page list wrapper that contains all pdf pages. The function will find the first page and extract its page properties.
  * @returns a PageProperties object
  */
-export function getPagePropertiesInPixels(): PageProperties {
-  const firstPage = document.getElementById(generatePageIdFromIndex(0));
-  if (!firstPage) {
+export function getPagePropertiesInPixels(pageList: HTMLDivElement): PageProperties {
+  if (pageList.firstElementChild == null) {
     console.error(`Cannot get the first page of this document.`);
     const emptyPageProperties: PageProperties = {
       width: 0,
@@ -96,7 +99,7 @@ export function getPagePropertiesInPixels(): PageProperties {
     return emptyPageProperties;
   }
 
-  const style = getComputedStyle(firstPage as Element);
+  const style = getComputedStyle(pageList.firstElementChild);
   const pageProperties: PageProperties = {
     width: parseInt(style.width),
     height: parseInt(style.height),
