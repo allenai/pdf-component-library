@@ -10,7 +10,7 @@ type Props = {
   parentRef: React.RefObject<HTMLDivElement>;
 };
 
-interface Item {
+export interface Item {
   text: string;
   bbox: BoundingBox[];
 }
@@ -22,7 +22,7 @@ type PageToItems = Map<number, Item[]>;
 /*
  * Example of rendering CitationPopovers
  */
-export const PDODDemo: React.FunctionComponent<Props> = (props: Props) => {
+export const PDODLayer: React.FunctionComponent<Props> = (props: Props) => {
   const { pageIndex, parentRef } = props;
   const [annotations, setAnnotations] = useState<PageToItems>(new Map());
   const [rawAnnotations, setRawAnnotations] = useState<RawItem[]>([]);
@@ -60,12 +60,7 @@ export const PDODDemo: React.FunctionComponent<Props> = (props: Props) => {
     if (itemsForPage) {
       itemsForPage.map((item, idx) => {
         itemPopovers.push(
-          <ItemPopover
-            key={idx}
-            text={JSON.stringify(item)}
-            boundingBox={item.bbox[0]}
-            parentRef={parentRef}
-          />
+          <ItemPopover key={idx} item={item} boundingBox={item.bbox[0]} parentRef={parentRef} />
         );
       });
     }

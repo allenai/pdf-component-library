@@ -2,6 +2,8 @@ import { Outline as PdfOutline, UiContext } from '@allenai/pdf-components';
 import { Drawer } from 'antd';
 import * as React from 'react';
 
+import { usePDODContext } from './PDODContext';
+
 type Props = {
   parentRef: React.RefObject<HTMLDivElement>;
 };
@@ -12,6 +14,8 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
   const handleHideOutline = React.useCallback(() => {
     setIsShowingOutline(false);
   }, []);
+
+  const { term } = usePDODContext();
 
   return (
     <Drawer
@@ -25,7 +29,8 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
       //@ts-ignore there's something wonky with the types here
       getContainer={parentRef.current}
       className="reader__outline-drawer">
-      <PdfOutline />
+      {term === false && <PdfOutline />}
+      {term !== false && <p>PDOD Demo: `{term}` was clicked</p>}
     </Drawer>
   );
 };

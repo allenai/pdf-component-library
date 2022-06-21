@@ -4,24 +4,32 @@ import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
+import { usePDODContext } from './PDODContext';
+import { Item } from './PDODLayer';
+
 type Props = {
-  text: string;
+  item: Item;
   boundingBox: BoundingBoxType;
   parentRef: React.RefObject<HTMLElement>;
 };
 
 export const ItemPopover: React.FunctionComponent<Props> = ({
   parentRef,
-  text,
+  item,
   boundingBox,
 }: Props) => {
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
+  const { setTerm } = usePDODContext();
 
   // Handler triggered when Ant Popover is shown or hidden
 
-  const handleVisibleChange = React.useCallback((isVisible: boolean) => {
-    setIsPopoverVisible(isVisible);
-  }, []);
+  const handleVisibleChange = React.useCallback(
+    (isVisible: boolean) => {
+      setIsPopoverVisible(isVisible);
+      setTerm(item.text);
+    },
+    [item.text]
+  );
 
   return (
     <Popover
@@ -29,7 +37,7 @@ export const ItemPopover: React.FunctionComponent<Props> = ({
       // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
       getPopupContainer={() => parentRef.current}
-      content={<pre>{text}</pre>}
+      content={<pre>{JSON.stringify(item)}</pre>}
       trigger="click"
       onVisibleChange={handleVisibleChange}>
       <BoundingBox

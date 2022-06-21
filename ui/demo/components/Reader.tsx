@@ -5,7 +5,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import { Header } from './Header';
 import { Outline } from './Outline';
-import { PDODDemo } from './PDODDemo';
+import { PDODContextProvider } from './PDODContext';
+import { PDODLayer } from './PDODLayer';
 import { ScrollToDemo } from './ScrollToDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
@@ -22,22 +23,24 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   return (
     <BrowserRouter>
       <Route path="/">
-        <div className="reader__container">
-          <Header pdfUrl={samplePdfUrl} />
-          <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
-            <Outline parentRef={pdfContentRef} />
-            <div className="reader__page-list" ref={pdfScrollableRef}>
-              {Array.from({ length: numPages }).map((_, i) => (
-                <PageWrapper key={i} pageIndex={i}>
-                  <Overlay>
-                    <ScrollToDemo pageIndex={i} />
-                    <PDODDemo pageIndex={i} parentRef={pdfScrollableRef} />
-                  </Overlay>
-                </PageWrapper>
-              ))}
-            </div>
-          </DocumentWrapper>
-        </div>
+        <PDODContextProvider>
+          <div className="reader__container">
+            <Header pdfUrl={samplePdfUrl} />
+            <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
+              <Outline parentRef={pdfContentRef} />
+              <div className="reader__page-list" ref={pdfScrollableRef}>
+                {Array.from({ length: numPages }).map((_, i) => (
+                  <PageWrapper key={i} pageIndex={i}>
+                    <Overlay>
+                      <ScrollToDemo pageIndex={i} />
+                      <PDODLayer pageIndex={i} parentRef={pdfScrollableRef} />
+                    </Overlay>
+                  </PageWrapper>
+                ))}
+              </div>
+            </DocumentWrapper>
+          </div>
+        </PDODContextProvider>
       </Route>
     </BrowserRouter>
   );
