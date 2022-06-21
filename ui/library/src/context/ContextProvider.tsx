@@ -23,7 +23,7 @@ function useDocumentContextProps(): IDocumentContext {
   return {
     numPages,
     outline,
-    pageDimensions: pageDimensions,
+    pageDimensions,
     pdfDocProxy,
     scrollTarget,
     setNumPages,

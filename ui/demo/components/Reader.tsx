@@ -7,6 +7,7 @@ import { generateCitations } from '../types/annotations';
 import { RawCitation } from '../types/citations';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
+import { HighlightOverlayDemo } from './HighlightOverlayDemo';
 import { Outline } from './Outline';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
@@ -45,13 +46,14 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
 
     let pageElementMap = new Map<number, React.ReactElement>();
     const pageToAnnotationsMap = generateCitations(rawCitations, pageDimensions);
-    for (const [key] of pageToAnnotationsMap) {
+    for (const [pageIndex] of pageToAnnotationsMap) {
       const citationDemo = (
         <Overlay>
-          <CitationsDemo annotations={pageToAnnotationsMap} pageIndex={key} />
+          <HighlightOverlayDemo pageIndex={pageIndex} />
+          <CitationsDemo annotations={pageToAnnotationsMap} pageIndex={pageIndex} />
         </Overlay>
       );
-      pageElementMap = pageElementMap.set(key, citationDemo);
+      pageElementMap = pageElementMap.set(pageIndex, citationDemo);
     }
     setPageToElementMap(pageElementMap);
   }, [rawCitations, pageDimensions]);
