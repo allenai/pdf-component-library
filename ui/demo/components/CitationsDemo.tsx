@@ -17,6 +17,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
   pageIndex,
   parentRef,
 }: Props) => {
+  console.log('CITATION DEMO', annotations, pageIndex);
   function renderCitations(): Array<React.ReactElement> {
     const citationPopovers: Array<React.ReactElement> = [];
     const entitiesForPage = annotations.get(pageIndex);

@@ -31,6 +31,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
   }
 
   const onPdfLoadSuccess = React.useCallback((pdfDoc: pdfjs.PDFDocumentProxy): void => {
+    console.log('PDF load success', pdfDoc);
     setNumPages(pdfDoc.numPages);
     getFirstPage(pdfDoc)
       .then(page => {
