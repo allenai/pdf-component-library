@@ -8,7 +8,7 @@ import { NodeDestination, OutlineNode } from '../types/outline';
 import { OutlineItem } from './OutlineItem';
 
 export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
-  const { outline, pdfDocProxy, setOutline } = React.useContext(DocumentContext);
+  const { outline, pdfDocProxy, scrollTarget, setOutline } = React.useContext(DocumentContext);
   const { rotation } = React.useContext(TransformContext);
 
   if (!pdfDocProxy) {
@@ -42,7 +42,9 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
       // The second and the fifth items are left out intentionally for not being used in scrolling function.
       const [ref, , , bottomPoints] = destArray;
       pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
-        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+        if (scrollTarget) {
+          scrollToPosition(scrollTarget, parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+        }
       });
     });
   };

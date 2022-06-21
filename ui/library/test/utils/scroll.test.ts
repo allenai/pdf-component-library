@@ -6,7 +6,6 @@ import {
   generatePageIdFromIndex,
   getPagePropertiesInPixels,
   PAGE_NAV_TARGET_ID_ROOT,
-  SCROLLABLE_TARGET_DIV_CLASSNAME,
   scrollToId,
   scrollToPosition,
 } from '../../src/utils/scroll';
@@ -46,13 +45,12 @@ describe('scrollTo', () => {
 describe('getPagePropertiesInPixels', () => {
   it('sets all properties 0 if it cannot find the first page of a PDF document', () => {
     const targetDiv = document.createElement('div');
-    targetDiv.classList.add(SCROLLABLE_TARGET_DIV_CLASSNAME);
     document.body.appendChild(targetDiv);
 
     const stub = sinon.stub();
     window.HTMLElement.prototype.scrollTo = stub;
 
-    const pageProperties = getPagePropertiesInPixels();
+    const pageProperties = getPagePropertiesInPixels(targetDiv);
     for (const value of Object.values(pageProperties)) expect(value).to.equal(0);
 
     targetDiv.remove();
@@ -66,14 +64,13 @@ describe('getPagePropertiesInPixels', () => {
     page1.style.margin = '20px';
 
     const targetDiv = document.createElement('div');
-    targetDiv.classList.add(SCROLLABLE_TARGET_DIV_CLASSNAME);
     targetDiv.appendChild(page1);
     document.body.appendChild(targetDiv);
 
     const stub = sinon.stub();
     window.HTMLElement.prototype.scrollTo = stub;
 
-    const pageProperties = getPagePropertiesInPixels();
+    const pageProperties = getPagePropertiesInPixels(targetDiv);
     expect(pageProperties.height).equal(parseInt(page1.style.height));
     expect(pageProperties.width).equal(parseInt(page1.style.width));
     expect(pageProperties.marginTop).equal(parseInt(page1.style.margin));
@@ -87,28 +84,14 @@ describe('getPagePropertiesInPixels', () => {
 });
 
 describe('scrollToPosition', () => {
-  it('does nothing if it cannot find the target div to scroll', () => {
-    const targetDiv = document.createElement('div');
-    document.body.appendChild(targetDiv);
-
-    const stub = sinon.stub();
-    window.HTMLElement.prototype.scrollTo = stub;
-
-    scrollToPosition(1, 10, 100);
-    expect(stub.calledOnce).to.be.false;
-
-    targetDiv.remove();
-  });
-
   it('does nothing if it cannot find the first page in a PDF document', () => {
     const targetDiv = document.createElement('div');
-    targetDiv.classList.add(SCROLLABLE_TARGET_DIV_CLASSNAME);
     document.body.appendChild(targetDiv);
 
     const stub = sinon.stub();
     window.HTMLElement.prototype.scrollTo = stub;
 
-    scrollToPosition(1, 10, 100);
+    scrollToPosition(targetDiv, 1, 10, 100);
     expect(stub.calledOnce).to.be.true;
     expect(stub.calledWith({ top: 0, left: 0, behavior: 'smooth' })).to.be.true;
 
@@ -129,7 +112,6 @@ describe('scrollToPosition', () => {
     page2.style.margin = '20px';
 
     const targetDiv = document.createElement('div');
-    targetDiv.classList.add(SCROLLABLE_TARGET_DIV_CLASSNAME);
     targetDiv.appendChild(page1);
     targetDiv.appendChild(page2);
     document.body.appendChild(targetDiv);
@@ -137,7 +119,7 @@ describe('scrollToPosition', () => {
     const stub = sinon.stub();
     window.HTMLElement.prototype.scrollTo = stub;
 
-    scrollToPosition(1, 10, 100);
+    scrollToPosition(targetDiv, 1, 10, 100);
     expect(stub.calledOnce).to.be.true;
     expect(stub.calledWith({ top: 1371, left: 8, behavior: 'smooth' })).to.be.true;
 
@@ -160,7 +142,6 @@ describe('scrollToPosition', () => {
     page2.style.margin = '20px';
 
     const targetDiv = document.createElement('div');
-    targetDiv.classList.add(SCROLLABLE_TARGET_DIV_CLASSNAME);
     targetDiv.appendChild(page1);
     targetDiv.appendChild(page2);
     document.body.appendChild(targetDiv);
@@ -168,13 +149,13 @@ describe('scrollToPosition', () => {
     const stub = sinon.stub();
     window.HTMLElement.prototype.scrollTo = stub;
 
-    scrollToPosition(1, 10, 100, PageRotation.Rotate0);
+    scrollToPosition(targetDiv, 1, 10, 100, PageRotation.Rotate0);
     expect(stub.calledWith({ top: 1371, left: 8, behavior: 'smooth' })).to.be.true;
-    scrollToPosition(1, 10, 100, PageRotation.Rotate90);
+    scrollToPosition(targetDiv, 1, 10, 100, PageRotation.Rotate90);
     expect(stub.calledWith({ top: 771, left: 63, behavior: 'smooth' })).to.be.true;
-    scrollToPosition(1, 10, 100, PageRotation.Rotate180);
+    scrollToPosition(targetDiv, 1, 10, 100, PageRotation.Rotate180);
     expect(stub.calledWith({ top: 848, left: 491, behavior: 'smooth' })).to.be.true;
-    scrollToPosition(1, 10, 100, PageRotation.Rotate270);
+    scrollToPosition(targetDiv, 1, 10, 100, PageRotation.Rotate270);
     expect(stub.calledWith({ top: 1448, left: 436, behavior: 'smooth' })).to.be.true;
 
     page1.remove();

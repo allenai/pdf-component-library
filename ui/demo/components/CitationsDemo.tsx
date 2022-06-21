@@ -6,7 +6,6 @@ import { CitationPopover } from './CitationPopover';
 type Props = {
   annotations: PageToAnnotationsMap;
   pageIndex: number;
-  parentRef: React.RefObject<HTMLDivElement>;
 };
 
 /*
@@ -15,7 +14,6 @@ type Props = {
 export const CitationsDemo: React.FunctionComponent<Props> = ({
   annotations,
   pageIndex,
-  parentRef,
 }: Props) => {
   function renderCitations(): Array<React.ReactElement> {
     const citationPopovers: Array<React.ReactElement> = [];
@@ -23,9 +21,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
     if (entitiesForPage) {
       const citations = entitiesForPage.citations;
       citations.map(citation => {
-        citationPopovers.push(
-          <CitationPopover key={citation.id} citation={citation} parentRef={parentRef} />
-        );
+        citationPopovers.push(<CitationPopover key={citation.id} citation={citation} />);
       });
     }
     return citationPopovers;

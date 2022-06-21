@@ -1,4 +1,4 @@
-import { BoundingBox } from '@allenai/pdf-components';
+import { BoundingBox, DocumentContext } from '@allenai/pdf-components';
 import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -7,11 +7,11 @@ import { Author, Citation, CitationPaper, makeAuthors, makePaperUrl } from '../t
 
 type Props = {
   citation: Citation;
-  parentRef: React.RefObject<HTMLElement>;
 };
 
-export const CitationPopover: React.FunctionComponent<Props> = ({ citation, parentRef }: Props) => {
+export const CitationPopover: React.FunctionComponent<Props> = ({ citation }: Props) => {
   const ABSTRACT_MAX_LENGTH = 300;
+  const { scrollTarget } = React.useContext(DocumentContext);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
   const [paper, setPaper] = React.useState<CitationPaper>();
@@ -111,7 +111,7 @@ export const CitationPopover: React.FunctionComponent<Props> = ({ citation, pare
       // Passing this ref mounts the popover "inside" the scrollable content area
       // instead of using the entire browser height.
       //@ts-ignore there's something wonky with the types here
-      getPopupContainer={() => parentRef.current}
+      getPopupContainer={() => scrollTarget}
       content={renderPopoverContent}
       trigger="click"
       onVisibleChange={handleVisibleChange}>

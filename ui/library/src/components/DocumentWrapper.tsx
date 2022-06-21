@@ -20,7 +20,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 }: Props) => {
   initPdfWorker();
 
-  const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
+  const { pdfDocProxy, scrollTarget, setNumPages, setPageDimensions, setPdfDocProxy } =
     React.useContext(DocumentContext);
   const { rotation } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
@@ -67,7 +67,9 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
       const [ref, , , bottomPoints] = destArray;
       pdfDocProxy.getPageIndex(new Ref(ref)).then(refInfo => {
-        scrollToPosition(parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+        if (scrollTarget) {
+          scrollToPosition(scrollTarget, parseInt(refInfo.toString()), 0, bottomPoints, rotation);
+        }
       });
     });
   };
