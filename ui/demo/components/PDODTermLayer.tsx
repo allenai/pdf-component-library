@@ -3,7 +3,7 @@ import { BoundingBox } from '@allenai/pdf-components/src/components/types/boundi
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 
-import { ItemPopover } from './ItemPopover';
+import { PDODPopover } from './PDODPopover';
 
 type Props = {
   pageIndex: number;
@@ -22,7 +22,7 @@ type PageToItems = Map<number, Item[]>;
 /*
  * Example of rendering CitationPopovers
  */
-export const PDODLayer: React.FunctionComponent<Props> = (props: Props) => {
+export const PDODTermLayer: React.FunctionComponent<Props> = (props: Props) => {
   const { pageIndex, parentRef } = props;
   const [annotations, setAnnotations] = useState<PageToItems>(new Map());
   const [rawAnnotations, setRawAnnotations] = useState<RawItem[]>([]);
@@ -60,7 +60,7 @@ export const PDODLayer: React.FunctionComponent<Props> = (props: Props) => {
     if (itemsForPage) {
       itemsForPage.map((item, idx) => {
         itemPopovers.push(
-          <ItemPopover key={idx} item={item} boundingBox={item.bbox[0]} parentRef={parentRef} />
+          <PDODPopover key={idx} item={item} boundingBox={item.bbox[0]} parentRef={parentRef} />
         );
       });
     }

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 
 import { usePDODContext } from './PDODContext';
-import { Item } from './PDODLayer';
+import { Item } from './PDODTermLayer';
 
 type Props = {
   item: Item;
@@ -13,7 +13,7 @@ type Props = {
   parentRef: React.RefObject<HTMLElement>;
 };
 
-export const ItemPopover: React.FunctionComponent<Props> = ({
+export const PDODPopover: React.FunctionComponent<Props> = ({
   parentRef,
   item,
   boundingBox,
@@ -31,6 +31,8 @@ export const ItemPopover: React.FunctionComponent<Props> = ({
     [item.text]
   );
 
+  // TODO We dont really need a popup over for this project,
+  // just a clickable Bounding Box
   return (
     <Popover
       // Passing this ref mounts the popover "inside" the scrollable content area

@@ -6,7 +6,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Header } from './Header';
 import { Outline } from './Outline';
 import { PDODContextProvider } from './PDODContext';
-import { PDODLayer } from './PDODLayer';
+import { PDODLayers } from './PDODLayers';
 import { ScrollToDemo } from './ScrollToDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
@@ -33,7 +33,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                   <PageWrapper key={i} pageIndex={i}>
                     <Overlay>
                       <ScrollToDemo pageIndex={i} />
-                      <PDODLayer pageIndex={i} parentRef={pdfScrollableRef} />
+                      <PDODLayers pageIndex={i} parentRef={pdfScrollableRef} />
                     </Overlay>
                   </PageWrapper>
                 ))}
