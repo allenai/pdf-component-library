@@ -4,7 +4,7 @@ import { PageRotation } from '../utils/rotate';
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
+export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'react-pdf__Document reader__main';
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
