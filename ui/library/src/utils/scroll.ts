@@ -4,7 +4,6 @@ import { PageRotation } from '../utils/rotate';
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
@@ -28,24 +27,19 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
 
 /**
  * Scroll PDF document to a specific position.
+ * @param scrollTarget The target <div> element to scroll
  * @param pageIndex The index of the page where the position locates at
  * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
+ * @param rotation The rotation degree of the document
  */
 export function scrollToPosition(
+  scrollTarget: HTMLDivElement,
   pageIndex: number,
   leftPoints: number,
   bottomPoints: number,
   rotation: PageRotation = PageRotation.Rotate0
 ): void {
-  const targetDiv: Element | null = document
-    .getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME)
-    .item(0);
-  if (!targetDiv) {
-    console.error(`Cannot find scroll target with classname ${SCROLLABLE_TARGET_DIV_CLASSNAME}`);
-    return;
-  }
-
   /*
     Vertical scroll distance is calculated as
     = total number of previous pages * page height including top/down margins
@@ -57,8 +51,9 @@ export function scrollToPosition(
   */
 
   const { width, height, marginTop, marginBottom, marginLeft, marginRight } =
-    getPagePropertiesInPixels();
+    getPagePropertiesInPixels(scrollTarget);
   const heightWithMargins = height + marginTop + marginBottom;
+
   // When a paper is rotated, its height and width would be switched automatically. However, leftPoints and bottomPoints remain the same.
   let marginTopPixels = marginTop;
   let bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
@@ -78,7 +73,12 @@ export function scrollToPosition(
     leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
-  targetDiv.scrollTo({
+  const parentElement = scrollTarget.parentElement;
+  if (!parentElement) {
+    return;
+  }
+
+  parentElement.scrollTo({
     top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
@@ -87,11 +87,11 @@ export function scrollToPosition(
 
 /**
  * Get lengths, widths, and margins of a page.
+ * @param pageList The page list wrapper that contains all pdf pages. The function will find the first page and extract its page properties.
  * @returns a PageProperties object
  */
-export function getPagePropertiesInPixels(): PageProperties {
-  const firstPage = document.getElementById(generatePageIdFromIndex(0));
-  if (!firstPage) {
+export function getPagePropertiesInPixels(pageList: HTMLDivElement): PageProperties {
+  if (pageList.firstElementChild == null) {
     console.error(`Cannot get the first page of this document.`);
     const emptyPageProperties: PageProperties = {
       width: 0,
@@ -104,7 +104,7 @@ export function getPagePropertiesInPixels(): PageProperties {
     return emptyPageProperties;
   }
 
-  const style = getComputedStyle(firstPage as Element);
+  const style = getComputedStyle(pageList.firstElementChild);
   const pageProperties: PageProperties = {
     width: parseInt(style.width),
     height: parseInt(style.height),

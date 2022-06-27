@@ -18,7 +18,9 @@ body {
 }
 
 .reader__main {
+  background-color: @grey;
   grid-area: main;
+  overflow: auto;
   position: relative;
 }
 
@@ -26,8 +28,6 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: @grey;
-  overflow: scroll;
   height: 100%;
   position: relative;
 }

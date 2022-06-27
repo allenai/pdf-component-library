@@ -13,17 +13,22 @@ import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
-  const { pageDimensions, numPages } = React.useContext(DocumentContext);
+  const { pageDimensions, numPages, scrollTarget, setScrollTarget } = React.useContext(DocumentContext);
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
   const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
 
-  // ref for the div in which the Document component renders
   const pdfContentRef = React.createRef<HTMLDivElement>();
 
   // ref for the scrollable region where the pages are rendered
-  const pdfScrollableRef = React.createRef<HTMLDivElement>();
+  const scrollTargetRef = React.createRef<HTMLDivElement>();
+
+  React.useEffect(() => {
+    if (!scrollTarget && scrollTargetRef.current) {
+      setScrollTarget(scrollTargetRef.current);
+    }
+  }, [scrollTargetRef]);
 
   const samplePdfUrl = 'https://arxiv.org/pdf/2112.07873.pdf';
   const sampleS2airsUrl =
@@ -59,7 +64,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
           <Header pdfUrl={samplePdfUrl} />
           <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
             <Outline parentRef={pdfContentRef} />
-            <div className="reader__page-list" ref={pdfScrollableRef}>
+            <div className="reader__page-list" ref={scrollTargetRef}>
               {Array.from({ length: numPages }).map((_, i) => (
                 <PageWrapper key={i} pageIndex={i}>
                   <Overlay>
@@ -69,7 +74,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                     <CitationsDemo
                       annotations={annotations}
                       pageIndex={i}
-                      parentRef={pdfScrollableRef}
+                      parentRef={scrollTargetRef}
                     />
                   </Overlay>
                 </PageWrapper>

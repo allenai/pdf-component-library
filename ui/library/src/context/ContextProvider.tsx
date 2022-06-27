@@ -18,16 +18,19 @@ function useDocumentContextProps(): IDocumentContext {
   const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
   const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
   const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
+  const [scrollTarget, setScrollTarget] = React.useState<HTMLDivElement>();
 
   return {
     numPages,
     outline,
     pageDimensions: pageDimensions,
     pdfDocProxy,
+    scrollTarget,
     setNumPages,
     setOutline,
     setPageDimensions: setPageDimensions,
     setPdfDocProxy,
+    setScrollTarget,
   };
 }
 
