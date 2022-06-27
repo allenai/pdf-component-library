@@ -11,12 +11,10 @@ export interface IDocumentContext {
   outline: Nullable<Array<OutlineNode>>;
   pageDimensions: Dimensions; // Scaled at 100%
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
-  scrollTarget?: HTMLDivElement;
   setNumPages: (numPages: number) => void;
   setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
   setPageDimensions: (pageDimensions: Dimensions) => void;
   setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
-  setScrollTarget: (scrollTarget: HTMLDivElement) => void;
 }
 
 export const DocumentContext = React.createContext<IDocumentContext>({
@@ -24,7 +22,6 @@ export const DocumentContext = React.createContext<IDocumentContext>({
   outline: [],
   pageDimensions: { height: 0, width: 0 },
   pdfDocProxy: undefined,
-  scrollTarget: undefined,
   setNumPages: numPages => {
     logProviderWarning(`setNumPages(${numPages})`, 'DocumentContext');
   },
@@ -36,8 +33,5 @@ export const DocumentContext = React.createContext<IDocumentContext>({
   },
   setPdfDocProxy: pdfDocProxy => {
     logProviderWarning(`setPdfDocProxy(${pdfDocProxy})`, 'DocumentContext');
-  },
-  setScrollTarget: scrollTarget => {
-    logProviderWarning(`setScrollTarget(${scrollTarget})`, 'DocumentContext');
   },
 });

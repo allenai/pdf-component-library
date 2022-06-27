@@ -27,14 +27,12 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
 
 /**
  * Scroll PDF document to a specific position.
- * @param scrollTarget The target <div> element to scroll
  * @param pageIndex The index of the page where the position locates at
  * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
  * @param rotation The rotation degree of the document
  */
 export function scrollToPosition(
-  scrollTarget: HTMLDivElement,
   pageIndex: number,
   leftPoints: number,
   bottomPoints: number,
@@ -51,7 +49,7 @@ export function scrollToPosition(
   */
 
   const { width, height, marginTop, marginBottom, marginLeft, marginRight } =
-    getPagePropertiesInPixels(scrollTarget);
+    getPagePropertiesInPixels();
   const heightWithMargins = height + marginTop + marginBottom;
 
   // When a paper is rotated, its height and width would be switched automatically. However, leftPoints and bottomPoints remain the same.
@@ -73,25 +71,67 @@ export function scrollToPosition(
     leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
-  const parentElement = scrollTarget.parentElement;
+  const pageId = generatePageIdFromIndex(pageIndex);
+
+  if (!pageId) {
+    return;
+  }
+
+  const pageIdElement = document.getElementById(pageId);
+
+  if (!pageIdElement) {
+    return;
+  }
+
+  const parentElement = pageIdElement.parentElement;
+
   if (!parentElement) {
     return;
   }
 
-  parentElement.scrollTo({
+  if (
+    hasVerticalScrollbar(parentElement) &&
+    window.getComputedStyle(parentElement)['overflow'] === 'scroll'
+  ) {
+    parentElement.scrollTo({
+      top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
+      left: Math.floor(leftPixels),
+      behavior: 'smooth',
+    });
+    return;
+  }
+
+  const outerParentElement = parentElement.parentElement;
+
+  if (!outerParentElement) {
+    return;
+  }
+
+  if (
+    !hasVerticalScrollbar(outerParentElement) &&
+    window.getComputedStyle(parentElement)['overflow'] === 'scroll'
+  ) {
+    return;
+  }
+
+  outerParentElement.scrollTo({
     top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
 }
 
+function hasVerticalScrollbar(el: HTMLElement): boolean {
+  return el.scrollHeight > el.clientHeight;
+}
+
 /**
  * Get lengths, widths, and margins of a page.
- * @param pageList The page list wrapper that contains all pdf pages. The function will find the first page and extract its page properties.
  * @returns a PageProperties object
  */
-export function getPagePropertiesInPixels(pageList: HTMLDivElement): PageProperties {
-  if (pageList.firstElementChild == null) {
+export function getPagePropertiesInPixels(): PageProperties {
+  const firstPage = document.getElementById(generatePageIdFromIndex(0));
+  if (!firstPage) {
     console.error(`Cannot get the first page of this document.`);
     const emptyPageProperties: PageProperties = {
       width: 0,
@@ -104,7 +144,7 @@ export function getPagePropertiesInPixels(pageList: HTMLDivElement): PagePropert
     return emptyPageProperties;
   }
 
-  const style = getComputedStyle(pageList.firstElementChild);
+  const style = getComputedStyle(firstPage as Element);
   const pageProperties: PageProperties = {
     width: parseInt(style.width),
     height: parseInt(style.height),
