@@ -13,7 +13,8 @@ import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
-  const { pageDimensions, numPages, scrollTarget, setScrollTarget } = React.useContext(DocumentContext);
+  const { pageDimensions, numPages, scrollTarget, setScrollTarget } =
+    React.useContext(DocumentContext);
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
