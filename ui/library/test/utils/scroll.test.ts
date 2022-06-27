@@ -3,8 +3,10 @@ import * as sinon from 'sinon';
 
 import { PageRotation } from '../../src/utils/rotate';
 import {
+  calculateTop,
   generatePageIdFromIndex,
   getPagePropertiesInPixels,
+  getScrollParent,
   PAGE_NAV_TARGET_ID_ROOT,
   scrollToId,
   scrollToPosition,
@@ -171,5 +173,22 @@ describe('scrollToPosition', () => {
     page1.remove();
     page2.remove();
     targetDiv.remove();
+  });
+});
+
+describe('calculateTop', () => {
+  it('should calculate correct value', () => {
+    expect(calculateTop(1104, 0, 24, 1056, 282.156)).equal(797);
+  });
+});
+
+describe('getScrollParent', () => {
+  it('should return a scrollable element', () => {
+    const page1 = document.createElement('div');
+    page1.id = generatePageIdFromIndex(0);
+    page1.style.height = '700px';
+    page1.style.width = '500px';
+    page1.style.margin = '20px';
+    expect(getScrollParent(page1).innerHTML).to.deep.equal(document.documentElement.innerHTML);
   });
 });

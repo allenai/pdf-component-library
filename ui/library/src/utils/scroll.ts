@@ -73,56 +73,46 @@ export function scrollToPosition(
 
   const pageId = generatePageIdFromIndex(pageIndex);
 
-  if (!pageId) {
-    return;
-  }
-
   const pageIdElement = document.getElementById(pageId);
 
   if (!pageIdElement) {
     return;
   }
 
-  const parentElement = pageIdElement.parentElement;
+  const parentElement = getScrollParent(pageIdElement);
 
   if (!parentElement) {
     return;
   }
 
-  if (
-    hasVerticalScrollbar(parentElement) &&
-    window.getComputedStyle(parentElement)['overflow'] === 'scroll'
-  ) {
-    parentElement.scrollTo({
-      top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
-      left: Math.floor(leftPixels),
-      behavior: 'smooth',
-    });
-    return;
-  }
-
-  const outerParentElement = parentElement.parentElement;
-
-  if (!outerParentElement) {
-    return;
-  }
-
-  if (
-    !hasVerticalScrollbar(outerParentElement) &&
-    window.getComputedStyle(parentElement)['overflow'] === 'scroll'
-  ) {
-    return;
-  }
-
-  outerParentElement.scrollTo({
-    top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
+  parentElement.scrollTo({
+    top: calculateTop(heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
 }
 
-function hasVerticalScrollbar(el: HTMLElement): boolean {
-  return el.scrollHeight > el.clientHeight;
+export function getScrollParent(node: HTMLElement): HTMLElement | null {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+  if (!node) {
+    return document.documentElement;
+  }
+  if (node.scrollHeight > node.clientHeight) {
+    return node;
+  }
+  return getScrollParent(node.parentNode as HTMLElement);
+}
+
+export function calculateTop(
+  heightWithMargins: number,
+  pageIndex: number,
+  marginTopPixels: number,
+  height: number,
+  bottomPixels: number
+): number {
+  return Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels));
 }
 
 /**
