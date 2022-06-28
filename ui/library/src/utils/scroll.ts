@@ -1,4 +1,5 @@
 import { PageProperties } from '../components/types/page';
+import { Nullable } from '../components/types/utils';
 import { PageRotation } from '../utils/rotate';
 
 // Each page div is ID'd according to page index
@@ -108,7 +109,7 @@ export function scrollToPosition(
   });
 }
 
-export function getScrollParent(node: HTMLElement): HTMLElement | null {
+export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   if (typeof document === 'undefined') {
     return null;
   }
