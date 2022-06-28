@@ -3,7 +3,6 @@
 //   ../react
 //   ../react-pdf
 //   ../react-pdf/dist/Page
-//   ../pdfjs-dist
 
 declare module '@allenai/pdf-components' {
     import './less/index.less';
@@ -233,8 +232,8 @@ declare module '@allenai/pdf-components/src/context/ContextProvider' {
 }
 
 declare module '@allenai/pdf-components/src/context/DocumentContext' {
-    import { PDFDocumentProxy } from 'pdfjs-dist';
     import * as React from 'react';
+    import { pdfjs } from 'react-pdf';
     import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
@@ -242,11 +241,11 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
         numPages: number;
         outline: Nullable<Array<OutlineNode>>;
         pageDimensions: Dimensions;
-        pdfDocProxy?: PDFDocumentProxy;
+        pdfDocProxy?: pdfjs.PDFDocumentProxy;
         setNumPages: (numPages: number) => void;
         setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
         setPageDimensions: (pageDimensions: Dimensions) => void;
-        setPdfDocProxy: (pdfDocProxy: PDFDocumentProxy) => void;
+        setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
     }
     export const DocumentContext: React.Context<IDocumentContext>;
 }
@@ -301,9 +300,9 @@ declare module '@allenai/pdf-components/src/utils/rotate' {
 
 declare module '@allenai/pdf-components/src/utils/scroll' {
     import { PageProperties } from '@allenai/pdf-components/src/components/types/page';
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
     export const PAGE_NAV_TARGET_ID_ROOT = "reader_pg_";
-    export const SCROLLABLE_TARGET_DIV_CLASSNAME = "reader__page-list";
     export function generatePageIdFromIndex(pageIndex: number | string): string;
     export function scrollToId(id: string): void;
     export function scrollToPdfPageIndex(pageIndex: number | string): void;
@@ -312,8 +311,17 @@ declare module '@allenai/pdf-components/src/utils/scroll' {
         * @param pageIndex The index of the page where the position locates at
         * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
         * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
+        * @param rotation The rotation degree of the document
         */
     export function scrollToPosition(pageIndex: number, leftPoints: number, bottomPoints: number, rotation?: PageRotation): void;
+    export function getScrollParent(node: HTMLElement): Nullable<HTMLElement>;
+    export function calculateTopPx({ heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels, }: {
+            heightWithMargins: number;
+            pageIndex: number;
+            marginTopPixels: number;
+            height: number;
+            bottomPixels: number;
+    }): number;
     /**
         * Get lengths, widths, and margins of a page.
         * @returns a PageProperties object
