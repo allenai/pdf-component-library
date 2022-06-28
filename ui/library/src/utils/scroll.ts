@@ -9,14 +9,6 @@ export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
 
-type ObjectForCalculateTopPx = {
-  heightWithMargins: number;
-  pageIndex: number;
-  marginTopPixels: number;
-  height: number;
-  bottomPixels: number;
-};
-
 export function generatePageIdFromIndex(pageIndex: number | string): string {
   return `${PAGE_NAV_TARGET_ID_ROOT}${pageIndex}`;
 }
@@ -93,17 +85,15 @@ export function scrollToPosition(
     return;
   }
 
-  const objectForCalculateTopPx: ObjectForCalculateTopPx = {
-    heightWithMargins: heightWithMargins,
-    pageIndex: pageIndex,
-    marginTopPixels: marginTopPixels,
-    height: height,
-    bottomPixels: bottomPixels,
-  };
-
   // Apply scroll
   parentElement.scrollTo({
-    top: calculateTopPx(objectForCalculateTopPx),
+    top: calculateTopPx({
+      heightWithMargins: heightWithMargins,
+      pageIndex: pageIndex,
+      marginTopPixels: marginTopPixels,
+      height: height,
+      bottomPixels: bottomPixels,
+    }),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
@@ -122,9 +112,19 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   return getScrollParent(node.parentElement as HTMLElement);
 }
 
-export function calculateTopPx(calculateTopPxObject: ObjectForCalculateTopPx): number {
-  const { heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels } =
-    calculateTopPxObject;
+export function calculateTopPx({
+  heightWithMargins,
+  pageIndex,
+  marginTopPixels,
+  height,
+  bottomPixels,
+}: {
+  heightWithMargins: number;
+  pageIndex: number;
+  marginTopPixels: number;
+  height: number;
+  bottomPixels: number;
+}): number {
   return Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels));
 }
 

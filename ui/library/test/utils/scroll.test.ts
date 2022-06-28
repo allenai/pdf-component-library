@@ -179,14 +179,15 @@ describe('scroll', () => {
 
   describe('calculateTopPx()', () => {
     it('should calculate top pixel', () => {
-      const objectForCalculateTopPx = {
-        heightWithMargins: 1104,
-        pageIndex: 0,
-        marginTopPixels: 24,
-        height: 1056,
-        bottomPixels: 282.156,
-      };
-      expect(calculateTopPx(objectForCalculateTopPx)).to.equal(797);
+      expect(
+        calculateTopPx({
+          heightWithMargins: 1104,
+          pageIndex: 0,
+          marginTopPixels: 24,
+          height: 1056,
+          bottomPixels: 282.156,
+        })
+      ).to.equal(797);
     });
   });
 
