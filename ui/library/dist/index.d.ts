@@ -315,12 +315,12 @@ declare module '@allenai/pdf-components/src/utils/scroll' {
         */
     export function scrollToPosition(pageIndex: number, leftPoints: number, bottomPoints: number, rotation?: PageRotation): void;
     export function getScrollParent(node: HTMLElement): Nullable<HTMLElement>;
-    export function calculateTopPx({ heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels, }: {
-            heightWithMargins: number;
+    export function calculateTopPx({ heightWithMarginsInPx, pageIndex, marginTopPx, heightPx, bottomPx, }: {
+            heightWithMarginsInPx: number;
             pageIndex: number;
-            marginTopPixels: number;
-            height: number;
-            bottomPixels: number;
+            marginTopPx: number;
+            heightPx: number;
+            bottomPx: number;
     }): number;
     /**
         * Get lengths, widths, and margins of a page.

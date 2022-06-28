@@ -181,11 +181,11 @@ describe('scroll', () => {
     it('should calculate top pixel', () => {
       expect(
         calculateTopPx({
-          heightWithMargins: 1104,
+          heightWithMarginsInPx: 1104,
           pageIndex: 0,
-          marginTopPixels: 24,
-          height: 1056,
-          bottomPixels: 282.156,
+          marginTopPx: 24,
+          heightPx: 1056,
+          bottomPx: 282.156,
         })
       ).to.equal(797);
     });
