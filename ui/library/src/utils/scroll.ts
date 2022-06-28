@@ -1,10 +1,10 @@
 import { PageProperties } from '../components/types/page';
+import { Nullable } from '../components/types/utils';
 import { PageRotation } from '../utils/rotate';
 
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
 export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
-export const SCROLLABLE_TARGET_DIV_CLASSNAME = 'reader__page-list';
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
@@ -31,6 +31,7 @@ export function scrollToPdfPageIndex(pageIndex: number | string): void {
  * @param pageIndex The index of the page where the position locates at
  * @param leftPoints The horizontal distance between the origin and the position (in PDF coordinates)
  * @param bottomPoints The vertical distance between the origin and the position (in PDF coordinates)
+ * @param rotation The rotation degree of the document
  */
 export function scrollToPosition(
   pageIndex: number,
@@ -38,14 +39,6 @@ export function scrollToPosition(
   bottomPoints: number,
   rotation: PageRotation = PageRotation.Rotate0
 ): void {
-  const targetDiv: Element | null = document
-    .getElementsByClassName(SCROLLABLE_TARGET_DIV_CLASSNAME)
-    .item(0);
-  if (!targetDiv) {
-    console.error(`Cannot find scroll target with classname ${SCROLLABLE_TARGET_DIV_CLASSNAME}`);
-    return;
-  }
-
   /*
     Vertical scroll distance is calculated as
     = total number of previous pages * page height including top/down margins
@@ -59,6 +52,7 @@ export function scrollToPosition(
   const { width, height, marginTop, marginBottom, marginLeft, marginRight } =
     getPagePropertiesInPixels();
   const heightWithMargins = height + marginTop + marginBottom;
+
   // When a paper is rotated, its height and width would be switched automatically. However, leftPoints and bottomPoints remain the same.
   let marginTopPixels = marginTop;
   let bottomPixels = (height * bottomPoints) / PDF_HEIGHT_POINTS;
@@ -78,11 +72,60 @@ export function scrollToPosition(
     leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
-  targetDiv.scrollTo({
-    top: Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels)),
+  // Find page element
+  const pageId = generatePageIdFromIndex(pageIndex);
+  const pageIdElement = document.getElementById(pageId);
+  if (!pageIdElement) {
+    return;
+  }
+
+  // Find first scrollable parent
+  const parentElement = getScrollParent(pageIdElement);
+  if (!parentElement) {
+    return;
+  }
+
+  // Apply scroll
+  parentElement.scrollTo({
+    top: calculateTopPx({
+      heightWithMargins: heightWithMargins,
+      pageIndex: pageIndex,
+      marginTopPixels: marginTopPixels,
+      height: height,
+      bottomPixels: bottomPixels,
+    }),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
+}
+
+export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+  if (!node) {
+    return document.documentElement;
+  }
+  if (node.scrollHeight > node.clientHeight) {
+    return node;
+  }
+  return getScrollParent(node.parentElement as HTMLElement);
+}
+
+export function calculateTopPx({
+  heightWithMargins,
+  pageIndex,
+  marginTopPixels,
+  height,
+  bottomPixels,
+}: {
+  heightWithMargins: number;
+  pageIndex: number;
+  marginTopPixels: number;
+  height: number;
+  bottomPixels: number;
+}): number {
+  return Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels));
 }
 
 /**
