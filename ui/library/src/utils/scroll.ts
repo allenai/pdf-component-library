@@ -8,6 +8,14 @@ export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
 
+type ObjectForCalculateTopPx = {
+  heightWithMargins: number;
+  pageIndex: number;
+  marginTopPixels: number;
+  height: number;
+  bottomPixels: number;
+};
+
 export function generatePageIdFromIndex(pageIndex: number | string): string {
   return `${PAGE_NAV_TARGET_ID_ROOT}${pageIndex}`;
 }
@@ -71,22 +79,30 @@ export function scrollToPosition(
     leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
+  // Find page element
   const pageId = generatePageIdFromIndex(pageIndex);
-
   const pageIdElement = document.getElementById(pageId);
-
   if (!pageIdElement) {
     return;
   }
 
+  // Find first scrollable parent
   const parentElement = getScrollParent(pageIdElement);
-
   if (!parentElement) {
     return;
   }
 
+  const objectForCalculateTopPx: ObjectForCalculateTopPx = {
+    heightWithMargins: heightWithMargins,
+    pageIndex: pageIndex,
+    marginTopPixels: marginTopPixels,
+    height: height,
+    bottomPixels: bottomPixels,
+  };
+
+  // Apply scroll
   parentElement.scrollTo({
-    top: calculateTop(heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels),
+    top: calculateTopPx(objectForCalculateTopPx),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
   });
@@ -102,16 +118,12 @@ export function getScrollParent(node: HTMLElement): HTMLElement | null {
   if (node.scrollHeight > node.clientHeight) {
     return node;
   }
-  return getScrollParent(node.parentNode as HTMLElement);
+  return getScrollParent(node.parentElement as HTMLElement);
 }
 
-export function calculateTop(
-  heightWithMargins: number,
-  pageIndex: number,
-  marginTopPixels: number,
-  height: number,
-  bottomPixels: number
-): number {
+export function calculateTopPx(calculateTopPxObject: ObjectForCalculateTopPx): number {
+  const { heightWithMargins, pageIndex, marginTopPixels, height, bottomPixels } =
+    calculateTopPxObject;
   return Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels));
 }
 
