@@ -88,11 +88,11 @@ export function scrollToPosition(
   // Apply scroll
   parentElement.scrollTo({
     top: calculateTopPx({
-      heightWithMargins: heightWithMargins,
+      heightWithMarginsInPx: heightWithMargins,
       pageIndex: pageIndex,
-      marginTopPixels: marginTopPixels,
-      height: height,
-      bottomPixels: bottomPixels,
+      marginTopPx: marginTopPixels,
+      heightPx: height,
+      bottomPx: bottomPixels,
     }),
     left: Math.floor(leftPixels),
     behavior: 'smooth',
@@ -113,19 +113,19 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
 }
 
 export function calculateTopPx({
-  heightWithMargins,
+  heightWithMarginsInPx,
   pageIndex,
-  marginTopPixels,
-  height,
-  bottomPixels,
+  marginTopPx,
+  heightPx,
+  bottomPx,
 }: {
-  heightWithMargins: number;
+  heightWithMarginsInPx: number;
   pageIndex: number;
-  marginTopPixels: number;
-  height: number;
-  bottomPixels: number;
+  marginTopPx: number;
+  heightPx: number;
+  bottomPx: number;
 }): number {
-  return Math.floor(heightWithMargins * pageIndex + marginTopPixels + (height - bottomPixels));
+  return Math.floor(heightWithMarginsInPx * pageIndex + marginTopPx + (heightPx - bottomPx));
 }
 
 /**
