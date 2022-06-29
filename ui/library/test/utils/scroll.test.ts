@@ -198,7 +198,7 @@ describe('scroll', () => {
       page1.style.height = '700px';
       page1.style.width = '500px';
       page1.style.margin = '20px';
-      expect(document.documentElement.nodeName).to.equal('HTML');
+      expect(getScrollParent(page1).nodeName).to.equal('DIV');
     });
   });
 });
