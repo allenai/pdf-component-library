@@ -106,10 +106,28 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   if (!node) {
     return document.documentElement;
   }
-  if (node.scrollHeight > node.clientHeight) {
+  if (isElementScrollable(node)) {
     return node;
   }
   return getScrollParent(node.parentElement as HTMLElement);
+}
+
+function isElementScrollable(node: HTMLElement): boolean {
+  if (!node) {
+    return false;
+  }
+
+  if (node.scrollTop > 0) {
+    return true;
+  }
+  node.scrollTop++;
+
+  //If the element cannot be scrolled, the scrolltop setting will not take effect and will be set to 0
+  const top = node.scrollTop;
+  //Reset scroll position
+  top && (node.scrollTop = 0);
+
+  return top > 0;
 }
 
 export function calculateTopPx({
