@@ -103,13 +103,22 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   if (typeof document === 'undefined') {
     return null;
   }
-  if (!node) {
+  if (!node || node.nodeName.toLowerCase() === 'body') {
     return document.documentElement;
   }
-  if (node.scrollHeight > node.clientHeight) {
+  if (node.scrollHeight > node.clientHeight && !isOverflowIsHidden(node)) {
     return node;
   }
   return getScrollParent(node.parentElement as HTMLElement);
+}
+
+function isOverflowIsHidden(node: HTMLElement): boolean {
+  const style = getComputedStyle(node);
+  return (
+    style.overflow.includes('hidden') ||
+    style.overflowX.includes('hidden') ||
+    style.overflowY.includes('hidden')
+  );
 }
 
 export function calculateTopPx({
