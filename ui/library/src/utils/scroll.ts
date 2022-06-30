@@ -103,7 +103,7 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   if (typeof document === 'undefined') {
     return null;
   }
-  if (!node) {
+  if (!node || node.nodeName.toLowerCase() === 'body') {
     return document.documentElement;
   }
   if (node.scrollHeight > node.clientHeight && !isOverflowIsHidden(node)) {
@@ -115,7 +115,9 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
 function isOverflowIsHidden(node: HTMLElement): boolean {
   const style = getComputedStyle(node);
   return (
-    style.overflow === 'hidden' || style.overflowX === 'hidden' || style.overflowY === 'hidden'
+    style.overflow.includes('hidden') ||
+    style.overflowX.includes('hidden') ||
+    style.overflowY.includes('hidden')
   );
 }
 
