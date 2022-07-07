@@ -43,7 +43,6 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // Attaches annotation data to paper
   React.useEffect(() => {
     // Don't execute until paper data and PDF document have loaded
-    console.log('stuff', rawCitations, pageDimensions);
     if (!rawCitations || !pageDimensions.height || !pageDimensions.width) {
       return;
     }
@@ -64,12 +63,12 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                   <PageWrapper key={i} pageIndex={i}>
                     <Overlay>
                       <ScrollToDemo pageIndex={i} />
+                      <PDODLayers pageIndex={i} parentRef={pdfScrollableRef} />
                       <CitationsDemo
                         annotations={annotations}
                         pageIndex={i}
                         parentRef={pdfScrollableRef}
                       />
-                      <PDODLayers pageIndex={i} parentRef={pdfScrollableRef} />
                     </Overlay>
                   </PageWrapper>
                 ))}

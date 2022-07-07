@@ -3,6 +3,7 @@ import { Drawer } from 'antd';
 import * as React from 'react';
 
 import { usePDODContext } from './PDODContext';
+import { PDODResults } from './PDODResults';
 
 type Props = {
   parentRef: React.RefObject<HTMLDivElement>;
@@ -30,7 +31,7 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
       getContainer={parentRef.current}
       className="reader__outline-drawer">
       {term === false && <PdfOutline />}
-      {term !== false && <p>PDOD Demo: `{term}` was clicked</p>}
+      {term !== false && <PDODResults />}
     </Drawer>
   );
 };

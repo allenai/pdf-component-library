@@ -29,16 +29,6 @@ export const PDODPopover: React.FunctionComponent<Props> = ({
     [item.text]
   );
 
-  // TODO We dont really need a popup over for this project,
-  // just a clickable Bounding Box
-  const renderPopoverContent = React.useCallback(() => {
-    return (
-      <div className="reader__popover__citation">
-        <pre>{JSON.stringify(item)}</pre>
-      </div>
-    );
-  }, [item]);
-
   return (
     <BoundingBox
       className={classNames('reader__popover__bbox', term === item.text ? 'selected' : '')}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { PDODResultsLayer } from './PDODResultsLayer';
 
 import { PDODTermLayer } from './PDODTermLayer';
 
@@ -15,6 +16,7 @@ export const PDODLayers: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <React.Fragment>
       <PDODTermLayer pageIndex={pageIndex} parentRef={parentRef} />
+      <PDODResultsLayer pageIndex={pageIndex} parentRef={parentRef} />
     </React.Fragment>
   );
 };
