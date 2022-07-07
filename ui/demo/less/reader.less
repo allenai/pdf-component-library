@@ -36,7 +36,7 @@ body {
   background-color: transparent;
   border: none;
   color: @blue;
-  
+
   &:hover {
     color: @light-blue;
     cursor: pointer;
@@ -66,9 +66,21 @@ body {
     font-weight: bold;
   }
 
-  .reader__popover__citation-authors, 
+  .reader__popover__citation-authors,
   .reader__popover__citation-year,
   .reader__popover__citation-abstract {
     font-weight: 300;
+  }
+}
+
+.reader__outline-item {
+  > a {
+    transition: filter 75ms ease-in-out;
+  }
+  &.reader__outline-item--target-visible {
+    > a {
+      filter: hue-rotate(45deg);
+      transition-duration: 400ms;
+    }
   }
 }

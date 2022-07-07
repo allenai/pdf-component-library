@@ -254,6 +254,10 @@
   position: absolute;
   z-index: 1;
 }
+.reader__page__outline-target {
+  position: absolute;
+  visibility: hidden;
+}
 .react-pdf__Page__textContent > span {
   height: 0em!important;
 }

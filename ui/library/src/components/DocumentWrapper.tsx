@@ -3,6 +3,7 @@ import { Document, DocumentProps, pdfjs } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { TransformContext } from '../context/TransformContext';
+import { ScrollContext } from '../context/ScrollContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
@@ -22,6 +23,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
     React.useContext(DocumentContext);
+  const { resetScrollObservers } = React.useContext(ScrollContext);
   const { rotation } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
@@ -29,6 +31,10 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     // getPage uses 1-indexed pageNumber, not 0-indexed pageIndex
     return pdfDoc.getPage(1);
   }
+
+  React.useEffect(() => {
+    resetScrollObservers();
+  }, []);
 
   const onPdfLoadSuccess = React.useCallback((pdfDoc: pdfjs.PDFDocumentProxy): void => {
     setNumPages(pdfDoc.numPages);
