@@ -38,3 +38,24 @@ export const UiContext = React.createContext<IUiContext>({
     logProviderWarning(`setIsShowingTextHighlight(${isShowingTextHighlight})`, 'UiContext');
   },
 });
+
+export function useUiContextProps(): IUiContext {
+  const [errorMessage, setErrorMessage] = React.useState<Nullable<string>>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
+  const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
+  const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
+
+  return {
+    errorMessage,
+    isLoading,
+    isShowingHighlightOverlay,
+    isShowingOutline,
+    isShowingTextHighlight,
+    setErrorMessage,
+    setIsLoading,
+    setIsShowingHighlightOverlay,
+    setIsShowingOutline,
+    setIsShowingTextHighlight,
+  };
+}
