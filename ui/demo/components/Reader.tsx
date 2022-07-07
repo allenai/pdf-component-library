@@ -3,6 +3,10 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import { samplePdfUrl, samplePdfSha } from '../data/FakeServer';
+import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
+import { RawCitation } from '../types/citations';
+import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { Outline } from './Outline';
 import { PDODContextProvider } from './PDODContext';
@@ -18,29 +22,61 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const samplePdfUrl = 'https://arxiv.org/pdf/2203.08436.pdf';
+  const { pageDimensions } = React.useContext(DocumentContext);
+  const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
+    new Map<number, Annotations>()
+  );
+  const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
+
+  const sampleS2airsUrl =
+   `http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=${samplePdfSha}`;
+
+  React.useEffect(() => {
+    // If data has been loaded then return directly to prevent sending multiple requests
+    fetch(sampleS2airsUrl, { referrer: '' })
+      .then(response => response.json())
+      .then(data => {
+        setRawCitations(data[0].citations);
+      });
+  }, [pageDimensions]);
+
+  // Attaches annotation data to paper
+  React.useEffect(() => {
+    // Don't execute until paper data and PDF document have loaded
+    console.log('stuff', rawCitations, pageDimensions);
+    if (!rawCitations || !pageDimensions.height || !pageDimensions.width) {
+      return;
+    }
+
+    setAnnotations(generateCitations(rawCitations, pageDimensions));
+  }, [rawCitations, pageDimensions]);
 
   return (
     <BrowserRouter>
       <Route path="/">
-        <PDODContextProvider>
-          <div className="reader__container">
-            <Header pdfUrl={samplePdfUrl} />
-            <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
+        <div className="reader__container">
+          <Header pdfUrl={samplePdfUrl} />
+          <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
+            <PDODContextProvider>
               <Outline parentRef={pdfContentRef} />
               <div className="reader__page-list" ref={pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper key={i} pageIndex={i}>
                     <Overlay>
                       <ScrollToDemo pageIndex={i} />
+                      <CitationsDemo
+                        annotations={annotations}
+                        pageIndex={i}
+                        parentRef={pdfScrollableRef}
+                      />
                       <PDODLayers pageIndex={i} parentRef={pdfScrollableRef} />
                     </Overlay>
                   </PageWrapper>
                 ))}
               </div>
-            </DocumentWrapper>
-          </div>
-        </PDODContextProvider>
+            </PDODContextProvider>
+          </DocumentWrapper>
+        </div>
       </Route>
     </BrowserRouter>
   );

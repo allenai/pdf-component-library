@@ -25,7 +25,7 @@ export function generateCitations(
         const scaledBox = scaleRawBoundingBox(box, pageDimensions.height, pageDimensions.width);
         const citation = makeCitation(
           `${citationIndex}-${mentionIndex}-${boxIndex}`,
-          rawCitation.citedPaperId,
+          rawCitation?.citedPaperId ?? '',
           scaledBox
         );
         if (citation) {

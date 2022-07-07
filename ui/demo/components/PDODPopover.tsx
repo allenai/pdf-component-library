@@ -18,39 +18,37 @@ export const PDODPopover: React.FunctionComponent<Props> = ({
   item,
   boundingBox,
 }: Props) => {
-  const [isPopoverVisible, setIsPopoverVisible] = React.useState(false);
-  const { setTerm } = usePDODContext();
+  const { term, setTerm } = usePDODContext();
 
   // Handler triggered when Ant Popover is shown or hidden
 
-  const handleVisibleChange = React.useCallback(
-    (isVisible: boolean) => {
-      setIsPopoverVisible(isVisible);
-      setTerm(item.text);
+  const handleClick = React.useCallback(
+    () => {
+      setTerm(old => item.text === old ? false : item.text);
     },
     [item.text]
   );
 
   // TODO We dont really need a popup over for this project,
   // just a clickable Bounding Box
+  const renderPopoverContent = React.useCallback(() => {
+    return (
+      <div className="reader__popover__citation">
+        <pre>{JSON.stringify(item)}</pre>
+      </div>
+    );
+  }, [item]);
+
   return (
-    <Popover
-      // Passing this ref mounts the popover "inside" the scrollable content area
-      // instead of using the entire browser height.
-      //@ts-ignore there's something wonky with the types here
-      getPopupContainer={() => parentRef.current}
-      content={<pre>{JSON.stringify(item)}</pre>}
-      trigger="click"
-      onVisibleChange={handleVisibleChange}>
-      <BoundingBox
-        className={classNames('reader__popover__bbox', isPopoverVisible ? 'selected' : '')}
-        page={boundingBox.page}
-        top={boundingBox.top}
-        left={boundingBox.left}
-        height={boundingBox.height}
-        width={boundingBox.width}
-        isHighlighted={true}
-      />
-    </Popover>
+    <BoundingBox
+      className={classNames('reader__popover__bbox', term === item.text ? 'selected' : '')}
+      onClick={handleClick}
+      page={boundingBox.page}
+      top={boundingBox.top}
+      left={boundingBox.left}
+      height={boundingBox.height}
+      width={boundingBox.width}
+      isHighlighted={true}
+    />
   );
 };

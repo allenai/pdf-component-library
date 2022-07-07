@@ -3,10 +3,12 @@
     "target": "es6",
     "lib": ["dom", "dom.iterable", "es2019"],
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   }
 }

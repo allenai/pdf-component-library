@@ -7,7 +7,8 @@ export type RawMention = {
 
 // Raw citation entity in S2airs format
 export type RawCitation = {
-  citedPaperId: string;
+  referenceText?: string;
+  citedPaperId?: string;
   mentions: Array<RawMention>;
 };
 

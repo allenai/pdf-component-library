@@ -3,6 +3,9 @@ import { BoundingBox } from '@allenai/pdf-components/src/components/types/boundi
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
 
+import { rawAnnotations as _rawAnnotations } from '../data/FakeServer';
+import { RawCitation } from '../types/citations';
+
 import { PDODPopover } from './PDODPopover';
 
 type Props = {
@@ -25,33 +28,37 @@ type PageToItems = Map<number, Item[]>;
 export const PDODTermLayer: React.FunctionComponent<Props> = (props: Props) => {
   const { pageIndex, parentRef } = props;
   const [annotations, setAnnotations] = useState<PageToItems>(new Map());
-  const [rawAnnotations, setRawAnnotations] = useState<RawItem[]>([]);
+  const [rawAnnotations, setRawAnnotations] = useState<RawCitation[]>([]);
 
   const { pageDimensions } = useContext(DocumentContext);
 
   useEffect(() => {
-    fetch('...')
-      .then(resp => resp.json())
-      .then((items: RawItem[]) => {
-        setRawAnnotations(items);
-      });
+    // fetch('...')
+    //   .then(resp => resp.json())
+    //   .then((items: RawItem[]) => {
+    //     setRawAnnotations(items);
+    //   });
+    setRawAnnotations(_rawAnnotations);
   }, []);
   useEffect(() => {
+    if (pageDimensions.height === 0 || pageDimensions.width === 0) {
+      return;
+    }
     const newAnnotations: PageToItems = new Map<number, Item[]>();
     const scale = (boundingBox: BoundingBox) =>
       scaleRawBoundingBox(boundingBox, pageDimensions.height, pageDimensions.width);
     rawAnnotations.forEach(item => {
-      const page = item.page;
+      const page = item.mentions[0].boundingBoxes[0].page;
       if (!newAnnotations.has(page)) {
-        newAnnotations.set(item.page, []);
+        newAnnotations.set(page, []);
       }
-      newAnnotations.get(item.page)?.push({
-        text: item.text,
-        bbox: item.bbox.map(scale),
+      newAnnotations.get(page)?.push({
+        text: item.referenceText ?? 'no ref text',
+        bbox: item.mentions[0].boundingBoxes.map(scale),
       });
     });
     setAnnotations(newAnnotations);
-  }, [rawAnnotations, pageDimensions]);
+  }, [rawAnnotations, pageDimensions.height, pageDimensions.width]);
 
   // TODO: handle multiple bounding boxes for each item
   function renderCitations(): Array<React.ReactElement> {
