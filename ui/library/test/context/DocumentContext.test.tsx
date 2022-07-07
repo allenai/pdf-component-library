@@ -21,7 +21,7 @@ describe('<DocumentContext/>', () => {
     expect(actual).equals(`${value}`, message);
   }
 
-  function UseContext({ children }) {
+  function UseContext({ children }: any) {
     const contextProps = useDocumentContextProps();
     return <DocumentContext.Provider value={contextProps}>{children}</DocumentContext.Provider>;
   }
