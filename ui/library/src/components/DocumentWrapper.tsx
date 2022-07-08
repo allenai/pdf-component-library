@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Document, DocumentProps, pdfjs } from 'react-pdf';
 
 import { DocumentContext } from '../context/DocumentContext';
-import { TransformContext } from '../context/TransformContext';
 import { ScrollContext } from '../context/ScrollContext';
+import { TransformContext } from '../context/TransformContext';
 import { UiContext } from '../context/UiContext';
 import { getErrorMessage } from '../utils/errorMessage';
 import { initPdfWorker } from '../utils/pdfWorker';
@@ -84,6 +84,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
       externalLinkTarget="_blank"
+      // renderMode="none"
       // @ts-ignore: the arguments should be { dest, pageIndex, pageNumber }
       // @types/react-pdf hasn't updated the function signature
       // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/d73eb652e0ba8f89395a0ef2ba69cf1e640ce5be/types/react-pdf/dist/Document.d.ts#L72

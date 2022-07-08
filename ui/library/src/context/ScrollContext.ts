@@ -1,10 +1,8 @@
-import { NodeDestination, OutlineNode } from '../components/types/outline';
+import * as React from 'react';
+
+import { NodeDestination } from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
-
-import * as React from 'react';
-import { pdfjs } from 'react-pdf';
-import { Ref } from '../components/types/destination';
 import { generatePageIdFromIndex } from '../utils/scroll';
 
 export interface IScrollContext {
@@ -35,7 +33,7 @@ const DEFAULT_CONTEXT: IScrollContext = {
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
   },
-  setScrollRoot: (el: Nullable<Element>) => {
+  setScrollRoot: (_el: Nullable<Element>) => {
     logProviderWarning(`setScrollRoot(...)`, 'ScrollContext');
   },
   resetScrollObservers: () => {

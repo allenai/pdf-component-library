@@ -277,9 +277,9 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
 }
 
 declare module '@allenai/pdf-components/src/context/ScrollContext' {
+    import * as React from 'react';
     import { NodeDestination } from '@allenai/pdf-components/src/components/types/outline';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
-    import * as React from 'react';
     export interface IScrollContext {
         visibleOutlineTargets: Set<NodeDestination>;
         isOutlineTargetVisible: (dest: NodeDestination) => boolean;
