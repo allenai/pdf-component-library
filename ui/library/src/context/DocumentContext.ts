@@ -35,3 +35,21 @@ export const DocumentContext = React.createContext<IDocumentContext>({
     logProviderWarning(`setPdfDocProxy(${pdfDocProxy})`, 'DocumentContext');
   },
 });
+
+export function useDocumentContextProps(): IDocumentContext {
+  const [numPages, setNumPages] = React.useState<number>(0);
+  const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
+  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
+  const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
+
+  return {
+    numPages,
+    outline,
+    pageDimensions: pageDimensions,
+    pdfDocProxy,
+    setNumPages,
+    setOutline,
+    setPageDimensions: setPageDimensions,
+    setPdfDocProxy,
+  };
+}
