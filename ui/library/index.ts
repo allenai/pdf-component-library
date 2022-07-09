@@ -15,6 +15,8 @@ import { Outline } from './src/components/outline/Outline';
 import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
+import { Thumbnail } from './src/components/thumbnails/Thumbnail';
+import { ThumbnailList } from './src/components/thumbnails/ThumbnailList';
 import {
   BoundingBox as BoundingBoxType,
   Dimensions,
@@ -30,6 +32,7 @@ import { ZoomInButton } from './src/components/ZoomInButton';
 import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
+import { IPageRenderContext, PageRenderContext } from './src/context/PageRenderContext';
 import { IScrollContext, ScrollContext } from './src/context/ScrollContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
@@ -56,6 +59,7 @@ export type {
   DownloadButtonProps,
   HighlightOverlayProps,
   IDocumentContext,
+  IPageRenderContext,
   IScrollContext,
   ITransformContext,
   IUiContext,
@@ -89,6 +93,7 @@ export {
   Outline,
   OutlineItem,
   Overlay,
+  PageRenderContext,
   PageWrapper,
   rotateClockwise,
   rotateCounterClockwise,
@@ -96,6 +101,8 @@ export {
   ScrollContext,
   scrollToId,
   scrollToPdfPageIndex,
+  Thumbnail,
+  ThumbnailList,
   TransformContext,
   UiContext,
   ZoomInButton,
@@ -118,6 +125,7 @@ export default {
   Outline,
   OutlineItem,
   Overlay,
+  PageRenderContext,
   PageRotation,
   PageWrapper,
   rotateClockwise,
@@ -126,6 +134,8 @@ export default {
   scrollToId,
   scrollToPdfPageIndex,
   ScrollContext,
+  Thumbnail,
+  ThumbnailList,
   TransformContext,
   UiContext,
   ZoomInButton,

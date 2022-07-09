@@ -208,10 +208,14 @@
   box-shadow: none;
 }
 .reader__page {
-  background-color: #ffffff;
+  background: #ffffff center center / cover no-repeat;
   margin: 24px;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.2);
+  flex: 1 0 auto;
   position: relative;
+}
+.reader__page.reader__page--no-page-image .react-pdf__Page__textContent {
+  color: initial !important;
 }
 .reader__page-overlay {
   position: absolute;
@@ -258,11 +262,23 @@
   position: absolute;
   visibility: hidden;
 }
+.react-pdf__Page {
+  height: 100%;
+}
 .react-pdf__Page__textContent > span {
   height: 0em!important;
 }
 .reader__download-btn {
   align-items: center;
   display: flex;
+}
+.reader__thumbnail-list__list {
+  list-style: none;
+}
+.reader__thumbnail {
+  display: inline-block;
+}
+.reader__thumbnail__image {
+  width: 100%;
 }
 

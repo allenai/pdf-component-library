@@ -19,6 +19,7 @@ export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Pr
     pdfDocProxy: documentProps.pdfDocProxy,
     scale: transformProps.scale,
     rotation: transformProps.rotation,
+    zoomMultiplier: transformProps.zoomMultiplier,
     visiblePageNumbers: scrollProps.visiblePageNumbers,
   });
 

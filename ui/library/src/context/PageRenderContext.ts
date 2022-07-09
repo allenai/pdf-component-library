@@ -15,6 +15,7 @@ export type PageNumberToRenderStateMap = Map<number, RenderState>;
 export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
   getObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Nullable<string>;
+  isBuildingObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => boolean;
   buildObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Promise<string>;
 }
 
@@ -23,6 +24,10 @@ export const PageRenderContext = React.createContext<IPageRenderContext>({
   getObjectURLForPage: args => {
     logProviderWarning(`getObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
     return null;
+  },
+  isBuildingObjectURLForPage: args => {
+    logProviderWarning(`isBuildingObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+    return false;
   },
   buildObjectURLForPage: args => {
     logProviderWarning(`buildObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
@@ -34,18 +39,51 @@ export function usePageRenderContextProps({
   pdfDocProxy,
   scale,
   rotation,
+  zoomMultiplier,
   visiblePageNumbers: visiblePageNumbers,
 }: {
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   scale: number;
   rotation: PageRotation;
+  zoomMultiplier: number;
   visiblePageNumbers: Set<number>;
 }): IPageRenderContext {
-  const [pageRenderStates, setPageRenderStates] = React.useState<PageNumberToRenderStateMap>(() => {
-    const map = new Map();
-    Object.freeze(map);
-    return map;
-  });
+  const [pageRenderStates, _setPageRenderStates] = React.useState<PageNumberToRenderStateMap>(
+    () => {
+      const map = new Map();
+      Object.freeze(map);
+      return map;
+    }
+  );
+
+  // Because rendering a page is async, we will lose the current pageRenderStates
+  // This ref trick allows the latest to be accessible when the objectURL is ready
+  const pageRenderStatesRef = React.useRef(pageRenderStates);
+  const setPageRenderStates = React.useCallback(
+    (pageRenderStates: PageNumberToRenderStateMap) => {
+      pageRenderStatesRef.current = pageRenderStates;
+      console.log('setting page render states', [...pageRenderStates.keys()].join(', '));
+      _setPageRenderStates(pageRenderStates);
+    },
+    [pageRenderStatesRef]
+  );
+
+  const isBuildingObjectURLForPage = React.useCallback(
+    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): boolean => {
+      if (typeof pageIndex === 'number') {
+        pageNumber = pageIndex + 1;
+      }
+      if (typeof pageNumber !== 'number') {
+        return false;
+      }
+      const state = pageRenderStates.get(pageNumber);
+      if (!state) {
+        return false;
+      }
+      return !state.objectURL;
+    },
+    [pageRenderStates]
+  );
 
   const getObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Nullable<string> => {
@@ -71,23 +109,38 @@ export function usePageRenderContextProps({
       if (!pdfDocProxy) {
         throw new Error('cannot build a page until a "pdfDocProxy" is set on DocumentContext');
       }
-      const promise = buildPageObjectURL({ pageNumber, pdfDocProxy, scale, rotation });
+
+      // Don't need to start another task if already rendered
+      const existingPromise = pageRenderStates.get(pageNumber)?.promise;
+      if (existingPromise) {
+        return existingPromise;
+      }
+
+      const promise = buildPageObjectURL({
+        pageNumber,
+        pdfDocProxy,
+        scale,
+        rotation,
+        zoomMultiplier,
+      });
       const renderState: RenderState = {
         promise,
         objectURL: null,
       };
       promise.then(objectURL => {
         console.log(`Rendered page ${pageNumber}`, objectURL);
-        // TODO: This will not update the context with a new map. The scope of pageRenderStates may be wrong.
         renderState.objectURL = objectURL;
+        const newPageRenderStates = new Map(pageRenderStatesRef.current);
+        Object.freeze(newPageRenderStates);
+        setPageRenderStates(newPageRenderStates);
       });
-      const newPageRenderStates = new Map(pageRenderStates);
+      const newPageRenderStates = new Map(pageRenderStatesRef.current);
       newPageRenderStates.set(pageNumber, renderState);
       Object.freeze(newPageRenderStates);
       setPageRenderStates(newPageRenderStates);
       return promise;
     },
-    [pageRenderStates, pdfDocProxy, scale, rotation]
+    [pageRenderStates, pdfDocProxy, scale, rotation, zoomMultiplier]
   );
 
   React.useEffect(() => {
@@ -102,6 +155,7 @@ export function usePageRenderContextProps({
   return {
     pageRenderStates,
     getObjectURLForPage,
+    isBuildingObjectURLForPage,
     buildObjectURLForPage,
   };
 }
@@ -112,6 +166,7 @@ async function buildPageObjectURL({
   pdfDocProxy,
   scale = 1,
   rotation = PageRotation.Rotate0,
+  zoomMultiplier = 1.2,
   imageType = 'image/png',
   imageQuality = 1.0,
 }: {
@@ -119,6 +174,7 @@ async function buildPageObjectURL({
   pdfDocProxy: pdfjs.PDFDocumentProxy;
   scale?: number;
   rotation?: PageRotation;
+  zoomMultiplier?: number;
   imageType?: string;
   imageQuality?: number;
 }): Promise<string> {
@@ -130,7 +186,7 @@ async function buildPageObjectURL({
 
   const blob: Nullable<Blob> = await useRenderCanvas(async canvas => {
     // Render page in a canvas
-    const viewport = pageProxy.getViewport({ scale });
+    const viewport = pageProxy.getViewport({ scale: scale * zoomMultiplier * devicePixelRatio });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
     const canvasContext = canvas.getContext('2d');
@@ -186,5 +242,6 @@ async function useRenderCanvas<T>(callback: (canvas: HTMLCanvasElement) => Promi
   });
   nextCanvasUse = nextCanvasUse.then(() => callback(getRenderCanvas()).then(resolve, reject));
   const result = await prom;
+  await new Promise(res => setTimeout(res, 16)); // Give some time between renders
   return result;
 }

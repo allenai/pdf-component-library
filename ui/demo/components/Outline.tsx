@@ -1,4 +1,4 @@
-import { Outline as PdfOutline, UiContext } from '@allenai/pdf-components';
+import { Outline as PdfOutline, ThumbnailList, UiContext } from '@allenai/pdf-components';
 import { Drawer } from 'antd';
 import * as React from 'react';
 
@@ -26,6 +26,9 @@ export const Outline: React.FunctionComponent<Props> = ({ parentRef }: Props) =>
       getContainer={parentRef.current}
       className="reader__outline-drawer">
       <PdfOutline />
+      {isShowingOutline && (
+        <ThumbnailList />
+      )}
     </Drawer>
   );
 };
