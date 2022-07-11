@@ -7,7 +7,7 @@ describe('initPdfWorker', () => {
   it('pdf worker CDN matches the check in pingdom.com', () => {
     initPdfWorker();
     expect(pdfjs.GlobalWorkerOptions.workerSrc).to.equal(
-      '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.worker.min.js'
+      '//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js'
     );
   });
 });
