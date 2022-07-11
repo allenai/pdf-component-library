@@ -248,6 +248,7 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
         setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
     }
     export const DocumentContext: React.Context<IDocumentContext>;
+    export function useDocumentContextProps(): IDocumentContext;
 }
 
 declare module '@allenai/pdf-components/src/context/TransformContext' {
@@ -262,6 +263,7 @@ declare module '@allenai/pdf-components/src/context/TransformContext' {
         setZoomMultiplier: (zoom: number) => void;
     }
     export const TransformContext: React.Context<ITransformContext>;
+    export function useTransformContextProps(): ITransformContext;
 }
 
 declare module '@allenai/pdf-components/src/context/UiContext' {
@@ -280,6 +282,7 @@ declare module '@allenai/pdf-components/src/context/UiContext' {
         setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
     }
     export const UiContext: React.Context<IUiContext>;
+    export function useUiContextProps(): IUiContext;
 }
 
 declare module '@allenai/pdf-components/src/utils/rotate' {
