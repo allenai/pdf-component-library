@@ -5,7 +5,13 @@ import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { generatePageIdFromIndex } from '../utils/scroll';
 
+export enum ScrollDirection {
+  UP = 'UP',
+  DOWN = 'DOWN',
+}
+
 export interface IScrollContext {
+  scrollDirection: Nullable<ScrollDirection>;
   visibleOutlineTargets: Set<NodeDestination>;
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   scrollToOutlineTarget: (dest: NodeDestination) => void;
@@ -17,6 +23,7 @@ export interface IScrollContext {
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
+  scrollDirection: null,
   visibleOutlineTargets: new Set(),
   isOutlineTargetVisible: opts => {
     logProviderWarning(`isOutlineTargetVisible(${JSON.stringify(opts)})`, 'ScrollContext');
@@ -46,6 +53,43 @@ export const ScrollContext = React.createContext<IScrollContext>(DEFAULT_CONTEXT
 export function useScrollContextProps(): IScrollContext {
   // Node used for observing the scroll position
   const [scrollRoot, setScrollRoot] = React.useState<Nullable<Element>>(null);
+
+  // Determine scroll direction
+  const [scrollDirection, setScrollDirection] = React.useState<Nullable<ScrollDirection>>(null);
+  React.useEffect(() => {
+    const scrollElem = scrollRoot || document.documentElement;
+    if (!scrollElem) {
+      return;
+    }
+
+    let lastScrollY = 0;
+    let lastScrollDirection: Nullable<ScrollDirection> = scrollDirection; // HACK: This only sets the initial value when the scrollRoot changes
+    const onScroll = () => {
+      const currScrollY = scrollElem.scrollTop;
+      if (lastScrollY === currScrollY) {
+        return;
+      }
+
+      // Determine direction
+      const currScrollDirection = (() => {
+        if (currScrollY <= 0) {
+          return ScrollDirection.DOWN;
+        }
+        return lastScrollY < currScrollY ? ScrollDirection.DOWN : ScrollDirection.UP;
+      })();
+
+      // Update state, if changed
+      lastScrollY = currScrollY;
+      if (lastScrollDirection !== currScrollDirection) {
+        lastScrollDirection = currScrollDirection;
+        setScrollDirection(currScrollDirection);
+      }
+    };
+    scrollElem.addEventListener('scroll', onScroll, false);
+    return () => {
+      scrollElem.removeEventListener('scroll', onScroll, false);
+    };
+  }, [scrollRoot]);
 
   // Causes the IntersectionObservers to disconnect and be recreated (useful when DOM changes)
   const [observerIndex, setObserverIndex] = React.useState(0);
@@ -182,9 +226,11 @@ export function useScrollContextProps(): IScrollContext {
     visiblePageNumbers: [...visiblePageNumbers].join(', '),
     visibleOutlineTargets: [...visibleOutlineTargets].join(', '),
     observerIndex,
+    scrollDirection,
   });
 
   return {
+    scrollDirection,
     visibleOutlineTargets,
     isOutlineTargetVisible,
     scrollToOutlineTarget,

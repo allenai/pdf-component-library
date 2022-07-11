@@ -339,7 +339,12 @@ declare module '@allenai/pdf-components/src/context/ScrollContext' {
     import * as React from 'react';
     import { NodeDestination } from '@allenai/pdf-components/src/components/types/outline';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
+    export enum ScrollDirection {
+        UP = "UP",
+        DOWN = "DOWN"
+    }
     export interface IScrollContext {
+        scrollDirection: Nullable<ScrollDirection>;
         visibleOutlineTargets: Set<NodeDestination>;
         isOutlineTargetVisible: (dest: NodeDestination) => boolean;
         scrollToOutlineTarget: (dest: NodeDestination) => void;
