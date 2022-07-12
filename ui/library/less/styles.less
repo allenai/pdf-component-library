@@ -4,6 +4,7 @@
   background-color: @pdflib-page-background;
   margin: 24px;
   box-shadow: 0px 4px 14px fade(@pdflib-page-shadow, 20%);
+  flex: 1 0 auto;
   position: relative;
 }
 
@@ -35,7 +36,7 @@
   pointer-events: none;
   position: absolute;
   z-index: @z-index-bounding-box-overlay;
-  
+
   &.rotate0 {
     border-bottom: @bounding-box-border;
   }
@@ -56,6 +57,10 @@
   pointer-events: none;
   position: absolute;
   z-index: @z-index-bounding-box-overlay;
+}
+
+.react-pdf__Page {
+  height: 100%; // Causes the page to fill the flex parent
 }
 
 // HACK: avoid mis-alignment of selected texts
