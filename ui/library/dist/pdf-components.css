@@ -211,6 +211,7 @@
   background-color: #ffffff;
   margin: 24px;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.2);
+  flex: 1 0 auto;
   position: relative;
 }
 .reader__page-overlay {
@@ -253,6 +254,9 @@
   pointer-events: none;
   position: absolute;
   z-index: 1;
+}
+.react-pdf__Page {
+  height: 100%;
 }
 .react-pdf__Page__textContent > span {
   height: 0em!important;
