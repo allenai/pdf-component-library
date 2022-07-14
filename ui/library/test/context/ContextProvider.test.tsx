@@ -7,14 +7,33 @@ import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
+import { IScrollContext, ScrollContext} from '../../src/context/ScrollContext';
 
-describe('<ContextProvider/>', () => {
+
+describe('<ContextProvider/>', () => {  
   let wrapper: ReactWrapper;
   let documentContextProps: Nullable<IDocumentContext> = null;
   let transformContextProps: Nullable<ITransformContext> = null;
   let uiContextProps: Nullable<IUiContext> = null;
+  let scrollContextProps: Nullable<IScrollContext> = null;
 
-  beforeEach(() => {
+  before(() => {
+    (global as any).IntersectionObserver = class IntersectionObserver {
+      constructor() {}
+  
+      observe() {
+        return null;
+      }
+  
+      disconnect() {
+        return null;
+      };
+  
+      unobserve() {
+        return null;
+      }
+    };
+
     wrapper = mount(
       <ContextProvider>
         <DocumentContext.Consumer>
@@ -35,11 +54,19 @@ describe('<ContextProvider/>', () => {
             return null;
           }}
         </UiContext.Consumer>
+        <ScrollContext.Consumer>
+          {(args: IScrollContext) => {
+            scrollContextProps = args;
+            return null;
+          }}
+        </ScrollContext.Consumer>
       </ContextProvider>
     );
+    console.log(wrapper);
   });
 
-  afterEach(() => {
+  after(() => {
+    (global as any).IntersectionObserver = undefined;
     wrapper.unmount();
   });
 
@@ -53,5 +80,9 @@ describe('<ContextProvider/>', () => {
 
   it('should create a UiContext', () => {
     expect(uiContextProps).to.be.ok;
+  });
+
+  it('should create a ScrollContext', () => {
+    expect(scrollContextProps).to.be.ok;
   });
 });
