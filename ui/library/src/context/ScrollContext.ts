@@ -202,14 +202,6 @@ export function useScrollContextProps(): IScrollContext {
     };
   }, [scrollRoot, observerIndex]);
 
-  // TODO: DO NOT COMMIT
-  console.log({
-    visiblePageNumbers: [...visiblePageNumbers].join(', '),
-    visibleOutlineTargets: [...visibleOutlineTargets].join(', '),
-    observerIndex,
-    scrollDirection,
-  });
-
   return {
     scrollDirection,
     visibleOutlineTargets,
