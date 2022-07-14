@@ -64,36 +64,11 @@ export function useScrollContextProps(): IScrollContext {
       return;
     }
 
-    const scrollDirectionDetector = new ScrollDirectionDetector(scrollElem, scrollDirection as any);
-    
-    let lastScrollY = 0;
-    let lastScrollDirection: Nullable<ScrollDirection> = scrollDirection; // HACK: This only sets the initial value when the scrollRoot changes
-    const onScroll = () => {
-      const currScrollY = scrollElem.scrollTop;
-      if (lastScrollY === currScrollY) {
-        return;
-      }
+    const scrollDirectionDetector = new ScrollDirectionDetector(scrollElem, setScrollDirection);
 
-      // Determine direction
-      const currScrollDirection = (() => {
-        if (currScrollY <= 0) {
-          return ScrollDirection.DOWN;
-        }
-        return lastScrollY < currScrollY ? ScrollDirection.DOWN : ScrollDirection.UP;
-      })();
-
-      // Update state, if changed
-      lastScrollY = currScrollY;
-      if (lastScrollDirection !== currScrollDirection) {
-        lastScrollDirection = currScrollDirection;
-        console.log(currScrollDirection);
-        setScrollDirection(currScrollDirection);
-      }
-    };
     scrollDirectionDetector.attachScrollListener();
     return () => {
       scrollDirectionDetector.detachScrollListener();
-
     };
   }, [scrollRoot]);
 

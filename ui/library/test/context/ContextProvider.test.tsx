@@ -5,12 +5,11 @@ import * as React from 'react';
 import { Nullable } from '../../src/components/types/utils';
 import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
+import { IScrollContext, ScrollContext } from '../../src/context/ScrollContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
-import { IScrollContext, ScrollContext} from '../../src/context/ScrollContext';
 
-
-describe('<ContextProvider/>', () => {  
+describe('<ContextProvider/>', () => {
   let wrapper: ReactWrapper;
   let documentContextProps: Nullable<IDocumentContext> = null;
   let transformContextProps: Nullable<ITransformContext> = null;
@@ -19,16 +18,14 @@ describe('<ContextProvider/>', () => {
 
   before(() => {
     (global as any).IntersectionObserver = class IntersectionObserver {
-      constructor() {}
-  
       observe() {
         return null;
       }
-  
+
       disconnect() {
         return null;
-      };
-  
+      }
+
       unobserve() {
         return null;
       }

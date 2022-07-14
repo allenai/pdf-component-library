@@ -19,9 +19,7 @@ export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Pr
     <DocumentContext.Provider value={documentProps}>
       <TransformContext.Provider value={transformProps}>
         <UiContext.Provider value={uiProps}>
-          <ScrollContext.Provider value={scrollProps}>
-            {children}
-          </ScrollContext.Provider>
+          <ScrollContext.Provider value={scrollProps}>{children}</ScrollContext.Provider>
         </UiContext.Provider>
       </TransformContext.Provider>
     </DocumentContext.Provider>
