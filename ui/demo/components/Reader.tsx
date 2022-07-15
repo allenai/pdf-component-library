@@ -3,10 +3,9 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { samplePdfUrl, samplePdfSha } from '../data/FakeServer';
+import { samplePdfSha, samplePdfUrl } from '../data/FakeServer';
 import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
 import { RawCitation } from '../types/citations';
-import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { Outline } from './Outline';
 import { PDODContextProvider } from './PDODContext';
@@ -28,8 +27,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   );
   const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
 
-  const sampleS2airsUrl =
-   `http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=${samplePdfSha}`;
+  const sampleS2airsUrl = `http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=${samplePdfSha}`;
 
   React.useEffect(() => {
     // If data has been loaded then return directly to prevent sending multiple requests
@@ -63,11 +61,10 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
                   <PageWrapper key={i} pageIndex={i}>
                     <Overlay>
                       <ScrollToDemo pageIndex={i} />
-                      <PDODLayers pageIndex={i} parentRef={pdfScrollableRef} />
-                      <CitationsDemo
-                        annotations={annotations}
+                      <PDODLayers
                         pageIndex={i}
                         parentRef={pdfScrollableRef}
+                        annotations={annotations}
                       />
                     </Overlay>
                   </PageWrapper>

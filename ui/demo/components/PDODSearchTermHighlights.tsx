@@ -1,6 +1,5 @@
 import { BoundingBox } from '@allenai/pdf-components';
 import { BoundingBox as BoundingBoxType } from '@allenai/pdf-components/src/components/types/boundingBox';
-import { Popover } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 
@@ -13,8 +12,7 @@ type Props = {
   parentRef: React.RefObject<HTMLElement>;
 };
 
-export const PDODPopover: React.FunctionComponent<Props> = ({
-  parentRef,
+export const PDODSearchTermHighlights: React.FunctionComponent<Props> = ({
   item,
   boundingBox,
 }: Props) => {
@@ -22,12 +20,9 @@ export const PDODPopover: React.FunctionComponent<Props> = ({
 
   // Handler triggered when Ant Popover is shown or hidden
 
-  const handleClick = React.useCallback(
-    () => {
-      setTerm(old => item.text === old ? false : item.text);
-    },
-    [item.text]
-  );
+  const handleClick = React.useCallback(() => {
+    setTerm(old => (item.text === old ? false : item.text));
+  }, [item.text]);
 
   return (
     <BoundingBox

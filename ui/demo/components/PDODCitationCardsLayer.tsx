@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { PageToAnnotationsMap } from '../types/annotations';
-import { CitationPopover } from './CitationPopover';
+import { PDODCitationPopover } from './PDODCitationPopover';
 
 type Props = {
   annotations: PageToAnnotationsMap;
@@ -12,7 +12,7 @@ type Props = {
 /*
  * Example of rendering CitationPopovers
  */
-export const CitationsDemo: React.FunctionComponent<Props> = ({
+export const PDODCitationCardsLayer: React.FunctionComponent<Props> = ({
   annotations,
   pageIndex,
   parentRef,
@@ -24,7 +24,7 @@ export const CitationsDemo: React.FunctionComponent<Props> = ({
       const citations = entitiesForPage.citations;
       citations.map(citation => {
         citationPopovers.push(
-          <CitationPopover key={citation.id} citation={citation} parentRef={parentRef} />
+          <PDODCitationPopover key={citation.id} citation={citation} parentRef={parentRef} />
         );
       });
     }

@@ -5,8 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 
 import { rawAnnotations as _rawAnnotations } from '../data/FakeServer';
 import { RawCitation } from '../types/citations';
-
-import { PDODPopover } from './PDODPopover';
+import { PDODSearchTermHighlights } from './PDODSearchTermHighlights';
 
 type Props = {
   pageIndex: number;
@@ -17,8 +16,6 @@ export interface Item {
   text: string;
   bbox: BoundingBox[];
 }
-
-type RawItem = Item & { page: number };
 
 type PageToItems = Map<number, Item[]>;
 
@@ -67,7 +64,12 @@ export const PDODTermLayer: React.FunctionComponent<Props> = (props: Props) => {
     if (itemsForPage) {
       itemsForPage.map((item, idx) => {
         itemPopovers.push(
-          <PDODPopover key={idx} item={item} boundingBox={item.bbox[0]} parentRef={parentRef} />
+          <PDODSearchTermHighlights
+            key={idx}
+            item={item}
+            boundingBox={item.bbox[0]}
+            parentRef={parentRef}
+          />
         );
       });
     }

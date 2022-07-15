@@ -1,11 +1,10 @@
 import { BoundingBox } from '@allenai/pdf-components';
-import { BoundingBox as BoundingBoxType } from '@allenai/pdf-components/src/components/types/boundingBox';
 import { DocumentContext, scaleRawBoundingBox } from '@allenai/pdf-components';
+import { BoundingBox as BoundingBoxType } from '@allenai/pdf-components/src/components/types/boundingBox';
 import * as React from 'react';
 import { useContext, useEffect, useState } from 'react';
-import { usePDODContext } from './PDODContext';
 
-import { PDODPopover } from './PDODPopover';
+import { usePDODContext } from './PDODContext';
 
 type Props = {
   pageIndex: number;
@@ -18,15 +17,13 @@ export interface Item {
   idx?: number;
 }
 
-type RawItem = Item & { page: number };
-
 type PageToItems = Map<number, Item[]>;
 
 /*
  * Example of rendering CitationPopovers
  */
 export const PDODResultsLayer: React.FunctionComponent<Props> = (props: Props) => {
-  const { pageIndex, parentRef } = props;
+  const { pageIndex } = props;
   const [annotations, setAnnotations] = useState<PageToItems>(new Map());
   const { results } = usePDODContext();
 
@@ -45,9 +42,9 @@ export const PDODResultsLayer: React.FunctionComponent<Props> = (props: Props) =
         newAnnotations.get(page)?.push({
           text: token.text.join(' ').replace('- ', ''),
           bbox: token.bbox.map(scale),
-          idx: idx === 0 ? item.idx : undefined
+          idx: idx === 0 ? item.idx : undefined,
         });
-      })
+      });
     });
     setAnnotations(newAnnotations);
   }, [results, pageDimensions]);
@@ -72,8 +69,8 @@ export const PDODResultsLayer: React.FunctionComponent<Props> = (props: Props) =
         );
         if (item.bbox.length > 1) {
           item.bbox.forEach((box, idx2) => {
-            if (idx2 === 0){
-              return
+            if (idx2 === 0) {
+              return;
             }
             itemPopovers.push(
               <BoundingBox
@@ -87,8 +84,7 @@ export const PDODResultsLayer: React.FunctionComponent<Props> = (props: Props) =
                 isHighlighted={true}
               />
             );
-
-          })
+          });
         }
       });
     }
