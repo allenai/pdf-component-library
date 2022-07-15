@@ -30,6 +30,7 @@ import { ZoomInButton } from './src/components/ZoomInButton';
 import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
+import { IScrollContext, ScrollContext } from './src/context/ScrollContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
 import {
@@ -55,6 +56,7 @@ export type {
   DownloadButtonProps,
   HighlightOverlayProps,
   IDocumentContext,
+  IScrollContext,
   ITransformContext,
   IUiContext,
   NodeDestination,
@@ -91,6 +93,7 @@ export {
   rotateClockwise,
   rotateCounterClockwise,
   scaleRawBoundingBox,
+  ScrollContext,
   scrollToId,
   scrollToPdfPageIndex,
   TransformContext,
@@ -122,6 +125,7 @@ export default {
   scaleRawBoundingBox,
   scrollToId,
   scrollToPdfPageIndex,
+  ScrollContext,
   TransformContext,
   UiContext,
   ZoomInButton,

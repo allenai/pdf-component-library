@@ -17,20 +17,6 @@ describe('<ContextProvider/>', () => {
   let scrollContextProps: Nullable<IScrollContext> = null;
 
   before(() => {
-    (global as any).IntersectionObserver = class IntersectionObserver {
-      observe() {
-        return null;
-      }
-
-      disconnect() {
-        return null;
-      }
-
-      unobserve() {
-        return null;
-      }
-    };
-
     wrapper = mount(
       <ContextProvider>
         <DocumentContext.Consumer>
@@ -59,11 +45,9 @@ describe('<ContextProvider/>', () => {
         </ScrollContext.Consumer>
       </ContextProvider>
     );
-    console.log(wrapper);
   });
 
   after(() => {
-    (global as any).IntersectionObserver = undefined;
     wrapper.unmount();
   });
 

@@ -1,4 +1,4 @@
-import { DocumentContext, DocumentWrapper, Overlay, PageWrapper } from '@allenai/pdf-components';
+import { DocumentContext, DocumentWrapper, Overlay, PageWrapper, ScrollContext } from '@allenai/pdf-components';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -14,6 +14,7 @@ import { TextHighlightDemo } from './TextHighlightDemo';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageDimensions, numPages } = React.useContext(DocumentContext);
+  const { setScrollRoot } = React.useContext(ScrollContext);
   const [annotations, setAnnotations] = React.useState<PageToAnnotationsMap>(
     new Map<number, Annotations>()
   );
@@ -41,6 +42,11 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         setRawCitations(data[0].citations);
       });
   }, [pageDimensions]);
+
+  React.useEffect(() => {
+    setScrollRoot(pdfScrollableRef.current || null);
+  }, [pdfScrollableRef]);
+
 
   // Attaches annotation data to paper
   React.useEffect(() => {
