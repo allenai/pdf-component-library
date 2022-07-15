@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Nullable } from '../../src/components/types/utils';
 import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
+import { IScrollContext, ScrollContext } from '../../src/context/ScrollContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
 
@@ -13,8 +14,9 @@ describe('<ContextProvider/>', () => {
   let documentContextProps: Nullable<IDocumentContext> = null;
   let transformContextProps: Nullable<ITransformContext> = null;
   let uiContextProps: Nullable<IUiContext> = null;
+  let scrollContextProps: Nullable<IScrollContext> = null;
 
-  beforeEach(() => {
+  before(() => {
     wrapper = mount(
       <ContextProvider>
         <DocumentContext.Consumer>
@@ -35,11 +37,17 @@ describe('<ContextProvider/>', () => {
             return null;
           }}
         </UiContext.Consumer>
+        <ScrollContext.Consumer>
+          {(args: IScrollContext) => {
+            scrollContextProps = args;
+            return null;
+          }}
+        </ScrollContext.Consumer>
       </ContextProvider>
     );
   });
 
-  afterEach(() => {
+  after(() => {
     wrapper.unmount();
   });
 
@@ -53,5 +61,9 @@ describe('<ContextProvider/>', () => {
 
   it('should create a UiContext', () => {
     expect(uiContextProps).to.be.ok;
+  });
+
+  it('should create a ScrollContext', () => {
+    expect(scrollContextProps).to.be.ok;
   });
 });
