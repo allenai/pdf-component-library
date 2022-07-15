@@ -1,6 +1,9 @@
 import { Nullable } from '../components/types/utils';
-import { ScrollDirection } from '../context/ScrollContext';
 
+export enum ScrollDirection {
+  UP = 'UP',
+  DOWN = 'DOWN',
+}
 export default class ScrollDetector {
   _lastScrollTop: number;
   _lastScrollDirection: Nullable<ScrollDirection>;

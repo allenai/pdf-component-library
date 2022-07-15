@@ -2,12 +2,7 @@ import * as React from 'react';
 
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
-import ScrollDetector from '../utils/ScrollDirectionDetector';
-
-export enum ScrollDirection {
-  UP = 'UP',
-  DOWN = 'DOWN',
-}
+import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
 
 export interface IScrollContext {
   scrollDirection: Nullable<ScrollDirection>;

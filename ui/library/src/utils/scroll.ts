@@ -1,4 +1,3 @@
-import { Dimensions } from '../components/types/boundingBox';
 import { PageProperties } from '../components/types/page';
 import { Nullable } from '../components/types/utils';
 import { PageRotation } from '../utils/rotate';
@@ -168,27 +167,4 @@ export function getPagePropertiesInPixels(): PageProperties {
   };
 
   return pageProperties;
-}
-
-export function calculateTargetPosition({
-  scale,
-  rotation = PageRotation.Rotate0,
-  leftPoint,
-  bottomPoint,
-  pageDimensions,
-}: {
-  scale: number;
-  rotation: PageRotation;
-  leftPoint: number;
-  bottomPoint: number;
-  pageDimensions: Dimensions;
-}): { leftPx: number; topPx: number } {
-  switch (rotation) {
-    default:
-    case PageRotation.Rotate0: {
-      const leftPx = (leftPoint / PDF_WIDTH_POINTS) * pageDimensions.width * scale;
-      const topPx = (1 - bottomPoint / PDF_HEIGHT_POINTS) * pageDimensions.height * scale;
-      return { leftPx, topPx };
-    }
-  }
 }
