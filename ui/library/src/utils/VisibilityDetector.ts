@@ -57,13 +57,13 @@ export default class VisibilityDetector<TEntry> {
     );
   }
 
-  observer(selector: string): void {
+  observeNodes(selector: string): void {
     for (const node of this._root.querySelectorAll(selector)) {
       this._observer.observe(node);
     }
   }
 
-  disconnect(): void {
+  destroy(): void {
     this._observer.disconnect();
   }
 }
