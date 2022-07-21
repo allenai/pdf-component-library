@@ -18,10 +18,18 @@ export default class ScrollDetector {
   }
 
   attachScrollListener(): void {
+    if (this._el?.tagName?.toLowerCase() === 'html') {
+      window.addEventListener('scroll', this._onScroll, false);
+      return;
+    }
     this._el.addEventListener('scroll', this._onScroll, false);
   }
 
   detachScrollListener(): void {
+    if (this._el?.tagName?.toLowerCase() === 'html') {
+      window.removeEventListener('scroll', this._onScroll, false);
+      return;
+    }
     this._el.removeEventListener('scroll', this._onScroll, false);
   }
 
