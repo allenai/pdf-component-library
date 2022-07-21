@@ -3,7 +3,8 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import { samplePdfSha, samplePdfUrl } from '../data/FakeServer';
+import { samplePdfUrl } from '../data/FakeServer';
+import sampleS2airsData from '../data/s2airs.c17d4dc311d6187709b2971ab99b855f53a12608.json';
 import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
 import { RawCitation } from '../types/citations';
 import { Header } from './Header';
@@ -27,15 +28,20 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   );
   const [rawCitations, setRawCitations] = React.useState<RawCitation[]>();
 
-  const sampleS2airsUrl = `http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=${samplePdfSha}`;
+  // const sampleS2airsUrl = `http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=${samplePdfSha}`;
 
   React.useEffect(() => {
     // If data has been loaded then return directly to prevent sending multiple requests
-    fetch(sampleS2airsUrl, { referrer: '' })
-      .then(response => response.json())
-      .then(data => {
-        setRawCitations(data[0].citations);
-      });
+
+    const citations = (sampleS2airsData as unknown as { citations: RawCitation[] }[])[0]?.citations;
+    if (citations) {
+      setRawCitations(citations);
+    }
+    // fetch(sampleS2airsUrl, { referrer: '' })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     setRawCitations(data[0].citations);
+    //   });
   }, [pageDimensions]);
 
   // Attaches annotation data to paper
