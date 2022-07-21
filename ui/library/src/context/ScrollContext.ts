@@ -5,17 +5,32 @@ import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
-import VisibilityDetector from '../utils/VisibilityDetector';
+import VisibleEntriesDetector from '../utils/VisibilityEntriesDetector';
+
+export type PageInfo = {
+  pageNumber?: number;
+  pageIndex?: number;
+};
+
+const OUTLINE_ATTRIBUTE = 'data-outline-target-dest';
+
+const OUTLINE_SELECTOR = '.reader__page__outline-target';
+
+const PAGE_NUMBER_QUERY_SELECTOR = 'data-page-number';
+
+const PAGE_NUMBER_ATTRIBUTE = 'data-page-number';
+
+const PAGE_NUMBER_SELECTOR = '.reader__page';
 
 export interface IScrollContext {
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
-  isPageVisible: (opts: { pageNumber?: number; pageIndex?: number }) => boolean;
+  isPageVisible: (opts: PageInfo) => boolean;
   scrollDirection: Nullable<ScrollDirection>;
   visibleOutlineTargets: Set<NodeDestination>;
   visiblePageNumbers: Set<number>;
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
-  scrollToPage: (opts: { pageNumber?: number; pageIndex?: number }) => void;
+  scrollToPage: (opts: PageInfo) => void;
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
@@ -92,7 +107,7 @@ export function useScrollContextProps(): IScrollContext {
   );
 
   const isPageVisible = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): boolean => {
+    ({ pageNumber, pageIndex }: PageInfo): boolean => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -104,41 +119,38 @@ export function useScrollContextProps(): IScrollContext {
     [visiblePageNumbers]
   );
 
-  const scrollToPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): void => {
-      if (typeof pageNumber === 'number') {
-        pageIndex = pageNumber - 1;
-      }
-      if (typeof pageIndex !== 'number') {
-        return;
-      }
-      document
-        .getElementById(generatePageIdFromIndex(pageIndex))
-        ?.scrollIntoView({ behavior: 'smooth' });
-    },
-    []
-  );
+  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageInfo): void => {
+    if (typeof pageNumber === 'number') {
+      pageIndex = pageNumber - 1;
+    }
+    if (typeof pageIndex !== 'number') {
+      return;
+    }
+    document
+      .getElementById(generatePageIdFromIndex(pageIndex))
+      ?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   // Watch outline nodes
   React.useEffect(() => {
     const root = scrollRoot || document.documentElement;
-    const detector = new VisibilityDetector<NodeDestination>({
+    const detector = new VisibleEntriesDetector<NodeDestination>({
       root: root,
-      setEntries: setVisibleOutlineNodes,
-      onVisibilityChange: ({ visibleElements, hiddenElements, lastEntries }) => {
+      setVisibleEntries: setVisibleOutlineNodes,
+      onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
         const newEntries = new Set(lastEntries);
-        for (const el of hiddenElements) {
-          const dest = el.getAttribute('data-outline-target-dest');
+        for (const el of hiddenEntries) {
+          const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
           newEntries.delete(dest);
         }
-        for (const el of visibleElements) {
-          const dest = el.getAttribute('data-outline-target-dest');
+        for (const el of visibleEntries) {
+          const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
           newEntries.add(dest);
         }
         return newEntries;
       },
     });
-    detector.observeNodes('.reader__page__outline-target');
+    detector.observeNodes(OUTLINE_SELECTOR);
     return () => {
       detector.destroy();
     };
@@ -147,25 +159,25 @@ export function useScrollContextProps(): IScrollContext {
   // Watch pages
   React.useEffect(() => {
     const root = scrollRoot || document.documentElement;
-    const detector = new VisibilityDetector<number>({
+    const detector = new VisibleEntriesDetector<number>({
       root: root,
-      setEntries: setVisiblePageNumbers,
-      onVisibilityChange: ({ visibleElements, hiddenElements, lastEntries }) => {
+      setVisibleEntries: setVisiblePageNumbers,
+      onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
         const newEntries = new Set(lastEntries);
-        for (const el of hiddenElements) {
-          const elPage = el.querySelector('data-page-number');
-          const pageNumber = parseInt(elPage?.getAttribute('data-page-number') || '', 10);
+        for (const el of hiddenEntries) {
+          const elPage = el.target.querySelector(PAGE_NUMBER_QUERY_SELECTOR);
+          const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
           newEntries.delete(pageNumber);
         }
-        for (const el of visibleElements) {
-          const elPage = el.querySelector('data-page-number');
-          const pageNumber = parseInt(elPage?.getAttribute('data-page-number') || '', 10);
+        for (const el of visibleEntries) {
+          const elPage = el.target.querySelector(PAGE_NUMBER_QUERY_SELECTOR);
+          const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
           newEntries.add(pageNumber);
         }
         return newEntries;
       },
     });
-    detector.observeNodes('.reader__page');
+    detector.observeNodes(PAGE_NUMBER_SELECTOR);
     return () => {
       detector.destroy();
     };

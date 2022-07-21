@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import VisibilityDetector from '../../src/utils/VisibilityDetector';
+import VisibilityEntriesDetector from '../../src/utils/VisibilityEntriesDetector';
 
 class MockIntersectionObserver {
   constructor(onChange) {
@@ -37,32 +37,32 @@ describe('VisibilityDetector', () => {
   it('should pass the value return when calling OnVisibilityChange to setEntries', () => {
     const expectedEntries = new Set([1, 2, 3]);
     const mockRoot = {};
-    const mockSetEntries = sandbox.mock();
+    const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityDetector({
+    const detector = new VisibilityEntriesDetector({
       root: mockRoot,
-      setEntries: mockSetEntries,
-      onVisibilityChange: mockOnVisibilityChange,
+      setVisibleEntries: mockSetVisibleEntries,
+      onVisibleEntriesChange: mockOnVisibilityChange,
     });
 
     const mockEntries = [];
     mockObserver.__onChange(mockEntries);
 
-    expect(Array.from(detector._lastEntries)).to.deep.equal(Array.from(expectedEntries));
+    expect(Array.from(detector._lastVisibleEntries)).to.deep.equal(Array.from(expectedEntries));
   });
 
-  it('should receive correct visibleElements, hiddenElements when calling OnVisibilityChange', () => {
+  it('should receive correct visibleEntries, hiddenEntries when calling OnVisibilityChange', () => {
     const expectedEntries = new Set([1, 2, 3]);
     const mockRoot = {};
-    const mockSetEntries = sandbox.mock();
+    const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const detector = new VisibilityDetector({
+    const detector = new VisibilityEntriesDetector({
       root: mockRoot,
-      setEntries: mockSetEntries,
-      onVisibilityChange: mockOnVisibilityChange,
+      setVisibleEntries: mockSetVisibleEntries,
+      onVisibleEntriesChange: mockOnVisibilityChange,
     });
 
     const mockEntries = [
@@ -74,27 +74,30 @@ describe('VisibilityDetector', () => {
     mockObserver.__onChange(mockEntries);
 
     const args = mockOnVisibilityChange.args[0][0];
-    expect(args?.visibleElements).to.deep.equal(['visible.2', 'visible.3']);
-    expect(args?.hiddenElements).to.deep.equal(['hidden.1', 'hidden.4']);
+    const visibleEntries = args?.visibleEntries.map(entry => entry.target);
+    const hidddenEntries = args?.hiddenEntries.map(entry => entry.target);
+
+    expect(Array.from(visibleEntries)).to.deep.equal(['visible.2', 'visible.3']);
+    expect(Array.from(hidddenEntries)).to.deep.equal(['hidden.1', 'hidden.4']);
     expect(Array.from(args?.lastEntries)).to.deep.equal([]);
   });
 
   it('should pass the last return of visibility change as last entry', () => {
     const expectedEntries = new Set([1, 2, 3]);
     const mockRoot = {};
-    const mockSetEntries = sandbox.mock();
+    const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityDetector({
+    const detector = new VisibilityEntriesDetector({
       root: mockRoot,
-      setEntries: mockSetEntries,
-      onVisibilityChange: mockOnVisibilityChange,
+      setVisibleEntries: mockSetVisibleEntries,
+      onVisibleEntriesChange: mockOnVisibilityChange,
     });
 
     const mockEntries = [];
     mockObserver.__onChange(mockEntries);
 
-    expect(Array.from(detector._lastEntries)).to.deep.equal(Array.from(expectedEntries));
+    expect(Array.from(detector._lastVisibleEntries)).to.deep.equal(Array.from(expectedEntries));
   });
 
   it('should find node to observe based on the pass selector', () => {
@@ -102,13 +105,13 @@ describe('VisibilityDetector', () => {
     const mockRoot = {
       querySelectorAll: () => ['.test', '.test1'],
     };
-    const mockSetEntries = sandbox.mock();
+    const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityDetector({
+    const detector = new VisibilityEntriesDetector({
       root: mockRoot,
-      setEntries: mockSetEntries,
-      onVisibilityChange: mockOnVisibilityChange,
+      setVisibleEntries: mockSetVisibleEntries,
+      onVisibleEntriesChange: mockOnVisibilityChange,
     });
 
     const mockEntries = [];
@@ -125,13 +128,13 @@ describe('VisibilityDetector', () => {
     const mockRoot = {
       querySelectorAll: () => Array.from(['.test', '.test1']),
     };
-    const mockSetEntries = sandbox.mock();
+    const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityDetector({
+    const detector = new VisibilityEntriesDetector({
       root: mockRoot,
-      setEntries: mockSetEntries,
-      onVisibilityChange: mockOnVisibilityChange,
+      setVisibleEntries: mockSetVisibleEntries,
+      onVisibleEntriesChange: mockOnVisibilityChange,
     });
 
     const mockEntries = [];
