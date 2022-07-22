@@ -46,6 +46,8 @@ export default class VisibleEntriesDetector<TEntry> {
         this._lastVisibleEntries = frozenEntries;
         this._setVisibleEntries(frozenEntries);
       },
+
+      // Default setting for intersection observer
       {
         root: this._root,
         rootMargin: DEFAULT_ROOT_MARGIN,
