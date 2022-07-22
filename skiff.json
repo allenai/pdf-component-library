@@ -1,5 +1,5 @@
 {
-    "appName": "pdod",
+    "appName": "pdf-reader",
     "contact": "s2-online",
     "team": "s2",
     "replicas": { "prod": 1 }
