@@ -8,6 +8,7 @@ import { DocumentContext, IDocumentContext } from '../../src/context/DocumentCon
 import { IScrollContext, ScrollContext } from '../../src/context/ScrollContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
+import MockIntersectionObserver from '../mock/MockIntersectionObserver';
 
 describe('<ContextProvider/>', () => {
   let wrapper: ReactWrapper;
@@ -17,6 +18,10 @@ describe('<ContextProvider/>', () => {
   let scrollContextProps: Nullable<IScrollContext> = null;
 
   before(() => {
+    (global as any).IntersectionObserver = function (...args) {
+      const inst = new MockIntersectionObserver(...args);
+      return inst;
+    };
     wrapper = mount(
       <ContextProvider>
         <DocumentContext.Consumer>
@@ -48,6 +53,7 @@ describe('<ContextProvider/>', () => {
   });
 
   after(() => {
+    (global as any).IntersectionObserver = undefined;
     wrapper.unmount();
   });
 
