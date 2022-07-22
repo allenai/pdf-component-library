@@ -21,7 +21,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     scrollDirectionDetector._onScroll();
 
     expect(scrollDirection).to.equal(null);
@@ -44,7 +44,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -68,7 +68,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 100;
     scrollDirectionDetector._onScroll();
 
@@ -92,7 +92,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -121,7 +121,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 90;
     scrollDirectionDetector._onScroll();
 
@@ -150,7 +150,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -179,7 +179,7 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection);
+    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
     mockScroll.scrollTop = 90;
     scrollDirectionDetector._onScroll();
 
