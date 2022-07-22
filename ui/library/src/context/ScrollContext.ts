@@ -7,6 +7,10 @@ import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
 import VisibleEntriesDetector from '../utils/VisibilityEntriesDetector';
 
+/**
+ * pageNumber: number starts from 1
+ * pageIndex: number starts from 0
+ */
 export type PageNumber = {
   pageNumber?: number;
   pageIndex?: number;
