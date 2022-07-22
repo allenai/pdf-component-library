@@ -8,21 +8,7 @@ import { DocumentContext, IDocumentContext } from '../../src/context/DocumentCon
 import { IScrollContext, ScrollContext } from '../../src/context/ScrollContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
-
-class MockIntersectionObserver {
-  constructor(onChange) {
-    this.__onChange = onChange;
-  }
-  observe() {
-    return null;
-  }
-  disconnect() {
-    return null;
-  }
-  unobserve() {
-    return null;
-  }
-}
+import MockIntersectionObserver from '../mock/MockIntersectionObserver';
 
 describe('<ContextProvider/>', () => {
   let wrapper: ReactWrapper;

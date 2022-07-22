@@ -7,7 +7,7 @@ import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
 import VisibleEntriesDetector from '../utils/VisibilityEntriesDetector';
 
-export type PageInfo = {
+export type PageNumber = {
   pageNumber?: number;
   pageIndex?: number;
 };
@@ -24,13 +24,13 @@ const PAGE_NUMBER_SELECTOR = '.reader__page';
 
 export interface IScrollContext {
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
-  isPageVisible: (opts: PageInfo) => boolean;
+  isPageVisible: (pageNumber: PageNumber) => boolean;
   scrollDirection: Nullable<ScrollDirection>;
   visibleOutlineTargets: Set<NodeDestination>;
   visiblePageNumbers: Set<number>;
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
-  scrollToPage: (opts: PageInfo) => void;
+  scrollToPage: (pageNumber: PageNumber) => void;
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
@@ -107,7 +107,7 @@ export function useScrollContextProps(): IScrollContext {
   );
 
   const isPageVisible = React.useCallback(
-    ({ pageNumber, pageIndex }: PageInfo): boolean => {
+    ({ pageNumber, pageIndex }: PageNumber): boolean => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -119,7 +119,7 @@ export function useScrollContextProps(): IScrollContext {
     [visiblePageNumbers]
   );
 
-  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageInfo): void => {
+  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageNumber): void => {
     if (typeof pageNumber === 'number') {
       pageIndex = pageNumber - 1;
     }

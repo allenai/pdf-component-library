@@ -2,21 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 
 import VisibilityEntriesDetector from '../../src/utils/VisibilityEntriesDetector';
-
-class MockIntersectionObserver {
-  constructor(onChange) {
-    this.__onChange = onChange;
-  }
-  observe() {
-    return null;
-  }
-  disconnect() {
-    return null;
-  }
-  unobserve() {
-    return null;
-  }
-}
+import MockIntersectionObserver from '../mock/MockIntersectionObserver';
 
 describe('VisibilityDetector', () => {
   const sandbox = sinon.createSandbox();
