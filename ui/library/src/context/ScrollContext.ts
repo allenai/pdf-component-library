@@ -5,7 +5,7 @@ import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
-import VisibleEntriesDetector from '../utils/VisibilityEntriesDetector';
+import VisibleEntriesDetector from '../utils/VisibleEntriesDetector';
 
 /**
  * pageNumber: number starts from 1

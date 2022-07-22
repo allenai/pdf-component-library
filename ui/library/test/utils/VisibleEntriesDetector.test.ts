@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 
-import VisibilityEntriesDetector from '../../src/utils/VisibilityEntriesDetector';
+import VisibleEntriesDetector from '../../src/utils/VisibleEntriesDetector';
 import MockIntersectionObserver from '../mock/MockIntersectionObserver';
 
 describe('VisibilityDetector', () => {
@@ -26,7 +26,7 @@ describe('VisibilityDetector', () => {
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityEntriesDetector({
+    const detector = new VisibleEntriesDetector({
       root: mockRoot,
       setVisibleEntries: mockSetVisibleEntries,
       onVisibleEntriesChange: mockOnVisibilityChange,
@@ -45,7 +45,7 @@ describe('VisibilityDetector', () => {
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const detector = new VisibilityEntriesDetector({
+    const detector = new VisibleEntriesDetector({
       root: mockRoot,
       setVisibleEntries: mockSetVisibleEntries,
       onVisibleEntriesChange: mockOnVisibilityChange,
@@ -74,7 +74,7 @@ describe('VisibilityDetector', () => {
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityEntriesDetector({
+    const detector = new VisibleEntriesDetector({
       root: mockRoot,
       setVisibleEntries: mockSetVisibleEntries,
       onVisibleEntriesChange: mockOnVisibilityChange,
@@ -94,7 +94,7 @@ describe('VisibilityDetector', () => {
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityEntriesDetector({
+    const detector = new VisibleEntriesDetector({
       root: mockRoot,
       setVisibleEntries: mockSetVisibleEntries,
       onVisibleEntriesChange: mockOnVisibilityChange,
@@ -117,7 +117,7 @@ describe('VisibilityDetector', () => {
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
 
-    const detector = new VisibilityEntriesDetector({
+    const detector = new VisibleEntriesDetector({
       root: mockRoot,
       setVisibleEntries: mockSetVisibleEntries,
       onVisibleEntriesChange: mockOnVisibilityChange,
