@@ -35,6 +35,9 @@ export interface IScrollContext {
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
   scrollToPage: (pageNumber: PageNumber) => void;
+  setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
+  scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
+  isAtTop: Nullable<boolean>;
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
@@ -58,6 +61,11 @@ const DEFAULT_CONTEXT: IScrollContext = {
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
   },
+  setScrollThreshold: (scrollThreshold: Nullable<number>) => {
+    logProviderWarning(`setScrollThreshold(${scrollThreshold})`, 'ScrollContext');
+  },
+  scrollThresholdReachedInDirection: null,
+  isAtTop: null,
 };
 
 export const ScrollContext = React.createContext<IScrollContext>(DEFAULT_CONTEXT);
@@ -68,6 +76,9 @@ export function useScrollContextProps(): IScrollContext {
 
   // Determine scroll direction
   const [scrollDirection, setScrollDirection] = React.useState<Nullable<ScrollDirection>>(null);
+  const [scrollThreshold, setScrollThreshold] = React.useState<Nullable<number>>(null);
+  const [scrollThresholdReachedInDirection, setScrollThresholdReachedInDirection] = React.useState<Nullable<ScrollDirection>>(null);
+  const [isAtTop, setIsAtTop] = React.useState<Nullable<boolean>>(null);
 
   React.useEffect(() => {
     const scrollElem = scrollRoot || document.documentElement;
@@ -75,13 +86,24 @@ export function useScrollContextProps(): IScrollContext {
       return;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(scrollElem, setScrollDirection);
+    let scrollDirectionDetector: ScrollDetector; 
+    if (!scrollThreshold) { // scroll threshold is optional
+      scrollDirectionDetector = new ScrollDetector(scrollElem, setScrollDirection, setIsAtTop);
+    } else {
+      scrollDirectionDetector = new ScrollDetector(
+        scrollElem,
+        setScrollDirection,
+        setIsAtTop, 
+        setScrollThresholdReachedInDirection,
+        scrollThreshold, 
+      );
+    }
 
     scrollDirectionDetector.attachScrollListener();
     return () => {
       scrollDirectionDetector.detachScrollListener();
     };
-  }, [scrollRoot]);
+  }, [scrollRoot, scrollThreshold]);
 
   // Causes the IntersectionObservers to disconnect and be recreated (useful when DOM changes)
   const [observerIndex, setObserverIndex] = React.useState(0);
@@ -195,6 +217,9 @@ export function useScrollContextProps(): IScrollContext {
     visiblePageNumbers,
     resetScrollObservers,
     setScrollRoot,
-    scrollToPage,
+    scrollToPage, 
+    setScrollThreshold,
+    scrollThresholdReachedInDirection,
+    isAtTop, 
   };
 }
