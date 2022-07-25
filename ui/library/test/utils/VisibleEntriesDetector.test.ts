@@ -21,7 +21,10 @@ describe('VisibilityDetector', () => {
   });
 
   it('should pass the value return when calling OnVisibilityChange to setEntries', () => {
-    const expectedEntries = new Set([1, 2, 3]);
+    const expectedEntries = new Map();
+    expectedEntries.set(1, 0.00123);
+    expectedEntries.set(2, 0.012567);
+    expectedEntries.set(3, 0.2);
     const mockRoot = {};
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
@@ -39,7 +42,10 @@ describe('VisibilityDetector', () => {
   });
 
   it('should receive correct visibleEntries, hiddenEntries when calling OnVisibilityChange', () => {
-    const expectedEntries = new Set([1, 2, 3]);
+    const expectedEntries = new Map();
+    expectedEntries.set(1, 0.00123);
+    expectedEntries.set(2, 0.012567);
+    expectedEntries.set(3, 0.2);
     const mockRoot = {};
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
@@ -52,10 +58,10 @@ describe('VisibilityDetector', () => {
     });
 
     const mockEntries = [
-      { isIntersecting: false, target: 'hidden.1' },
-      { isIntersecting: true, target: 'visible.2' },
-      { isIntersecting: true, target: 'visible.3' },
-      { isIntersecting: false, target: 'hidden.4' },
+      { isIntersecting: false, target: 'hidden.1', intersectionRatio: 0.002345 },
+      { isIntersecting: true, target: 'visible.2', intersectionRatio: 0.0543 },
+      { isIntersecting: true, target: 'visible.3', intersectionRatio: 0.123456 },
+      { isIntersecting: false, target: 'hidden.4', intersectionRatio: 0.000456 },
     ];
     mockObserver.__onChange(mockEntries);
 
@@ -63,13 +69,16 @@ describe('VisibilityDetector', () => {
     const visibleEntries = args?.visibleEntries.map(entry => entry.target);
     const hidddenEntries = args?.hiddenEntries.map(entry => entry.target);
 
-    expect(Array.from(visibleEntries)).to.deep.equal(['visible.2', 'visible.3']);
+    expect(Array.from(visibleEntries)).to.deep.equal(['visible.3']);
     expect(Array.from(hidddenEntries)).to.deep.equal(['hidden.1', 'hidden.4']);
     expect(Array.from(args?.lastEntries)).to.deep.equal([]);
   });
 
   it('should pass the last return of visibility change as last entry', () => {
-    const expectedEntries = new Set([1, 2, 3]);
+    const expectedEntries = new Map();
+    expectedEntries.set(1, 0.00123);
+    expectedEntries.set(2, 0.012567);
+    expectedEntries.set(3, 0.2);
     const mockRoot = {};
     const mockSetVisibleEntries = sandbox.mock();
     const mockOnVisibilityChange = sandbox.mock().returns(expectedEntries);
@@ -87,7 +96,10 @@ describe('VisibilityDetector', () => {
   });
 
   it('should find node to observe based on the pass selector', () => {
-    const expectedEntries = new Set([1, 2, 3]);
+    const expectedEntries = new Map();
+    expectedEntries.set(1, 0.00123);
+    expectedEntries.set(2, 0.012567);
+    expectedEntries.set(3, 0.2);
     const mockRoot = {
       querySelectorAll: () => ['.test', '.test1'],
     };
@@ -110,7 +122,10 @@ describe('VisibilityDetector', () => {
   });
 
   it('should disconnect the observe', () => {
-    const expectedEntries = new Set([1, 2, 3]);
+    const expectedEntries = new Map();
+    expectedEntries.set(1, 0.00123);
+    expectedEntries.set(2, 0.012567);
+    expectedEntries.set(3, 0.2);
     const mockRoot = {
       querySelectorAll: () => Array.from(['.test', '.test1']),
     };

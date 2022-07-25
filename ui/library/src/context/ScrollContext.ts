@@ -3,7 +3,6 @@ import * as React from 'react';
 import { NodeDestination } from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
-import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
 import VisibleEntriesDetector from '../utils/VisibleEntriesDetector';
 
@@ -20,20 +19,19 @@ const OUTLINE_ATTRIBUTE = 'data-outline-target-dest';
 
 const OUTLINE_SELECTOR = '.reader__page__outline-target';
 
-const PAGE_NUMBER_QUERY_SELECTOR = 'data-page-number';
-
 const PAGE_NUMBER_ATTRIBUTE = 'data-page-number';
 
-const PAGE_NUMBER_SELECTOR = '.reader__page';
+const PAGE_NUMBER_SELECTOR = `.reader__page[${PAGE_NUMBER_ATTRIBUTE}]`;
 
 export interface IScrollContext {
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   isPageVisible: (pageNumber: PageNumber) => boolean;
   scrollDirection: Nullable<ScrollDirection>;
-  visibleOutlineTargets: Set<NodeDestination>;
-  visiblePageNumbers: Set<number>;
+  visibleOutlineTargets: Map<NodeDestination, number>;
+  visiblePageNumbers: Map<number, number>;
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
+  scrollToOutlineTarget: (dest: NodeDestination) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
@@ -42,8 +40,8 @@ export interface IScrollContext {
 
 const DEFAULT_CONTEXT: IScrollContext = {
   scrollDirection: null,
-  visibleOutlineTargets: new Set(),
-  visiblePageNumbers: new Set(),
+  visibleOutlineTargets: new Map(),
+  visiblePageNumbers: new Map(),
   isOutlineTargetVisible: opts => {
     logProviderWarning(`isOutlineTargetVisible(${JSON.stringify(opts)})`, 'ScrollContext');
     return false;
@@ -58,8 +56,8 @@ const DEFAULT_CONTEXT: IScrollContext = {
   setScrollRoot: (_el: Nullable<Element>) => {
     logProviderWarning(`setScrollRoot(...)`, 'ScrollContext');
   },
-  scrollToPage: opts => {
-    logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
+  scrollToOutlineTarget: dest => {
+    logProviderWarning(`scrollToOutlineTarget(${dest})`, 'ScrollContext');
   },
   setScrollThreshold: (scrollThreshold: Nullable<number>) => {
     logProviderWarning(`setScrollThreshold(${scrollThreshold})`, 'ScrollContext');
@@ -113,18 +111,18 @@ export function useScrollContextProps(): IScrollContext {
     setObserverIndex(observerIndex + 1);
   }, [observerIndex]);
 
-  const [visibleOutlineTargets, setVisibleOutlineNodes] = React.useState<Set<NodeDestination>>(
-    () => {
-      const set = new Set<NodeDestination>();
-      Object.freeze(set);
-      return set;
-    }
-  );
+  const [visibleOutlineTargets, setVisibleOutlineNodes] = React.useState<
+    Map<NodeDestination, number>
+  >(() => {
+    const map = new Map<NodeDestination, number>();
+    Object.freeze(map);
+    return map;
+  });
 
-  const [visiblePageNumbers, setVisiblePageNumbers] = React.useState<Set<number>>(() => {
-    const set = new Set<number>();
-    Object.freeze(set);
-    return set;
+  const [visiblePageNumbers, setVisiblePageNumbers] = React.useState<Map<number, number>>(() => {
+    const map = new Map<number, number>();
+    Object.freeze(map);
+    return map;
   });
 
   const isOutlineTargetVisible = React.useCallback(
@@ -133,6 +131,12 @@ export function useScrollContextProps(): IScrollContext {
     },
     [visibleOutlineTargets]
   );
+
+  const scrollToOutlineTarget = React.useCallback((dest: NodeDestination): void => {
+    document
+      .querySelector(`[data-outline-target-dest="${dest}"]`)
+      ?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
 
   const isPageVisible = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): boolean => {
@@ -147,18 +151,6 @@ export function useScrollContextProps(): IScrollContext {
     [visiblePageNumbers]
   );
 
-  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageNumber): void => {
-    if (typeof pageNumber === 'number') {
-      pageIndex = pageNumber - 1;
-    }
-    if (typeof pageIndex !== 'number') {
-      return;
-    }
-    document
-      .getElementById(generatePageIdFromIndex(pageIndex))
-      ?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
-
   // Watch outline nodes
   React.useEffect(() => {
     const root = scrollRoot || document.documentElement;
@@ -166,14 +158,14 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisibleOutlineNodes,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
-        const newEntries = new Set(lastEntries);
+        const newEntries = new Map(lastEntries);
         for (const el of hiddenEntries) {
           const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
           newEntries.delete(dest);
         }
         for (const el of visibleEntries) {
           const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
-          newEntries.add(dest);
+          newEntries.set(dest, el.intersectionRatio);
         }
         return newEntries;
       },
@@ -191,16 +183,23 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisiblePageNumbers,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
-        const newEntries = new Set(lastEntries);
+        const newEntries = (() => {
+          if (hiddenEntries.length === 0) {
+            return new Map();
+          }
+          return new Map(lastEntries);
+        })();
+
         for (const el of hiddenEntries) {
-          const elPage = el.target.querySelector(PAGE_NUMBER_QUERY_SELECTOR);
+          const elPage = el.target;
           const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
           newEntries.delete(pageNumber);
         }
+
         for (const el of visibleEntries) {
-          const elPage = el.target.querySelector(PAGE_NUMBER_QUERY_SELECTOR);
+          const elPage = el.target;
           const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
-          newEntries.add(pageNumber);
+          newEntries.set(pageNumber, el.intersectionRatio);
         }
         return newEntries;
       },
@@ -219,6 +218,7 @@ export function useScrollContextProps(): IScrollContext {
     visiblePageNumbers,
     resetScrollObservers,
     setScrollRoot,
+    scrollToOutlineTarget,
     scrollToPage,
     setScrollThreshold,
     scrollThresholdReachedInDirection,

@@ -1,5 +1,7 @@
+import classnames from 'classnames';
 import * as React from 'react';
 
+import { ScrollContext } from '../../context/ScrollContext';
 import { NodeDestination, OutlineNode } from '../types/outline';
 
 type Props = {
@@ -8,6 +10,8 @@ type Props = {
 };
 
 export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: Props) => {
+  const { isOutlineTargetVisible } = React.useContext(ScrollContext);
+
   if (!items || !items.length) {
     return null;
   }
@@ -22,7 +26,11 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
 
     // If an item has sub titles, render <OutlineItem />
     return (
-      <li key={item.title} className="reader__outline-item">
+      <li
+        key={item.dest?.toString() || item.title}
+        className={classnames('reader__outline-item', {
+          'reader__outline-item--target-visible': isOutlineTargetVisible(item.dest),
+        })}>
         <a href="#" onClick={clickHandler}>
           {item.title}
         </a>

@@ -33,7 +33,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   ...extraProps
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
-  const { pageDimensions } = React.useContext(DocumentContext);
+  const { pageDimensions, getOutlineTargets } = React.useContext(DocumentContext);
 
   // Don't display until we have page size data
   // TODO: Handle this nicer so we display either the loading or error treatment
@@ -49,11 +49,14 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return computePageStyle(pageDimensions, rotation, scale);
   }, [pageDimensions, rotation, scale]);
 
+  const outlineTargets = getOutlineTargets({ pageIndex, scale, rotation, pageDimensions });
+
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
   // TODO: Can we CSS this to auto-shrink?
   return (
     <div
+      data-page-number={pageIndex + 1}
       id={generatePageIdFromIndex(pageIndex)}
       className="reader__page"
       style={getPageStyle()}
@@ -69,6 +72,16 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         rotate={rotation}
         renderAnnotationLayer={true}
       />
+      <div className="reader__page__outline-targets">
+        {outlineTargets.map(({ dest, leftPx, topPx }) => (
+          <span
+            key={dest}
+            className="reader__page__outline-target"
+            data-outline-target-dest={dest}
+            style={{ left: leftPx + 'px', top: topPx + 'px' }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

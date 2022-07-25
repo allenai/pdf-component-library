@@ -27,7 +27,6 @@ describe('<ScrollContext/>', () => {
 
   let _setScrollRoot: (root: Nullable<Element>) => any;
   let _resetScrollObservers: () => any;
-  let _scrollToPage: (opts: { pageNumber?: number; pageIndex?: number }) => void;
   let _isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   let _isPageVisible: (opts: { pageNumber?: number; pageIndex?: number }) => boolean;
 
@@ -48,7 +47,6 @@ describe('<ScrollContext/>', () => {
                 visiblePageNumbers,
                 setScrollRoot,
                 resetScrollObservers,
-                scrollToPage,
                 isOutlineTargetVisible,
                 isPageVisible,
               } = args;
@@ -56,8 +54,6 @@ describe('<ScrollContext/>', () => {
               _setScrollRoot = setScrollRoot;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _resetScrollObservers = resetScrollObservers;
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              _scrollToPage = scrollToPage;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _isOutlineTargetVisible = isOutlineTargetVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
