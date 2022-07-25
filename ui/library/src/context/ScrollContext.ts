@@ -32,7 +32,6 @@ export interface IScrollContext {
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
   scrollToOutlineTarget: (dest: NodeDestination) => void;
-  scrollToPage: (pageNumber: PageNumber) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
@@ -219,7 +218,6 @@ export function useScrollContextProps(): IScrollContext {
     resetScrollObservers,
     setScrollRoot,
     scrollToOutlineTarget,
-    scrollToPage,
     setScrollThreshold,
     scrollThresholdReachedInDirection,
     isAtTop,
