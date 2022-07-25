@@ -21,7 +21,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     scrollDirectionDetector._onScroll();
 
     expect(scrollDirection).to.equal(null);
@@ -44,7 +48,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -68,7 +76,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 100;
     scrollDirectionDetector._onScroll();
 
@@ -92,7 +104,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -121,7 +137,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 90;
     scrollDirectionDetector._onScroll();
 
@@ -150,7 +170,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 110;
     scrollDirectionDetector._onScroll();
 
@@ -179,7 +203,11 @@ describe('scrollDirectionDetector', () => {
       scrollDirection = direction;
     }
 
-    const scrollDirectionDetector = new ScrollDetector(mockScroll as any, setScrollDirection, ()=>undefined);
+    const scrollDirectionDetector = new ScrollDetector(
+      mockScroll as any,
+      setScrollDirection,
+      () => undefined
+    );
     mockScroll.scrollTop = 90;
     scrollDirectionDetector._onScroll();
 
@@ -269,22 +297,19 @@ describe('scrollDirectionDetector', () => {
     );
 
     scrollDirectionDetector._onScroll();
-    expect(isAtTop, "isAtTop defaults to true at top of page").to.equal(true);
+    expect(isAtTop, 'isAtTop defaults to true at top of page').to.equal(true);
 
     mockScroll.scrollTop = 100;
     scrollDirectionDetector._onScroll();
-    expect(isAtTop, "isAtTop is false since we scrolled down").to.equal(false);
+    expect(isAtTop, 'isAtTop is false since we scrolled down').to.equal(false);
 
     mockScroll.scrollTop = 0;
     scrollDirectionDetector._onScroll();
-    expect(isAtTop, "isAtTop is true again since we scrolled all the way up").to.equal(true); 
+    expect(isAtTop, 'isAtTop is true again since we scrolled all the way up').to.equal(true);
   });
-
-
 
   // test threshold
 
- 
   it('scrollThresholdReachedInDirection defaults to null on start', () => {
     const mockScroll = {
       scrollTop: 0,
@@ -302,13 +327,13 @@ describe('scrollDirectionDetector', () => {
     function setScrollThresholdReachedInDirection(dir: Nullable<ScrollDirection>) {
       scrollThresholdReachedInDirection = dir;
     }
- 
+
     const scrollDirectionDetector = new ScrollDetector(
       mockScroll as any,
       () => undefined,
-      () => undefined, 
+      () => undefined,
       setScrollThresholdReachedInDirection,
-      scrollThreshold,
+      scrollThreshold
     );
     scrollDirectionDetector._onScroll();
 
@@ -332,37 +357,48 @@ describe('scrollDirectionDetector', () => {
     function setScrollThresholdReachedInDirection(dir: Nullable<ScrollDirection>) {
       scrollThresholdReachedInDirection = dir;
     }
- 
+
     const scrollDirectionDetector = new ScrollDetector(
       mockScroll as any,
       () => undefined,
-      () => undefined, 
+      () => undefined,
       setScrollThresholdReachedInDirection,
-      scrollThreshold,
+      scrollThreshold
     );
     scrollDirectionDetector._onScroll();
-    expect(scrollThresholdReachedInDirection, "scrollThresholdReachedInDirection defults to null").to.equal(null);
+    expect(
+      scrollThresholdReachedInDirection,
+      'scrollThresholdReachedInDirection defults to null'
+    ).to.equal(null);
 
-    mockScroll.scrollTop = 1;  // have to do this with mockscroll
+    mockScroll.scrollTop = 1; // have to do this with mockscroll
     scrollDirectionDetector._onScroll();
 
-    mockScroll.scrollTop = 25;  
+    mockScroll.scrollTop = 25;
     scrollDirectionDetector._onScroll();
-    expect(scrollThresholdReachedInDirection, "scrolled down but not enough to hit threshold so is still null").to.equal(null);
+    expect(
+      scrollThresholdReachedInDirection,
+      'scrolled down but not enough to hit threshold so is still null'
+    ).to.equal(null);
 
-    mockScroll.scrollTop = 51;  
+    mockScroll.scrollTop = 51;
     scrollDirectionDetector._onScroll();
-    expect(scrollThresholdReachedInDirection, "scrolled down enough to hit threshold and return DOWN").to.equal(ScrollDirection.DOWN);
+    expect(
+      scrollThresholdReachedInDirection,
+      'scrolled down enough to hit threshold and return DOWN'
+    ).to.equal(ScrollDirection.DOWN);
 
-    mockScroll.scrollTop = 60;  // make some room
+    mockScroll.scrollTop = 60; // make some room
     scrollDirectionDetector._onScroll();
 
-    mockScroll.scrollTop = 59;  // have to do this with mockscroll
+    mockScroll.scrollTop = 59; // have to do this with mockscroll
     scrollDirectionDetector._onScroll();
-  
-    mockScroll.scrollTop = 9;  
-    scrollDirectionDetector._onScroll(); 
-    expect(scrollThresholdReachedInDirection, "scrolled up enough to hit threshold and return UP").to.equal(ScrollDirection.UP);
+
+    mockScroll.scrollTop = 9;
+    scrollDirectionDetector._onScroll();
+    expect(
+      scrollThresholdReachedInDirection,
+      'scrolled up enough to hit threshold and return UP'
+    ).to.equal(ScrollDirection.UP);
   });
- 
 });

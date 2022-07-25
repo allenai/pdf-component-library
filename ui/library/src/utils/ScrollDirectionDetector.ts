@@ -10,7 +10,7 @@ export default class ScrollDetector {
   _el: Element;
   _setScrollDirection: (scrollDirection: ScrollDirection) => any;
   _lastScrollTopBeforeDirectionChange: number;
-  _scrollThreshold?: number; 
+  _scrollThreshold?: number;
   _isScrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   _setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any;
   _isAtTop: Nullable<boolean>;
@@ -19,9 +19,9 @@ export default class ScrollDetector {
   constructor(
     el: Element,
     setScrollDirection: (scrollDirection: ScrollDirection) => any,
-    setIsAtTop: (isAtTop: boolean) => any, 
+    setIsAtTop: (isAtTop: boolean) => any,
     setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any,
-    scrollThreshold?: number,  
+    scrollThreshold?: number
   ) {
     this._el = el;
     this._lastScrollTop = this._el.scrollTop;
@@ -30,8 +30,8 @@ export default class ScrollDetector {
     this._isAtTop = null;
     this._setIsAtTop = setIsAtTop;
     this._lastScrollTopBeforeDirectionChange = this._el.scrollTop;
-    this._scrollThreshold = scrollThreshold; 
- 
+    this._scrollThreshold = scrollThreshold;
+
     this._isScrollThresholdReachedInDirection = null;
     this._setScrollThresholdReachedInDirection = setScrollThresholdReachedInDirection;
   }
@@ -54,9 +54,9 @@ export default class ScrollDetector {
 
   _onScroll = (): void => {
     const currScrollTop = this._el.scrollTop;
-    if (this._isAtTop !== (currScrollTop === 0)){
+    if (this._isAtTop !== (currScrollTop === 0)) {
       this._isAtTop = currScrollTop === 0;
-      this._setIsAtTop(currScrollTop === 0); 
+      this._setIsAtTop(currScrollTop === 0);
     }
     if (this._lastScrollTop === currScrollTop) {
       return;
@@ -77,19 +77,21 @@ export default class ScrollDetector {
       this._setScrollDirection(currScrollDirection);
 
       this._lastScrollTopBeforeDirectionChange = currScrollTop;
-      this._isScrollThresholdReachedInDirection = null; 
-      if(this._setScrollThresholdReachedInDirection !== undefined && !this._isAtTop) {
+      this._isScrollThresholdReachedInDirection = null;
+      if (this._setScrollThresholdReachedInDirection !== undefined && !this._isAtTop) {
         this._setScrollThresholdReachedInDirection(null);
       }
-
     } else {
-      if(this._scrollThreshold !== undefined && this._setScrollThresholdReachedInDirection !== undefined) {
+      if (
+        this._scrollThreshold !== undefined &&
+        this._setScrollThresholdReachedInDirection !== undefined
+      ) {
         const scrolledAmount = Math.abs(this._lastScrollTopBeforeDirectionChange - currScrollTop);
-        if(scrolledAmount >= this._scrollThreshold) {
-          this._isScrollThresholdReachedInDirection = this._lastScrollDirection; 
+        if (scrolledAmount >= this._scrollThreshold) {
+          this._isScrollThresholdReachedInDirection = this._lastScrollDirection;
           this._setScrollThresholdReachedInDirection(this._lastScrollDirection);
         }
-      } 
+      }
     }
-  }; 
+  };
 }

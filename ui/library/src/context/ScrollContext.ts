@@ -77,7 +77,8 @@ export function useScrollContextProps(): IScrollContext {
   // Determine scroll direction
   const [scrollDirection, setScrollDirection] = React.useState<Nullable<ScrollDirection>>(null);
   const [scrollThreshold, setScrollThreshold] = React.useState<Nullable<number>>(null);
-  const [scrollThresholdReachedInDirection, setScrollThresholdReachedInDirection] = React.useState<Nullable<ScrollDirection>>(null);
+  const [scrollThresholdReachedInDirection, setScrollThresholdReachedInDirection] =
+    React.useState<Nullable<ScrollDirection>>(null);
   const [isAtTop, setIsAtTop] = React.useState<Nullable<boolean>>(null);
 
   React.useEffect(() => {
@@ -86,16 +87,17 @@ export function useScrollContextProps(): IScrollContext {
       return;
     }
 
-    let scrollDirectionDetector: ScrollDetector; 
-    if (!scrollThreshold) { // scroll threshold is optional
+    let scrollDirectionDetector: ScrollDetector;
+    if (!scrollThreshold) {
+      // scroll threshold is optional
       scrollDirectionDetector = new ScrollDetector(scrollElem, setScrollDirection, setIsAtTop);
     } else {
       scrollDirectionDetector = new ScrollDetector(
         scrollElem,
         setScrollDirection,
-        setIsAtTop, 
+        setIsAtTop,
         setScrollThresholdReachedInDirection,
-        scrollThreshold, 
+        scrollThreshold
       );
     }
 
@@ -217,9 +219,9 @@ export function useScrollContextProps(): IScrollContext {
     visiblePageNumbers,
     resetScrollObservers,
     setScrollRoot,
-    scrollToPage, 
+    scrollToPage,
     setScrollThreshold,
     scrollThresholdReachedInDirection,
-    isAtTop, 
+    isAtTop,
   };
 }
