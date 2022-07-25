@@ -78,14 +78,11 @@ export default class ScrollDetector {
 
       this._lastScrollTopBeforeDirectionChange = currScrollTop;
       this._isScrollThresholdReachedInDirection = null;
-      if (this._setScrollThresholdReachedInDirection !== undefined && !this._isAtTop) {
+      if (this._setScrollThresholdReachedInDirection && !this._isAtTop) {
         this._setScrollThresholdReachedInDirection(null);
       }
     } else {
-      if (
-        this._scrollThreshold !== undefined &&
-        this._setScrollThresholdReachedInDirection !== undefined
-      ) {
+      if (this._scrollThreshold && this._setScrollThresholdReachedInDirection) {
         const scrolledAmount = Math.abs(this._lastScrollTopBeforeDirectionChange - currScrollTop);
         if (scrolledAmount >= this._scrollThreshold) {
           this._isScrollThresholdReachedInDirection = this._lastScrollDirection;
