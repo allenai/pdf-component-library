@@ -61,6 +61,7 @@ export function useDocumentContextProps(): IDocumentContext {
   const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
   const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
 
+  // Draw outline target into the pdf based on the args
   const getOutlineTargets = React.useCallback(
     ({
       pageNumber,

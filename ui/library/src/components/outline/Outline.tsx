@@ -10,14 +10,15 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
     React.useContext(DocumentContext);
   const { scrollToOutlineTarget, resetScrollObservers } = React.useContext(ScrollContext);
 
-  if (!pdfDocProxy) {
-    return null;
-  }
-
   React.useEffect(() => {
     if (outline) {
       return;
     }
+
+    if (!pdfDocProxy) {
+      return;
+    }
+
     pdfDocProxy
       .getOutline()
       .then((outlineArray: Array<OutlineNode>) => {
@@ -32,13 +33,17 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
       });
   }, [outline]);
 
-  const clickHandler = (dest: NodeDestination): void => {
+  const clickHandler = React.useCallback((dest: NodeDestination): void => {
     if (!dest) {
       return;
     }
     scrollToOutlineTarget(dest);
     return;
-  };
+  }, []);
+
+  if (!pdfDocProxy) {
+    return null;
+  }
 
   return (
     <div className="reader__outline" {...extraProps}>

@@ -1,7 +1,7 @@
 @bounding-box-border: 2px dotted @initial-blue;
 
 .reader__page {
-  background-color: @pdflib-page-background;
+  background: @pdflib-page-background center center / cover no-repeat;
   margin: 24px;
   box-shadow: 0px 4px 14px fade(@pdflib-page-shadow, 20%);
   flex: 1 0 auto;
@@ -59,8 +59,13 @@
   z-index: @z-index-bounding-box-overlay;
 }
 
+.reader__page__outline-target {
+  position: absolute;
+  visibility: hidden;
+}
+
 .react-pdf__Page {
-  height: 100%; // Causes the page to fill the flex parent
+  height: 100%;
 }
 
 // HACK: avoid mis-alignment of selected texts

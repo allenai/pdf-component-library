@@ -35,7 +35,7 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
   scrollToPage: (pageNumber: PageNumber) => void;
-  getVisibleElement: (visibleElements: Map<any, number>) => any;
+  getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -67,7 +67,7 @@ const DEFAULT_CONTEXT: IScrollContext = {
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
   },
-  getVisibleElement: opts => {
+  getMaxVisibleElement: opts => {
     logProviderWarning(`getVisibleElement(${JSON.stringify(opts)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
@@ -171,7 +171,7 @@ export function useScrollContextProps(): IScrollContext {
       ?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const getVisibleElement = (visibleElements: Map<any, number>): any => {
+  const getMaxVisibleElement = (visibleElements: Map<any, number>): any => {
     const maxRatio = Math.max(...visibleElements.values(), 0);
     return Object.keys(visibleElements).find(key => visibleElements.get(key) === maxRatio);
   };
@@ -183,18 +183,13 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisibleOutlineNodes,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
-        // we will always want to assign new entries with last entries which is the last visible one
-        // then we will remove the element not in viewport from hiddenEntries and add new entries based
-        // on new visibleEntries
+        hiddenEntries.map(entry =>
+          lastEntries.delete(entry.target.getAttribute(OUTLINE_ATTRIBUTE))
+        );
         const newEntries = new Map(lastEntries);
-        for (const el of hiddenEntries) {
-          const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
-          newEntries.delete(dest);
-        }
-        for (const el of visibleEntries) {
-          const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
-          newEntries.set(dest, el.intersectionRatio);
-        }
+        visibleEntries.map(entry =>
+          newEntries.set(entry.target.getAttribute(OUTLINE_ATTRIBUTE), entry.intersectionRatio)
+        );
         return newEntries;
       },
     });
@@ -211,18 +206,16 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisiblePageNumbers,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
+        hiddenEntries.map(entry =>
+          lastEntries.delete(parseInt(entry.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10))
+        );
         const newEntries = new Map(lastEntries);
-        for (const el of hiddenEntries) {
-          const elPage = el.target;
-          const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
-          newEntries.delete(pageNumber);
-        }
-
-        for (const el of visibleEntries) {
-          const elPage = el.target;
-          const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
-          newEntries.set(pageNumber, el.intersectionRatio);
-        }
+        visibleEntries.map(entry =>
+          newEntries.set(
+            parseInt(entry.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10),
+            entry.intersectionRatio
+          )
+        );
         return newEntries;
       },
     });
@@ -243,7 +236,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
-    getVisibleElement,
+    getMaxVisibleElement,
     scrollThresholdReachedInDirection,
     isAtTop,
   };

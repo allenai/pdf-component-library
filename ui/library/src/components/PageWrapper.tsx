@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import * as React from 'react';
 import { Page } from 'react-pdf';
 import { RenderFunction } from 'react-pdf/dist/Page';
@@ -41,13 +42,14 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return null;
   }
 
+  const getPageStyle = React.useCallback(() => {
+    const styles: Record<string, unknown> = computePageStyle(pageDimensions, rotation, scale);
+    return styles;
+  }, [pageDimensions, rotation, scale]);
+
   const getWidth = React.useCallback(() => {
     return getPageWidth(pageDimensions, rotation);
   }, [pageDimensions, rotation]);
-
-  const getPageStyle = React.useCallback(() => {
-    return computePageStyle(pageDimensions, rotation, scale);
-  }, [pageDimensions, rotation, scale]);
 
   const outlineTargets = getOutlineTargets({ pageIndex, scale, rotation, pageDimensions });
 
@@ -56,9 +58,8 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   // TODO: Can we CSS this to auto-shrink?
   return (
     <div
-      data-page-number={pageIndex + 1}
       id={generatePageIdFromIndex(pageIndex)}
-      className="reader__page"
+      className={classnames('reader__page')}
       style={getPageStyle()}
       {...extraProps}>
       {children}
