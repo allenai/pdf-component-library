@@ -172,16 +172,16 @@ export function getPagePropertiesInPixels(): PageProperties {
 
 export function calculateTargetPosition({
   scale,
-  rotation = PageRotation.Rotate0,
   leftPoint,
   bottomPoint,
   pageDimensions,
+  rotation = PageRotation.Rotate0,
 }: {
   scale: number;
-  rotation: PageRotation;
   leftPoint: number;
   bottomPoint: number;
   pageDimensions: Dimensions;
+  rotation: PageRotation;
 }): { leftPx: number; topPx: number } {
   switch (rotation) {
     default:

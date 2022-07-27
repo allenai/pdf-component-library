@@ -28,8 +28,8 @@ export interface IScrollContext {
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   isPageVisible: (pageNumber: PageNumber) => boolean;
   scrollDirection: Nullable<ScrollDirection>;
-  visibleOutlineTargets: Map<NodeDestination, number>;
-  visiblePageNumbers: Map<number, number>;
+  visibleOutlineTargets: Map<NodeDestination, number>; // mapping node destination with their intersection ratio
+  visiblePageNumbers: Map<number, number>; // mapping page number with their intersection ratio
   resetScrollObservers: () => void;
   setScrollRoot: (root: Nullable<Element>) => any;
   scrollToOutlineTarget: (dest: NodeDestination) => void;
@@ -183,6 +183,9 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisibleOutlineNodes,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
+        // we will always want to assign new entries with last entries which is the last visible one
+        // then we will remove the element not in viewport from hiddenEntries and add new entries based
+        // on new visibleEntries
         const newEntries = new Map(lastEntries);
         for (const el of hiddenEntries) {
           const dest = el.target.getAttribute(OUTLINE_ATTRIBUTE);
