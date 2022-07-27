@@ -15,39 +15,53 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
   showDivider,
   className,
 }: Props) => {
+  const controlRef = React.createRef<HTMLInputElement>();
   const { numPages } = React.useContext(DocumentContext);
   const { scrollToPage, visiblePageNumbers } = React.useContext(ScrollContext);
   const [minPage, setMinPage] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const [isDisabled, setIsDisabled] = React.useState(true);
 
+  // Initialize page control element
   React.useEffect(() => {
     if (numPages != 0) {
       setMinPage(1);
       setCurrentPage(1);
+      setIsDisabled(false);
     }
   }, [numPages]);
 
-  // TODO: update current page when scrolling down/up
+  // TODO: update current page when scrolling down or up
   React.useEffect(() => {
-    console.log(visiblePageNumbers);
-  }, [visiblePageNumbers]);
+    console.log(visiblePageNumbers, controlRef);
+  }, [controlRef, visiblePageNumbers]);
 
   // TODO: scroll to the page specified by the user
   const onPageNumberChange = React.useCallback(
     event => {
-      console.log(event);
+      if (!controlRef || !controlRef.current) {
+        return;
+      }
+
+      const newPageNumber = parseInt(event.target.value, 10);
+      console.log(controlRef, newPageNumber);
+      if (newPageNumber >= minPage && newPageNumber <= numPages) {
+        console.log('in!', newPageNumber);
+        scrollToPage({ pageNumber: newPageNumber });
+        setCurrentPage(newPageNumber);
+      }
     },
-    [scrollToPage]
+    [controlRef, minPage, numPages, scrollToPage]
   );
 
   return (
     <div className={classnames('reader__page-number-control', className)}>
       <input
+        ref={controlRef}
         className="reader__page-number-control__current-page"
         type="number"
         readOnly={isReadOnly}
-        disabled={numPages == 0}
-        value={currentPage}
+        disabled={isDisabled}
         min={minPage}
         max={numPages}
         onChange={onPageNumberChange}
