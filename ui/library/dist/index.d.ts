@@ -174,6 +174,8 @@ declare module '@allenai/pdf-components/src/components/types/boundingBox' {
 }
 
 declare module '@allenai/pdf-components/src/components/types/outline' {
+    import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
+    import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     export type NodeDestination = Nullable<string> | any[];
     export type OutlineNode = {
@@ -187,6 +189,25 @@ declare module '@allenai/pdf-components/src/components/types/outline' {
         newWindow: boolean | undefined;
         count: number | undefined;
         items: any[];
+    };
+    export type OutlinePosition = {
+        pageNumber: number;
+        dest: string;
+        leftPoint: number;
+        bottomPoint: number;
+    };
+    export type OutlinePositionsByPageNumberMap = Map<number, OutlinePosition[]>;
+    export type OutlineTarget = {
+        dest: string;
+        leftPx: number;
+        topPx: number;
+    };
+    export type OutlineTargetArgs = {
+        pageNumber?: number;
+        pageIndex?: number;
+        scale: number;
+        rotation: PageRotation;
+        pageDimensions: Dimensions;
     };
 }
 
@@ -237,29 +258,53 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
     import * as React from 'react';
     import { pdfjs } from 'react-pdf';
     import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
-    import { OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
+    import { OutlineNode, OutlinePositionsByPageNumberMap, OutlineTarget, OutlineTargetArgs } from '@allenai/pdf-components/src/components/types/outline';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     export interface IDocumentContext {
         numPages: number;
         outline: Nullable<Array<OutlineNode>>;
+        outlinePositions: Nullable<OutlinePositionsByPageNumberMap>;
         pageDimensions: Dimensions;
         pdfDocProxy?: pdfjs.PDFDocumentProxy;
+        getOutlineTargets: (opts: OutlineTargetArgs) => OutlineTarget[];
         setNumPages: (numPages: number) => void;
         setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
+        setOutlinePositions: (outlinePositions: Nullable<OutlinePositionsByPageNumberMap>) => void;
         setPageDimensions: (pageDimensions: Dimensions) => void;
         setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
     }
     export const DocumentContext: React.Context<IDocumentContext>;
     export function useDocumentContextProps(): IDocumentContext;
+    export function buildOutlinePositions(pdfDocProxy: pdfjs.PDFDocumentProxy, outline?: OutlineNode[]): Promise<OutlinePositionsByPageNumberMap>;
 }
 
 declare module '@allenai/pdf-components/src/context/ScrollContext' {
     import * as React from 'react';
+    import { NodeDestination } from '@allenai/pdf-components/src/components/types/outline';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     import { ScrollDirection } from '@allenai/pdf-components/src/utils/ScrollDirectionDetector';
+    /**
+      * pageNumber: number starts from 1
+      * pageIndex: number starts from 0
+      */
+    export type PageNumber = {
+        pageNumber?: number;
+        pageIndex?: number;
+    };
     export interface IScrollContext {
+        isOutlineTargetVisible: (dest: NodeDestination) => boolean;
+        isPageVisible: (pageNumber: PageNumber) => boolean;
         scrollDirection: Nullable<ScrollDirection>;
+        visibleOutlineTargets: Map<NodeDestination, number>;
+        visiblePageNumbers: Map<number, number>;
+        resetScrollObservers: () => void;
         setScrollRoot: (root: Nullable<Element>) => any;
+        scrollToOutlineTarget: (dest: NodeDestination) => void;
+        setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
+        scrollToPage: (pageNumber: PageNumber) => void;
+        getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
+        scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
+        isAtTop: Nullable<boolean>;
     }
     export const ScrollContext: React.Context<IScrollContext>;
     export function useScrollContextProps(): IScrollContext;
@@ -316,6 +361,7 @@ declare module '@allenai/pdf-components/src/utils/rotate' {
 }
 
 declare module '@allenai/pdf-components/src/utils/scroll' {
+    import { Dimensions } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { PageProperties } from '@allenai/pdf-components/src/components/types/page';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
@@ -344,6 +390,16 @@ declare module '@allenai/pdf-components/src/utils/scroll' {
         * @returns a PageProperties object
         */
     export function getPagePropertiesInPixels(): PageProperties;
+    export function calculateTargetPosition({ scale, leftPoint, bottomPoint, pageDimensions, rotation, }: {
+            scale: number;
+            leftPoint: number;
+            bottomPoint: number;
+            pageDimensions: Dimensions;
+            rotation: PageRotation;
+    }): {
+            leftPx: number;
+            topPx: number;
+    };
 }
 
 declare module '@allenai/pdf-components/src/utils/style' {
@@ -366,7 +422,13 @@ declare module '@allenai/pdf-components/src/utils/ScrollDirectionDetector' {
         _lastScrollDirection: Nullable<ScrollDirection>;
         _el: Element;
         _setScrollDirection: (scrollDirection: ScrollDirection) => any;
-        constructor(el: Element, setScrollDirection: (scrollDirection: ScrollDirection) => any);
+        _lastScrollTopBeforeDirectionChange: number;
+        _scrollThreshold?: number;
+        _isScrollThresholdReachedInDirection: Nullable<ScrollDirection>;
+        _setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any;
+        _isAtTop: Nullable<boolean>;
+        _setIsAtTop: (isAtTop: boolean) => any;
+        constructor(el: Element, setScrollDirection: (scrollDirection: ScrollDirection) => any, setIsAtTop: (isAtTop: boolean) => any, setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any, scrollThreshold?: number);
         attachScrollListener(): void;
         detachScrollListener(): void;
         _onScroll: () => void;

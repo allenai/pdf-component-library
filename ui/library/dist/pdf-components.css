@@ -208,7 +208,7 @@
   box-shadow: none;
 }
 .reader__page {
-  background-color: #ffffff;
+  background: #ffffff center center / cover no-repeat;
   margin: 24px;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.2);
   flex: 1 0 auto;
@@ -254,6 +254,10 @@
   pointer-events: none;
   position: absolute;
   z-index: 1;
+}
+.reader__page__outline-target {
+  position: absolute;
+  visibility: hidden;
 }
 .react-pdf__Page {
   height: 100%;
