@@ -6,6 +6,7 @@ import { Nullable } from '../../../library/src/components/types/utils';
 import { NodeDestination } from '../../src/components/types/outline';
 import {
   IScrollContext,
+  PageNumber,
   ScrollContext,
   useScrollContextProps,
 } from '../../src/context/ScrollContext';
@@ -27,9 +28,10 @@ describe('<ScrollContext/>', () => {
 
   let _setScrollRoot: (root: Nullable<Element>) => any;
   let _resetScrollObservers: () => any;
-  let _scrollToPage: (opts: { pageNumber?: number; pageIndex?: number }) => void;
   let _isOutlineTargetVisible: (dest: NodeDestination) => boolean;
-  let _isPageVisible: (opts: { pageNumber?: number; pageIndex?: number }) => boolean;
+  let _isPageVisible: (opts: PageNumber) => boolean;
+  let _scrollToPage: (opts: PageNumber) => void;
+  let _getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
 
   beforeEach(() => {
     (global as any).IntersectionObserver = function (...args) {
@@ -46,27 +48,36 @@ describe('<ScrollContext/>', () => {
                 scrollDirection,
                 visibleOutlineTargets,
                 visiblePageNumbers,
+                scrollThresholdReachedInDirection,
+                isAtTop,
                 setScrollRoot,
                 resetScrollObservers,
-                scrollToPage,
                 isOutlineTargetVisible,
                 isPageVisible,
+                scrollToPage,
+                getMaxVisibleElement,
               } = args;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _setScrollRoot = setScrollRoot;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _resetScrollObservers = resetScrollObservers;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              _scrollToPage = scrollToPage;
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _isOutlineTargetVisible = isOutlineTargetVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _isPageVisible = isPageVisible;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _scrollToPage = scrollToPage;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _getMaxVisibleElement = getMaxVisibleElement;
               return (
                 <div>
                   <div className="scrollDirection">{scrollDirection}</div>
                   <div className="visibleOutlineTargets">{visibleOutlineTargets}</div>
                   <div className="visiblePageNumbers">{visiblePageNumbers}</div>
+                  <div className="scrollThresholdReachedInDirection">
+                    {scrollThresholdReachedInDirection}
+                  </div>
+                  <div className="isAtTop">{isAtTop}</div>
                 </div>
               );
             }}
@@ -91,5 +102,13 @@ describe('<ScrollContext/>', () => {
 
   it('provides a default visible page numbers', () => {
     expectTextFromClassName('visiblePageNumbers', '');
+  });
+
+  it('provides a default scrollThresholdReachedInDirection', () => {
+    expectTextFromClassName('scrollThresholdReachedInDirection', '');
+  });
+
+  it('provides a default isAtTop', () => {
+    expectTextFromClassName('isAtTop', '');
   });
 });
