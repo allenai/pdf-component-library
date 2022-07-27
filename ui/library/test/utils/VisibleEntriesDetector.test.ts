@@ -69,7 +69,7 @@ describe('VisibilityDetector', () => {
     const visibleEntries = args?.visibleEntries.map(entry => entry.target);
     const hidddenEntries = args?.hiddenEntries.map(entry => entry.target);
 
-    expect(Array.from(visibleEntries)).to.deep.equal(['visible.3']);
+    expect(Array.from(visibleEntries)).to.deep.equal(['visible.2', 'visible.3']);
     expect(Array.from(hidddenEntries)).to.deep.equal(['hidden.1', 'hidden.4']);
     expect(Array.from(args?.lastEntries)).to.deep.equal([]);
   });

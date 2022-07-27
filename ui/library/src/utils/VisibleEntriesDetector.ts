@@ -8,7 +8,7 @@ export type onVisibleEntriesChangeCallback<TEntry> = (args: {
   lastEntries: Map<TEntry, number>;
 }) => Map<TEntry, number>;
 
-export default class VisibilityEntriesDetector<TEntry> {
+export default class VisibleEntriesDetector<TEntry> {
   _root: Element;
   _observer: IntersectionObserver;
   _lastVisibleEntries: Map<TEntry, number>;
@@ -17,10 +17,12 @@ export default class VisibilityEntriesDetector<TEntry> {
 
   constructor({
     root,
+    thresHold,
     setVisibleEntries,
     onVisibleEntriesChange,
   }: {
     root: Element;
+    thresHold?: number | Array<number>;
     setVisibleEntries: SetVisibleEntriesCallback<TEntry>;
     onVisibleEntriesChange: onVisibleEntriesChangeCallback<TEntry>;
   }) {
@@ -34,17 +36,9 @@ export default class VisibilityEntriesDetector<TEntry> {
         const visibleEntries = entries.filter(entry => entry.isIntersecting);
         const hiddenEntries = entries.filter(entry => !entry.isIntersecting);
 
-        // this to get the highest value for max intersection ratio but if there is no element in the
-        // visibleEntries then we need second param to be 0 so we dont have negative infinity
-        const maxRatio = Math.max(...visibleEntries.map(entry => entry.intersectionRatio), 0);
-
-        const actualVisibleEntry = visibleEntries.filter(
-          entry => entry.intersectionRatio === maxRatio
-        );
-
         // Determine what needs saved
         const newVisibleEntries = this._onVisibleEntriesChange({
-          visibleEntries: actualVisibleEntry,
+          visibleEntries,
           hiddenEntries,
           lastEntries: this._lastVisibleEntries,
         });
@@ -57,9 +51,9 @@ export default class VisibilityEntriesDetector<TEntry> {
 
       // Default setting for intersection observer
       {
-        root: this._root,
+        root: this._root.tagName?.toLowerCase() === 'html' ? null : this._root,
         rootMargin: DEFAULT_ROOT_MARGIN,
-        threshold: DEFAULT_THRESHOLD,
+        threshold: thresHold ? thresHold : DEFAULT_THRESHOLD,
       }
     );
   }

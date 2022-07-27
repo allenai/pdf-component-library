@@ -3,6 +3,7 @@ import * as React from 'react';
 import { NodeDestination } from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
+import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
 import VisibleEntriesDetector from '../utils/VisibleEntriesDetector';
 
@@ -33,6 +34,8 @@ export interface IScrollContext {
   setScrollRoot: (root: Nullable<Element>) => any;
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
+  scrollToPage: (pageNumber: PageNumber) => void;
+  getVisibleElement: (visibleElements: Map<any, number>) => any;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -60,6 +63,12 @@ const DEFAULT_CONTEXT: IScrollContext = {
   },
   setScrollThreshold: (scrollThreshold: Nullable<number>) => {
     logProviderWarning(`setScrollThreshold(${scrollThreshold})`, 'ScrollContext');
+  },
+  scrollToPage: opts => {
+    logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
+  },
+  getVisibleElement: opts => {
+    logProviderWarning(`getVisibleElement(${JSON.stringify(opts)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -150,6 +159,23 @@ export function useScrollContextProps(): IScrollContext {
     [visiblePageNumbers]
   );
 
+  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageNumber): void => {
+    if (typeof pageNumber === 'number') {
+      pageIndex = pageNumber - 1;
+    }
+    if (typeof pageIndex !== 'number') {
+      return;
+    }
+    document
+      .getElementById(generatePageIdFromIndex(pageIndex))
+      ?.scrollIntoView({ behavior: 'smooth' });
+  }, []);
+
+  const getVisibleElement = (visibleElements: Map<any, number>): any => {
+    const maxRatio = Math.max(...visibleElements.values(), 0);
+    return Object.keys(visibleElements).find(key => visibleElements.get(key) === maxRatio);
+  };
+
   // Watch outline nodes
   React.useEffect(() => {
     const root = scrollRoot || document.documentElement;
@@ -182,13 +208,7 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisiblePageNumbers,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
-        const newEntries = (() => {
-          if (hiddenEntries.length === 0) {
-            return new Map();
-          }
-          return new Map(lastEntries);
-        })();
-
+        const newEntries = new Map(lastEntries);
         for (const el of hiddenEntries) {
           const elPage = el.target;
           const pageNumber = parseInt(elPage?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10);
@@ -219,6 +239,8 @@ export function useScrollContextProps(): IScrollContext {
     setScrollRoot,
     scrollToOutlineTarget,
     setScrollThreshold,
+    scrollToPage,
+    getVisibleElement,
     scrollThresholdReachedInDirection,
     isAtTop,
   };

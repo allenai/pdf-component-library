@@ -2,40 +2,23 @@ import * as React from 'react';
 import { pdfjs } from 'react-pdf';
 
 import { Dimensions } from '../components/types/boundingBox';
-import { OutlineNode } from '../components/types/outline';
+import {
+  OutlineNode,
+  OutlinePosition,
+  OutlinePositionsByPageNumberMap,
+  OutlineTarget,
+  OutlineTargetArgs,
+} from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
-import { PageRotation } from '../utils/rotate';
 import { calculateTargetPosition } from '../utils/scroll';
-
-export type OutlinePosition = {
-  pageNumber: number;
-  dest: string;
-  leftPoint: number;
-  bottomPoint: number;
-};
-
-export type OutlinePositionsByPageNumberMap = Map<number, OutlinePosition[]>;
-
-export type OutlineTarget = {
-  dest: string;
-  leftPx: number;
-  topPx: number;
-};
-
 export interface IDocumentContext {
   numPages: number;
   outline: Nullable<Array<OutlineNode>>;
   outlinePositions: Nullable<OutlinePositionsByPageNumberMap>;
   pageDimensions: Dimensions; // Scaled at 100%
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
-  getOutlineTargets: (opts: {
-    pageNumber?: number;
-    pageIndex?: number;
-    scale: number;
-    rotation: PageRotation;
-    pageDimensions: Dimensions;
-  }) => OutlineTarget[];
+  getOutlineTargets: (opts: OutlineTargetArgs) => OutlineTarget[];
   setNumPages: (numPages: number) => void;
   setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
   setOutlinePositions: (outlinePositions: Nullable<OutlinePositionsByPageNumberMap>) => void;
@@ -85,13 +68,7 @@ export function useDocumentContextProps(): IDocumentContext {
       scale,
       rotation,
       pageDimensions,
-    }: {
-      pageNumber?: number;
-      pageIndex?: number;
-      scale: number;
-      rotation: PageRotation;
-      pageDimensions: Dimensions;
-    }): OutlineTarget[] => {
+    }: OutlineTargetArgs): OutlineTarget[] => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }

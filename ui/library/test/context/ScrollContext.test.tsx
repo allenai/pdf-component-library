@@ -29,6 +29,8 @@ describe('<ScrollContext/>', () => {
   let _resetScrollObservers: () => any;
   let _isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   let _isPageVisible: (opts: { pageNumber?: number; pageIndex?: number }) => boolean;
+  let _scrollToPage: (opts: { pageNumber?: number; pageIndex?: number }) => void;
+  let _getVisibleElement: (visibleElements: Map<any, number>) => any;
 
   beforeEach(() => {
     (global as any).IntersectionObserver = function (...args) {
@@ -45,10 +47,14 @@ describe('<ScrollContext/>', () => {
                 scrollDirection,
                 visibleOutlineTargets,
                 visiblePageNumbers,
+                scrollThresholdReachedInDirection,
+                isAtTop,
                 setScrollRoot,
                 resetScrollObservers,
                 isOutlineTargetVisible,
                 isPageVisible,
+                scrollToPage,
+                getVisibleElement,
               } = args;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _setScrollRoot = setScrollRoot;
@@ -58,11 +64,19 @@ describe('<ScrollContext/>', () => {
               _isOutlineTargetVisible = isOutlineTargetVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _isPageVisible = isPageVisible;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _scrollToPage = scrollToPage;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _getVisibleElement = getVisibleElement;
               return (
                 <div>
                   <div className="scrollDirection">{scrollDirection}</div>
                   <div className="visibleOutlineTargets">{visibleOutlineTargets}</div>
                   <div className="visiblePageNumbers">{visiblePageNumbers}</div>
+                  <div className="scrollThresholdReachedInDirection">
+                    {scrollThresholdReachedInDirection}
+                  </div>
+                  <div className="isAtTop">{isAtTop}</div>
                 </div>
               );
             }}
@@ -87,5 +101,13 @@ describe('<ScrollContext/>', () => {
 
   it('provides a default visible page numbers', () => {
     expectTextFromClassName('visiblePageNumbers', '');
+  });
+
+  it('provides a default scrollThresholdReachedInDirection', () => {
+    expectTextFromClassName('scrollThresholdReachedInDirection', '');
+  });
+
+  it('provides a default isAtTop', () => {
+    expectTextFromClassName('isAtTop', '');
   });
 });
