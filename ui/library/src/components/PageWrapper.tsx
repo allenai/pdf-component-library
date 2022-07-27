@@ -1,4 +1,3 @@
-import classnames from 'classnames';
 import * as React from 'react';
 import { Page } from 'react-pdf';
 import { RenderFunction } from 'react-pdf/dist/Page';
@@ -59,7 +58,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   return (
     <div
       id={generatePageIdFromIndex(pageIndex)}
-      className={classnames('reader__page')}
+      className="reader__page"
       style={getPageStyle()}
       {...extraProps}>
       {children}
