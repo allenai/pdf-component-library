@@ -59,6 +59,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     <div
       id={generatePageIdFromIndex(pageIndex)}
       className="reader__page"
+      data-page-number={pageIndex + 1}
       style={getPageStyle()}
       {...extraProps}>
       {children}
