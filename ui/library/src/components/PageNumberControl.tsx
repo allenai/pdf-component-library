@@ -34,6 +34,10 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
   }, [numPages]);
 
   React.useEffect(() => {
+    if (isUserInput && controlRef.current) {
+      controlRef.current.value = currentPage.toString();
+      return;
+    }
     if (visiblePageNumbers.size !== 0 && controlRef.current && !isUserInput) {
       setCurrentPage(getMaxVisibleElement(visiblePageNumbers));
       controlRef.current.value = getMaxVisibleElement(visiblePageNumbers).toString();
@@ -50,6 +54,7 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
       if (newPageNumber <= minPage || newPageNumber >= numPages) {
         if (controlRef.current) {
           controlRef.current.value = currentPage.toString();
+          setIsUserInput(false);
         }
       }
       if (newPageNumber >= minPage && newPageNumber <= numPages) {
