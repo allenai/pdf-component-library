@@ -17,10 +17,13 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
 }: Props) => {
   const controlRef = React.createRef<HTMLInputElement>();
   const { numPages } = React.useContext(DocumentContext);
-  const { scrollToPage, visiblePageNumbers } = React.useContext(ScrollContext);
+  const { scrollToPage, visiblePageNumbers, getMaxVisibleElement } =
+    React.useContext(ScrollContext);
   const [minPage, setMinPage] = React.useState(0);
   const [currentPage, setCurrentPage] = React.useState(0);
+  const [isUserInput, setIsUserInput] = React.useState(false);
   const [isDisabled, setIsDisabled] = React.useState(true);
+  let timer: any = null;
 
   // Initialize page control element
   React.useEffect(() => {
@@ -31,25 +34,35 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
     }
   }, [numPages]);
 
-  // TODO: update current page when scrolling down or up
   React.useEffect(() => {
-    console.log(visiblePageNumbers, controlRef);
+    if (visiblePageNumbers.size !== 0 && controlRef.current && !isUserInput) {
+      setCurrentPage(getMaxVisibleElement(visiblePageNumbers));
+      controlRef.current.value = getMaxVisibleElement(visiblePageNumbers).toString();
+    }
   }, [controlRef, visiblePageNumbers]);
 
-  // TODO: scroll to the page specified by the user
   const onPageNumberChange = React.useCallback(
     event => {
       if (!controlRef || !controlRef.current) {
         return;
       }
-
-      const newPageNumber = parseInt(event.target.value, 10);
-      console.log(controlRef, newPageNumber);
-      if (newPageNumber >= minPage && newPageNumber <= numPages) {
-        console.log('in!', newPageNumber);
-        scrollToPage({ pageNumber: newPageNumber });
-        setCurrentPage(newPageNumber);
-      }
+      setIsUserInput(true);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        const newPageNumber = parseInt(event.target.value, 10);
+        if (newPageNumber <= minPage || newPageNumber >= numPages) {
+          if (controlRef.current) {
+            controlRef.current.value = currentPage.toString();
+          }
+        }
+        if (newPageNumber >= minPage && newPageNumber <= numPages) {
+          setTimeout(() => {
+            scrollToPage({ pageNumber: newPageNumber });
+            setCurrentPage(newPageNumber);
+          });
+          setIsUserInput(false);
+        }
+      }, 300);
     },
     [controlRef, minPage, numPages, scrollToPage]
   );
@@ -60,14 +73,18 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
         ref={controlRef}
         className="reader__page-number-control__current-page"
         type="number"
+        name="currentPage"
         readOnly={isReadOnly}
         disabled={isDisabled}
-        min={minPage}
-        max={numPages}
         onChange={onPageNumberChange}
       />
-      {showDivider && '/'}
-      <span className="reader__page-number-control__total-pages">{numPages}</span>
+      {showDivider && <span className="reader__page-number-control__separator">/</span>}
+      <input
+        className="reader__page-number-control__total-pages"
+        type="number"
+        value={numPages}
+        disabled={true}
+      />
     </div>
   );
 };
