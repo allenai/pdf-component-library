@@ -173,7 +173,12 @@ export function useScrollContextProps(): IScrollContext {
 
   const getMaxVisibleElement = (visibleElements: Map<any, number>): any => {
     const maxRatio = Math.max(...visibleElements.values(), 0);
-    return Object.keys(visibleElements).find(key => visibleElements.get(key) === maxRatio);
+    for (const [key, value] of visibleElements) {
+      if (value === maxRatio) {
+        return key;
+      }
+    }
+    return null;
   };
 
   // Watch outline nodes
@@ -224,6 +229,8 @@ export function useScrollContextProps(): IScrollContext {
       detector.destroy();
     };
   }, [scrollRoot, observerIndex]);
+
+  console.log(visiblePageNumbers);
 
   return {
     isOutlineTargetVisible,

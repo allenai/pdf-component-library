@@ -14,6 +14,7 @@ import {
 import { Outline } from './src/components/outline/Outline';
 import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
+import { PageNumberControl } from './src/components/PageNumberControl';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
 import {
   BoundingBox as BoundingBoxType,
@@ -89,6 +90,7 @@ export {
   Outline,
   OutlineItem,
   Overlay,
+  PageNumberControl,
   PageWrapper,
   rotateClockwise,
   rotateCounterClockwise,
@@ -118,6 +120,7 @@ export default {
   Outline,
   OutlineItem,
   Overlay,
+  PageNumberControl,
   PageRotation,
   PageWrapper,
   rotateClockwise,
