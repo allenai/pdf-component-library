@@ -23,7 +23,6 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
   const [currentPage, setCurrentPage] = React.useState(0);
   const [isUserInput, setIsUserInput] = React.useState(false);
   const [isDisabled, setIsDisabled] = React.useState(true);
-  let timer: any = null;
 
   // Initialize page control element
   React.useEffect(() => {
@@ -47,22 +46,19 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
         return;
       }
       setIsUserInput(true);
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
-        const newPageNumber = parseInt(event.target.value, 10);
-        if (newPageNumber <= minPage || newPageNumber >= numPages) {
-          if (controlRef.current) {
-            controlRef.current.value = currentPage.toString();
-          }
+      const newPageNumber = parseInt(event.target.value, 10);
+      if (newPageNumber <= minPage || newPageNumber >= numPages) {
+        if (controlRef.current) {
+          controlRef.current.value = currentPage.toString();
         }
-        if (newPageNumber >= minPage && newPageNumber <= numPages) {
-          setTimeout(() => {
-            scrollToPage({ pageNumber: newPageNumber });
-            setCurrentPage(newPageNumber);
-          });
-          setIsUserInput(false);
-        }
-      }, 300);
+      }
+      if (newPageNumber >= minPage && newPageNumber <= numPages) {
+        setTimeout(() => {
+          scrollToPage({ pageNumber: newPageNumber });
+          setCurrentPage(newPageNumber);
+        });
+        setIsUserInput(false);
+      }
     },
     [controlRef, minPage, numPages, scrollToPage]
   );
