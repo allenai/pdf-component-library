@@ -1,5 +1,5 @@
 const DEFAULT_ROOT_MARGIN = '50px';
-const DEFAULT_THRESHOLD = 0.00001;
+const DEFAULT_THRESHOLD = [0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
 
 export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, number>) => void;
 export type onVisibleEntriesChangeCallback<TEntry> = (args: {
