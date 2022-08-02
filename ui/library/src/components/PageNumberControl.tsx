@@ -3,81 +3,86 @@ import * as React from 'react';
 
 import { DocumentContext } from '../context/DocumentContext';
 import { ScrollContext } from '../context/ScrollContext';
+import { getMaxVisibleElement } from '../utils/MaxVisibleElement';
 
 export type Props = {
-  isReadOnly?: boolean;
   showDivider?: boolean;
   className?: string;
 };
 
+type TODO__TIMER = any;
+
+const DELAY_SCROLL_TIME_OUT_MS = 1000;
+
 export const PageNumberControl: React.FunctionComponent<Props> = ({
-  isReadOnly,
   showDivider,
   className,
 }: Props) => {
-  const controlRef = React.createRef<HTMLInputElement>();
+  const delayTimerRef = React.useRef<TODO__TIMER>();
   const { numPages } = React.useContext(DocumentContext);
-  const { scrollToPage, visiblePageNumbers, getMaxVisibleElement } =
-    React.useContext(ScrollContext);
+  const { scrollToPage, visiblePageRatios } = React.useContext(ScrollContext);
   const [minPage, setMinPage] = React.useState(0);
-  const [currentPage, setCurrentPage] = React.useState(0);
-  const [isUserInput, setIsUserInput] = React.useState(false);
-  const [isDisabled, setIsDisabled] = React.useState(true);
+  const [userInput, setUserInput] = React.useState('0');
 
   // Initialize page control element
   React.useEffect(() => {
     if (numPages != 0) {
       setMinPage(1);
-      setCurrentPage(1);
-      setIsDisabled(false);
     }
   }, [numPages]);
 
   React.useEffect(() => {
-    if (isUserInput && controlRef.current) {
-      controlRef.current.value = currentPage.toString();
-      return;
+    if (visiblePageRatios.size !== 0) {
+      const maxVisiblePageNumber = getMaxVisibleElement(visiblePageRatios);
+      if (maxVisiblePageNumber) {
+        setUserInput(maxVisiblePageNumber.toString());
+      }
     }
-    if (visiblePageNumbers.size !== 0 && controlRef.current && !isUserInput) {
-      setCurrentPage(getMaxVisibleElement(visiblePageNumbers));
-      controlRef.current.value = getMaxVisibleElement(visiblePageNumbers).toString();
-    }
-  }, [controlRef, visiblePageNumbers]);
+  }, [visiblePageRatios]);
 
   const onPageNumberChange = React.useCallback(
-    event => {
-      if (!controlRef || !controlRef.current) {
-        return;
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.currentTarget;
+      // Decimal case
+      if (!Number.isInteger(value)) {
+        setUserInput(parseInt(value, 10).toString());
       }
-      setIsUserInput(true);
-      const newPageNumber = parseInt(event.target.value, 10);
-      if (newPageNumber <= minPage || newPageNumber >= numPages) {
-        if (controlRef.current) {
-          controlRef.current.value = currentPage.toString();
-          setIsUserInput(false);
-        }
+
+      setUserInput(value);
+      if (delayTimerRef.current) {
+        clearTimeout(delayTimerRef.current);
       }
+
+      const newPageNumber = parseInt(value, 10);
       if (newPageNumber >= minPage && newPageNumber <= numPages) {
-        setTimeout(() => {
+        delayTimerRef.current = setTimeout(() => {
           scrollToPage({ pageNumber: newPageNumber });
-          setCurrentPage(newPageNumber);
-        });
-        setIsUserInput(false);
+        }, DELAY_SCROLL_TIME_OUT_MS);
       }
     },
-    [controlRef, minPage, numPages, scrollToPage]
+    [minPage, numPages, scrollToPage]
   );
+
+  const handleBlur = React.useCallback(() => {
+    if (delayTimerRef.current) {
+      clearTimeout(delayTimerRef.current);
+    }
+    const pageNumber = parseInt(userInput, 10);
+    if (Number.isNaN(pageNumber)) {
+      return;
+    }
+    scrollToPage({ pageNumber });
+  }, [userInput]);
 
   return (
     <div className={classnames('reader__page-number-control', className)}>
       <input
-        ref={controlRef}
         className="reader__page-number-control__current-page"
         type="number"
         name="currentPage"
-        readOnly={isReadOnly}
-        disabled={isDisabled}
+        value={userInput}
         onChange={onPageNumberChange}
+        onBlur={handleBlur}
       />
       {showDivider && <span className="reader__page-number-control__separator">/</span>}
       <input
@@ -91,6 +96,5 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
 };
 
 PageNumberControl.defaultProps = {
-  isReadOnly: false,
   showDivider: true,
 };

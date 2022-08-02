@@ -31,7 +31,6 @@ describe('<ScrollContext/>', () => {
   let _isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   let _isPageVisible: (opts: PageNumber) => boolean;
   let _scrollToPage: (opts: PageNumber) => void;
-  let _getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
 
   beforeEach(() => {
     (global as any).IntersectionObserver = function (...args) {
@@ -47,7 +46,7 @@ describe('<ScrollContext/>', () => {
               const {
                 scrollDirection,
                 visibleOutlineTargets,
-                visiblePageNumbers,
+                visiblePageRatios,
                 scrollThresholdReachedInDirection,
                 isAtTop,
                 setScrollRoot,
@@ -55,7 +54,6 @@ describe('<ScrollContext/>', () => {
                 isOutlineTargetVisible,
                 isPageVisible,
                 scrollToPage,
-                getMaxVisibleElement,
               } = args;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _setScrollRoot = setScrollRoot;
@@ -67,13 +65,11 @@ describe('<ScrollContext/>', () => {
               _isPageVisible = isPageVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _scrollToPage = scrollToPage;
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              _getMaxVisibleElement = getMaxVisibleElement;
               return (
                 <div>
                   <div className="scrollDirection">{scrollDirection}</div>
                   <div className="visibleOutlineTargets">{visibleOutlineTargets}</div>
-                  <div className="visiblePageNumbers">{visiblePageNumbers}</div>
+                  <div className="visiblePageNumbers">{visiblePageRatios}</div>
                   <div className="scrollThresholdReachedInDirection">
                     {scrollThresholdReachedInDirection}
                   </div>
