@@ -77,6 +77,7 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
   return (
     <div className={classnames('reader__page-number-control', className)}>
       <input
+        aria-label="Current Page"
         className="reader__page-number-control__current-page"
         type="number"
         name="currentPage"
@@ -86,6 +87,7 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
       />
       {showDivider && <span className="reader__page-number-control__separator">/</span>}
       <input
+        aria-label="Total Pages"
         className="reader__page-number-control__total-pages"
         type="number"
         value={numPages}
