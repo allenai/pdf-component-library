@@ -74,7 +74,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   return (
     <div className="reader__header">
       <div className="header-control">
-        <PageNumberControl /> 
+        <PageNumberControl />
       </div>
       <div className="header-control">
         <SimpleZoomControl />
