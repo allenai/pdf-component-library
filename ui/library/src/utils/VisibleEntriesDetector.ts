@@ -1,4 +1,7 @@
 const DEFAULT_ROOT_MARGIN = '50px';
+// This array is a range from 0.0001 to 1 range of threshold. It will help with detecting
+// on scroll with a better % compare to a fix threshold but not firing too frequent that
+// can hamper our performance.
 const DEFAULT_THRESHOLD = [0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
 
 export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, number>) => void;

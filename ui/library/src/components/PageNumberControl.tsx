@@ -6,7 +6,6 @@ import { ScrollContext } from '../context/ScrollContext';
 import { getMaxVisibleElement } from '../utils/MaxVisibleElement';
 
 export type Props = {
-  showDivider?: boolean;
   className?: string;
 };
 
@@ -14,15 +13,12 @@ type TODO__TIMER = any;
 
 const DELAY_SCROLL_TIME_OUT_MS = 1000;
 
-export const PageNumberControl: React.FunctionComponent<Props> = ({
-  showDivider,
-  className,
-}: Props) => {
+export const PageNumberControl: React.FunctionComponent<Props> = ({ className }: Props) => {
   const delayTimerRef = React.useRef<TODO__TIMER>();
   const { numPages } = React.useContext(DocumentContext);
   const { scrollToPage, visiblePageRatios } = React.useContext(ScrollContext);
-  const [minPage, setMinPage] = React.useState(0);
-  const [userInput, setUserInput] = React.useState('0');
+  const [minPage, setMinPage] = React.useState<number>(0);
+  const [userInput, setUserInput] = React.useState<string>('0');
 
   // Initialize page control element
   React.useEffect(() => {
@@ -31,6 +27,9 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
     }
   }, [numPages]);
 
+  // Everytime we scroll through the page this useEffect
+  // will trigger and set current page based on our current
+  // scroll position
   React.useEffect(() => {
     if (visiblePageRatios.size !== 0) {
       const maxVisiblePageNumber = getMaxVisibleElement(visiblePageRatios);
@@ -53,6 +52,9 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
         clearTimeout(delayTimerRef.current);
       }
 
+      // After user input the page that they want to scroll to
+      // our ref will start setting a delay around 1s before scroll
+      // to the position that user desire
       const newPageNumber = parseInt(value, 10);
       if (newPageNumber >= minPage && newPageNumber <= numPages) {
         delayTimerRef.current = setTimeout(() => {
@@ -85,18 +87,10 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({
         onChange={onPageNumberChange}
         onBlur={handleBlur}
       />
-      {showDivider && <span className="reader__page-number-control__separator">/</span>}
-      <input
-        aria-label="Total Pages"
-        className="reader__page-number-control__total-pages"
-        type="number"
-        value={numPages}
-        disabled={true}
-      />
+      <span className="reader__page-number-control__separator">/</span>
+      <span aria-label="Total Pages" className="reader__page-number-control__total-pages">
+        {numPages}
+      </span>
     </div>
   );
-};
-
-PageNumberControl.defaultProps = {
-  showDivider: true,
 };

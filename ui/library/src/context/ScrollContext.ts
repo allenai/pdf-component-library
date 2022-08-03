@@ -35,7 +35,6 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
-  getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -66,9 +65,6 @@ const DEFAULT_CONTEXT: IScrollContext = {
   },
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
-  },
-  getMaxVisibleElement: opts => {
-    logProviderWarning(`getVisibleElement(${JSON.stringify(opts)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -171,18 +167,6 @@ export function useScrollContextProps(): IScrollContext {
       ?.scrollIntoView({ behavior: 'smooth' });
   }, []);
 
-  const getMaxVisibleElement = (visibleElements: Map<any, number>): any => {
-    let maxPageNum = null;
-    let maxRatio = 0;
-    for (const [pageNum, ratio] of visibleElements) {
-      if (maxRatio < ratio) {
-        maxPageNum = pageNum;
-        maxRatio = ratio;
-      }
-    }
-    return maxPageNum;
-  };
-
   // Watch outline nodes
   React.useEffect(() => {
     const root = scrollRoot || document.documentElement;
@@ -243,7 +227,6 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
-    getMaxVisibleElement,
     scrollThresholdReachedInDirection,
     isAtTop,
   };
