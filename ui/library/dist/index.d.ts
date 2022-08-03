@@ -13,6 +13,7 @@ declare module '@allenai/pdf-components' {
     import { Outline } from '@allenai/pdf-components/src/components/outline/Outline';
     import { OutlineItem } from '@allenai/pdf-components/src/components/outline/OutlineItem';
     import { Overlay, Props as OverlayProps } from '@allenai/pdf-components/src/components/Overlay';
+    import { PageNumberControl } from '@allenai/pdf-components/src/components/PageNumberControl';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from '@allenai/pdf-components/src/components/PageWrapper';
     import { BoundingBox as BoundingBoxType, Dimensions, Origin, RawBoundingBox, scaleRawBoundingBox, Size } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
@@ -29,7 +30,7 @@ declare module '@allenai/pdf-components' {
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from '@allenai/pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from '@allenai/pdf-components/src/utils/style';
     export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -49,6 +50,7 @@ declare module '@allenai/pdf-components' {
             onClick?: ((dest: NodeDestination) => void) | undefined;
         }>;
         Overlay: import("react").FunctionComponent<OverlayProps>;
+        PageNumberControl: import("react").FunctionComponent<import("./src/components/PageNumberControl").Props>;
         PageRotation: typeof PageRotation;
         PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
         rotateClockwise: typeof rotateClockwise;
@@ -133,6 +135,14 @@ declare module '@allenai/pdf-components/src/components/Overlay' {
         children?: React.ReactElement<typeof BoundingBox> | Array<React.ReactElement<typeof BoundingBox>>;
     };
     export const Overlay: React.FunctionComponent<Props>;
+}
+
+declare module '@allenai/pdf-components/src/components/PageNumberControl' {
+    import * as React from 'react';
+    export type Props = {
+        className?: string;
+    };
+    export const PageNumberControl: React.FunctionComponent<Props>;
 }
 
 declare module '@allenai/pdf-components/src/components/PageWrapper' {
@@ -296,13 +306,12 @@ declare module '@allenai/pdf-components/src/context/ScrollContext' {
         isPageVisible: (pageNumber: PageNumber) => boolean;
         scrollDirection: Nullable<ScrollDirection>;
         visibleOutlineTargets: Map<NodeDestination, number>;
-        visiblePageNumbers: Map<number, number>;
+        visiblePageRatios: Map<number, number>;
         resetScrollObservers: () => void;
-        setScrollRoot: (root: Nullable<Element>) => any;
+        setScrollRoot: (root: Nullable<Element>) => void;
         scrollToOutlineTarget: (dest: NodeDestination) => void;
-        setScrollThreshold: (scrollThreshold: Nullable<number>) => any;
+        setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
         scrollToPage: (pageNumber: PageNumber) => void;
-        getMaxVisibleElement: (visibleElements: Map<any, number>) => any;
         scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
         isAtTop: Nullable<boolean>;
     }
