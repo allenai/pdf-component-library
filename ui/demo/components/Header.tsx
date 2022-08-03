@@ -1,5 +1,6 @@
 import {
   DownloadButton,
+  PageNumberControl,
   rotateClockwise,
   rotateCounterClockwise,
   scrollToId,
@@ -72,6 +73,9 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
 
   return (
     <div className="reader__header">
+      <div className="header-control">
+        <PageNumberControl />
+      </div>
       <div className="header-control">
         <SimpleZoomControl />
       </div>
