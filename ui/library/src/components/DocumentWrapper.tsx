@@ -38,7 +38,6 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   React.useEffect(() => {
     // fix known react-pdf bug where zooming causes scroll position jump to a different page
-    console.log("v1");
     resetScrollToTopOfPage();
   }, [scale]);
 
