@@ -73,8 +73,11 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({ className }:
     if (Number.isNaN(pageNumber)) {
       return;
     }
-    scrollToPage({ pageNumber });
-  }, [userInput]);
+
+    delayTimerRef.current = setTimeout(() => {
+      scrollToPage({ pageNumber: pageNumber });
+    }, DELAY_SCROLL_TIME_OUT_MS);
+  }, [userInput, scrollToPage]);
 
   return (
     <div className={classnames('reader__page-number-control', className)}>
