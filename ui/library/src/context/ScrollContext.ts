@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { NodeDestination } from '../components/types/outline';
 import { Nullable } from '../components/types/utils';
+import { getMaxVisibleElement } from '../utils/MaxVisibleElement';
 import { logProviderWarning } from '../utils/provider';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
@@ -35,6 +36,7 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
+  resetScrollToTopOfPage: () => void;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -65,6 +67,9 @@ const DEFAULT_CONTEXT: IScrollContext = {
   },
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
+  },
+  resetScrollToTopOfPage: () => {
+    logProviderWarning(`resetScrollToTopOfPage()`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -155,17 +160,29 @@ export function useScrollContextProps(): IScrollContext {
     [visiblePageRatios]
   );
 
-  const scrollToPage = React.useCallback(({ pageNumber, pageIndex }: PageNumber): void => {
-    if (typeof pageNumber === 'number') {
-      pageIndex = pageNumber - 1;
+  const scrollToPage = React.useCallback(
+    ({ pageNumber, pageIndex }: PageNumber, smoothScroll = true): void => {
+      if (typeof pageNumber === 'number') {
+        pageIndex = pageNumber - 1;
+      }
+      if (typeof pageIndex !== 'number') {
+        return;
+      }
+      document
+        .getElementById(generatePageIdFromIndex(pageIndex))
+        ?.scrollIntoView({ behavior: smoothScroll ? 'smooth' : 'auto' });
+    },
+    []
+  );
+
+  const resetScrollToTopOfPage = React.useCallback(() => {
+    if (visiblePageRatios.size !== 0) {
+      const maxVisiblePageNumber = getMaxVisibleElement(visiblePageRatios);
+      if (maxVisiblePageNumber) {
+        scrollToPage({ pageNumber: Number(maxVisiblePageNumber) }, false);
+      }
     }
-    if (typeof pageIndex !== 'number') {
-      return;
-    }
-    document
-      .getElementById(generatePageIdFromIndex(pageIndex))
-      ?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+  }, [visiblePageRatios]);
 
   // Watch outline nodes
   React.useEffect(() => {
@@ -227,6 +244,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
+    resetScrollToTopOfPage,
     scrollThresholdReachedInDirection,
     isAtTop,
   };

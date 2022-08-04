@@ -23,8 +23,8 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   const { pdfDocProxy, setNumPages, setPageDimensions, setPdfDocProxy } =
     React.useContext(DocumentContext);
-  const { resetScrollObservers } = React.useContext(ScrollContext);
-  const { rotation } = React.useContext(TransformContext);
+  const { resetScrollObservers, resetScrollToTopOfPage } = React.useContext(ScrollContext);
+  const { rotation, scale } = React.useContext(TransformContext);
   const { setErrorMessage, setIsLoading } = React.useContext(UiContext);
 
   function getFirstPage(pdfDoc: pdfjs.PDFDocumentProxy): Promise<IPDFPageProxy> {
@@ -34,7 +34,13 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
 
   React.useEffect(() => {
     resetScrollObservers();
-  }, []);
+  }, [pdfDocProxy]);
+
+  React.useEffect(() => {
+    // fix known react-pdf bug where zooming causes scroll position jump to a different page
+    console.log("v1");
+    resetScrollToTopOfPage();
+  }, [scale]);
 
   const onPdfLoadSuccess = React.useCallback((pdfDoc: pdfjs.PDFDocumentProxy): void => {
     setNumPages(pdfDoc.numPages);
