@@ -69,7 +69,7 @@ export function usePageRenderContextProps({
   );
 
   const isBuildingObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): boolean => {
+    ({ pageNumber, pageIndex }: PageNumber): boolean => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -86,7 +86,7 @@ export function usePageRenderContextProps({
   );
 
   const getObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Nullable<string> => {
+    ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
