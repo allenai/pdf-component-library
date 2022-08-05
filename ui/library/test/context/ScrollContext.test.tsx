@@ -67,8 +67,8 @@ describe('<ScrollContext/>', () => {
               _isPageVisible = isPageVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _scrollToPage = scrollToPage;
-               // eslint-disable-next-line @typescript-eslint/no-unused-vars
-               _recalibrateScrollPosition = recalibrateScrollPosition;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _recalibrateScrollPosition = recalibrateScrollPosition;
               return (
                 <div>
                   <div className="scrollDirection">{scrollDirection}</div>
@@ -112,12 +112,12 @@ describe('<ScrollContext/>', () => {
     expectTextFromClassName('isAtTop', '');
   });
   it('recalibrateScrollPosition sucessfully changes scroll position based on multiplier', () => {
-    _setScrollRoot(null); 
-    document.documentElement.scrollTop = 50; 
-    _recalibrateScrollPosition(1.2); 
-     
-    setTimeout(()=>{
-      expect(document.documentElement.scrollTop).to.equal(50 * 1.2); 
-    }, 5);  
-  }); 
+    _setScrollRoot(null);
+    document.documentElement.scrollTop = 50;
+    _recalibrateScrollPosition(1.2);
+
+    setTimeout(() => {
+      expect(document.documentElement.scrollTop).to.equal(50 * 1.2);
+    }, 5);
+  });
 });
