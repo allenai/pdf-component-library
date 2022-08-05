@@ -35,6 +35,7 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
+  recalibrateScrollPosition: (zoomMultiplier: number) => void;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -65,6 +66,9 @@ const DEFAULT_CONTEXT: IScrollContext = {
   },
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
+  },
+  recalibrateScrollPosition: zoomMultiplier => {
+    logProviderWarning(`recalibrateScrollPosition(${JSON.stringify(zoomMultiplier)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -216,6 +220,19 @@ export function useScrollContextProps(): IScrollContext {
     };
   }, [scrollRoot, observerIndex]);
 
+  const recalibrateScrollPosition = React.useCallback((zoomMultiplier:number): void => {
+    // fix known react-pdf bug where zooming causes scroll position to jump to different pages  
+    const root = scrollRoot || document.documentElement;
+    if(!root) {
+      return;
+    } 
+    const newScrollTop = Math.floor(root.scrollTop * zoomMultiplier);
+    setTimeout(()=>{
+      root.scrollTop = newScrollTop;   
+    }, 1);
+}, [scrollRoot]); 
+
+
   return {
     isOutlineTargetVisible,
     isPageVisible,
@@ -227,6 +244,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
+    recalibrateScrollPosition,
     scrollThresholdReachedInDirection,
     isAtTop,
   };
