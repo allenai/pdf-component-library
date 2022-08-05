@@ -68,10 +68,7 @@ const DEFAULT_CONTEXT: IScrollContext = {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
   },
   updateScrollPosition: zoomMultiplier => {
-    logProviderWarning(
-      `updateScrollPosition(${JSON.stringify(zoomMultiplier)})`,
-      'ScrollContext'
-    );
+    logProviderWarning(`updateScrollPosition(${JSON.stringify(zoomMultiplier)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -225,7 +222,7 @@ export function useScrollContextProps(): IScrollContext {
 
   // calculates a new scroll position after zooming in/out so user doesnt lose their position
   const updateScrollPosition = React.useCallback(
-    (zoomMultiplier: number): void => { 
+    (zoomMultiplier: number): void => {
       const root = scrollRoot || document.documentElement;
       if (!root) {
         return;
