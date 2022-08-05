@@ -35,6 +35,7 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
+  updateScrollPosition: (zoomMultiplier: number) => void;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -65,6 +66,9 @@ const DEFAULT_CONTEXT: IScrollContext = {
   },
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
+  },
+  updateScrollPosition: zoomMultiplier => {
+    logProviderWarning(`updateScrollPosition(${JSON.stringify(zoomMultiplier)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
@@ -216,6 +220,21 @@ export function useScrollContextProps(): IScrollContext {
     };
   }, [scrollRoot, observerIndex]);
 
+  // calculates a new scroll position after zooming in/out so user doesnt lose their position
+  const updateScrollPosition = React.useCallback(
+    (zoomMultiplier: number): void => {
+      const root = scrollRoot || document.documentElement;
+      if (!root) {
+        return;
+      }
+      const newScrollTop = Math.floor(root.scrollTop * zoomMultiplier);
+      setTimeout(() => {
+        root.scrollTop = newScrollTop;
+      }, 0);
+    },
+    [scrollRoot]
+  );
+
   return {
     isOutlineTargetVisible,
     isPageVisible,
@@ -227,6 +246,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
+    updateScrollPosition,
     scrollThresholdReachedInDirection,
     isAtTop,
   };

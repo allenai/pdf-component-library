@@ -31,6 +31,7 @@ describe('<ScrollContext/>', () => {
   let _isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   let _isPageVisible: (opts: PageNumber) => boolean;
   let _scrollToPage: (opts: PageNumber) => void;
+  let _updateScrollPosition: (opts: number) => void;
 
   beforeEach(() => {
     (global as any).IntersectionObserver = function (...args) {
@@ -54,6 +55,7 @@ describe('<ScrollContext/>', () => {
                 isOutlineTargetVisible,
                 isPageVisible,
                 scrollToPage,
+                updateScrollPosition,
               } = args;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _setScrollRoot = setScrollRoot;
@@ -65,6 +67,8 @@ describe('<ScrollContext/>', () => {
               _isPageVisible = isPageVisible;
               // eslint-disable-next-line @typescript-eslint/no-unused-vars
               _scrollToPage = scrollToPage;
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              _updateScrollPosition = updateScrollPosition;
               return (
                 <div>
                   <div className="scrollDirection">{scrollDirection}</div>
@@ -106,5 +110,14 @@ describe('<ScrollContext/>', () => {
 
   it('provides a default isAtTop', () => {
     expectTextFromClassName('isAtTop', '');
+  });
+  it('updateScrollPosition sucessfully changes scroll position based on multiplier', () => {
+    _setScrollRoot(null);
+    document.documentElement.scrollTop = 50;
+    _updateScrollPosition(1.2);
+
+    setTimeout(() => {
+      expect(document.documentElement.scrollTop).to.equal(50 * 1.2);
+    }, 5);
   });
 });
