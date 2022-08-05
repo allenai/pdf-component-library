@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Nullable } from '../../src/components/types/utils';
 import { ContextProvider } from '../../src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from '../../src/context/DocumentContext';
+import { IPageRenderContext, PageRenderContext } from '../../src/context/PageRenderContext';
 import { IScrollContext, ScrollContext } from '../../src/context/ScrollContext';
 import { ITransformContext, TransformContext } from '../../src/context/TransformContext';
 import { IUiContext, UiContext } from '../../src/context/UiContext';
@@ -16,6 +17,7 @@ describe('<ContextProvider/>', () => {
   let transformContextProps: Nullable<ITransformContext> = null;
   let uiContextProps: Nullable<IUiContext> = null;
   let scrollContextProps: Nullable<IScrollContext> = null;
+  let pageRenderContextProps: Nullable<IPageRenderContext> = null;
 
   before(() => {
     (global as any).IntersectionObserver = function (...args) {
@@ -48,6 +50,12 @@ describe('<ContextProvider/>', () => {
             return null;
           }}
         </ScrollContext.Consumer>
+        <PageRenderContext.Consumer>
+          {(args: IPageRenderContext) => {
+            pageRenderContextProps = args;
+            return null;
+          }}
+        </PageRenderContext.Consumer>
       </ContextProvider>
     );
   });
@@ -69,7 +77,11 @@ describe('<ContextProvider/>', () => {
     expect(uiContextProps).to.be.ok;
   });
 
-  it('should create a ScrollContext', () => {
+  it('should create a PageRenderContext', () => {
     expect(scrollContextProps).to.be.ok;
+  });
+
+  it('should create a ScrollContext', () => {
+    expect(pageRenderContextProps).to.be.ok;
   });
 });

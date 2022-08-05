@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { DocumentContext, useDocumentContextProps } from './DocumentContext';
+import { PageRenderContext, usePageRenderContextProps } from './PageRenderContext';
 import { ScrollContext, useScrollContextProps } from './ScrollContext';
 import { TransformContext, useTransformContextProps } from './TransformContext';
 import { UiContext, useUiContextProps } from './UiContext';
@@ -14,12 +15,23 @@ export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Pr
   const transformProps = useTransformContextProps();
   const uiProps = useUiContextProps();
   const scrollProps = useScrollContextProps();
+  const pageRenderProps = usePageRenderContextProps({
+    pdfDocProxy: documentProps.pdfDocProxy,
+    scale: transformProps.scale,
+    rotation: transformProps.rotation,
+    zoomMultiplier: transformProps.zoomMultiplier,
+    visiblePageRatios: scrollProps.visiblePageRatios,
+  });
 
   return (
     <DocumentContext.Provider value={documentProps}>
       <TransformContext.Provider value={transformProps}>
         <UiContext.Provider value={uiProps}>
-          <ScrollContext.Provider value={scrollProps}>{children}</ScrollContext.Provider>
+          <ScrollContext.Provider value={scrollProps}>
+            <PageRenderContext.Provider value={pageRenderProps}>
+              {children}
+            </PageRenderContext.Provider>
+          </ScrollContext.Provider>
         </UiContext.Provider>
       </TransformContext.Provider>
     </DocumentContext.Provider>
