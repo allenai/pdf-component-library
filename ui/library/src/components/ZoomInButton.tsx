@@ -12,16 +12,16 @@ export const ZoomInButton: React.FunctionComponent<Props> = ({
   ...extraProps
 }: Props) => {
   const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
-  const { recalibrateScrollPosition } = React.useContext(ScrollContext);
+  const { updateScrollPosition } = React.useContext(ScrollContext);
 
   const handleZoomIn = React.useCallback(
     (event): void => {
       event.preventDefault();
       event.stopPropagation();
-      recalibrateScrollPosition(1 * zoomMultiplier);
+      updateScrollPosition(1 * zoomMultiplier);
       setScale(scale * zoomMultiplier);
     },
-    [scale, zoomMultiplier, recalibrateScrollPosition]
+    [scale, zoomMultiplier, updateScrollPosition]
   );
 
   return (

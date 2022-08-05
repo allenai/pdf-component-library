@@ -35,7 +35,7 @@ export interface IScrollContext {
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
-  recalibrateScrollPosition: (zoomMultiplier: number) => void;
+  updateScrollPosition: (zoomMultiplier: number) => void;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
 }
@@ -67,9 +67,9 @@ const DEFAULT_CONTEXT: IScrollContext = {
   scrollToPage: opts => {
     logProviderWarning(`scrollToPage(${JSON.stringify(opts)})`, 'ScrollContext');
   },
-  recalibrateScrollPosition: zoomMultiplier => {
+  updateScrollPosition: zoomMultiplier => {
     logProviderWarning(
-      `recalibrateScrollPosition(${JSON.stringify(zoomMultiplier)})`,
+      `updateScrollPosition(${JSON.stringify(zoomMultiplier)})`,
       'ScrollContext'
     );
   },
@@ -223,9 +223,9 @@ export function useScrollContextProps(): IScrollContext {
     };
   }, [scrollRoot, observerIndex]);
 
-  const recalibrateScrollPosition = React.useCallback(
-    (zoomMultiplier: number): void => {
-      // fix known react-pdf bug where zooming causes scroll position to jump to different pages
+  // calculates a new scroll position after zooming in/out so user doesnt lose their position
+  const updateScrollPosition = React.useCallback(
+    (zoomMultiplier: number): void => { 
       const root = scrollRoot || document.documentElement;
       if (!root) {
         return;
@@ -233,7 +233,7 @@ export function useScrollContextProps(): IScrollContext {
       const newScrollTop = Math.floor(root.scrollTop * zoomMultiplier);
       setTimeout(() => {
         root.scrollTop = newScrollTop;
-      }, 1);
+      }, 0);
     },
     [scrollRoot]
   );
@@ -249,7 +249,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollToOutlineTarget,
     setScrollThreshold,
     scrollToPage,
-    recalibrateScrollPosition,
+    updateScrollPosition,
     scrollThresholdReachedInDirection,
     isAtTop,
   };
