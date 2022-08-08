@@ -1,0 +1,82 @@
+
+
+// this was taken directly from the react-pdf file at:  'react-pdf/dist/esm/Page/TextLayer.css';
+// me and other users experienced issues with bundling this file with webpack. 
+// since this is a requirement of the latest beta version of 6.0.0-beta.2, we should monitor this and remove if these issues are resolved
+
+.textLayer {
+    position: absolute;
+    text-align: initial;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    line-height: 1;
+    text-size-adjust: none;
+  }
+  
+  .textLayer span,
+  .textLayer br {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+  }
+  
+  /* Only necessary in Google Chrome, see issue 14205, and most unfortunately
+   * the problem doesn't show up in "text" reference tests. */
+  .textLayer span.markedContent {
+    top: 0;
+    height: 0;
+  }
+  
+  .textLayer .highlight {
+    margin: -1px;
+    padding: 1px;
+    background-color: rgba(180, 0, 170, 1);
+    border-radius: 4px;
+  }
+  
+  .textLayer .highlight.appended {
+    position: initial;
+  }
+  
+  .textLayer .highlight.begin {
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .textLayer .highlight.end {
+    border-radius: 0 4px 4px 0;
+  }
+  
+  .textLayer .highlight.middle {
+    border-radius: 0;
+  }
+  
+  .textLayer .highlight.selected {
+    background-color: rgba(0, 100, 0, 1);
+  }
+  
+  /* Avoids https://github.com/mozilla/pdf.js/issues/13840 in Chrome */
+  .textLayer br::selection {
+    background: transparent;
+  }
+  
+  .textLayer .endOfContent {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    cursor: default;
+    user-select: none;
+  }
+  
+  .textLayer .endOfContent.active {
+    top: 0;
+  }
+  
