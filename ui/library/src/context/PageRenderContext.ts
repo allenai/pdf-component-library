@@ -62,7 +62,6 @@ export function usePageRenderContextProps({
   const setPageRenderStates = React.useCallback(
     (pageRenderStates: PageNumberToRenderStateMap) => {
       pageRenderStatesRef.current = pageRenderStates;
-      console.log('setting page render states', [...pageRenderStates.keys()].join(', '));
       _setPageRenderStates(pageRenderStates);
     },
     [pageRenderStatesRef]
@@ -128,7 +127,6 @@ export function usePageRenderContextProps({
         objectURL: null,
       };
       promise.then(objectURL => {
-        console.log(`Rendered page ${pageNumber}`, objectURL);
         renderState.objectURL = objectURL;
         const newPageRenderStates = new Map(pageRenderStatesRef.current);
         Object.freeze(newPageRenderStates);
@@ -165,6 +163,7 @@ async function buildPageObjectURL({
   pageNumber,
   pdfDocProxy,
   scale = 1,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   rotation = PageRotation.Rotate0,
   zoomMultiplier = 1.2,
   imageType = 'image/png',
@@ -178,10 +177,6 @@ async function buildPageObjectURL({
   imageType?: string;
   imageQuality?: number;
 }): Promise<string> {
-  console.log(`Rendering page ${pageNumber}`, {
-    scale,
-    rotation,
-  });
   const pageProxy = await pdfDocProxy.getPage(pageNumber);
 
   const blob: Nullable<Blob> = await useRenderCanvas(async canvas => {
