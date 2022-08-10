@@ -312,6 +312,7 @@ declare module '@allenai/pdf-components/src/context/ScrollContext' {
         scrollToOutlineTarget: (dest: NodeDestination) => void;
         setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
         scrollToPage: (pageNumber: PageNumber) => void;
+        updateScrollPosition: (zoomMultiplier: number) => void;
         scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
         isAtTop: Nullable<boolean>;
     }
