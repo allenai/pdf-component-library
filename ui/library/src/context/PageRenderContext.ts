@@ -4,7 +4,6 @@ import { pdfjs } from 'react-pdf';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { PageRotation } from '../utils/rotate';
-import { PageNumber } from './ScrollContext';
 
 export type RenderState = {
   promise: Promise<string>;
@@ -15,9 +14,9 @@ export type PageNumberToRenderStateMap = Map<number, RenderState>;
 
 export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
-  getObjectURLForPage: (args: PageNumber) => Nullable<string>;
-  isBuildingObjectURLForPage: (args: PageNumber) => boolean;
-  buildObjectURLForPage: (args: PageNumber) => Promise<string>;
+  getObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Nullable<string>;
+  isBuildingObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => boolean;
+  buildObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Promise<string>;
 }
 
 export const PageRenderContext = React.createContext<IPageRenderContext>({
@@ -41,7 +40,7 @@ export function usePageRenderContextProps({
   scale,
   rotation,
   zoomMultiplier,
-  visiblePageRatios: visiblePageRatios,
+  visiblePageRatios,
 }: {
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   scale: number;
@@ -63,13 +62,14 @@ export function usePageRenderContextProps({
   const setPageRenderStates = React.useCallback(
     (pageRenderStates: PageNumberToRenderStateMap) => {
       pageRenderStatesRef.current = pageRenderStates;
+      console.log('setting page render states', [...pageRenderStates.keys()].join(', '));
       _setPageRenderStates(pageRenderStates);
     },
     [pageRenderStatesRef]
   );
 
   const isBuildingObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: PageNumber): boolean => {
+    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): boolean => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -86,7 +86,7 @@ export function usePageRenderContextProps({
   );
 
   const getObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
+    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Nullable<string> => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -99,7 +99,7 @@ export function usePageRenderContextProps({
   );
 
   const buildObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: PageNumber): Promise<string> => {
+    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Promise<string> => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -128,6 +128,7 @@ export function usePageRenderContextProps({
         objectURL: null,
       };
       promise.then(objectURL => {
+        console.log(`Rendered page ${pageNumber}`, objectURL);
         renderState.objectURL = objectURL;
         const newPageRenderStates = new Map(pageRenderStatesRef.current);
         Object.freeze(newPageRenderStates);
@@ -164,7 +165,6 @@ async function buildPageObjectURL({
   pageNumber,
   pdfDocProxy,
   scale = 1,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   rotation = PageRotation.Rotate0,
   zoomMultiplier = 1.2,
   imageType = 'image/png',
@@ -178,6 +178,10 @@ async function buildPageObjectURL({
   imageType?: string;
   imageQuality?: number;
 }): Promise<string> {
+  console.log(`Rendering page ${pageNumber}`, {
+    scale,
+    rotation,
+  });
   const pageProxy = await pdfDocProxy.getPage(pageNumber);
 
   const blob: Nullable<Blob> = await useRenderCanvas(async canvas => {
@@ -196,8 +200,7 @@ async function buildPageObjectURL({
     });
     await renderTask.promise;
 
-    // allow a timeout on the render task
-    await new Promise(res => setTimeout(res, 16));
+    await new Promise(resolve => setTimeout(resolve, 16));
 
     // Fetch a blob for an image of the canvas
     return new Promise((resolve, reject) => {
