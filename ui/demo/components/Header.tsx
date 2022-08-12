@@ -7,8 +7,10 @@ import {
   TransformContext,
   UiContext,
 } from '@allenai/pdf-components';
+import classnames from 'classnames';
 import * as React from 'react';
 
+import { DemoHeaderContext } from '../context/DemoHeaderContext';
 import { SimpleZoomControl } from './SimpleZoomControl';
 
 type Props = {
@@ -24,6 +26,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingTextHighlight,
   } = React.useContext(UiContext);
   const { rotation, setRotation } = React.useContext(TransformContext);
+  const { isShowingNoteTaking, setIsShowingNoteTaking } = React.useContext(DemoHeaderContext);
 
   const handleShowOutline = React.useCallback(() => {
     setIsShowingOutline(true);
@@ -37,32 +40,14 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setRotation(rotateCounterClockwise(rotation));
   }, [rotation]);
 
-  // TODO: #29079 remove this once UI design is finalized
   const handleToggleHighlightOverlay = React.useCallback(() => {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingHighlightOverlay down below
-    const newVal = !isShowingHighlightOverlay;
-    setIsShowingHighlightOverlay(newVal);
-
-    if (newVal) {
-      setIsShowingTextHighlight(false);
-    }
+    setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
   }, [isShowingHighlightOverlay]);
 
-  // TODO: #29079 remove this once UI design is finalized
   const handleToggleTextHighlight = React.useCallback(() => {
-    // Store new value in a temp variable because state value updates are batched and
-    // executed once this function returns. Otherwise we won't get the correct value
-    // for isShowingTextHighlight down below
-    const newVal = !isShowingTextHighlight;
-    setIsShowingTextHighlight(newVal);
-    if (newVal) {
-      setIsShowingHighlightOverlay(false);
-    }
+    setIsShowingTextHighlight(!isShowingTextHighlight);
   }, [isShowingTextHighlight]);
 
-  // TODO: #29079 remove this once UI design is finalized and we have real data
   const handleScrollToFigure = React.useCallback(() => {
     setIsShowingTextHighlight(false);
     setIsShowingHighlightOverlay(false);
@@ -70,6 +55,10 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     const id = 'demoFigure';
     scrollToId(id);
   }, []);
+
+  const handleShowNoteTaking = React.useCallback(() => {
+    setIsShowingNoteTaking(!isShowingNoteTaking);
+  }, [isShowingNoteTaking]);
 
   return (
     <div className="reader__header">
@@ -87,14 +76,17 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
       <div className="header-control">
         <a onClick={handleShowOutline}>Outline</a>
       </div>
-      <div className="header-control">
+      <div className={classnames('header-control', { 'is-selected': isShowingHighlightOverlay })}>
         <a onClick={handleToggleHighlightOverlay}>Highlight Overlay</a>
       </div>
-      <div className="header-control">
+      <div className={classnames('header-control', { 'is-selected': isShowingTextHighlight })}>
         <a onClick={handleToggleTextHighlight}>Highlight Text</a>
       </div>
       <div className="header-control">
         <a onClick={handleScrollToFigure}>Scroll to Figure 1</a>
+      </div>
+      <div className={classnames('header-control', { 'is-selected': isShowingNoteTaking })}>
+        <a onClick={handleShowNoteTaking}>Note Taking</a>
       </div>
       <DownloadButton pdfUrl={pdfUrl} />
     </div>

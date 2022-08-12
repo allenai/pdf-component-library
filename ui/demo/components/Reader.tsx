@@ -9,11 +9,13 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BrowserRouter, Route } from 'react-router-dom';
 
+import { DemoHeaderContextProvider } from '../context/DemoHeaderContext';
 import { Annotations, generateCitations, PageToAnnotationsMap } from '../types/annotations';
 import { RawCitation } from '../types/citations';
 import { CitationsDemo } from './CitationsDemo';
 import { Header } from './Header';
 import { HighlightOverlayDemo } from './HighlightOverlayDemo';
+import { NoteTakingDemo } from './NoteTakingDemo';
 import { Outline } from './Outline';
 import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
@@ -67,26 +69,29 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
     <BrowserRouter>
       <Route path="/">
         <div className="reader__container">
-          <Header pdfUrl={samplePdfUrl} />
-          <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
-            <Outline parentRef={pdfContentRef} />
-            <div className="reader__page-list" ref={pdfScrollableRef}>
-              {Array.from({ length: numPages }).map((_, i) => (
-                <PageWrapper key={i} pageIndex={i}>
-                  <Overlay>
-                    <HighlightOverlayDemo pageIndex={i} />
-                    <TextHighlightDemo pageIndex={i} />
-                    <ScrollToDemo pageIndex={i} />
-                    <CitationsDemo
-                      annotations={annotations}
-                      pageIndex={i}
-                      parentRef={pdfScrollableRef}
-                    />
-                  </Overlay>
-                </PageWrapper>
-              ))}
-            </div>
-          </DocumentWrapper>
+          <DemoHeaderContextProvider>
+            <Header pdfUrl={samplePdfUrl} />
+            <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
+              <Outline parentRef={pdfContentRef} />
+              <div className="reader__page-list" ref={pdfScrollableRef}>
+                {Array.from({ length: numPages }).map((_, i) => (
+                  <PageWrapper key={i} pageIndex={i}>
+                    <Overlay>
+                      <HighlightOverlayDemo pageIndex={i} />
+                      <TextHighlightDemo pageIndex={i} />
+                      <ScrollToDemo pageIndex={i} />
+                      <CitationsDemo
+                        annotations={annotations}
+                        pageIndex={i}
+                        parentRef={pdfScrollableRef}
+                      />
+                    </Overlay>
+                  </PageWrapper>
+                ))}
+              </div>
+            </DocumentWrapper>
+            <NoteTakingDemo />
+          </DemoHeaderContextProvider>
         </div>
       </Route>
     </BrowserRouter>
