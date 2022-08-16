@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { pdfjs } from 'react-pdf';
 
+import { PageNumber } from '../components/types/page';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { PageRotation } from '../utils/rotate';
-import { PageNumber } from './ScrollContext';
 
 export type RenderState = {
   promise: Promise<string>;
