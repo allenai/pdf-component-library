@@ -234,6 +234,14 @@ declare module '@allenai/pdf-components/src/components/types/page' {
         marginLeft: number;
         marginRight: number;
     };
+    /**
+      * pageNumber: number starts from 1
+      * pageIndex: number starts from 0
+      */
+    export type PageNumber = {
+        pageNumber?: number;
+        pageIndex?: number;
+    };
 }
 
 declare module '@allenai/pdf-components/src/components/types/utils' {
@@ -291,16 +299,9 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
 declare module '@allenai/pdf-components/src/context/ScrollContext' {
     import * as React from 'react';
     import { NodeDestination } from '@allenai/pdf-components/src/components/types/outline';
+    import { PageNumber } from '@allenai/pdf-components/src/components/types/page';
     import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
     import { ScrollDirection } from '@allenai/pdf-components/src/utils/ScrollDirectionDetector';
-    /**
-      * pageNumber: number starts from 1
-      * pageIndex: number starts from 0
-      */
-    export type PageNumber = {
-        pageNumber?: number;
-        pageIndex?: number;
-    };
     export interface IScrollContext {
         isOutlineTargetVisible: (dest: NodeDestination) => boolean;
         isPageVisible: (pageNumber: PageNumber) => boolean;
