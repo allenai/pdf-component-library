@@ -4,6 +4,7 @@ import { pdfjs } from 'react-pdf';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { PageRotation } from '../utils/rotate';
+import { PageNumber } from './ScrollContext';
 
 export type RenderState = {
   promise: Promise<string>;
@@ -14,9 +15,9 @@ export type PageNumberToRenderStateMap = Map<number, RenderState>;
 
 export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
-  getObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Nullable<string>;
-  isBuildingObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => boolean;
-  buildObjectURLForPage: (args: { pageNumber?: number; pageIndex?: number }) => Promise<string>;
+  getObjectURLForPage: (pageNumber: PageNumber) => Nullable<string>;
+  isBuildingObjectURLForPage: (pageNumber: PageNumber) => boolean;
+  buildObjectURLForPage: (pageNumber: PageNumber) => Promise<string>;
 }
 
 export const PageRenderContext = React.createContext<IPageRenderContext>({
@@ -68,7 +69,7 @@ export function usePageRenderContextProps({
   );
 
   const isBuildingObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): boolean => {
+    ({ pageNumber, pageIndex }: PageNumber): boolean => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -85,7 +86,7 @@ export function usePageRenderContextProps({
   );
 
   const getObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Nullable<string> => {
+    ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
@@ -98,7 +99,7 @@ export function usePageRenderContextProps({
   );
 
   const buildObjectURLForPage = React.useCallback(
-    ({ pageNumber, pageIndex }: { pageNumber?: number; pageIndex?: number }): Promise<string> => {
+    ({ pageNumber, pageIndex }: PageNumber): Promise<string> => {
       if (typeof pageIndex === 'number') {
         pageNumber = pageIndex + 1;
       }
