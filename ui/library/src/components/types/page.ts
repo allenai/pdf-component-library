@@ -14,3 +14,12 @@ export type PageProperties = {
   marginLeft: number;
   marginRight: number;
 };
+
+/**
+ * pageNumber: number starts from 1
+ * pageIndex: number starts from 0
+ */
+export type PageNumber = {
+  pageNumber?: number;
+  pageIndex?: number;
+};

@@ -1,8 +1,10 @@
+import classnames from 'classnames';
 import * as React from 'react';
 import { Page } from 'react-pdf';
 import { RenderFunction } from 'react-pdf/dist/Page';
 
 import { DocumentContext } from '../context/DocumentContext';
+import { PageRenderContext } from '../context/PageRenderContext';
 import { TransformContext } from '../context/TransformContext';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import { computePageStyle, getPageWidth } from '../utils/style';
@@ -34,6 +36,10 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
   const { pageDimensions, getOutlineTargets } = React.useContext(DocumentContext);
+  const { getObjectURLForPage, isBuildingObjectURLForPage } = React.useContext(PageRenderContext);
+
+  const objectURLForPage = getObjectURLForPage({ pageIndex });
+  const isBuildingPageImage = isBuildingObjectURLForPage({ pageIndex });
 
   // Don't display until we have page size data
   // TODO: Handle this nicer so we display either the loading or error treatment
@@ -43,8 +49,11 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
 
   const getPageStyle = React.useCallback(() => {
     const styles: Record<string, unknown> = computePageStyle(pageDimensions, rotation, scale);
+    if (objectURLForPage) {
+      styles.backgroundImage = `url(${objectURLForPage})`;
+    }
     return styles;
-  }, [pageDimensions, rotation, scale]);
+  }, [pageDimensions, rotation, scale, objectURLForPage]);
 
   const getWidth = React.useCallback(() => {
     return getPageWidth(pageDimensions, rotation);
@@ -58,7 +67,12 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   return (
     <div
       id={generatePageIdFromIndex(pageIndex)}
-      className="reader__page"
+      className={classnames(
+        'reader__page',
+        { 'reader__page--has-page-image': objectURLForPage },
+        { 'reader__page--no-page-image': !objectURLForPage },
+        { 'reader__page--is-building-page-image': isBuildingPageImage }
+      )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
       {...extraProps}>
