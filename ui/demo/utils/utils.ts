@@ -4,7 +4,7 @@
  */
 
 // Collection of scripts currently being loaded onto the browser
-const loadingScripts: Map<string, Promise<string>> = new Map([]);
+const loadingScripts: Map<string, Promise<string>> = new Map();
 
 /**
  * Query string values can be strings or an array of strings. This utility

@@ -10,7 +10,7 @@ export interface IDemoHeaderContext {
 }
 
 export const DemoHeaderContext = React.createContext<IDemoHeaderContext>({
-  isShowingNoteTaking: false,
+  isShowingNoteTaking: true,
   setIsShowingNoteTaking: isShowingNoteTaking => {
     console.warn(
       `Unable to call setIsShowingNoteTaking(${isShowingNoteTaking}), the provider may not be set up correctly.`
@@ -19,7 +19,7 @@ export const DemoHeaderContext = React.createContext<IDemoHeaderContext>({
 });
 
 export const DemoHeaderContextProvider: React.FunctionComponent<Props> = ({ children }: Props) => {
-  const [isShowingNoteTaking, setIsShowingNoteTaking] = React.useState<boolean>(false);
+  const [isShowingNoteTaking, setIsShowingNoteTaking] = React.useState<boolean>(true);
   const value: IDemoHeaderContext = {
     isShowingNoteTaking,
     setIsShowingNoteTaking,
