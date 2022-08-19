@@ -30,6 +30,40 @@ Sometimes one portion of your application will crash due to errors in the code.
 When this occurs resolve the related issue and re-run `docker-compose up --build`
 to start things back up.
 
+### Testing changes to the library locally
+There are times when you would want to test changes to the library locally without having to publish the package to npm.
+
+#### Build the library
+In the ui/library directory, run `yarn build`. 
+```
+library% yarn build
+```
+If this is the first time building, you might have to follow the steps listed in this [Docker](ui/Dockerfile) file to install the dependencies.
+
+#### Create a package
+On building the library, the artifacts are copied over to `ui/library/dist` folder. Run `npm pack` in this folder.
+```
+dist% npm pack
+```
+This creates a package.
+e.g. `pdf-component-library/ui/library/dist/allenai-pdf-components-0.2.3.tgz`
+
+#### Point to your file
+Update the `package.json` file of your application. Point to the file we produced in the previous step.
+```
+"dependencies": {
+    "@allenai/pdf-components": "file:~/pdf-component-library/ui/library/dist/allenai-pdf-components-0.2.3.tgz"
+}
+```
+Make sure to re-install your package after this update
+```
+yarn install
+```
+or
+```
+npm install
+```
+
 ## Prerequisites
 
 Make sure that you have the latest version of [Docker 🐳](https://www.docker.com/get-started)
