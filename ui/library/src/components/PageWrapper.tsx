@@ -23,7 +23,7 @@ export type PageProps = {
 
 export type Props = {
   className?: string;
-  loadingContentForBuildingImage?: string;
+  loadingContentForBuildingImage?: React.ReactElement;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
 } & PageProps;
 
