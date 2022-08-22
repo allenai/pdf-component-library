@@ -73,7 +73,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         'reader__page',
         { 'reader__page--has-page-image': objectURLForPage },
         { 'reader__page--no-page-image': !objectURLForPage },
-        { 'reader__page--is-building-page-image': true }
+        { 'reader__page--is-building-page-image': isBuildingPageImage }
       )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
