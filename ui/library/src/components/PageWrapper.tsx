@@ -23,6 +23,7 @@ export type PageProps = {
 
 export type Props = {
   className?: string;
+  loadingContentForBuildingImage?: string;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
 } & PageProps;
 
@@ -30,6 +31,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   children,
   error,
   loading,
+  loadingContentForBuildingImage,
   noData,
   pageIndex,
   ...extraProps
@@ -71,12 +73,18 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         'reader__page',
         { 'reader__page--has-page-image': objectURLForPage },
         { 'reader__page--no-page-image': !objectURLForPage },
-        { 'reader__page--is-building-page-image': isBuildingPageImage }
+        { 'reader__page--is-building-page-image': true }
       )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
       {...extraProps}>
       {children}
+      <div
+        className={classnames('reader__page', {
+          'reader__page--is-loading-image': isBuildingPageImage,
+        })}>
+        {loadingContentForBuildingImage}
+      </div>
       <Page
         width={getWidth()}
         error={error}
