@@ -161,6 +161,7 @@ declare module '@allenai/pdf-components/src/components/PageWrapper' {
     };
     export type Props = {
         className?: string;
+        loadingContentForBuildingImage?: React.ReactElement;
         children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
     } & PageProps;
     export const PageWrapper: React.FunctionComponent<Props>;
