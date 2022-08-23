@@ -79,12 +79,14 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
       style={getPageStyle()}
       {...extraProps}>
       {children}
-      <div
-        className={classnames('reader__page', {
-          'reader__page--is-loading-image': isBuildingPageImage,
-        })}>
-        {loadingContentForBuildingImage}
-      </div>
+      {isBuildingPageImage && (
+        <div
+          className={classnames('reader__page', {
+            'reader__page--is-loading-image': isBuildingPageImage,
+          })}>
+          {loadingContentForBuildingImage}
+        </div>
+      )}
       <Page
         width={getWidth()}
         error={error}
