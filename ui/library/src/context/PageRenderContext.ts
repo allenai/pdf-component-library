@@ -5,6 +5,7 @@ import { PageNumber } from '../components/types/page';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { PageRotation } from '../utils/rotate';
+import { TransformContext } from './TransformContext';
 
 export type RenderState = {
   promise: Promise<string>;
@@ -56,6 +57,8 @@ export function usePageRenderContextProps({
       return map;
     }
   );
+
+  const { isScaleChanged } = React.useContext(TransformContext);
 
   // Because rendering a page is async, we will lose the current pageRenderStates
   // This ref trick allows the latest to be accessible when the objectURL is ready
@@ -112,7 +115,7 @@ export function usePageRenderContextProps({
 
       // Don't need to start another task if already rendered
       const existingPromise = pageRenderStates.get(pageNumber)?.promise;
-      if (existingPromise) {
+      if (existingPromise && !isScaleChanged) {
         return existingPromise;
       }
 
@@ -144,12 +147,12 @@ export function usePageRenderContextProps({
 
   React.useEffect(() => {
     for (const pageNumber of visiblePageRatios.keys()) {
-      if (pageRenderStates.has(pageNumber)) {
-        continue;
+      if (pageRenderStates.has(pageNumber) && !isScaleChanged) {
+        return;
       }
       buildObjectURLForPage({ pageNumber });
     }
-  }, [pageRenderStates, visiblePageRatios]);
+  }, [pageRenderStates, visiblePageRatios, scale, rotation, devicePixelRatio]);
 
   return {
     pageRenderStates,
@@ -185,6 +188,7 @@ async function buildPageObjectURL({
     const viewport = pageProxy.getViewport({ scale: scale * zoomMultiplier * devicePixelRatio });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
+    canvas.style.width = '100%'; //de-zoom canvas with style (maybe you can directly use CSS), reaching de-zoom of higher definition PDF
     const canvasContext = canvas.getContext('2d');
     if (!canvasContext) {
       throw new Error('canvas was unable to get a context');

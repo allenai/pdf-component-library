@@ -14,7 +14,7 @@ export const ZoomInButton: React.FunctionComponent<Props> = ({
   children,
   ...extraProps
 }: Props) => {
-  const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
+  const { scale, setScale, zoomMultiplier, setIsScaleChanged } = React.useContext(TransformContext);
   const { updateScrollPosition } = React.useContext(ScrollContext);
 
   const handleZoomIn = React.useCallback(
@@ -23,6 +23,7 @@ export const ZoomInButton: React.FunctionComponent<Props> = ({
       event.stopPropagation();
       const zoomScale = Number(PercentFormatter.format(scale * zoomMultiplier).replace('%', ''));
       if (zoomScale <= MAX_ZOOM_IN_SCALE) {
+        setIsScaleChanged(true);
         updateScrollPosition(1 * zoomMultiplier);
         setScale(scale * zoomMultiplier);
       }

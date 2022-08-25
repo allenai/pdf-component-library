@@ -331,9 +331,11 @@ declare module '@allenai/pdf-components/src/context/TransformContext' {
         rotation: PageRotation;
         scale: number;
         zoomMultiplier: number;
+        isScaleChanged: boolean;
         setRotation: (rotation: PageRotation) => void;
         setScale: (scale: number) => void;
         setZoomMultiplier: (zoom: number) => void;
+        setIsScaleChanged: (isScaleChange: boolean) => void;
     }
     export const TransformContext: React.Context<ITransformContext>;
     export function useTransformContextProps(): ITransformContext;
