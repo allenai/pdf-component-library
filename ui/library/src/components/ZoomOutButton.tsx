@@ -11,7 +11,7 @@ export type Props = {
 const MIN_ZOOM_OUT_SCALE = 25;
 
 export const ZoomOutButton: React.FunctionComponent = ({ children, ...extraProps }: Props) => {
-  const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
+  const { scale, setScale, zoomMultiplier, setIsScaleChanged } = React.useContext(TransformContext);
   const { updateScrollPosition } = React.useContext(ScrollContext);
 
   const handleZoomOut = React.useCallback(
@@ -20,6 +20,7 @@ export const ZoomOutButton: React.FunctionComponent = ({ children, ...extraProps
       event.stopPropagation();
       const zoomScale = Number(PercentFormatter.format(scale / zoomMultiplier).replace('%', ''));
       if (zoomScale >= MIN_ZOOM_OUT_SCALE) {
+        setIsScaleChanged(true);
         updateScrollPosition(1 / zoomMultiplier);
         setScale(scale / zoomMultiplier);
       }
