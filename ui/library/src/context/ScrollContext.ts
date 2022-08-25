@@ -28,10 +28,10 @@ export interface IScrollContext {
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
   updateScrollPosition: (zoomMultiplier: number) => void;
-  setIsOutlineGetClicked: (isOutlineGetClicked: boolean) => void;
+  setIsOutlineClicked: (isOutlineGetClicked: boolean) => void;
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
-  isOutlineGetClicked: Nullable<boolean>;
+  isOutlineClicked: Nullable<boolean>;
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
@@ -64,12 +64,12 @@ const DEFAULT_CONTEXT: IScrollContext = {
   updateScrollPosition: zoomMultiplier => {
     logProviderWarning(`updateScrollPosition(${JSON.stringify(zoomMultiplier)})`, 'ScrollContext');
   },
-  setIsOutlineGetClicked: opts => {
+  setIsOutlineClicked: opts => {
     logProviderWarning(`setIsOutlineGetClicked(${JSON.stringify(opts)})`, 'ScrollContext');
   },
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
-  isOutlineGetClicked: null,
+  isOutlineClicked: null,
 };
 
 export const ScrollContext = React.createContext<IScrollContext>(DEFAULT_CONTEXT);
@@ -84,7 +84,7 @@ export function useScrollContextProps(): IScrollContext {
   const [scrollThresholdReachedInDirection, setScrollThresholdReachedInDirection] =
     React.useState<Nullable<ScrollDirection>>(null);
   const [isAtTop, setIsAtTop] = React.useState<Nullable<boolean>>(null);
-  const [isOutlineGetClicked, setIsOutlineGetClicked] = React.useState<Nullable<boolean>>(null);
+  const [isOutlineClicked, setIsOutlineClicked] = React.useState<Nullable<boolean>>(null);
 
   React.useEffect(() => {
     const scrollElem = scrollRoot || document.documentElement;
@@ -140,7 +140,7 @@ export function useScrollContextProps(): IScrollContext {
   );
 
   const scrollToOutlineTarget = React.useCallback((dest: NodeDestination): void => {
-    setIsOutlineGetClicked(true);
+    setIsOutlineClicked(true);
     document
       .querySelector(`[data-outline-target-dest="${dest}"]`)
       ?.scrollIntoView({ behavior: 'smooth' });
@@ -247,9 +247,9 @@ export function useScrollContextProps(): IScrollContext {
     setScrollThreshold,
     scrollToPage,
     updateScrollPosition,
-    setIsOutlineGetClicked,
+    setIsOutlineClicked,
     scrollThresholdReachedInDirection,
     isAtTop,
-    isOutlineGetClicked,
+    isOutlineClicked,
   };
 }
