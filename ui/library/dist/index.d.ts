@@ -315,8 +315,10 @@ declare module '@allenai/pdf-components/src/context/ScrollContext' {
         setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
         scrollToPage: (pageNumber: PageNumber) => void;
         updateScrollPosition: (zoomMultiplier: number) => void;
+        setIsOutlineClicked: (isOutlineGetClicked: boolean) => void;
         scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
         isAtTop: Nullable<boolean>;
+        isOutlineClicked: Nullable<boolean>;
     }
     export const ScrollContext: React.Context<IScrollContext>;
     export function useScrollContextProps(): IScrollContext;
