@@ -17,9 +17,8 @@ export const ContextProvider: React.FunctionComponent<Props> = ({ children }: Pr
   const scrollProps = useScrollContextProps();
   const pageRenderProps = usePageRenderContextProps({
     pdfDocProxy: documentProps.pdfDocProxy,
+    pixelRatio: transformProps.pixelRatio,
     scale: transformProps.scale,
-    rotation: transformProps.rotation,
-    zoomMultiplier: transformProps.zoomMultiplier,
     visiblePageRatios: scrollProps.visiblePageRatios,
   });
 
