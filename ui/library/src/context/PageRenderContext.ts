@@ -4,7 +4,6 @@ import { pdfjs } from 'react-pdf';
 import { PageNumber } from '../components/types/page';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
-import { PageRotation } from '../utils/rotate';
 
 export type RenderState = {
   promise: Promise<string>;
@@ -38,15 +37,13 @@ export const PageRenderContext = React.createContext<IPageRenderContext>({
 
 export function usePageRenderContextProps({
   pdfDocProxy,
+  pixelRatio,
   scale,
-  rotation,
-  zoomMultiplier,
   visiblePageRatios,
 }: {
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
+  pixelRatio: number;
   scale: number;
-  rotation: PageRotation;
-  zoomMultiplier: number;
   visiblePageRatios: Map<number, number>;
 }): IPageRenderContext {
   const [pageRenderStates, _setPageRenderStates] = React.useState<PageNumberToRenderStateMap>(
@@ -119,9 +116,8 @@ export function usePageRenderContextProps({
       const promise = buildPageObjectURL({
         pageNumber,
         pdfDocProxy,
+        pixelRatio,
         scale,
-        rotation,
-        zoomMultiplier,
       });
       const renderState: RenderState = {
         promise,
@@ -139,7 +135,7 @@ export function usePageRenderContextProps({
       setPageRenderStates(newPageRenderStates);
       return promise;
     },
-    [pageRenderStates, pdfDocProxy, scale, rotation, zoomMultiplier]
+    [pageRenderStates, pdfDocProxy, scale]
   );
 
   React.useEffect(() => {
@@ -151,6 +147,21 @@ export function usePageRenderContextProps({
     }
   }, [pageRenderStates, visiblePageRatios]);
 
+  // Flush page render states when scale changes
+  React.useEffect(() => {
+    // Clean memory of old generated images
+    for (const [, renderState] of pageRenderStatesRef.current) {
+      if (renderState.objectURL) {
+        URL.revokeObjectURL(renderState.objectURL);
+      }
+    }
+
+    // Clear all page render states, so pages can rebuild images
+    const newPageRenderStates = new Map();
+    Object.freeze(newPageRenderStates);
+    setPageRenderStates(newPageRenderStates);
+  }, [scale, pixelRatio]);
+
   return {
     pageRenderStates,
     getObjectURLForPage,
@@ -159,22 +170,22 @@ export function usePageRenderContextProps({
   };
 }
 
+// This boost causes the rendered image to be scaled up by this amount
+const SCALE_BOOST = 2;
+
 // Generate an object url for a given page, rendered in a shared canvas
 async function buildPageObjectURL({
   pageNumber,
   pdfDocProxy,
+  pixelRatio = window.devicePixelRatio || 1,
   scale = 1,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  rotation = PageRotation.Rotate0,
-  zoomMultiplier = 1.2,
   imageType = 'image/png',
   imageQuality = 1.0,
 }: {
   pageNumber: number;
   pdfDocProxy: pdfjs.PDFDocumentProxy;
+  pixelRatio?: number;
   scale?: number;
-  rotation?: PageRotation;
-  zoomMultiplier?: number;
   imageType?: string;
   imageQuality?: number;
 }): Promise<string> {
@@ -182,7 +193,9 @@ async function buildPageObjectURL({
 
   const blob: Nullable<Blob> = await useRenderCanvas(async canvas => {
     // Render page in a canvas
-    const viewport = pageProxy.getViewport({ scale: scale * zoomMultiplier * devicePixelRatio });
+    const viewport = pageProxy.getViewport({
+      scale: scale * pixelRatio * SCALE_BOOST,
+    });
     canvas.height = viewport.height;
     canvas.width = viewport.width;
     const canvasContext = canvas.getContext('2d');

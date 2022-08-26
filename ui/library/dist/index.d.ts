@@ -328,9 +328,11 @@ declare module '@allenai/pdf-components/src/context/TransformContext' {
     import * as React from 'react';
     import { PageRotation } from '@allenai/pdf-components/src/utils/rotate';
     export interface ITransformContext {
+        pixelRatio: number;
         rotation: PageRotation;
         scale: number;
         zoomMultiplier: number;
+        setPixelRatio: (devicePixelRatio: number) => void;
         setRotation: (rotation: PageRotation) => void;
         setScale: (scale: number) => void;
         setZoomMultiplier: (zoom: number) => void;

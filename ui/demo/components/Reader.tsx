@@ -34,7 +34,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   // ref for the scrollable region where the pages are rendered
   const pdfScrollableRef = React.createRef<HTMLDivElement>();
 
-  const samplePdfUrl = 'https://arxiv.org/pdf/2112.07873.pdf';
+  const samplePdfUrl = 'https://arxiv.org/pdf/2111.07945.pdf';
   const sampleS2airsUrl =
     'http://s2airs.prod.s2.allenai.org/v1/pdf_data?pdf_sha=9b79eb8d21c8a832daedbfc6d8c31bebe0da3ed5';
 
