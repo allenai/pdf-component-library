@@ -147,6 +147,21 @@ export function usePageRenderContextProps({
     }
   }, [pageRenderStates, visiblePageRatios]);
 
+  // Flush page render states when scale changes
+  React.useEffect(() => {
+    // Clean memory of old generated images
+    for (const [, renderState] of pageRenderStatesRef.current) {
+      if (renderState.objectURL) {
+        URL.revokeObjectURL(renderState.objectURL);
+      }
+    }
+
+    // Clear all page render states, so pages can rebuild images
+    const newPageRenderStates = new Map();
+    Object.freeze(newPageRenderStates);
+    setPageRenderStates(newPageRenderStates);
+  }, [scale, pixelRatio]);
+
   return {
     pageRenderStates,
     getObjectURLForPage,
