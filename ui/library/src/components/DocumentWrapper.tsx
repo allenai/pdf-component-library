@@ -12,7 +12,7 @@ import { scrollToPosition } from '../utils/scroll';
 import { Destination, Ref } from './types/destination';
 
 export type Props = {
-  renderMode: string;
+  renderMode?: string;
   children?: React.ReactNode;
 } & DocumentProps;
 
