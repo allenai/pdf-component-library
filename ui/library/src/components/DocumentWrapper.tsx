@@ -12,10 +12,12 @@ import { scrollToPosition } from '../utils/scroll';
 import { Destination, Ref } from './types/destination';
 
 export type Props = {
+  renderMode: string;
   children?: React.ReactNode;
 } & DocumentProps;
 
 export const DocumentWrapper: React.FunctionComponent<Props> = ({
+  renderMode = 'canvas',
   children,
   ...extraProps
 }: Props) => {
@@ -84,7 +86,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
       externalLinkTarget="_blank"
-      renderMode="none"
+      renderMode={renderMode}
       // @ts-ignore: the arguments should be { dest, pageIndex, pageNumber }
       // @types/react-pdf hasn't updated the function signature
       // https://github.com/DefinitelyTyped/DefinitelyTyped/blob/d73eb652e0ba8f89395a0ef2ba69cf1e640ce5be/types/react-pdf/dist/Document.d.ts#L72
