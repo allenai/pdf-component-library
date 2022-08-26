@@ -177,7 +177,7 @@ const SCALE_BOOST = 2;
 async function buildPageObjectURL({
   pageNumber,
   pdfDocProxy,
-  pixelRatio = window.devicePixelRatio || 1,
+  pixelRatio = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 0,
   scale = 1,
   imageType = 'image/png',
   imageQuality = 1.0,
