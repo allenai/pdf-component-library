@@ -15,7 +15,7 @@ export interface ITransformContext {
 }
 
 export const TransformContext = React.createContext<ITransformContext>({
-  pixelRatio: window.devicePixelRatio || 1,
+  pixelRatio: (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1,
   rotation: PageRotation.Rotate0,
   scale: 1,
   zoomMultiplier: 1.2,
@@ -34,7 +34,9 @@ export const TransformContext = React.createContext<ITransformContext>({
 });
 
 export function useTransformContextProps(): ITransformContext {
-  const [pixelRatio, setPixelRatio] = React.useState<number>(window.devicePixelRatio || 1);
+  const [pixelRatio, setPixelRatio] = React.useState<number>(
+    (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1
+  );
   const [rotation, setRotation] = React.useState<PageRotation>(PageRotation.Rotate0);
   const [scale, setScale] = React.useState<number>(1.0);
   const [zoomMultiplier, setZoomMultiplier] = React.useState<number>(1.2);
