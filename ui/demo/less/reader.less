@@ -3,10 +3,6 @@
   display: inline;
 }
 
-.reader__header {
-  grid-area: header;
-}
-
 .reader__main {
   background-color: @grey;
   display: flex;
@@ -36,10 +32,14 @@
   }
 }
 
-.reader__header{
+.reader__header {
+  background-color: @pdflib-page-background;
   padding: 20px;
+  position: sticky;
   text-align: center;
-
+  top: 0;
+  z-index: @z-index-header;
+  
   .header-control {
     display: inline-block;
     margin-top: 10px;
