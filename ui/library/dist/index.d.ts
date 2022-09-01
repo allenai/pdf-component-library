@@ -23,14 +23,15 @@ declare module '@allenai/pdf-components' {
     import { ZoomOutButton } from '@allenai/pdf-components/src/components/ZoomOutButton';
     import { ContextProvider, Props as ContextProviderProps } from '@allenai/pdf-components/src/context/ContextProvider';
     import { DocumentContext, IDocumentContext } from '@allenai/pdf-components/src/context/DocumentContext';
+    import { IPageRenderContext, PageRenderContext } from '@allenai/pdf-components/src/context/PageRenderContext';
     import { IScrollContext, ScrollContext } from '@allenai/pdf-components/src/context/ScrollContext';
     import { ITransformContext, TransformContext } from '@allenai/pdf-components/src/context/TransformContext';
     import { IUiContext, UiContext } from '@allenai/pdf-components/src/context/UiContext';
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from '@allenai/pdf-components/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from '@allenai/pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from '@allenai/pdf-components/src/utils/style';
-    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IPageRenderContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageRenderContext, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -51,6 +52,7 @@ declare module '@allenai/pdf-components' {
         }>;
         Overlay: import("react").FunctionComponent<OverlayProps>;
         PageNumberControl: import("react").FunctionComponent<import("./src/components/PageNumberControl").Props>;
+        PageRenderContext: import("react").Context<IPageRenderContext>;
         PageRotation: typeof PageRotation;
         PageWrapper: import("react").FunctionComponent<PageWrapperProps>;
         rotateClockwise: typeof rotateClockwise;
@@ -295,6 +297,31 @@ declare module '@allenai/pdf-components/src/context/DocumentContext' {
     export const DocumentContext: React.Context<IDocumentContext>;
     export function useDocumentContextProps(): IDocumentContext;
     export function buildOutlinePositions(pdfDocProxy: pdfjs.PDFDocumentProxy, outline?: OutlineNode[]): Promise<OutlinePositionsByPageNumberMap>;
+}
+
+declare module '@allenai/pdf-components/src/context/PageRenderContext' {
+    import * as React from 'react';
+    import { pdfjs } from 'react-pdf';
+    import { PageNumber } from '@allenai/pdf-components/src/components/types/page';
+    import { Nullable } from '@allenai/pdf-components/src/components/types/utils';
+    export type RenderState = {
+        promise: Promise<string>;
+        objectURL: Nullable<string>;
+    };
+    export type PageNumberToRenderStateMap = Map<number, RenderState>;
+    export interface IPageRenderContext {
+        pageRenderStates: PageNumberToRenderStateMap;
+        getObjectURLForPage: (pageNumber: PageNumber) => Nullable<string>;
+        isBuildingObjectURLForPage: (pageNumber: PageNumber) => boolean;
+        buildObjectURLForPage: (pageNumber: PageNumber) => Promise<string>;
+    }
+    export const PageRenderContext: React.Context<IPageRenderContext>;
+    export function usePageRenderContextProps({ pdfDocProxy, pixelRatio, scale, visiblePageRatios, }: {
+        pdfDocProxy?: pdfjs.PDFDocumentProxy;
+        pixelRatio: number;
+        scale: number;
+        visiblePageRatios: Map<number, number>;
+    }): IPageRenderContext;
 }
 
 declare module '@allenai/pdf-components/src/context/ScrollContext' {
