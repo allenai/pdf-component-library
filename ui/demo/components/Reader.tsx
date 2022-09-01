@@ -52,8 +52,8 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   }, [pageDimensions]);
 
   React.useEffect(() => {
-    setScrollRoot(pdfScrollableRef.current || null);
-  }, [pdfScrollableRef]);
+    setScrollRoot(null);
+  }, []);
 
   // Attaches annotation data to paper
   React.useEffect(() => {

@@ -1,24 +1,8 @@
-body {
-  overflow: hidden;
-  position: fixed;
-}
-
-.reader__container {
-  display: grid;
-  grid-template-rows: 100px minmax(0, 1fr);
-  grid-template-areas:
-    "header"
-    "main";
-  height: 100vh;
-  width: 100vw;
-}
-
-.reader__header {
-  grid-area: header;
-}
-
 .reader__main {
-  grid-area: main;
+  background-color: @grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   position: relative;
 }
 
@@ -27,7 +11,6 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: @grey;
-  overflow: scroll;
   height: 100%;
   position: relative;
 }
@@ -43,10 +26,14 @@ body {
   }
 }
 
-.reader__header{
+.reader__header {
+  background-color: @pdflib-page-background;
   padding: 20px;
+  position: sticky;
   text-align: center;
-
+  top: 0;
+  z-index: @z-index-header;
+  
   .header-control {
     display: inline-block;
     margin-top: 10px;
@@ -59,7 +46,15 @@ body {
 }
 
 .reader__outline-drawer {
-  position: absolute;
+  left: 0;
+  position: fixed;
+  top: 100px;
+  z-index: @z-index-outline;
+}
+
+// HACK: -100px is accommodate for the header when we do outline scrolling
+.reader__page__outline-target {
+  transform: translateY(-100px);
 }
 
 .reader__popover__citation {
