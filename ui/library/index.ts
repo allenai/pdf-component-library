@@ -31,6 +31,7 @@ import { ZoomInButton } from './src/components/ZoomInButton';
 import { ZoomOutButton } from './src/components/ZoomOutButton';
 import { ContextProvider, Props as ContextProviderProps } from './src/context/ContextProvider';
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
+import { IPageRenderContext, PageRenderContext } from './src/context/PageRenderContext';
 import { IScrollContext, ScrollContext } from './src/context/ScrollContext';
 import { ITransformContext, TransformContext } from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
@@ -57,6 +58,7 @@ export type {
   DownloadButtonProps,
   HighlightOverlayProps,
   IDocumentContext,
+  IPageRenderContext,
   IScrollContext,
   ITransformContext,
   IUiContext,
@@ -91,6 +93,7 @@ export {
   OutlineItem,
   Overlay,
   PageNumberControl,
+  PageRenderContext,
   PageWrapper,
   rotateClockwise,
   rotateCounterClockwise,
@@ -121,6 +124,7 @@ export default {
   OutlineItem,
   Overlay,
   PageNumberControl,
+  PageRenderContext,
   PageRotation,
   PageWrapper,
   rotateClockwise,
