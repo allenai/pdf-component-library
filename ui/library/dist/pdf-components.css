@@ -220,7 +220,6 @@
 }
 .textLayer span,
 .textLayer br {
-  color: transparent;
   position: absolute;
   white-space: pre;
   cursor: text;
@@ -327,6 +326,9 @@
   text-align: center;
   top: 0;
   width: 125px;
+}
+.reader__page--has-page-image .textLayer {
+  color: transparent;
 }
 .reader__page-highlight-overlay {
   pointer-events: none;
