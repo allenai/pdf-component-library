@@ -9,7 +9,8 @@ type Props = {
 };
 
 export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props) => {
-  const { pageRenderStates, buildObjectURLForPage, getObjectURLForPage } = React.useContext(PageRenderContext);
+  const { pageRenderStates, buildObjectURLForPage, getObjectURLForPage } =
+    React.useContext(PageRenderContext);
   const { isPageVisible, scrollToPage } = React.useContext(ScrollContext);
   const objectURL = getObjectURLForPage({ pageNumber });
   const hasPageVisible = isPageVisible({ pageNumber });
