@@ -72,3 +72,36 @@
   }
 }
 
+.reader__thumbnail-list__list {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+}
+
+.reader__thumbnail-list__item:nth-of-type(n + 1) {
+  margin-top: 16px;
+}
+
+.reader__thumbnail {
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, .8);
+  cursor: pointer;
+  min-height: 250px;
+  opacity: .5;
+  transition: opacity 400ms ease-in-out;
+  width: 100%;
+
+  &.reader__thumbnail--no-page-image {
+    background-color: rgba(0, 0, 0, .1);
+  }
+
+  &:hover {
+    opacity: .75;
+    transition-duration: 75ms;
+  }
+
+  &.reader__thumbnail--has-page-visible {
+    opacity: 1;
+    transition-duration: 200ms;
+  }
+}
+

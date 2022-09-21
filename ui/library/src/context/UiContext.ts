@@ -9,11 +9,13 @@ export interface IUiContext {
   isShowingHighlightOverlay: boolean;
   isShowingOutline: boolean;
   isShowingTextHighlight: boolean;
+  isShowingThumbnail: boolean;
   setErrorMessage: (errorMessage: Nullable<string>) => void;
   setIsLoading: (isLoading: boolean) => void;
   setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
   setIsShowingOutline: (isShowingOutline: boolean) => void;
   setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
+  setIsShowingThumbnail: (isShowingThumbnail: boolean) => void;
 }
 
 export const UiContext = React.createContext<IUiContext>({
@@ -22,6 +24,7 @@ export const UiContext = React.createContext<IUiContext>({
   isShowingHighlightOverlay: false,
   isShowingOutline: false,
   isShowingTextHighlight: false,
+  isShowingThumbnail: false,
   setErrorMessage: errorMessage => {
     logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
   },
@@ -37,6 +40,9 @@ export const UiContext = React.createContext<IUiContext>({
   setIsShowingTextHighlight: isShowingTextHighlight => {
     logProviderWarning(`setIsShowingTextHighlight(${isShowingTextHighlight})`, 'UiContext');
   },
+  setIsShowingThumbnail: isShowingThumbnail => {
+    logProviderWarning(`setIsShowingThumbnail(${isShowingThumbnail})`, 'UiContext');
+  },
 });
 
 export function useUiContextProps(): IUiContext {
@@ -45,6 +51,7 @@ export function useUiContextProps(): IUiContext {
   const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
   const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
   const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
+  const [isShowingThumbnail, setIsShowingThumbnail] = React.useState<boolean>(false);
 
   return {
     errorMessage,
@@ -52,10 +59,12 @@ export function useUiContextProps(): IUiContext {
     isShowingHighlightOverlay,
     isShowingOutline,
     isShowingTextHighlight,
+    isShowingThumbnail,
     setErrorMessage,
     setIsLoading,
     setIsShowingHighlightOverlay,
     setIsShowingOutline,
     setIsShowingTextHighlight,
+    setIsShowingThumbnail,
   };
 }
