@@ -11,12 +11,9 @@ type Props = {
 };
 
 export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props) => {
-  const { pageRenderStates, buildObjectURLForPage, getObjectURLForPage } =
-    React.useContext(PageRenderContext);
+  const { buildObjectURLForPage, getObjectURLForPage } = React.useContext(PageRenderContext);
   const { isPageVisible, scrollToPage, visiblePageRatios } = React.useContext(ScrollContext);
-
   const [maxVisiblePageNumber, setMaxVisiblePageNumber] = React.useState<Nullable<string>>(null);
-
   const objectURL = getObjectURLForPage({ pageNumber });
 
   React.useEffect(() => {
@@ -28,14 +25,14 @@ export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props)
     }
   }, [visiblePageRatios]);
 
-  const hasPageVisible =
+  const isThumbnailVisible =
     maxVisiblePageNumber &&
     parseInt(maxVisiblePageNumber) === pageNumber &&
     isPageVisible({ pageNumber });
 
   React.useEffect(() => {
     buildObjectURLForPage({ pageNumber });
-  }, [pageNumber, pageRenderStates]);
+  }, [pageNumber]);
 
   const onClick = React.useCallback(
     event => {
@@ -51,10 +48,8 @@ export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props)
       onClick={onClick}
       className={classnames(
         'reader__thumbnail',
-        { 'reader__thumbnail--has-page-image': objectURL },
-        { 'reader__thumbnail--no-page-image': !objectURL },
-        { 'reader__thumbnail--has-page-visible': hasPageVisible },
-        { 'reader__thumbnail--no-page-visible': !hasPageVisible }
+        { 'reader__thumbnail--no-image': !objectURL },
+        { 'reader__thumbnail--is-visible': isThumbnailVisible }
       )}
       data-page-number={pageNumber}>
       <img className="reader__thumbnail__image" src={objectURL || undefined} />

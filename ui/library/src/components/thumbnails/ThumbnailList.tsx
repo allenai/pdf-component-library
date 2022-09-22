@@ -9,8 +9,8 @@ export const ThumbnailList: React.FunctionComponent<Props> = () => {
   const { numPages } = React.useContext(DocumentContext);
 
   return (
-    <div className="reader__thumbnail-list">
-      <ul className="reader__thumbnail-list__list">
+    <div className="reader__thumbnail-list-wrapper">
+      <ul className="reader__thumbnail-list">
         {Array.from({ length: numPages })
           .map((_, i) => i + 1)
           .map(pageNumber => (
