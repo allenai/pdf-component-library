@@ -11,13 +11,11 @@ export const ThumbnailList: React.FunctionComponent<Props> = () => {
   return (
     <div className="reader__thumbnail-list-wrapper">
       <ul className="reader__thumbnail-list">
-        {Array.from({ length: numPages })
-          .map((_, i) => i + 1)
-          .map(pageNumber => (
-            <li key={pageNumber} className="reader__thumbnail-list__item">
-              <Thumbnail pageNumber={pageNumber} />
-            </li>
-          ))}
+        {Array.from({ length: numPages }).map((_, pageIndex) => (
+          <li key={pageIndex + 1} className="reader__thumbnail-list__item">
+            <Thumbnail pageNumber={pageIndex + 1} />
+          </li>
+        ))}
       </ul>
     </div>
   );
