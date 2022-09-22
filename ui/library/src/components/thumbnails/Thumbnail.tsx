@@ -3,6 +3,8 @@ import * as React from 'react';
 
 import { PageRenderContext } from '../../context/PageRenderContext';
 import { ScrollContext } from '../../context/ScrollContext';
+import { getMaxVisibleElement } from '../../utils/MaxVisibleElement';
+import { Nullable } from '../types/utils';
 
 type Props = {
   pageNumber: number;
@@ -11,9 +13,25 @@ type Props = {
 export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props) => {
   const { pageRenderStates, buildObjectURLForPage, getObjectURLForPage } =
     React.useContext(PageRenderContext);
-  const { isPageVisible, scrollToPage } = React.useContext(ScrollContext);
+  const { isPageVisible, scrollToPage, visiblePageRatios } = React.useContext(ScrollContext);
+
+  const [maxVisiblePageNumber, setMaxVisiblePageNumber] = React.useState<Nullable<string>>(null);
+
   const objectURL = getObjectURLForPage({ pageNumber });
-  const hasPageVisible = isPageVisible({ pageNumber });
+
+  React.useEffect(() => {
+    if (visiblePageRatios.size !== 0) {
+      const max = getMaxVisibleElement(visiblePageRatios);
+      if (max) {
+        setMaxVisiblePageNumber(max.toString());
+      }
+    }
+  }, [visiblePageRatios]);
+
+  const hasPageVisible =
+    maxVisiblePageNumber &&
+    parseInt(maxVisiblePageNumber) === pageNumber &&
+    isPageVisible({ pageNumber });
 
   React.useEffect(() => {
     buildObjectURLForPage({ pageNumber });
