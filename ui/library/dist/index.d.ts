@@ -15,6 +15,8 @@ declare module '@allenai/pdf-components' {
     import { Overlay, Props as OverlayProps } from '@allenai/pdf-components/src/components/Overlay';
     import { PageNumberControl } from '@allenai/pdf-components/src/components/PageNumberControl';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from '@allenai/pdf-components/src/components/PageWrapper';
+    import { Thumbnail } from '@allenai/pdf-components/src/components/thumbnails/Thumbnail';
+    import { ThumbnailList } from '@allenai/pdf-components/src/components/thumbnails/ThumbnailList';
     import { BoundingBox as BoundingBoxType, Dimensions, Origin, RawBoundingBox, scaleRawBoundingBox, Size } from '@allenai/pdf-components/src/components/types/boundingBox';
     import { NodeDestination, OutlineNode } from '@allenai/pdf-components/src/components/types/outline';
     import { PageProperties, PageReference } from '@allenai/pdf-components/src/components/types/page';
@@ -31,7 +33,7 @@ declare module '@allenai/pdf-components' {
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from '@allenai/pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from '@allenai/pdf-components/src/utils/style';
     export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IPageRenderContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageRenderContext, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageRenderContext, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, Thumbnail, ThumbnailList, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -60,6 +62,10 @@ declare module '@allenai/pdf-components' {
         scaleRawBoundingBox: typeof scaleRawBoundingBox;
         scrollToId: typeof scrollToId;
         scrollToPdfPageIndex: typeof scrollToPdfPageIndex;
+        Thumbnail: import("react").FunctionComponent<{
+            pageNumber: number;
+        }>;
+        ThumbnailList: import("react").FunctionComponent<any>;
         ScrollContext: import("react").Context<IScrollContext>;
         TransformContext: import("react").Context<ITransformContext>;
         UiContext: import("react").Context<IUiContext>;
@@ -167,6 +173,22 @@ declare module '@allenai/pdf-components/src/components/PageWrapper' {
         children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
     } & PageProps;
     export const PageWrapper: React.FunctionComponent<Props>;
+}
+
+declare module '@allenai/pdf-components/src/components/thumbnails/Thumbnail' {
+    import * as React from 'react';
+    type Props = {
+        pageNumber: number;
+    };
+    export const Thumbnail: React.FunctionComponent<Props>;
+    export {};
+}
+
+declare module '@allenai/pdf-components/src/components/thumbnails/ThumbnailList' {
+    import * as React from 'react';
+    type Props = any;
+    export const ThumbnailList: React.FunctionComponent<Props>;
+    export {};
 }
 
 declare module '@allenai/pdf-components/src/components/types/boundingBox' {
@@ -377,11 +399,13 @@ declare module '@allenai/pdf-components/src/context/UiContext' {
         isShowingHighlightOverlay: boolean;
         isShowingOutline: boolean;
         isShowingTextHighlight: boolean;
+        isShowingThumbnail: boolean;
         setErrorMessage: (errorMessage: Nullable<string>) => void;
         setIsLoading: (isLoading: boolean) => void;
         setIsShowingHighlightOverlay: (isShowingHighlightOverlay: boolean) => void;
         setIsShowingOutline: (isShowingOutline: boolean) => void;
         setIsShowingTextHighlight: (isShowingTextHighlight: boolean) => void;
+        setIsShowingThumbnail: (isShowingThumbnail: boolean) => void;
     }
     export const UiContext: React.Context<IUiContext>;
     export function useUiContextProps(): IUiContext;

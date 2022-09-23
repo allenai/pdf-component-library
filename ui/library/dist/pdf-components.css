@@ -366,4 +366,35 @@
 .reader__page-number-control__current-page::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
+.reader__thumbnail {
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  min-height: 250px;
+  opacity: 0.5;
+  transition: opacity 400ms ease-in-out;
+  width: 100%;
+}
+.reader__thumbnail.reader__thumbnail--no-image {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.reader__thumbnail:hover {
+  opacity: 0.75;
+  transition-duration: 75ms;
+}
+.reader__thumbnail.reader__thumbnail--is-visible {
+  opacity: 1;
+  transition-duration: 200ms;
+}
+.reader__thumbnail-list {
+  list-style: none;
+}
+.reader__thumbnail {
+  display: inline-block;
+}
+.reader__thumbnail-image {
+  width: 100%;
+}
+.reader__thumbnail-list__item:nth-of-type(n + 1) {
+  margin-top: 16px;
+}
 
