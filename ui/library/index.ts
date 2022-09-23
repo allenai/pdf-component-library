@@ -16,6 +16,8 @@ import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageNumberControl } from './src/components/PageNumberControl';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
+import { Thumbnail } from './src/components/thumbnails/Thumbnail';
+import { ThumbnailList } from './src/components/thumbnails/ThumbnailList';
 import {
   BoundingBox as BoundingBoxType,
   Dimensions,
@@ -101,6 +103,8 @@ export {
   ScrollContext,
   scrollToId,
   scrollToPdfPageIndex,
+  Thumbnail,
+  ThumbnailList,
   TransformContext,
   UiContext,
   ZoomInButton,
@@ -132,6 +136,8 @@ export default {
   scaleRawBoundingBox,
   scrollToId,
   scrollToPdfPageIndex,
+  Thumbnail,
+  ThumbnailList,
   ScrollContext,
   TransformContext,
   UiContext,

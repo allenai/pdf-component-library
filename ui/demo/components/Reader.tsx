@@ -19,6 +19,7 @@ import { NoteTakingDemo } from './NoteTakingDemo';
 import { Outline } from './Outline';
 import { ScrollToDemo } from './ScrollToDemo';
 import { TextHighlightDemo } from './TextHighlightDemo';
+import { Thumbnail } from './Thumbnail';
 
 export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
   const { pageDimensions, numPages } = React.useContext(DocumentContext);
@@ -73,6 +74,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
             <Header pdfUrl={samplePdfUrl} />
             <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
               <Outline parentRef={pdfContentRef} />
+              <Thumbnail parentRef={pdfContentRef} />
               <div className="reader__page-list" ref={pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
                   <PageWrapper key={i} pageIndex={i}>

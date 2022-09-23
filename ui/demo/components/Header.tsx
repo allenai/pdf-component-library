@@ -24,12 +24,17 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingHighlightOverlay,
     setIsShowingOutline,
     setIsShowingTextHighlight,
+    setIsShowingThumbnail,
   } = React.useContext(UiContext);
   const { rotation, setRotation } = React.useContext(TransformContext);
   const { isShowingNoteTaking, setIsShowingNoteTaking } = React.useContext(DemoHeaderContext);
 
   const handleShowOutline = React.useCallback(() => {
     setIsShowingOutline(true);
+  }, []);
+
+  const handleShowThumbnail = React.useCallback(() => {
+    setIsShowingThumbnail(true);
   }, []);
 
   const handleRotateCW = React.useCallback(() => {
@@ -75,6 +80,9 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
       </div>
       <div className="header-control">
         <a onClick={handleShowOutline}>Outline</a>
+      </div>
+      <div className="header-control">
+        <a onClick={handleShowThumbnail}>Thumbnail</a>
       </div>
       <div className={classnames('header-control', { 'is-selected': isShowingHighlightOverlay })}>
         <a onClick={handleToggleHighlightOverlay}>Highlight Overlay</a>
