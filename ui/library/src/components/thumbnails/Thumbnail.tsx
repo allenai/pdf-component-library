@@ -52,7 +52,7 @@ export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props)
         { 'reader__thumbnail--is-visible': isThumbnailVisible }
       )}
       data-page-number={pageNumber}>
-      {!!objectURL && <img className="reader__thumbnail__image" src={objectURL} />}
+      {!!objectURL && <img className="reader__thumbnail-image" src={objectURL} />}
     </a>
   );
 };
