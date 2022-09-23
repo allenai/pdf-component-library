@@ -45,6 +45,7 @@ export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props)
   return (
     <a
       aria-label={`scroll to page ${pageNumber}`}
+      href={`#${pageNumber}`}
       onClick={onClick}
       className={classnames(
         'reader__thumbnail',
