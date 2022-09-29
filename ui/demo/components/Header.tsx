@@ -1,6 +1,7 @@
 import {
   DownloadButton,
   PageNumberControl,
+  PrintButton,
   rotateClockwise,
   rotateCounterClockwise,
   scrollToId,
@@ -97,6 +98,7 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
         <a onClick={handleShowNoteTaking}>Note Taking</a>
       </div>
       <DownloadButton pdfUrl={pdfUrl} />
+      <PrintButton />
     </div>
   );
 };
