@@ -16,6 +16,7 @@ import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageNumberControl } from './src/components/PageNumberControl';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
+import { PrintButton, Props as PrintButtonProps } from './src/components/PrintButton';
 import { Thumbnail } from './src/components/thumbnails/Thumbnail';
 import { ThumbnailList } from './src/components/thumbnails/ThumbnailList';
 import {
@@ -74,6 +75,7 @@ export type {
   PageReference,
   PageRotation,
   PageWrapperProps,
+  PrintButtonProps,
   RawBoundingBox,
   Size,
 };
@@ -97,6 +99,7 @@ export {
   PageNumberControl,
   PageRenderContext,
   PageWrapper,
+  PrintButton,
   rotateClockwise,
   rotateCounterClockwise,
   scaleRawBoundingBox,
@@ -119,6 +122,7 @@ export default {
   DocumentContext,
   DocumentWrapper,
   DownloadButton,
+  PrintButton,
   generatePageIdFromIndex,
   getPageHeight,
   getPageWidth,
