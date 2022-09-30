@@ -15,6 +15,7 @@ declare module '@allenai/pdf-components' {
     import { Overlay, Props as OverlayProps } from '@allenai/pdf-components/src/components/Overlay';
     import { PageNumberControl } from '@allenai/pdf-components/src/components/PageNumberControl';
     import { PageProps, PageWrapper, Props as PageWrapperProps } from '@allenai/pdf-components/src/components/PageWrapper';
+    import { PrintButton, Props as PrintButtonProps } from '@allenai/pdf-components/src/components/PrintButton';
     import { Thumbnail } from '@allenai/pdf-components/src/components/thumbnails/Thumbnail';
     import { ThumbnailList } from '@allenai/pdf-components/src/components/thumbnails/ThumbnailList';
     import { BoundingBox as BoundingBoxType, Dimensions, Origin, RawBoundingBox, scaleRawBoundingBox, Size } from '@allenai/pdf-components/src/components/types/boundingBox';
@@ -32,8 +33,8 @@ declare module '@allenai/pdf-components' {
     import { isSideways, PageRotation, rotateClockwise, rotateCounterClockwise } from '@allenai/pdf-components/src/utils/rotate';
     import { generatePageIdFromIndex, scrollToId, scrollToPdfPageIndex } from '@allenai/pdf-components/src/utils/scroll';
     import { computeBoundingBoxStyle, computePageStyle, getPageHeight, getPageWidth } from '@allenai/pdf-components/src/utils/style';
-    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IPageRenderContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, RawBoundingBox, Size, };
-    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageRenderContext, PageWrapper, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, Thumbnail, ThumbnailList, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
+    export type { BoundingBoxProps, BoundingBoxType, ContextProviderProps, Dimensions, DocumentWrapperProps, DownloadButtonProps, HighlightOverlayProps, IDocumentContext, IPageRenderContext, IScrollContext, ITransformContext, IUiContext, NodeDestination, Nullable, Origin, OutlineNode, OverlayProps, PageProperties, PageProps, PageReference, PageRotation, PageWrapperProps, PrintButtonProps, RawBoundingBox, Size, };
+    export { BoundingBox, computeBoundingBoxStyle, computePageStyle, ContextProvider, DocumentContext, DocumentWrapper, DownloadButton, generatePageIdFromIndex, getPageHeight, getPageWidth, HighlightOverlay, isSideways, Outline, OutlineItem, Overlay, PageNumberControl, PageRenderContext, PageWrapper, PrintButton, rotateClockwise, rotateCounterClockwise, scaleRawBoundingBox, ScrollContext, scrollToId, scrollToPdfPageIndex, Thumbnail, ThumbnailList, TransformContext, UiContext, ZoomInButton, ZoomOutButton, };
     const _default: {
         BoundingBox: import("react").FunctionComponent<BoundingBoxProps>;
         computeBoundingBoxStyle: typeof computeBoundingBoxStyle;
@@ -42,6 +43,7 @@ declare module '@allenai/pdf-components' {
         DocumentContext: import("react").Context<IDocumentContext>;
         DocumentWrapper: import("react").FunctionComponent<DocumentWrapperProps>;
         DownloadButton: import("react").FunctionComponent<DownloadButtonProps>;
+        PrintButton: import("react").FunctionComponent<PrintButtonProps>;
         generatePageIdFromIndex: typeof generatePageIdFromIndex;
         getPageHeight: typeof getPageHeight;
         getPageWidth: typeof getPageWidth;
@@ -173,6 +175,20 @@ declare module '@allenai/pdf-components/src/components/PageWrapper' {
         children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
     } & PageProps;
     export const PageWrapper: React.FunctionComponent<Props>;
+}
+
+declare module '@allenai/pdf-components/src/components/PrintButton' {
+    import * as React from 'react';
+    export type Props = {
+        className?: string;
+        children?: React.ReactNode;
+    };
+    /**
+      * HTML anchor tag allows you to download a file from the same origin.
+      * This is a workaround to download a file served from a different origin
+      */
+    export const PrintButton: React.FunctionComponent<Props>;
+    export function onClickPrint(): void;
 }
 
 declare module '@allenai/pdf-components/src/components/thumbnails/Thumbnail' {
