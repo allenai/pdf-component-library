@@ -14,10 +14,6 @@ export const PrintButton: React.FunctionComponent<Props> = ({
   className,
   ...extraProps
 }: Props) => {
-  const onClickPrint = () => {
-    window.print();
-  };
-
   return (
     <button
       onClick={() => onClickPrint()}
@@ -28,3 +24,7 @@ export const PrintButton: React.FunctionComponent<Props> = ({
     </button>
   );
 };
+
+export function onClickPrint(): void {
+  window.print();
+}
