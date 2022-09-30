@@ -345,7 +345,8 @@
 .react-pdf__Page__textContent > span {
   height: 0em!important;
 }
-.reader__download-btn {
+.reader__download-btn,
+.reader__print-btn {
   align-items: center;
   display: flex;
 }
@@ -396,5 +397,39 @@
 }
 .reader__thumbnail-list__item:nth-of-type(n + 1) {
   margin-top: 16px;
+}
+@media print {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  html,
+  body {
+    height: auto;
+  }
+  @page {
+    size: auto;
+    margin: 0;
+    overflow: hidden;
+  }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .no-break {
+    page-break-before: always;
+  }
+  .reader__page {
+    margin: 0;
+  }
+  .reader .reader__main {
+    margin-top: 0px;
+  }
+  .reader__header {
+    display: none;
+  }
+  hypothesis-sidebar {
+    display: none;
+  }
 }
 
