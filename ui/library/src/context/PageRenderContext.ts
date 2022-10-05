@@ -139,13 +139,20 @@ export function usePageRenderContextProps({
   );
 
   React.useEffect(() => {
-    for (const pageNumber of visiblePageRatios.keys()) {
+    if (!pdfDocProxy) return; 
+    let queue = [...visiblePageRatios.keys()];
+    if(!queue.length) return;
+     
+    queue = [...queue, Math.max(0, queue[0]-1), Math.min(pdfDocProxy.numPages-1, queue[queue.length-1]+1)]; // get neighboring pages
+    console.log(queue); 
+
+    for (const pageNumber of queue) {
       if (pageRenderStates.has(pageNumber)) {
         continue;
       }
       buildObjectURLForPage({ pageNumber });
     }
-  }, [pageRenderStates, visiblePageRatios]);
+  }, [pageRenderStates, visiblePageRatios, pdfDocProxy]);
 
   // Flush page render states when scale changes
   React.useEffect(() => {
