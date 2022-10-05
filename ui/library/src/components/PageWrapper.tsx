@@ -19,6 +19,7 @@ export type PageProps = {
   loading?: string | React.ReactElement | RenderFunction;
   noData?: string | React.ReactElement | RenderFunction;
   pageIndex: number;
+  enableSingleCanvasRendering?: boolean;
 };
 
 export type Props = {
@@ -34,6 +35,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   loadingContentForBuildingImage,
   noData,
   pageIndex,
+  enableSingleCanvasRendering,
   ...extraProps
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
@@ -51,7 +53,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
 
   const getPageStyle = React.useCallback(() => {
     const styles: Record<string, unknown> = computePageStyle(pageDimensions, rotation, scale);
-    if (objectURLForPage) {
+    if (objectURLForPage && enableSingleCanvasRendering) {
       styles.backgroundImage = `url(${objectURLForPage})`;
     }
     return styles;
@@ -71,15 +73,17 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
       id={generatePageIdFromIndex(pageIndex)}
       className={classnames(
         'reader__page',
-        { 'reader__page--has-page-image': objectURLForPage },
-        { 'reader__page--no-page-image': !objectURLForPage },
-        { 'reader__page--is-building-page-image': isBuildingPageImage }
+        { 'reader__page--has-page-image': objectURLForPage && enableSingleCanvasRendering },
+        { 'reader__page--no-page-image': !objectURLForPage && enableSingleCanvasRendering },
+        {
+          'reader__page--is-building-page-image': isBuildingPageImage && enableSingleCanvasRendering },
+        { 'reader__page--hide-text-layer': !enableSingleCanvasRendering }
       )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
       {...extraProps}>
       {children}
-      {isBuildingPageImage && (
+      {enableSingleCanvasRendering && isBuildingPageImage && (
         <div
           className={classnames('reader__page', {
             'reader__page--is-loading-image': isBuildingPageImage,
