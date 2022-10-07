@@ -16,6 +16,7 @@ export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
   getObjectURLForPage: (pageNumber: PageNumber) => Nullable<string>;
   isBuildingObjectURLForPage: (pageNumber: PageNumber) => boolean;
+  isFinishedBuildingAllPagesObjectURLs: () => boolean;
   buildObjectURLForPage: (pageNumber: PageNumber) => Promise<string>;
 }
 
@@ -27,6 +28,10 @@ export const PageRenderContext = React.createContext<IPageRenderContext>({
   },
   isBuildingObjectURLForPage: args => {
     logProviderWarning(`isBuildingObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+    return false;
+  },
+  isFinishedBuildingAllPagesObjectURLs: () => {
+    logProviderWarning(`isFinishedBuildingAllPagesObjectURLs()`, 'PageRenderContext');
     return false;
   },
   buildObjectURLForPage: args => {
@@ -81,6 +86,16 @@ export function usePageRenderContextProps({
     },
     [pageRenderStates]
   );
+
+  const isFinishedBuildingAllPagesObjectURLs = React.useCallback((): boolean => {
+    if (!pdfDocProxy) return false;
+    for (let pageNumber = 1; pageNumber <= pdfDocProxy.numPages; pageNumber++) {
+      if (!pageRenderStates.get(pageNumber)?.objectURL) {
+        return false;
+      }
+    }
+    return true;
+  }, [pdfDocProxy, pageRenderStates]);
 
   const getObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
@@ -179,6 +194,7 @@ export function usePageRenderContextProps({
     pageRenderStates,
     getObjectURLForPage,
     isBuildingObjectURLForPage,
+    isFinishedBuildingAllPagesObjectURLs,
     buildObjectURLForPage,
   };
 }
