@@ -11,7 +11,8 @@ type Props = {
 };
 
 export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props) => {
-  const { buildObjectURLForPage, getObjectURLForPage } = React.useContext(PageRenderContext);
+  const { pageRenderStates, buildObjectURLForPage, getObjectURLForPage } =
+    React.useContext(PageRenderContext);
   const { isPageVisible, scrollToPage, visiblePageRatios } = React.useContext(ScrollContext);
   const [maxVisiblePageNumber, setMaxVisiblePageNumber] = React.useState<Nullable<string>>(null);
   const objectURL = getObjectURLForPage({ pageNumber });
@@ -32,7 +33,7 @@ export const Thumbnail: React.FunctionComponent<Props> = ({ pageNumber }: Props)
 
   React.useEffect(() => {
     buildObjectURLForPage({ pageNumber });
-  }, [pageNumber]);
+  }, [pageRenderStates]);
 
   const onClick = React.useCallback(
     event => {
