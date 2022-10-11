@@ -1,8 +1,6 @@
 const DEFAULT_ROOT_MARGIN = '50px';
-// Since recently we run into issue that user scrolls too fast and our PageNumberControl
-// didn't update its accordingly so we increase a threshold (visibility) from
-// 0 to 100% to make it picks up faster.
-const DEFAULT_THRESHOLD = Array.from({ length: 101 }).map((_, i) => i / 100);
+// It will fire only when it goes out of boundary completely.
+const DEFAULT_THRESHOLD = 1;
 
 export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, number>) => void;
 export type onVisibleEntriesChangeCallback<TEntry> = (args: {
