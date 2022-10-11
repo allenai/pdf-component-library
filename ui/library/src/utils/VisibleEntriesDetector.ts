@@ -1,6 +1,5 @@
 const DEFAULT_ROOT_MARGIN = '50px';
-// It will fire only when it goes out of boundary completely.
-const DEFAULT_THRESHOLD = 1;
+const DEFAULT_THRESHOLD = [0, 0.25, 0.5, 0.75, 1];
 
 export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, number>) => void;
 export type onVisibleEntriesChangeCallback<TEntry> = (args: {
