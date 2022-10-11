@@ -163,13 +163,7 @@ export function usePageRenderContextProps({
       return;
     }
 
-    const visiblePagesNeighbors = [
-      Math.max(1, visiblePages[0] - 1),
-      Math.min(pdfDocProxy.numPages, visiblePages[visiblePages.length - 1] + 1),
-    ];
-    const allPages = Array.from({ length: pdfDocProxy.numPages }, (_, i) => i + 1);
-    const priorityQueue = new Set([...visiblePages, ...visiblePagesNeighbors, ...allPages]);
-
+    const priorityQueue = getPriorityQueue(visiblePages, pdfDocProxy.numPages);
     for (const pageNumber of priorityQueue) {
       buildObjectURLForPage({ pageNumber });
     }
@@ -197,6 +191,17 @@ export function usePageRenderContextProps({
     isFinishedBuildingAllPagesObjectURLs,
     buildObjectURLForPage,
   };
+}
+
+export function getNeighboringPages(pages: number[], numPages: number): number[] {
+  return [Math.max(1, pages[0] - 1), Math.min(numPages, pages[pages.length - 1] + 1)];
+}
+
+export function getPriorityQueue(visiblePages: number[], numPages: number): number[] {
+  const visiblePagesNeighbors = getNeighboringPages(visiblePages, numPages);
+  const allPages = Array.from({ length: numPages }, (_, i) => i + 1);
+  const priorityQueue = new Set([...visiblePages, ...visiblePagesNeighbors, ...allPages]); // put into set to remove duplicats
+  return Array.from(priorityQueue); // convert set to array
 }
 
 // This boost causes the rendered image to be scaled up by this amount
