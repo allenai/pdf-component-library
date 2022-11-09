@@ -1,6 +1,6 @@
 # pdf-component-library
 
-This repository contains code for a collection of components that can be used to build PDF reading experiences for React applications. 
+This repository contains code for a collection of components that can be used to build PDF reading experiences for React applications.
 
 ## Getting Started
 Install by executing `npm install @allenai/pdf-components`.
@@ -30,11 +30,15 @@ Sometimes one portion of your application will crash due to errors in the code.
 When this occurs resolve the related issue and re-run `docker-compose up --build`
 to start things back up.
 
+### Publishing a new release
+See [wiki](https://github.com/allenai/pdf-component-library/wiki/Publishing-to-npm) for details on publishing a new package version. We use semver-ish
+versioning and use [npm](https://docs.npmjs.com/about-semantic-versioning) as an informal style guide.
+
 ### Testing changes to the library locally
 There are times when you would want to test changes to the library locally without having to publish the package to npm.
 
 #### Build the library
-In the ui/library directory, run `yarn build`. 
+In the ui/library directory, run `yarn build`.
 ```
 library% yarn build
 ```
