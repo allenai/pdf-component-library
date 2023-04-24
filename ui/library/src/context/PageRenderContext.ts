@@ -16,6 +16,7 @@ export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
   getObjectURLForPage: (pageNumber: PageNumber) => Nullable<string>;
   isBuildingObjectURLForPage: (pageNumber: PageNumber) => boolean;
+  isFinishedBuildingAllPagesObjectURLs: () => boolean;
   buildObjectURLForPage: (pageNumber: PageNumber) => Promise<string>;
 }
 
@@ -27,6 +28,10 @@ export const PageRenderContext = React.createContext<IPageRenderContext>({
   },
   isBuildingObjectURLForPage: args => {
     logProviderWarning(`isBuildingObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+    return false;
+  },
+  isFinishedBuildingAllPagesObjectURLs: () => {
+    logProviderWarning(`isFinishedBuildingAllPagesObjectURLs()`, 'PageRenderContext');
     return false;
   },
   buildObjectURLForPage: args => {
@@ -81,6 +86,16 @@ export function usePageRenderContextProps({
     },
     [pageRenderStates]
   );
+
+  const isFinishedBuildingAllPagesObjectURLs = React.useCallback((): boolean => {
+    if (!pdfDocProxy) return false;
+    for (let pageNumber = 1; pageNumber <= pdfDocProxy.numPages; pageNumber++) {
+      if (!pageRenderStates.get(pageNumber)?.objectURL) {
+        return false;
+      }
+    }
+    return true;
+  }, [pdfDocProxy, pageRenderStates]);
 
   const getObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
@@ -139,13 +154,20 @@ export function usePageRenderContextProps({
   );
 
   React.useEffect(() => {
-    for (const pageNumber of visiblePageRatios.keys()) {
-      if (pageRenderStates.has(pageNumber)) {
-        continue;
-      }
+    const visiblePages = [...visiblePageRatios.keys()];
+    if (
+      !pdfDocProxy ||
+      [...pageRenderStates.keys()].length === pdfDocProxy.numPages ||
+      visiblePages.length === 0
+    ) {
+      return;
+    }
+
+    const priorityQueue = getPriorityQueue(visiblePages, pdfDocProxy.numPages);
+    for (const pageNumber of priorityQueue) {
       buildObjectURLForPage({ pageNumber });
     }
-  }, [pageRenderStates, visiblePageRatios]);
+  }, [pageRenderStates, pdfDocProxy, visiblePageRatios]);
 
   // Flush page render states when scale changes
   React.useEffect(() => {
@@ -166,8 +188,20 @@ export function usePageRenderContextProps({
     pageRenderStates,
     getObjectURLForPage,
     isBuildingObjectURLForPage,
+    isFinishedBuildingAllPagesObjectURLs,
     buildObjectURLForPage,
   };
+}
+
+export function getNeighboringPages(pages: number[], numPages: number): number[] {
+  return [Math.max(1, pages[0] - 1), Math.min(numPages, pages[pages.length - 1] + 1)];
+}
+
+export function getPriorityQueue(visiblePages: number[], numPages: number): number[] {
+  const visiblePagesNeighbors = getNeighboringPages(visiblePages, numPages);
+  const allPages = Array.from({ length: numPages }, (_, i) => i + 1);
+  const priorityQueue = new Set([...visiblePages, ...visiblePagesNeighbors, ...allPages]); // put into set to remove duplicats
+  return Array.from(priorityQueue); // convert set to array
 }
 
 // This boost causes the rendered image to be scaled up by this amount
