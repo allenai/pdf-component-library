@@ -4,12 +4,12 @@
   "license": "Apache-2.0",
   "author": "s2@allenai.org",
   "scripts": {
-    "build": "webpack --mode production && cp ./tmp/@allenai/pdf-components.d.ts ./dist/index.d.ts && rm -rf ./tmp",
+    "build": "webpack --mode production && cp ./tmp/@allenai/pdf-components.d.ts ./dist/index.d.ts && rm -rf ./tmp && cd dist && npm pack",
     "link:lib": "cd dist && yarn link",
-    "link:react": "yarn link react && yarn link react-dom",
+    "link:react": "yarn link react && yarn link react-dom && yarn link react-pdf",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
-    "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json test/**/*.test.ts{,?} --exit"
+    "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json 'test/**/*.test.ts{,?}' --exit"
   },
   "resolutions": {
     "glob-parent": "^6.0.0",
@@ -24,17 +24,19 @@
     "@types/enzyme": "3.10.9",
     "@types/mocha": "8.2.3",
     "@types/node": "11.9.5",
-    "@types/react": "17.0.14",
+    "@types/react": "16.9.56",
+    "@types/react-dom": "16.9.9",
     "@types/react-pdf": "5.7.2",
     "@types/sinon": "10.0.2",
     "@typescript-eslint/eslint-plugin": "4.28.2",
     "@typescript-eslint/parser": "4.28.2",
-    "@wojtekmaj/enzyme-adapter-react-17": "0.6.7",
+    "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "chai": "4.3.4",
     "copy-webpack-plugin": "9.1.0",
     "css-loader": "5.2.6",
     "dts-bundle": "0.7.3",
     "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.6",
     "eslint": "7.30.0",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-node": "11.1.0",
@@ -47,6 +49,8 @@
     "mini-css-extract-plugin": "2.4.3",
     "mocha": "8.4.0",
     "prettier": "2.3.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
     "react-pdf": "6.0.0-beta.2",
     "remove-files-webpack-plugin": "1.4.5",
     "sinon": "14.0.0",
@@ -55,11 +59,13 @@
     "ts-mocha": "8.0.0",
     "typescript": "4.3.5",
     "webpack": "5.44.0",
+    "webpack-bundle-analyzer": "4.6.1",
     "webpack-cli": "4.7.2",
     "webpack-node-externals": "3.0.0"
   },
   "peerDependencies": {
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": "^16.8.0",
+    "react-dom": "^16.8.0",
+    "react-pdf": "6.0.0-beta.2"
   }
 }

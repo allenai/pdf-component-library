@@ -101,13 +101,14 @@ export function scrollToPosition(
 }
 
 export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
+  const minScrollableHeight = 50; // used to check for a bug where Firefox gives inline containers a small scrollHeight when it shouldnt
   if (typeof document === 'undefined') {
     return null;
   }
   if (!node || node.nodeName.toLowerCase() === 'body') {
     return document.documentElement;
   }
-  if (node.scrollHeight > node.clientHeight && !isOverflowIsHidden(node)) {
+  if (node.scrollHeight - node.clientHeight > minScrollableHeight && !isOverflowIsHidden(node)) {
     return node;
   }
   return getScrollParent(node.parentElement as HTMLElement);

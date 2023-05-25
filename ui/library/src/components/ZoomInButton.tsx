@@ -1,37 +1,47 @@
 import * as React from 'react';
 
-import { ScrollContext } from '../context/ScrollContext';
 import { TransformContext } from '../context/TransformContext';
 import { PercentFormatter } from '../utils/format';
 
 export type Props = {
+  className?: string;
   children?: React.ReactNode;
+  onZoom?: (scale: number) => void;
 };
 
 const MAX_ZOOM_IN_SCALE = 500;
 
 export const ZoomInButton: React.FunctionComponent<Props> = ({
+  className,
   children,
+  onZoom,
   ...extraProps
 }: Props) => {
-  const { scale, setScale, zoomMultiplier } = React.useContext(TransformContext);
-  const { updateScrollPosition } = React.useContext(ScrollContext);
+  const { scale, setScale, zoomIncrementValue } = React.useContext(TransformContext);
 
   const handleZoomIn = React.useCallback(
     (event): void => {
       event.preventDefault();
       event.stopPropagation();
-      const zoomScale = Number(PercentFormatter.format(scale * zoomMultiplier).replace('%', ''));
+      const newScaleValue = scale + zoomIncrementValue;
+      const zoomScale = Number(PercentFormatter.format(newScaleValue).replace('%', ''));
+
       if (zoomScale <= MAX_ZOOM_IN_SCALE) {
-        updateScrollPosition(1 * zoomMultiplier);
-        setScale(scale * zoomMultiplier);
+        if (onZoom) {
+          onZoom(newScaleValue);
+        }
+
+        setScale(newScaleValue);
       }
     },
-    [scale, zoomMultiplier, updateScrollPosition]
+    [scale]
   );
 
   return (
-    <button className="reader__zoom-btn zoom-in" onClick={handleZoomIn} {...extraProps}>
+    <button
+      className={`reader__zoom-btn zoom-in ${className}`}
+      onClick={handleZoomIn}
+      {...extraProps}>
       {children ? children : '+'}
     </button>
   );

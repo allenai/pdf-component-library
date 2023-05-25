@@ -12,14 +12,17 @@ import {
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { calculateTargetPosition } from '../utils/scroll';
+
 export interface IDocumentContext {
   numPages: number;
+  numPagesLoaded: number;
   outline: Nullable<Array<OutlineNode>>;
   outlinePositions: Nullable<OutlinePositionsByPageNumberMap>;
   pageDimensions: Dimensions; // Scaled at 100%
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   getOutlineTargets: (opts: OutlineTargetArgs) => OutlineTarget[];
   setNumPages: (numPages: number) => void;
+  setNumPagesLoaded: (numPagesLoaded: number | ((prevNumPagesLoaded: number) => number)) => void;
   setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
   setOutlinePositions: (outlinePositions: Nullable<OutlinePositionsByPageNumberMap>) => void;
   setPageDimensions: (pageDimensions: Dimensions) => void;
@@ -28,6 +31,7 @@ export interface IDocumentContext {
 
 export const DocumentContext = React.createContext<IDocumentContext>({
   numPages: 0,
+  numPagesLoaded: 0,
   outline: [],
   outlinePositions: null,
   pageDimensions: { height: 0, width: 0 },
@@ -38,6 +42,9 @@ export const DocumentContext = React.createContext<IDocumentContext>({
   },
   setNumPages: numPages => {
     logProviderWarning(`setNumPages(${numPages})`, 'DocumentContext');
+  },
+  setNumPagesLoaded: numPages => {
+    logProviderWarning(`setNumPagesLoaded(${numPages})`, 'DocumentContext');
   },
   setOutline: outline => {
     logProviderWarning(`setOutline(${outline})`, 'DocumentContext');
@@ -55,10 +62,14 @@ export const DocumentContext = React.createContext<IDocumentContext>({
 
 export function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
+  const [numPagesLoaded, setNumPagesLoaded] = React.useState<number>(0);
   const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
   const [outlinePositions, setOutlinePositions] =
     React.useState<Nullable<OutlinePositionsByPageNumberMap>>(null);
-  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
+  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({
+    height: 0,
+    width: 0,
+  });
   const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
 
   // Draw outline target into the pdf based on the args
@@ -97,12 +108,14 @@ export function useDocumentContextProps(): IDocumentContext {
 
   return {
     numPages,
+    numPagesLoaded,
     outline,
     outlinePositions,
     pageDimensions,
     pdfDocProxy,
     getOutlineTargets,
     setNumPages,
+    setNumPagesLoaded,
     setOutline,
     setOutlinePositions,
     setPageDimensions: setPageDimensions,

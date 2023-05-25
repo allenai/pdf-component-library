@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode development",
     "link:lib": "yarn link @allenai/pdf-components",
-    "link:react": "cd ./node_modules/react && yarn link && cd ../react-dom && yarn link",
+    "link:react": "cd ./node_modules/react && yarn link && cd ../react-dom && yarn link && cd ../react-pdf && yarn link",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "start": "webpack serve --hot --mode development",
@@ -28,7 +28,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-is": "17.0.2",
-    "react-pdf": "5.7.2",
+    "react-pdf": "6.0.0-beta.2",
     "react-router-dom": "5.2.0"
   },
   "devDependencies": {

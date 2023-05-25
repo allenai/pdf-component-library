@@ -18,7 +18,7 @@ export const Overlay: React.FunctionComponent<Props> = ({ children, ...extraProp
   }, [pageDimensions, rotation, scale]);
 
   return (
-    <div className="reader__page-overlay" style={getOverlayStyle()} {...extraProps}>
+    <div className="pdf-reader__overlay" style={getOverlayStyle()} {...extraProps}>
       {children}
     </div>
   );

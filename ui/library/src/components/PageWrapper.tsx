@@ -6,6 +6,8 @@ import { RenderFunction } from 'react-pdf/dist/Page';
 import { DocumentContext } from '../context/DocumentContext';
 import { PageRenderContext } from '../context/PageRenderContext';
 import { TransformContext } from '../context/TransformContext';
+import { UiContext } from '../context/UiContext';
+import { getClassNameSuffixFromRenderType, RenderType } from '../utils/reader-utils';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import { computePageStyle, getPageWidth } from '../utils/style';
 import { HighlightOverlay } from './HighlightOverlay';
@@ -25,6 +27,7 @@ export type Props = {
   className?: string;
   loadingContentForBuildingImage?: React.ReactElement;
   children?: React.ReactElement<typeof HighlightOverlay | typeof Overlay>;
+  renderType: RenderType;
 } & PageProps;
 
 export const PageWrapper: React.FunctionComponent<Props> = ({
@@ -34,11 +37,14 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   loadingContentForBuildingImage,
   noData,
   pageIndex,
+  renderType,
   ...extraProps
 }: Props) => {
   const { rotation, scale } = React.useContext(TransformContext);
-  const { pageDimensions, getOutlineTargets } = React.useContext(DocumentContext);
+  const { pageDimensions, getOutlineTargets, setNumPagesLoaded } =
+    React.useContext(DocumentContext);
   const { getObjectURLForPage, isBuildingObjectURLForPage } = React.useContext(PageRenderContext);
+  const { isLoading } = React.useContext(UiContext);
 
   const objectURLForPage = getObjectURLForPage({ pageIndex });
   const isBuildingPageImage = isBuildingObjectURLForPage({ pageIndex });
@@ -61,7 +67,16 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     return getPageWidth(pageDimensions, rotation);
   }, [pageDimensions, rotation]);
 
-  const outlineTargets = getOutlineTargets({ pageIndex, scale, rotation, pageDimensions });
+  const outlineTargets = getOutlineTargets({
+    pageIndex,
+    scale,
+    rotation,
+    pageDimensions,
+  });
+
+  const markPageAsLoaded = React.useCallback(() => {
+    setNumPagesLoaded(prevNumPagesLoaded => prevNumPagesLoaded + 1);
+  }, []);
 
   // Width needs to be set to prevent the outermost Page div from extending to fit the parent,
   // and mis-aligning the text layer.
@@ -70,19 +85,20 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     <div
       id={generatePageIdFromIndex(pageIndex)}
       className={classnames(
-        'reader__page',
-        { 'reader__page--has-page-image': objectURLForPage },
-        { 'reader__page--no-page-image': !objectURLForPage },
-        { 'reader__page--is-building-page-image': isBuildingPageImage }
+        'pdf-reader__page',
+        { 'pdf-reader__page--has-page-image': objectURLForPage },
+        { 'pdf-reader__page--no-page-image': !objectURLForPage },
+        `pdf-reader__page--render-type-${getClassNameSuffixFromRenderType(renderType)}`,
+        { 'pdf-reader__is-building-page-image': isBuildingPageImage }
       )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
       {...extraProps}>
       {children}
-      {isBuildingPageImage && (
+      {isBuildingPageImage && !isLoading && (
         <div
-          className={classnames('reader__page', {
-            'reader__page--is-loading-image': isBuildingPageImage,
+          className={classnames('pdf-reader__page', {
+            'pdf-reader__page--is-loading-image': isBuildingPageImage,
           })}>
           {loadingContentForBuildingImage}
         </div>
@@ -96,13 +112,15 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
         scale={scale}
         rotate={rotation}
         renderAnnotationLayer={true}
+        onGetTextSuccess={markPageAsLoaded}
       />
-      <div className="reader__page__outline-targets">
+      <div className="pdf-reader__page__outline-targets">
         {outlineTargets.map(({ dest, leftPx, topPx }) => (
           <span
             key={dest}
-            className="reader__page__outline-target"
+            className="pdf-reader__page__outline-target"
             data-outline-target-dest={dest}
+            data-test-id="pdf-reader__page__outline-target"
             style={{ left: leftPx + 'px', top: topPx + 'px' }}
           />
         ))}

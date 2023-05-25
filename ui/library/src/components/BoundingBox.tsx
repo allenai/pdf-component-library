@@ -8,9 +8,11 @@ import { BoundingBox as BoundingBoxType } from './types/boundingBox';
 
 export type Props = {
   className?: string;
+  underlineClassName?: string;
   id?: string;
   isHighlighted?: boolean;
   onClick?: () => void;
+  voiceOverLabel?: string;
 } & BoundingBoxType;
 
 export const BoundingBox: React.FunctionComponent<Props> = ({
@@ -19,17 +21,19 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   height,
   width,
   className,
+  underlineClassName,
   id,
   isHighlighted,
   onClick,
+  voiceOverLabel,
   ...extraProps
 }: Props) => {
   const { pageDimensions } = React.useContext(DocumentContext);
   const { rotation, scale } = React.useContext(TransformContext);
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
-    'reader__page-overlay__bounding-box',
-    isHighlighted === true ? 'reader__page-overlay__bounding-box-highlighted' : '',
+    'pdf-reader__overlay-bounding-box',
+    isHighlighted === true ? 'pdf-reader__overlay-bounding-box-highlighted' : '',
     className
   );
 
@@ -44,7 +48,9 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   return (
     <React.Fragment>
       <div
-        className={`reader__page-overlay__bounding-box-underline ${rotationClassName()}`}
+        className={`pdf-reader__overlay-bounding-box-underline ${
+          underlineClassName || rotationClassName()
+        }`}
         style={getBoundingBoxStyle()}
       />
       <div
@@ -52,6 +58,9 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
         className={`${componentClassName} ${rotationClassName()}`}
         style={getBoundingBoxStyle()}
         onClick={onClick}
+        role="button"
+        tabIndex={0}
+        aria-label={voiceOverLabel}
         {...extraProps}
       />
     </React.Fragment>

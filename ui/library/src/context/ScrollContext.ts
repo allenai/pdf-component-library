@@ -6,24 +6,31 @@ import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
 import { generatePageIdFromIndex } from '../utils/scroll';
 import ScrollDetector, { ScrollDirection } from '../utils/ScrollDirectionDetector';
-import VisibleEntriesDetector from '../utils/VisibleEntriesDetector';
+import VisibleEntriesDetector, { VisibleEntryDetailType } from '../utils/VisibleEntriesDetector';
 
 const OUTLINE_ATTRIBUTE = 'data-outline-target-dest';
 
-const OUTLINE_SELECTOR = '.reader__page__outline-target';
+const OUTLINE_SELECTOR = '.pdf-reader__page__outline-target';
 
 const PAGE_NUMBER_ATTRIBUTE = 'data-page-number';
 
-const PAGE_NUMBER_SELECTOR = `.reader__page[${PAGE_NUMBER_ATTRIBUTE}]`;
+const PAGE_NUMBER_SELECTOR = `.pdf-reader__page[${PAGE_NUMBER_ATTRIBUTE}]`;
+
+const DEFAULT_PAGE_SCROLLED_INTO_VIEW_THRESHOLD = 0.1;
+
+const EMPTY_NUMBER_TO_VISIBLE_ENTRY_DETAIL_MAP = Object.freeze(
+  new Map<number, VisibleEntryDetailType>()
+);
 
 export interface IScrollContext {
   isOutlineTargetVisible: (dest: NodeDestination) => boolean;
   isPageVisible: (pageNumber: PageNumber) => boolean;
   scrollDirection: Nullable<ScrollDirection>;
-  visibleOutlineTargets: Map<NodeDestination, number>; // mapping node destination with their intersection ratio
-  visiblePageRatios: Map<number, number>; // mapping page number with their intersection ratio
+  visibleOutlineTargets: Map<NodeDestination, VisibleEntryDetailType>; // mapping node destination with their intersection ratio
+  visiblePageRatios: Map<number, VisibleEntryDetailType>; // mapping page number with their intersection ratio
   resetScrollObservers: () => void;
-  setScrollRoot: (root: Nullable<Element>) => void;
+  scrollRoot: Nullable<HTMLElement>;
+  setScrollRoot: (root: Nullable<HTMLElement>) => void;
   scrollToOutlineTarget: (dest: NodeDestination) => void;
   setScrollThreshold: (scrollThreshold: Nullable<number>) => void;
   scrollToPage: (pageNumber: PageNumber) => void;
@@ -32,6 +39,8 @@ export interface IScrollContext {
   scrollThresholdReachedInDirection: Nullable<ScrollDirection>;
   isAtTop: Nullable<boolean>;
   isOutlineClicked: Nullable<boolean>;
+  pagesScrolledIntoView: Map<number, VisibleEntryDetailType>; // mapping page number with their intersection ratio
+  setPageScrolledIntoViewThreshold: (threshold: number) => void;
 }
 
 const DEFAULT_CONTEXT: IScrollContext = {
@@ -49,7 +58,8 @@ const DEFAULT_CONTEXT: IScrollContext = {
   resetScrollObservers: () => {
     logProviderWarning(`resetScrollObservers()`, 'ScrollContext');
   },
-  setScrollRoot: (_el: Nullable<Element>) => {
+  scrollRoot: <HTMLElement>{},
+  setScrollRoot: (_el: Nullable<HTMLElement>) => {
     logProviderWarning(`setScrollRoot(...)`, 'ScrollContext');
   },
   scrollToOutlineTarget: dest => {
@@ -70,13 +80,17 @@ const DEFAULT_CONTEXT: IScrollContext = {
   scrollThresholdReachedInDirection: null,
   isAtTop: null,
   isOutlineClicked: null,
+  pagesScrolledIntoView: new Map(),
+  setPageScrolledIntoViewThreshold: (threshold: number) => {
+    logProviderWarning(`pagesScrolledIntoView(${threshold})`, 'ScrollContext');
+  },
 };
 
 export const ScrollContext = React.createContext<IScrollContext>(DEFAULT_CONTEXT);
 
 export function useScrollContextProps(): IScrollContext {
   // Node used for observing the scroll position
-  const [scrollRoot, setScrollRoot] = React.useState<Nullable<Element>>(null);
+  const [scrollRoot, setScrollRoot] = React.useState<Nullable<HTMLElement>>(null);
 
   // Determine scroll direction
   const [scrollDirection, setScrollDirection] = React.useState<Nullable<ScrollDirection>>(null);
@@ -85,6 +99,14 @@ export function useScrollContextProps(): IScrollContext {
     React.useState<Nullable<ScrollDirection>>(null);
   const [isAtTop, setIsAtTop] = React.useState<Nullable<boolean>>(null);
   const [isOutlineClicked, setIsOutlineClicked] = React.useState<Nullable<boolean>>(null);
+
+  const [pageScrolledIntoViewThreshold, setPageScrolledIntoViewThreshold] = React.useState(
+    DEFAULT_PAGE_SCROLLED_INTO_VIEW_THRESHOLD
+  );
+
+  const [pagesScrolledIntoView, setPagesScrolledIntoView] = React.useState<
+    Map<number, VisibleEntryDetailType>
+  >(() => EMPTY_NUMBER_TO_VISIBLE_ENTRY_DETAIL_MAP);
 
   React.useEffect(() => {
     const scrollElem = scrollRoot || document.documentElement;
@@ -119,18 +141,16 @@ export function useScrollContextProps(): IScrollContext {
   }, [observerIndex]);
 
   const [visibleOutlineTargets, setVisibleOutlineNodes] = React.useState<
-    Map<NodeDestination, number>
+    Map<NodeDestination, VisibleEntryDetailType>
   >(() => {
-    const map = new Map<NodeDestination, number>();
+    const map = new Map<NodeDestination, VisibleEntryDetailType>();
     Object.freeze(map);
     return map;
   });
 
-  const [visiblePageRatios, setVisiblePageRatios] = React.useState<Map<number, number>>(() => {
-    const map = new Map<number, number>();
-    Object.freeze(map);
-    return map;
-  });
+  const [visiblePageRatios, setVisiblePageRatios] = React.useState<
+    Map<number, VisibleEntryDetailType>
+  >(() => EMPTY_NUMBER_TO_VISIBLE_ENTRY_DETAIL_MAP);
 
   const isOutlineTargetVisible = React.useCallback(
     (dest: NodeDestination): boolean => {
@@ -183,7 +203,10 @@ export function useScrollContextProps(): IScrollContext {
         );
         const newEntries = new Map(lastEntries);
         visibleEntries.map(entry =>
-          newEntries.set(entry.target.getAttribute(OUTLINE_ATTRIBUTE), entry.intersectionRatio)
+          newEntries.set(entry.target.getAttribute(OUTLINE_ATTRIBUTE), {
+            ratio: entry.intersectionRatio,
+            timestamp: entry.time,
+          })
         );
         return newEntries;
       },
@@ -201,16 +224,56 @@ export function useScrollContextProps(): IScrollContext {
       root: root,
       setVisibleEntries: setVisiblePageRatios,
       onVisibleEntriesChange: ({ visibleEntries, hiddenEntries, lastEntries }) => {
-        hiddenEntries.map(entry =>
-          lastEntries.delete(parseInt(entry.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10))
-        );
+        if (hiddenEntries.length) {
+          const maxTime = Math.max(...hiddenEntries.map(e => e.time));
+          const hiddenPageNums = hiddenEntries.map(
+            e => e.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || ''
+          );
+
+          // due to upper limit on how fast the Intersection Observer API can sample and how fast browsers can render (happens when users scroll fast)
+          // sometimes entries will not be signaled as hidden, meaning they should be removed from lastEntries but weren't
+          // so if an entry has a timestamp thats older then an entry we are currently removing, we can assume its "stale" and delete
+          // more details about this issue here: https://stackoverflow.com/questions/61951380/intersection-observer-fails-sometimes-when-i-scroll-fast
+
+          for (const [key, value] of lastEntries.entries()) {
+            if (value.timestamp <= maxTime || hiddenPageNums.includes(String(key))) {
+              lastEntries.delete(key);
+            }
+          }
+        }
         const newEntries = new Map(lastEntries);
-        visibleEntries.map(entry =>
+        visibleEntries.map(entry => {
+          newEntries.set(parseInt(entry.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10), {
+            ratio: entry.intersectionRatio,
+            timestamp: entry.time,
+          });
+        });
+        return newEntries;
+      },
+    });
+    detector.observeNodes(PAGE_NUMBER_SELECTOR);
+    return () => {
+      detector.destroy();
+    };
+  }, [scrollRoot, observerIndex]);
+
+  // map of pages at the moment they are scrolled into view, useful for tracking analytics such as page impressions
+  // different than the visiblePageRatios in that it only saves the ~initial~ point of when a page comes into view
+  // it doesn't track the live change in ratios as the page remains in view when scrolled
+  React.useEffect(() => {
+    const root = scrollRoot || document.documentElement;
+    const detector = new VisibleEntriesDetector<number>({
+      root: root,
+      thresHold: pageScrolledIntoViewThreshold,
+      setVisibleEntries: setPagesScrolledIntoView,
+      onVisibleEntriesChange: ({ visibleEntries }) => {
+        const newEntries = new Map();
+        visibleEntries.map(entry => {
           newEntries.set(
             parseInt(entry.target?.getAttribute(PAGE_NUMBER_ATTRIBUTE) || '', 10),
             entry.intersectionRatio
-          )
-        );
+          );
+        });
         return newEntries;
       },
     });
@@ -242,6 +305,7 @@ export function useScrollContextProps(): IScrollContext {
     visibleOutlineTargets,
     visiblePageRatios,
     resetScrollObservers,
+    scrollRoot,
     setScrollRoot,
     scrollToOutlineTarget,
     setScrollThreshold,
@@ -251,5 +315,7 @@ export function useScrollContextProps(): IScrollContext {
     scrollThresholdReachedInDirection,
     isAtTop,
     isOutlineClicked,
+    pagesScrolledIntoView,
+    setPageScrolledIntoViewThreshold,
   };
 }

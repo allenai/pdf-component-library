@@ -31,7 +31,7 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
         className={classnames('reader__outline-item', {
           'reader__outline-item--target-visible': isOutlineTargetVisible(item.dest),
         })}>
-        <a href="#" onClick={clickHandler}>
+        <a href="#" onClick={clickHandler} data-test-id="reader-outline-item">
           {item.title}
         </a>
         <OutlineItem items={item.items} onClick={onClick} />

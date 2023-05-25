@@ -18,7 +18,7 @@ export const PrintButton: React.FunctionComponent<Props> = ({
     <button
       onClick={() => onClickPrint()}
       aria-label="Print PDF"
-      className={`reader__print-btn ${className}`}
+      className={`pdf-reader__print-btn ${className}`}
       {...extraProps}>
       {children ? children : 'Print'}
     </button>

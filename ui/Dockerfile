@@ -2,7 +2,7 @@
 # environment where the JavaScript build process can run. In production the
 # files built by this process are served from disk, while in development a HTTP
 # server that's distributed with the UI build tools is used.
-FROM node:12.22.6
+FROM node:16.14.2
 
 # Install dependencies for demo and create a link to the demo's react dependency
 WORKDIR /usr/local/src/skiff/app/ui/demo

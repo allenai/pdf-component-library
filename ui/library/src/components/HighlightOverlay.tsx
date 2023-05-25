@@ -41,7 +41,7 @@ export const HighlightOverlay: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <div className="reader__page-highlight-overlay" style={getPageStyle()} {...extraProps}>
+    <div className="pdf-reader__page-highlight-overlay" style={getPageStyle()} {...extraProps}>
       <svg className="page-mask" style={getPageStyle()}>
         <mask id={maskId}>
           <rect style={getPageStyle()} fill="white"></rect>
