@@ -1,20 +1,17 @@
-import classnames from "classnames";
-import * as React from "react";
-import { Page } from "react-pdf";
-import { RenderFunction } from "react-pdf/dist/Page";
+import classnames from 'classnames';
+import * as React from 'react';
+import { Page } from 'react-pdf';
+import { RenderFunction } from 'react-pdf/dist/Page';
 
-import { DocumentContext } from "../context/DocumentContext";
-import { PageRenderContext } from "../context/PageRenderContext";
-import { TransformContext } from "../context/TransformContext";
-import { UiContext } from "../context/UiContext";
-import {
-  getClassNameSuffixFromRenderType,
-  RenderType,
-} from "../utils/reader-utils";
-import { generatePageIdFromIndex } from "../utils/scroll";
-import { computePageStyle, getPageWidth } from "../utils/style";
-import { HighlightOverlay } from "./HighlightOverlay";
-import { Overlay } from "./Overlay";
+import { DocumentContext } from '../context/DocumentContext';
+import { PageRenderContext } from '../context/PageRenderContext';
+import { TransformContext } from '../context/TransformContext';
+import { UiContext } from '../context/UiContext';
+import { getClassNameSuffixFromRenderType, RenderType } from '../utils/reader-utils';
+import { generatePageIdFromIndex } from '../utils/scroll';
+import { computePageStyle, getPageWidth } from '../utils/style';
+import { HighlightOverlay } from './HighlightOverlay';
+import { Overlay } from './Overlay';
 
 /**
  * A subset of react-pdf's Page component props exposed by this wrapper
@@ -46,8 +43,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   const { rotation, scale } = React.useContext(TransformContext);
   const { pageDimensions, getOutlineTargets, setNumPagesLoaded } =
     React.useContext(DocumentContext);
-  const { getObjectURLForPage, isBuildingObjectURLForPage } =
-    React.useContext(PageRenderContext);
+  const { getObjectURLForPage, isBuildingObjectURLForPage } = React.useContext(PageRenderContext);
   const { isLoading } = React.useContext(UiContext);
 
   const objectURLForPage = getObjectURLForPage({ pageIndex });
@@ -60,11 +56,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
   }
 
   const getPageStyle = React.useCallback(() => {
-    const styles: Record<string, unknown> = computePageStyle(
-      pageDimensions,
-      rotation,
-      scale
-    );
+    const styles: Record<string, unknown> = computePageStyle(pageDimensions, rotation, scale);
     if (objectURLForPage) {
       styles.backgroundImage = `url(${objectURLForPage})`;
     }
@@ -93,25 +85,21 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
     <div
       id={generatePageIdFromIndex(pageIndex)}
       className={classnames(
-        "pdf-reader__page",
-        { "pdf-reader__page--has-page-image": objectURLForPage },
-        { "pdf-reader__page--no-page-image": !objectURLForPage },
-        `pdf-reader__page--render-type-${getClassNameSuffixFromRenderType(
-          renderType
-        )}`,
-        { "pdf-reader__is-building-page-image": isBuildingPageImage }
+        'pdf-reader__page',
+        { 'pdf-reader__page--has-page-image': objectURLForPage },
+        { 'pdf-reader__page--no-page-image': !objectURLForPage },
+        `pdf-reader__page--render-type-${getClassNameSuffixFromRenderType(renderType)}`,
+        { 'pdf-reader__is-building-page-image': isBuildingPageImage }
       )}
       data-page-number={pageIndex + 1}
       style={getPageStyle()}
-      {...extraProps}
-    >
+      {...extraProps}>
       {children}
       {isBuildingPageImage && !isLoading && (
         <div
-          className={classnames("pdf-reader__page", {
-            "pdf-reader__page--is-loading-image": isBuildingPageImage,
-          })}
-        >
+          className={classnames('pdf-reader__page', {
+            'pdf-reader__page--is-loading-image': isBuildingPageImage,
+          })}>
           {loadingContentForBuildingImage}
         </div>
       )}
@@ -133,7 +121,7 @@ export const PageWrapper: React.FunctionComponent<Props> = ({
             className="pdf-reader__page__outline-target"
             data-outline-target-dest={dest}
             data-test-id="pdf-reader__page__outline-target"
-            style={{ left: leftPx + "px", top: topPx + "px" }}
+            style={{ left: leftPx + 'px', top: topPx + 'px' }}
           />
         ))}
       </div>

@@ -21,8 +21,8 @@ export type Props = {
 };
 
 export const SidePanel: React.FunctionComponent<Props> = ({
-  minWidthPx=DEFAULT_MIN_WIDTH_PX,
-  maxWidthPx=DEFAULT_MAX_WIDTH_PX,
+  minWidthPx = DEFAULT_MIN_WIDTH_PX,
+  maxWidthPx = DEFAULT_MAX_WIDTH_PX,
   className,
   children,
   header,
@@ -30,12 +30,12 @@ export const SidePanel: React.FunctionComponent<Props> = ({
   footer,
   dragHandlePosition,
   closeButton,
-  isVisible=true,
+  isVisible = true,
   onClose,
   ...extraProps
 }: Props) => {
-  // The overlay is used to catch mouse up events over iframe contents 
-  // so the mouseup events will not be missed if the click is released over 
+  // The overlay is used to catch mouse up events over iframe contents
+  // so the mouseup events will not be missed if the click is released over
   // the iframe and the event listeners will fail to be removed
   const [isOverlayVisible, setIsOverlayVisible] = React.useState<boolean>(false);
   const [panelWidth, setPanelWidth] = React.useState<number>(minWidthPx);
@@ -65,26 +65,29 @@ export const SidePanel: React.FunctionComponent<Props> = ({
         return;
       }
 
-      const newWidth = (dragHandlePosition === 'left') ? sidePanelRef.current.getBoundingClientRect().right - mouseMoveEvent.pageX : mouseMoveEvent.pageX - sidePanelRef.current.getBoundingClientRect().left;
+      const newWidth =
+        dragHandlePosition === 'left'
+          ? sidePanelRef.current.getBoundingClientRect().right - mouseMoveEvent.pageX
+          : mouseMoveEvent.pageX - sidePanelRef.current.getBoundingClientRect().left;
 
-      setPanelWidth(bandPassFilter(newWidth, minWidthPx, maxWidthPx))
+      setPanelWidth(bandPassFilter(newWidth, minWidthPx, maxWidthPx));
     };
-  
+
     const onMouseUp = (): void => {
       // drop opacity styling on drag handle
       if (dragHandleRef && dragHandleRef.current) {
-        dragHandleRef.current.removeAttribute('style')
+        dragHandleRef.current.removeAttribute('style');
       }
       setIsOverlayVisible(false);
       document.body.removeEventListener('mousemove', onMouseMove);
     };
-  
+
     const onDraggingHandle = (): void => {
       // prevent flashing when the mouse hovers outside the resize zone
       if (dragHandleRef && dragHandleRef.current) {
         dragHandleRef.current.style.opacity = '1';
       }
-  
+
       setIsOverlayVisible(true);
       document.body.addEventListener('mousemove', onMouseMove);
       document.body.addEventListener('mouseup', onMouseUp, { once: true });
@@ -92,38 +95,41 @@ export const SidePanel: React.FunctionComponent<Props> = ({
 
     const onChangePanelWidth = (event: React.ChangeEvent<HTMLInputElement>): void => {
       const newWidth = parseInt(event.currentTarget.value);
-      setPanelWidth(bandPassFilter(newWidth, minWidthPx, maxWidthPx))
+      setPanelWidth(bandPassFilter(newWidth, minWidthPx, maxWidthPx));
     };
 
-    return <div className={classnames("pdf-reader__resize-zone", {
-      "pdf-reader__resize-zone--left": isDragHandleOnLeft,
-      "pdf-reader__resize-zone--right": isDragHandleOnRight
-    })}>
-      <input
-        className="pdf-reader__drag-handle__assistive-input"
-        type="range"
-        min={minWidthPx}
-        max={maxWidthPx}
-        step="5"
-        value={panelWidth}
-        onChange={onChangePanelWidth}
-      />
+    return (
       <div
-        ref={dragHandleRef}
-        role="slider"
-        aria-valuenow={panelWidth}
-        tabIndex={-1}
-        onMouseDown={onDraggingHandle}
-        className="pdf-reader__drag-handle">
-        <div className="pdf-reader__drag-handle__inner" />
+        className={classnames('pdf-reader__resize-zone', {
+          'pdf-reader__resize-zone--left': isDragHandleOnLeft,
+          'pdf-reader__resize-zone--right': isDragHandleOnRight,
+        })}>
+        <input
+          className="pdf-reader__drag-handle__assistive-input"
+          type="range"
+          min={minWidthPx}
+          max={maxWidthPx}
+          step="5"
+          value={panelWidth}
+          onChange={onChangePanelWidth}
+        />
+        <div
+          ref={dragHandleRef}
+          role="slider"
+          aria-valuenow={panelWidth}
+          tabIndex={-1}
+          onMouseDown={onDraggingHandle}
+          className="pdf-reader__drag-handle">
+          <div className="pdf-reader__drag-handle__inner" />
+        </div>
       </div>
-    </div>;
-  }
+    );
+  };
 
   return (
     <div
       ref={sidePanelRef}
-      style={{width: panelWidth}}
+      style={{ width: panelWidth }}
       className={classnames(
         'pdf-reader__side-panel',
         { 'pdf-reader__side-panel--hidden': !isVisible },

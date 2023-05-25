@@ -3,6 +3,7 @@ import {
   DocumentWrapper,
   Overlay,
   PageWrapper,
+  RENDER_TYPE,
   ScrollContext,
 } from '@allenai/pdf-components';
 import * as React from 'react';
@@ -72,7 +73,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
         <div className="reader__container">
           <DemoHeaderContextProvider>
             <Header pdfUrl={samplePdfUrl} />
-            <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef}>
+            <DocumentWrapper className="reader__main" file={samplePdfUrl} inputRef={pdfContentRef} renderType={RENDER_TYPE.SINGLE_CANVAS}>
               <Outline parentRef={pdfContentRef} />
               <Thumbnail parentRef={pdfContentRef} />
               <div className="reader__page-list" ref={pdfScrollableRef}>

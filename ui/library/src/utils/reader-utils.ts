@@ -7,11 +7,11 @@ export type RenderType = typeof RENDER_TYPE[keyof typeof RENDER_TYPE];
 
 export type RenderMode = 'canvas' | 'none';
 
-export function getRenderMode(renderType: RenderType): RenderMode  {
+export function getRenderMode(renderType: RenderType): RenderMode {
   switch (renderType) {
-    case RENDER_TYPE.SINGLE_CANVAS: 
+    case RENDER_TYPE.SINGLE_CANVAS:
       return 'none';
-    default: 
+    default:
       return 'canvas';
   }
 }
@@ -20,7 +20,7 @@ export function getClassNameSuffixFromRenderType(renderType: RenderType): string
   switch (renderType) {
     case RENDER_TYPE.SINGLE_CANVAS:
       return 'single-canvas';
-    default: 
+    default:
       return 'multi-canvas';
   }
 }

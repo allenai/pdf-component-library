@@ -26,7 +26,6 @@ describe('<TransformContext/>', () => {
   let _setPixelRatio: (devicePixelRatio: number) => void;
   let _setRotation: (rotation: PageRotation) => void;
   let _setScale: (scale: number) => void;
-  let _setZoomMultiplier: (zoom: number) => void;
 
   beforeEach(() => {
     wrapper = mount(
@@ -37,22 +36,18 @@ describe('<TransformContext/>', () => {
               pixelRatio,
               rotation,
               scale,
-              zoomMultiplier,
               setPixelRatio,
               setRotation,
               setScale,
-              setZoomMultiplier,
             } = args;
             _setPixelRatio = setPixelRatio;
             _setRotation = setRotation;
             _setScale = setScale;
-            _setZoomMultiplier = setZoomMultiplier;
             return (
               <div>
                 <div className="pixelRatio">{pixelRatio}</div>
                 <div className="scale">{scale}</div>
                 <div className="rotation">{rotation}</div>
-                <div className="zoom">{zoomMultiplier}</div>
               </div>
             );
           }}
@@ -77,10 +72,6 @@ describe('<TransformContext/>', () => {
     expectTextFromClassName('scale', 1);
   });
 
-  it('provides a default zoom multiplier', () => {
-    expectTextFromClassName('zoom', 1.2);
-  });
-
   it('provides a function to set pixelRatio', () => {
     expectTextFromClassName('pixelRatio', 1);
 
@@ -103,13 +94,5 @@ describe('<TransformContext/>', () => {
     _setScale(1.2);
 
     expectTextFromClassName('scale', 1.2);
-  });
-
-  it('provides a function to set zoom multiplier', () => {
-    expectTextFromClassName('zoom', 1.2);
-
-    _setZoomMultiplier(2.5);
-
-    expectTextFromClassName('zoom', 2.5);
   });
 });

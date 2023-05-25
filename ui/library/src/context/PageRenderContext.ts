@@ -134,14 +134,14 @@ export function usePageRenderContextProps({
         pdfDocProxy,
         pixelRatio,
         scale,
-        promiseTimestamp: flushTimestamp
+        promiseTimestamp: flushTimestamp,
       });
       const renderState: RenderState = {
         promise,
         objectURL: null,
       };
       promise.then(objectURL => {
-        if(!objectURL) return;
+        if (!objectURL) return;
         renderState.objectURL = objectURL;
         const newPageRenderStates = new Map(pageRenderStatesRef.current);
         Object.freeze(newPageRenderStates);
@@ -177,9 +177,9 @@ export function usePageRenderContextProps({
       }
     }
 
-     // if current async promises dont have this timestamp, then we flush them
+    // if current async promises dont have this timestamp, then we flush them
     flushTimestamp = new Date().getTime();
-    
+
     // Clear all page render states, so pages can rebuild images
     const newPageRenderStates = new Map();
     Object.freeze(newPageRenderStates);
@@ -196,7 +196,9 @@ export function usePageRenderContextProps({
 }
 
 export function getNeighboringPages(pages: number[], numTotalPages: number): number[] {
-  return pages.length === 0 ? [] : [Math.max(1, pages[0] - 1), Math.min(numTotalPages, pages[pages.length - 1] + 1)];
+  return pages.length === 0
+    ? []
+    : [Math.max(1, pages[0] - 1), Math.min(numTotalPages, pages[pages.length - 1] + 1)];
 }
 
 export function getPriorityQueue(visiblePages: number[], numPages: number): number[] {
@@ -230,7 +232,7 @@ async function buildPageObjectURL({
   const pageProxy = await pdfDocProxy.getPage(pageNumber);
 
   const blob: Nullable<Blob> | number = await useRenderCanvas(async canvas => {
-    if(promiseTimestamp !== flushTimestamp) {
+    if (promiseTimestamp !== flushTimestamp) {
       return promiseTimestamp; // flush stale promise
     }
     // Render page in a canvas
@@ -245,7 +247,7 @@ async function buildPageObjectURL({
     const renderTask = pageProxy.render({
       canvasContext,
       viewport,
-      intent: "print", // immediately render pages on inactive pages
+      intent: 'print', // immediately render pages on inactive pages
     });
     await renderTask.promise;
 
@@ -261,9 +263,9 @@ async function buildPageObjectURL({
     });
   });
 
-  if(typeof blob === 'number') {
-    return "";
-  } 
+  if (typeof blob === 'number') {
+    return '';
+  }
   // Convert blob image to object url
   if (!blob) {
     throw new Error('unable to create image from page');

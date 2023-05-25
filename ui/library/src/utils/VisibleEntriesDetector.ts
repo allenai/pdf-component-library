@@ -1,18 +1,19 @@
-const DEFAULT_ROOT_MARGIN = '50px'; 
+const DEFAULT_ROOT_MARGIN = '50px';
 const DEFAULT_THRESHOLD = Array.from({ length: 101 }).map((_, i) => i / 100);
 
-export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, VisibleEntryDetailType>) => void;
+export type SetVisibleEntriesCallback<TEntry> = (
+  visible: Map<TEntry, VisibleEntryDetailType>
+) => void;
 export type onVisibleEntriesChangeCallback<TEntry> = (args: {
   visibleEntries: IntersectionObserverEntry[];
   hiddenEntries: IntersectionObserverEntry[];
   lastEntries: Map<TEntry, VisibleEntryDetailType>;
 }) => Map<TEntry, VisibleEntryDetailType>;
 
-
 export type VisibleEntryDetailType = {
-  ratio: number,
-  timestamp: number,
-}
+  ratio: number;
+  timestamp: number;
+};
 
 export default class VisibleEntriesDetector<TEntry> {
   _root: Element;

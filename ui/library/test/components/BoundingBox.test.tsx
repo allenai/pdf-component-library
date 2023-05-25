@@ -49,7 +49,7 @@ describe('<BoundingBox/>', () => {
 
     expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline rotate0'
+      'pdf-reader__overlay-bounding-box-underline rotate0'
     );
 
     expect(boxUnderline.getAttribute('style')).to.include('top: 192px;');
@@ -57,7 +57,7 @@ describe('<BoundingBox/>', () => {
     expect(boxUnderline.getAttribute('style')).to.include('height: 96px;');
     expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate0');
+    expect(box).to.have.property('className', 'pdf-reader__overlay-bounding-box rotate0');
 
     expect(box.getAttribute('style')).to.include('top: 192px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');
@@ -83,7 +83,7 @@ describe('<BoundingBox/>', () => {
 
     expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline rotate90'
+      'pdf-reader__overlay-bounding-box-underline rotate90'
     );
 
     expect(boxUnderline.getAttribute('style')).to.include('top: 96px;');
@@ -91,7 +91,7 @@ describe('<BoundingBox/>', () => {
     expect(boxUnderline.getAttribute('style')).to.include('height: 192px;');
     expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate90');
+    expect(box).to.have.property('className', 'pdf-reader__overlay-bounding-box rotate90');
 
     expect(box.getAttribute('style')).to.include('top: 96px;');
     expect(box.getAttribute('style')).to.include('left: 768px;');
@@ -117,7 +117,7 @@ describe('<BoundingBox/>', () => {
 
     expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline rotate180'
+      'pdf-reader__overlay-bounding-box-underline rotate180'
     );
 
     expect(boxUnderline.getAttribute('style')).to.include('top: 768px;');
@@ -125,7 +125,7 @@ describe('<BoundingBox/>', () => {
     expect(boxUnderline.getAttribute('style')).to.include('height: 96px;');
     expect(boxUnderline.getAttribute('style')).to.include('width: 192px;');
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate180');
+    expect(box).to.have.property('className', 'pdf-reader__overlay-bounding-box rotate180');
 
     expect(box.getAttribute('style')).to.include('top: 768px;');
     expect(box.getAttribute('style')).to.include('left: 528px;');
@@ -151,7 +151,7 @@ describe('<BoundingBox/>', () => {
 
     expect(boxUnderline).to.have.property(
       'className',
-      'reader__page-overlay__bounding-box-underline rotate270'
+      'pdf-reader__overlay-bounding-box-underline rotate270'
     );
 
     expect(boxUnderline.getAttribute('style')).to.include('top: 528px;');
@@ -159,7 +159,7 @@ describe('<BoundingBox/>', () => {
     expect(boxUnderline.getAttribute('style')).to.include('height: 192px;');
     expect(boxUnderline.getAttribute('style')).to.include('width: 96px;');
 
-    expect(box).to.have.property('className', 'reader__page-overlay__bounding-box rotate270');
+    expect(box).to.have.property('className', 'pdf-reader__overlay-bounding-box rotate270');
 
     expect(box.getAttribute('style')).to.include('top: 528px;');
     expect(box.getAttribute('style')).to.include('left: 192px;');
@@ -196,7 +196,7 @@ describe('<BoundingBox/>', () => {
       mockTransformContext
     );
 
-    wrapper.find('.reader__page-overlay__bounding-box').simulate('click');
+    wrapper.find('.pdf-reader__overlay-bounding-box').simulate('click');
     expect(spy.called).to.equal(true);
   });
 });
