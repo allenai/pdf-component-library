@@ -32,14 +32,7 @@ describe('<TransformContext/>', () => {
       <UseContext>
         <TransformContext.Consumer>
           {(args: ITransformContext) => {
-            const {
-              pixelRatio,
-              rotation,
-              scale,
-              setPixelRatio,
-              setRotation,
-              setScale,
-            } = args;
+            const { pixelRatio, rotation, scale, setPixelRatio, setRotation, setScale } = args;
             _setPixelRatio = setPixelRatio;
             _setRotation = setRotation;
             _setScale = setScale;

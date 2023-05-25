@@ -78,7 +78,7 @@ export const Reader: React.FunctionComponent<RouteComponentProps> = () => {
               <Thumbnail parentRef={pdfContentRef} />
               <div className="reader__page-list" ref={pdfScrollableRef}>
                 {Array.from({ length: numPages }).map((_, i) => (
-                  <PageWrapper key={i} pageIndex={i}>
+                  <PageWrapper key={i} pageIndex={i} renderType={RENDER_TYPE.SINGLE_CANVAS}>
                     <Overlay>
                       <HighlightOverlayDemo pageIndex={i} />
                       <TextHighlightDemo pageIndex={i} />
