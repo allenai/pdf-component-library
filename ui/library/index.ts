@@ -11,12 +11,16 @@ import {
   HighlightOverlay,
   Props as HighlightOverlayProps,
 } from './src/components/HighlightOverlay';
+import { IconFlag } from './src/components/icon/IconFlag';
+import { ArrowFlag } from './src/components/marker/ArrowFlag';
+import { ArrowFlagBase, POSITION, PositionType } from './src/components/marker/ArrowFlagBase';
 import { Outline } from './src/components/outline/Outline';
 import { OutlineItem } from './src/components/outline/OutlineItem';
 import { Overlay, Props as OverlayProps } from './src/components/Overlay';
 import { PageNumberControl } from './src/components/PageNumberControl';
 import { PageProps, PageWrapper, Props as PageWrapperProps } from './src/components/PageWrapper';
 import { PrintButton, Props as PrintButtonProps } from './src/components/PrintButton';
+import { Props as SidePanelProps, SidePanel } from './src/components/SidePanel';
 import { Thumbnail } from './src/components/thumbnails/Thumbnail';
 import { ThumbnailList } from './src/components/thumbnails/ThumbnailList';
 import {
@@ -36,8 +40,14 @@ import { ContextProvider, Props as ContextProviderProps } from './src/context/Co
 import { DocumentContext, IDocumentContext } from './src/context/DocumentContext';
 import { IPageRenderContext, PageRenderContext } from './src/context/PageRenderContext';
 import { IScrollContext, ScrollContext } from './src/context/ScrollContext';
-import { ITransformContext, TransformContext } from './src/context/TransformContext';
+import {
+  DEFAULT_ZOOM_SCALE,
+  ITransformContext,
+  TransformContext,
+} from './src/context/TransformContext';
 import { IUiContext, UiContext } from './src/context/UiContext';
+import { PercentFormatter } from './src/utils/format';
+import { RENDER_TYPE } from './src/utils/reader-utils';
 import {
   isSideways,
   PageRotation,
@@ -75,16 +85,21 @@ export type {
   PageReference,
   PageRotation,
   PageWrapperProps,
+  PositionType,
   PrintButtonProps,
   RawBoundingBox,
+  SidePanelProps,
   Size,
 };
 
 export {
+  ArrowFlag,
+  ArrowFlagBase,
   BoundingBox,
   computeBoundingBoxStyle,
   computePageStyle,
   ContextProvider,
+  DEFAULT_ZOOM_SCALE,
   DocumentContext,
   DocumentWrapper,
   DownloadButton,
@@ -92,6 +107,7 @@ export {
   getPageHeight,
   getPageWidth,
   HighlightOverlay,
+  IconFlag,
   isSideways,
   Outline,
   OutlineItem,
@@ -99,13 +115,17 @@ export {
   PageNumberControl,
   PageRenderContext,
   PageWrapper,
+  PercentFormatter,
+  POSITION,
   PrintButton,
+  RENDER_TYPE,
   rotateClockwise,
   rotateCounterClockwise,
   scaleRawBoundingBox,
   ScrollContext,
   scrollToId,
   scrollToPdfPageIndex,
+  SidePanel,
   Thumbnail,
   ThumbnailList,
   TransformContext,
@@ -119,14 +139,18 @@ export default {
   computeBoundingBoxStyle,
   computePageStyle,
   ContextProvider,
+  DEFAULT_ZOOM_SCALE,
   DocumentContext,
   DocumentWrapper,
   DownloadButton,
+  ArrowFlag,
+  ArrowFlagBase,
   PrintButton,
   generatePageIdFromIndex,
   getPageHeight,
   getPageWidth,
   HighlightOverlay,
+  IconFlag,
   isSideways,
   Outline,
   OutlineItem,
@@ -135,6 +159,10 @@ export default {
   PageRenderContext,
   PageRotation,
   PageWrapper,
+  POSITION,
+  SidePanel,
+  PercentFormatter,
+  RENDER_TYPE,
   rotateClockwise,
   rotateCounterClockwise,
   scaleRawBoundingBox,
