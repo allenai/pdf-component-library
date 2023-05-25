@@ -80,18 +80,18 @@ export const PageNumberControl: React.FunctionComponent<Props> = ({ className }:
   }, [userInput, scrollToPage]);
 
   return (
-    <div className={classnames('reader__page-number-control', className)}>
+    <div className={classnames('pdf-reader__page-number-control', className)}>
       <input
         aria-label="Current Page"
-        className="reader__page-number-control__current-page"
+        className="pdf-reader__page-number-control__current-page"
         type="number"
         name="currentPage"
         value={userInput}
         onChange={onPageNumberChange}
         onBlur={handleBlur}
       />
-      <span className="reader__page-number-control__separator">/</span>
-      <span aria-label="Total Pages" className="reader__page-number-control__total-pages">
+      <span className="pdf-reader__page-number-control__separator ">/</span>
+      <span aria-label="Total Pages" className="pdf-reader__page-number-control__total-pages">
         {numPages}
       </span>
     </div>

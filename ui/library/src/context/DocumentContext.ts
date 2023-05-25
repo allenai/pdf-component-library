@@ -1,65 +1,86 @@
-import * as React from 'react';
-import { pdfjs } from 'react-pdf';
+import * as React from "react";
+import { pdfjs } from "react-pdf";
 
-import { Dimensions } from '../components/types/boundingBox';
+import { Dimensions } from "../components/types/boundingBox";
 import {
   OutlineNode,
   OutlinePosition,
   OutlinePositionsByPageNumberMap,
   OutlineTarget,
   OutlineTargetArgs,
-} from '../components/types/outline';
-import { Nullable } from '../components/types/utils';
-import { logProviderWarning } from '../utils/provider';
-import { calculateTargetPosition } from '../utils/scroll';
+} from "../components/types/outline";
+import { Nullable } from "../components/types/utils";
+import { logProviderWarning } from "../utils/provider";
+import { calculateTargetPosition } from "../utils/scroll";
+
 export interface IDocumentContext {
   numPages: number;
+  numPagesLoaded: number;
   outline: Nullable<Array<OutlineNode>>;
   outlinePositions: Nullable<OutlinePositionsByPageNumberMap>;
   pageDimensions: Dimensions; // Scaled at 100%
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   getOutlineTargets: (opts: OutlineTargetArgs) => OutlineTarget[];
   setNumPages: (numPages: number) => void;
+  setNumPagesLoaded: (numPagesLoaded: number | ((prevNumPagesLoaded: number) => number)) => void;
   setOutline: (outline: Nullable<Array<OutlineNode>>) => void;
-  setOutlinePositions: (outlinePositions: Nullable<OutlinePositionsByPageNumberMap>) => void;
+  setOutlinePositions: (
+    outlinePositions: Nullable<OutlinePositionsByPageNumberMap>
+  ) => void;
   setPageDimensions: (pageDimensions: Dimensions) => void;
   setPdfDocProxy: (pdfDocProxy: pdfjs.PDFDocumentProxy) => void;
 }
 
 export const DocumentContext = React.createContext<IDocumentContext>({
   numPages: 0,
+  numPagesLoaded: 0,
   outline: [],
   outlinePositions: null,
   pageDimensions: { height: 0, width: 0 },
   pdfDocProxy: undefined,
-  getOutlineTargets: opts => {
-    logProviderWarning(`getOutlineTargets(${JSON.stringify(opts)})`, 'DocumentContext');
+  getOutlineTargets: (opts) => {
+    logProviderWarning(
+      `getOutlineTargets(${JSON.stringify(opts)})`,
+      "DocumentContext"
+    );
     return [];
   },
-  setNumPages: numPages => {
-    logProviderWarning(`setNumPages(${numPages})`, 'DocumentContext');
+  setNumPages: (numPages) => {
+    logProviderWarning(`setNumPages(${numPages})`, "DocumentContext");
   },
-  setOutline: outline => {
-    logProviderWarning(`setOutline(${outline})`, 'DocumentContext');
+  setNumPagesLoaded: (numPages) => {
+    logProviderWarning(`setNumPagesLoaded(${numPages})`, "DocumentContext");
   },
-  setOutlinePositions: outline => {
-    logProviderWarning(`setOutlinePositions(${outline})`, 'DocumentContext');
+  setOutline: (outline) => {
+    logProviderWarning(`setOutline(${outline})`, "DocumentContext");
   },
-  setPageDimensions: pageDimensions => {
-    logProviderWarning(`setPageDimensions(${pageDimensions})`, 'DocumentContext');
+  setOutlinePositions: (outline) => {
+    logProviderWarning(`setOutlinePositions(${outline})`, "DocumentContext");
   },
-  setPdfDocProxy: pdfDocProxy => {
-    logProviderWarning(`setPdfDocProxy(${pdfDocProxy})`, 'DocumentContext');
+  setPageDimensions: (pageDimensions) => {
+    logProviderWarning(
+      `setPageDimensions(${pageDimensions})`,
+      "DocumentContext"
+    );
+  },
+  setPdfDocProxy: (pdfDocProxy) => {
+    logProviderWarning(`setPdfDocProxy(${pdfDocProxy})`, "DocumentContext");
   },
 });
 
 export function useDocumentContextProps(): IDocumentContext {
   const [numPages, setNumPages] = React.useState<number>(0);
-  const [outline, setOutline] = React.useState<Nullable<Array<OutlineNode>>>(null);
+  const [numPagesLoaded, setNumPagesLoaded] = React.useState<number>(0);
+  const [outline, setOutline] =
+    React.useState<Nullable<Array<OutlineNode>>>(null);
   const [outlinePositions, setOutlinePositions] =
     React.useState<Nullable<OutlinePositionsByPageNumberMap>>(null);
-  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({ height: 0, width: 0 });
-  const [pdfDocProxy, setPdfDocProxy] = React.useState<pdfjs.PDFDocumentProxy>();
+  const [pageDimensions, setPageDimensions] = React.useState<Dimensions>({
+    height: 0,
+    width: 0,
+  });
+  const [pdfDocProxy, setPdfDocProxy] =
+    React.useState<pdfjs.PDFDocumentProxy>();
 
   // Draw outline target into the pdf based on the args
   const getOutlineTargets = React.useCallback(
@@ -70,10 +91,10 @@ export function useDocumentContextProps(): IDocumentContext {
       rotation,
       pageDimensions,
     }: OutlineTargetArgs): OutlineTarget[] => {
-      if (typeof pageIndex === 'number') {
+      if (typeof pageIndex === "number") {
         pageNumber = pageIndex + 1;
       }
-      if (typeof pageNumber !== 'number') {
+      if (typeof pageNumber !== "number") {
         return [];
       }
       const positions = outlinePositions?.get(pageNumber) || [];
@@ -97,12 +118,14 @@ export function useDocumentContextProps(): IDocumentContext {
 
   return {
     numPages,
+    numPagesLoaded,
     outline,
     outlinePositions,
     pageDimensions,
     pdfDocProxy,
     getOutlineTargets,
     setNumPages,
+    setNumPagesLoaded,
     setOutline,
     setOutlinePositions,
     setPageDimensions: setPageDimensions,
@@ -135,8 +158,8 @@ export async function buildOutlinePositions(
 
     // Fetch destinations for item
     if (Array.isArray(dest)) {
-      proms.push(...dest.map(dest => getDestination(pdfDocProxy, dest)));
-    } else if (typeof dest === 'string') {
+      proms.push(...dest.map((dest) => getDestination(pdfDocProxy, dest)));
+    } else if (typeof dest === "string") {
       proms.push(getDestination(pdfDocProxy, dest));
     }
   }

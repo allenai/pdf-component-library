@@ -4,6 +4,7 @@ import { pdfjs } from 'react-pdf';
 import { PageNumber } from '../components/types/page';
 import { Nullable } from '../components/types/utils';
 import { logProviderWarning } from '../utils/provider';
+import { VisibleEntryDetailType } from '../utils/VisibleEntriesDetector';
 
 export type RenderState = {
   promise: Promise<string>;
@@ -16,6 +17,7 @@ export interface IPageRenderContext {
   pageRenderStates: PageNumberToRenderStateMap;
   getObjectURLForPage: (pageNumber: PageNumber) => Nullable<string>;
   isBuildingObjectURLForPage: (pageNumber: PageNumber) => boolean;
+  isFinishedBuildingAllPagesObjectURLs: () => boolean;
   buildObjectURLForPage: (pageNumber: PageNumber) => Promise<string>;
 }
 
@@ -27,6 +29,10 @@ export const PageRenderContext = React.createContext<IPageRenderContext>({
   },
   isBuildingObjectURLForPage: args => {
     logProviderWarning(`isBuildingObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+    return false;
+  },
+  isFinishedBuildingAllPagesObjectURLs: () => {
+    logProviderWarning(`isFinishedBuildingAllPagesObjectURLs()`, 'PageRenderContext');
     return false;
   },
   buildObjectURLForPage: args => {
@@ -44,7 +50,7 @@ export function usePageRenderContextProps({
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   pixelRatio: number;
   scale: number;
-  visiblePageRatios: Map<number, number>;
+  visiblePageRatios: Map<number, VisibleEntryDetailType>;
 }): IPageRenderContext {
   const [pageRenderStates, _setPageRenderStates] = React.useState<PageNumberToRenderStateMap>(
     () => {
@@ -82,6 +88,16 @@ export function usePageRenderContextProps({
     [pageRenderStates]
   );
 
+  const isFinishedBuildingAllPagesObjectURLs = React.useCallback((): boolean => {
+    if (!pdfDocProxy) return false;
+    for (let pageNumber = 1; pageNumber <= pdfDocProxy.numPages; pageNumber++) {
+      if (!pageRenderStates.get(pageNumber)?.objectURL) {
+        return false;
+      }
+    }
+    return true;
+  }, [pdfDocProxy, pageRenderStates]);
+
   const getObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
       if (typeof pageIndex === 'number') {
@@ -118,12 +134,14 @@ export function usePageRenderContextProps({
         pdfDocProxy,
         pixelRatio,
         scale,
+        promiseTimestamp: flushTimestamp
       });
       const renderState: RenderState = {
         promise,
         objectURL: null,
       };
       promise.then(objectURL => {
+        if(!objectURL) return;
         renderState.objectURL = objectURL;
         const newPageRenderStates = new Map(pageRenderStatesRef.current);
         Object.freeze(newPageRenderStates);
@@ -139,13 +157,16 @@ export function usePageRenderContextProps({
   );
 
   React.useEffect(() => {
-    for (const pageNumber of visiblePageRatios.keys()) {
-      if (pageRenderStates.has(pageNumber)) {
-        continue;
-      }
+    const visiblePages = [...visiblePageRatios.keys()];
+    if (!pdfDocProxy || [...pageRenderStates.keys()].length === pdfDocProxy.numPages) {
+      return;
+    }
+
+    const priorityQueue = getPriorityQueue(visiblePages, pdfDocProxy.numPages);
+    for (const pageNumber of priorityQueue) {
       buildObjectURLForPage({ pageNumber });
     }
-  }, [pageRenderStates, visiblePageRatios]);
+  }, [pageRenderStates, pdfDocProxy, visiblePageRatios]);
 
   // Flush page render states when scale changes
   React.useEffect(() => {
@@ -156,6 +177,9 @@ export function usePageRenderContextProps({
       }
     }
 
+     // if current async promises dont have this timestamp, then we flush them
+    flushTimestamp = new Date().getTime();
+    
     // Clear all page render states, so pages can rebuild images
     const newPageRenderStates = new Map();
     Object.freeze(newPageRenderStates);
@@ -166,8 +190,20 @@ export function usePageRenderContextProps({
     pageRenderStates,
     getObjectURLForPage,
     isBuildingObjectURLForPage,
+    isFinishedBuildingAllPagesObjectURLs,
     buildObjectURLForPage,
   };
+}
+
+export function getNeighboringPages(pages: number[], numTotalPages: number): number[] {
+  return pages.length === 0 ? [] : [Math.max(1, pages[0] - 1), Math.min(numTotalPages, pages[pages.length - 1] + 1)];
+}
+
+export function getPriorityQueue(visiblePages: number[], numPages: number): number[] {
+  const visiblePagesNeighbors = getNeighboringPages(visiblePages, numPages);
+  const allPages = Array.from({ length: numPages }, (_, i) => i + 1);
+  const priorityQueue = new Set([...visiblePages, ...visiblePagesNeighbors, ...allPages]); // put into set to remove duplicats
+  return Array.from(priorityQueue); // convert set to array
 }
 
 // This boost causes the rendered image to be scaled up by this amount
@@ -181,6 +217,7 @@ async function buildPageObjectURL({
   scale = 1,
   imageType = 'image/png',
   imageQuality = 1.0,
+  promiseTimestamp,
 }: {
   pageNumber: number;
   pdfDocProxy: pdfjs.PDFDocumentProxy;
@@ -188,10 +225,14 @@ async function buildPageObjectURL({
   scale?: number;
   imageType?: string;
   imageQuality?: number;
+  promiseTimestamp: number;
 }): Promise<string> {
   const pageProxy = await pdfDocProxy.getPage(pageNumber);
 
-  const blob: Nullable<Blob> = await useRenderCanvas(async canvas => {
+  const blob: Nullable<Blob> | number = await useRenderCanvas(async canvas => {
+    if(promiseTimestamp !== flushTimestamp) {
+      return promiseTimestamp; // flush stale promise
+    }
     // Render page in a canvas
     const viewport = pageProxy.getViewport({ scale: scale * pixelRatio * SCALE_BOOST });
     canvas.height = viewport.height;
@@ -204,6 +245,7 @@ async function buildPageObjectURL({
     const renderTask = pageProxy.render({
       canvasContext,
       viewport,
+      intent: "print", // immediately render pages on inactive pages
     });
     await renderTask.promise;
 
@@ -219,6 +261,9 @@ async function buildPageObjectURL({
     });
   });
 
+  if(typeof blob === 'number') {
+    return "";
+  } 
   // Convert blob image to object url
   if (!blob) {
     throw new Error('unable to create image from page');
@@ -236,6 +281,7 @@ function getRenderCanvas(): HTMLCanvasElement {
   return renderCanvas;
 }
 
+let flushTimestamp = new Date().getTime();
 let nextCanvasUse: Promise<any> = Promise.resolve();
 
 // Use the shared canvas to render a page, using promises to create a queue

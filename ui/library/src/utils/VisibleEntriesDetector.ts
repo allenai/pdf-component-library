@@ -1,20 +1,23 @@
-const DEFAULT_ROOT_MARGIN = '50px';
-// This array is a range from 0.0001 to 1 range of threshold. It will help with detecting
-// on scroll with a better % compare to a fix threshold but not firing too frequent that
-// can hamper our performance.
-const DEFAULT_THRESHOLD = [0.0001, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99];
+const DEFAULT_ROOT_MARGIN = '50px'; 
+const DEFAULT_THRESHOLD = Array.from({ length: 101 }).map((_, i) => i / 100);
 
-export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, number>) => void;
+export type SetVisibleEntriesCallback<TEntry> = (visible: Map<TEntry, VisibleEntryDetailType>) => void;
 export type onVisibleEntriesChangeCallback<TEntry> = (args: {
   visibleEntries: IntersectionObserverEntry[];
   hiddenEntries: IntersectionObserverEntry[];
-  lastEntries: Map<TEntry, number>;
-}) => Map<TEntry, number>;
+  lastEntries: Map<TEntry, VisibleEntryDetailType>;
+}) => Map<TEntry, VisibleEntryDetailType>;
+
+
+export type VisibleEntryDetailType = {
+  ratio: number,
+  timestamp: number,
+}
 
 export default class VisibleEntriesDetector<TEntry> {
   _root: Element;
   _observer: IntersectionObserver;
-  _lastVisibleEntries: Map<TEntry, number>;
+  _lastVisibleEntries: Map<TEntry, VisibleEntryDetailType>;
   _setVisibleEntries: SetVisibleEntriesCallback<TEntry>;
   _onVisibleEntriesChange: onVisibleEntriesChangeCallback<TEntry>;
 
