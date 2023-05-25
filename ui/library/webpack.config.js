@@ -40,18 +40,15 @@ module.exports = (env, argv) => {
             {
               folder: '.',
               method: () => true,
-            }
+            },
           ],
-          exclude: [
-            'package.json',
-            'LICENSE'
-          ]
-        }
+          exclude: ['package.json', 'LICENSE'],
+        },
       }),
       new MiniCssPlugin({
         filename: `${fileName}.css`,
       }),
-      new DtsBundlePlugin(packageName, './tmp/index.d.ts')
+      new DtsBundlePlugin(packageName, './tmp/index.d.ts'),
     ],
     target: 'web',
     output: {
@@ -63,23 +60,23 @@ module.exports = (env, argv) => {
         name: packageName,
         type: 'umd',
         export: 'default',
-      }
+      },
     },
     externals: {
-      "react-pdf": "react-pdf",
-      "react": {
-        "commonjs": "react",
-        "commonjs2": "react",
-        "amd": "react",
-        "root": "React"
+      'react-pdf': 'react-pdf',
+      react: {
+        commonjs: 'react',
+        commonjs2: 'react',
+        amd: 'react',
+        root: 'React',
       },
-      "react-dom": {
-        "commonjs": "react-dom",
-        "commonjs2": "react-dom",
-        "amd": "react-dom",
-        "root": "ReactDOM"
-      }
-    }
+      'react-dom': {
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+        amd: 'react-dom',
+        root: 'ReactDOM',
+      },
+    },
   };
 };
 

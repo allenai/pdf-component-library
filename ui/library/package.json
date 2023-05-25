@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode production && cp ./tmp/@allenai/pdf-components.d.ts ./dist/index.d.ts && rm -rf ./tmp && cd dist && npm pack",
     "link:lib": "cd dist && yarn link",
-    "link:react": "yarn link react && yarn link react-dom",
+    "link:react": "yarn link react && yarn link react-dom && yarn link react-pdf",
     "lint": "eslint '**/*.{js,ts,tsx,json}' && echo '💫  Lint complete.'",
     "lint:fix": "eslint '**/*.{js,ts,tsx,json}' --fix && npx sort-package-json  && echo '🛠  Lint --fix complete'",
     "test": "ts-mocha --require jsdom.setup.js --require test.setup.ts -p tsconfig.json 'test/**/*.test.ts{,?}' --exit"
@@ -51,6 +51,7 @@
     "prettier": "2.3.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-pdf": "6.0.0-beta.2",
     "remove-files-webpack-plugin": "1.4.5",
     "sinon": "14.0.0",
     "style-loader": "3.1.0",
