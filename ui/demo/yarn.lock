@@ -3955,23 +3955,18 @@ path-type@^4.0.0:
   resolved "https://registry.npmjs.org/path-type/-/path-type-4.0.0.tgz"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pdfjs-dist@2.12.313:
-  version "2.12.313"
-  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.12.313.tgz"
-  integrity sha512-1x6iXO4Qnv6Eb+YFdN5JdUzt4pAkxSp3aLAYPX93eQCyg/m7QFzXVWJHJVtoW48CI8HCXju4dSkhQZwoheL5mA==
-
-pdfjs-dist@2.6.347:
-  version "2.6.347"
-  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.6.347.tgz"
-  integrity sha512-QC+h7hG2su9v/nU1wEI3SnpPIrqJODL7GTDFvR74ANKGq1AFJW16PH8VWnhpiTi9YcLSFV9xLeWSgq+ckHLdVQ==
-
-pdfjs-dist@^2.10.377:
+pdfjs-dist@2.14.305, pdfjs-dist@^2.10.377:
   version "2.14.305"
   resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.14.305.tgz"
   integrity sha512-5f7i25J1dKIBczhgfxEgNxfYNIxXEdxqo6Qb4ehY7Ja+p6AI4uUmk/OcVGXfRGm2ys5iaJJhJUwBFwv6Jl/Qww==
   dependencies:
     dommatrix "^1.0.1"
     web-streams-polyfill "^3.2.1"
+
+pdfjs-dist@2.6.347:
+  version "2.6.347"
+  resolved "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-2.6.347.tgz"
+  integrity sha512-QC+h7hG2su9v/nU1wEI3SnpPIrqJODL7GTDFvR74ANKGq1AFJW16PH8VWnhpiTi9YcLSFV9xLeWSgq+ckHLdVQ==
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -4583,10 +4578,10 @@ react-is@^16.12.0, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-pdf@5.7.2:
-  version "5.7.2"
-  resolved "https://registry.npmjs.org/react-pdf/-/react-pdf-5.7.2.tgz"
-  integrity sha512-hdDwvf007V0i2rPCqQVS1fa70CXut17SN3laJYlRHzuqcu8sLLjEoeXihty6c0Ev5g1mw31b8OT8EwRw1s8C4g==
+react-pdf@6.0.0-beta.2:
+  version "6.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-6.0.0-beta.2.tgz#addb7a151d5cf2008e6013f3da64c966c3f5c5a2"
+  integrity sha512-WU8dnTYfUecJfetdahGMd5x3SEwxkHonDToOhCbrELHLh1N6pXaEHY6JjZal8tVHTtRZmMoOyglp8iIjHy2HjQ==
   dependencies:
     "@babel/runtime" "^7.0.0"
     file-loader "^6.0.0"
@@ -4594,7 +4589,7 @@ react-pdf@5.7.2:
     make-event-props "^1.1.0"
     merge-class-names "^1.1.1"
     merge-refs "^1.0.0"
-    pdfjs-dist "2.12.313"
+    pdfjs-dist "2.14.305"
     prop-types "^15.6.2"
     tiny-invariant "^1.0.0"
     tiny-warning "^1.0.0"
