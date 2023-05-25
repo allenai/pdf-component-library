@@ -66,6 +66,7 @@ module.exports = (env, argv) => {
       }
     },
     externals: {
+      "react-pdf": "react-pdf",
       "react": {
         "commonjs": "react",
         "commonjs2": "react",
