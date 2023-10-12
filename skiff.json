@@ -1,6 +1,6 @@
 {
     "appName": "pdf-reader",
-    "contact": "s2-online",
+    "contact": "smitar",
     "team": "s2",
     "replicas": { "prod": 1 }
 }
