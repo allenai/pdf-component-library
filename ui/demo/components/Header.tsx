@@ -1,10 +1,4 @@
-import {
-  DownloadButton,
-  PageNumberControl,
-  PrintButton,
-  scrollToId,
-  UiContext,
-} from '@allenai/pdf-components';
+import { DownloadButton, PageNumberControl, scrollToId, UiContext } from '@allenai/pdf-components';
 import classnames from 'classnames';
 import * as React from 'react';
 
@@ -81,7 +75,6 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
         <a onClick={handleShowNoteTaking}>Note Taking</a>
       </div>
       <DownloadButton pdfUrl={pdfUrl} />
-      <PrintButton />
     </div>
   );
 };
