@@ -2,10 +2,7 @@ import {
   DownloadButton,
   PageNumberControl,
   PrintButton,
-  rotateClockwise,
-  rotateCounterClockwise,
   scrollToId,
-  TransformContext,
   UiContext,
 } from '@allenai/pdf-components';
 import classnames from 'classnames';
@@ -27,7 +24,6 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
     setIsShowingTextHighlight,
     setIsShowingThumbnail,
   } = React.useContext(UiContext);
-  const { rotation, setRotation } = React.useContext(TransformContext);
   const { isShowingNoteTaking, setIsShowingNoteTaking } = React.useContext(DemoHeaderContext);
 
   const handleShowOutline = React.useCallback(() => {
@@ -37,14 +33,6 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   const handleShowThumbnail = React.useCallback(() => {
     setIsShowingThumbnail(true);
   }, []);
-
-  const handleRotateCW = React.useCallback(() => {
-    setRotation(rotateClockwise(rotation));
-  }, [rotation]);
-
-  const handleRotateCCW = React.useCallback(() => {
-    setRotation(rotateCounterClockwise(rotation));
-  }, [rotation]);
 
   const handleToggleHighlightOverlay = React.useCallback(() => {
     setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
@@ -73,11 +61,6 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
       </div>
       <div className="header-control">
         <SimpleZoomControl />
-      </div>
-      <div className="header-control">
-        Rotate
-        <a onClick={handleRotateCW}>↷</a>
-        <a onClick={handleRotateCCW}>↶</a>
       </div>
       <div className="header-control">
         <a onClick={handleShowOutline}>Outline</a>
