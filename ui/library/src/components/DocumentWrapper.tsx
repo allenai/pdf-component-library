@@ -70,6 +70,11 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
     }
   }, []);
 
+  const onSourceError = React.useCallback((error: unknown): void => {
+    setErrorMessage(getErrorMessage(error));
+    setIsLoading(false);
+  }, []);
+
   const onPdfLoadError = React.useCallback((error: unknown): void => {
     setErrorMessage(getErrorMessage(error));
     setIsLoading(false);
@@ -96,6 +101,7 @@ export const DocumentWrapper: React.FunctionComponent<Props> = ({
   return (
     <Document
       options={{ cMapUrl: 'cmaps/', cMapPacked: true }}
+      onSourceError={onSourceError}
       onLoadError={onPdfLoadError}
       onLoadSuccess={onPdfLoadSuccess}
       externalLinkTarget="_blank"
