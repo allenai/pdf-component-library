@@ -12,7 +12,9 @@ type Props = {
 export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   const {
     isShowingHighlightOverlay,
+    isShowingOutline,
     isShowingTextHighlight,
+    isShowingThumbnail,
     setIsShowingHighlightOverlay,
     setIsShowingOutline,
     setIsShowingTextHighlight,
@@ -21,12 +23,14 @@ export const Header: React.FunctionComponent<Props> = ({ pdfUrl }: Props) => {
   const { isShowingNoteTaking, setIsShowingNoteTaking } = React.useContext(DemoHeaderContext);
 
   const handleShowOutline = React.useCallback(() => {
-    setIsShowingOutline(true);
-  }, []);
+    setIsShowingOutline(!isShowingOutline);
+    setIsShowingThumbnail(false);
+  }, [isShowingOutline]);
 
   const handleShowThumbnail = React.useCallback(() => {
-    setIsShowingThumbnail(true);
-  }, []);
+    setIsShowingThumbnail(!isShowingThumbnail);
+    setIsShowingOutline(false);
+  }, [isShowingThumbnail]);
 
   const handleToggleHighlightOverlay = React.useCallback(() => {
     setIsShowingHighlightOverlay(!isShowingHighlightOverlay);
