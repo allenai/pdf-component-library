@@ -1,207 +1,6 @@
-/* Copyright 2014 Mozilla Foundation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-:root {
-  --annotation-unfocused-field-background: url("data:image/svg+xml;charset=UTF-8,<svg width='1px' height='1px' xmlns='http://www.w3.org/2000/svg'><rect width='100%' height='100%' style='fill:rgba(0, 54, 255, 0.13);'/></svg>");
-}
-.annotationLayer section {
-  position: absolute;
-  text-align: initial;
-}
-.annotationLayer .linkAnnotation > a,
-.annotationLayer .buttonWidgetAnnotation.pushButton > a {
-  position: absolute;
-  font-size: 1em;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.annotationLayer .buttonWidgetAnnotation.pushButton > canvas {
-  position: relative;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-.annotationLayer .linkAnnotation > a:hover,
-.annotationLayer .buttonWidgetAnnotation.pushButton > a:hover {
-  opacity: 0.2;
-  background: #ffff00;
-  box-shadow: 0 2px 10px #ffff00;
-}
-.annotationLayer .textAnnotation img {
-  position: absolute;
-  cursor: pointer;
-}
-.annotationLayer .textWidgetAnnotation input,
-.annotationLayer .textWidgetAnnotation textarea,
-.annotationLayer .choiceWidgetAnnotation select,
-.annotationLayer .buttonWidgetAnnotation.checkBox input,
-.annotationLayer .buttonWidgetAnnotation.radioButton input {
-  background-image: var(--annotation-unfocused-field-background);
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  font-size: 9px;
-  height: 100%;
-  margin: 0;
-  padding: 0 3px;
-  vertical-align: top;
-  width: 100%;
-}
-.annotationLayer .choiceWidgetAnnotation select option {
-  padding: 0;
-}
-.annotationLayer .buttonWidgetAnnotation.radioButton input {
-  border-radius: 50%;
-}
-.annotationLayer .textWidgetAnnotation textarea {
-  font: message-box;
-  font-size: 9px;
-  resize: none;
-}
-.annotationLayer .textWidgetAnnotation input[disabled],
-.annotationLayer .textWidgetAnnotation textarea[disabled],
-.annotationLayer .choiceWidgetAnnotation select[disabled],
-.annotationLayer .buttonWidgetAnnotation.checkBox input[disabled],
-.annotationLayer .buttonWidgetAnnotation.radioButton input[disabled] {
-  background: none;
-  border: 1px solid transparent;
-  cursor: not-allowed;
-}
-.annotationLayer .textWidgetAnnotation input:hover,
-.annotationLayer .textWidgetAnnotation textarea:hover,
-.annotationLayer .choiceWidgetAnnotation select:hover,
-.annotationLayer .buttonWidgetAnnotation.checkBox input:hover,
-.annotationLayer .buttonWidgetAnnotation.radioButton input:hover {
-  border: 1px solid #000000;
-}
-.annotationLayer .textWidgetAnnotation input:focus,
-.annotationLayer .textWidgetAnnotation textarea:focus,
-.annotationLayer .choiceWidgetAnnotation select:focus {
-  background: none;
-  border: 1px solid transparent;
-}
-.annotationLayer .textWidgetAnnotation input :focus,
-.annotationLayer .textWidgetAnnotation textarea :focus,
-.annotationLayer .choiceWidgetAnnotation select :focus,
-.annotationLayer .buttonWidgetAnnotation.checkBox :focus,
-.annotationLayer .buttonWidgetAnnotation.radioButton :focus {
-  background-image: none;
-  background-color: transparent;
-  outline: auto;
-}
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before,
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after,
-.annotationLayer .buttonWidgetAnnotation.radioButton input:checked:before {
-  background-color: #000000;
-  content: '';
-  display: block;
-  position: absolute;
-}
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before,
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after {
-  height: 80%;
-  left: 45%;
-  width: 1px;
-}
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:before {
-  transform: rotate(45deg);
-}
-.annotationLayer .buttonWidgetAnnotation.checkBox input:checked:after {
-  transform: rotate(-45deg);
-}
-.annotationLayer .buttonWidgetAnnotation.radioButton input:checked:before {
-  border-radius: 50%;
-  height: 50%;
-  left: 30%;
-  top: 20%;
-  width: 50%;
-}
-.annotationLayer .textWidgetAnnotation input.comb {
-  font-family: monospace;
-  padding-left: 2px;
-  padding-right: 0;
-}
-.annotationLayer .textWidgetAnnotation input.comb:focus {
-  /*
-   * Letter spacing is placed on the right side of each character. Hence, the
-   * letter spacing of the last character may be placed outside the visible
-   * area, causing horizontal scrolling. We avoid this by extending the width
-   * when the element has focus and revert this when it loses focus.
-   */
-  width: 103%;
-}
-.annotationLayer .buttonWidgetAnnotation.checkBox input,
-.annotationLayer .buttonWidgetAnnotation.radioButton input {
-  appearance: none;
-  padding: 0;
-}
-.annotationLayer .popupWrapper {
-  position: absolute;
-  width: 20em;
-}
-.annotationLayer .popup {
-  position: absolute;
-  z-index: 200;
-  max-width: 20em;
-  background-color: #ffff99;
-  box-shadow: 0 2px 5px #888888;
-  border-radius: 2px;
-  padding: 6px;
-  margin-left: 5px;
-  cursor: pointer;
-  font: message-box;
-  font-size: 9px;
-  white-space: normal;
-  word-wrap: break-word;
-}
-.annotationLayer .popup > * {
-  font-size: 9px;
-}
-.annotationLayer .popup h1 {
-  display: inline-block;
-}
-.annotationLayer .popupDate {
-  display: inline-block;
-  margin-left: 5px;
-}
-.annotationLayer .popupContent {
-  border-top: 1px solid #333333;
-  margin-top: 2px;
-  padding-top: 2px;
-}
-.annotationLayer .richText > * {
-  white-space: pre-wrap;
-}
-.annotationLayer .highlightAnnotation,
-.annotationLayer .underlineAnnotation,
-.annotationLayer .squigglyAnnotation,
-.annotationLayer .strikeoutAnnotation,
-.annotationLayer .freeTextAnnotation,
-.annotationLayer .lineAnnotation svg line,
-.annotationLayer .squareAnnotation svg rect,
-.annotationLayer .circleAnnotation svg ellipse,
-.annotationLayer .polylineAnnotation svg polyline,
-.annotationLayer .polygonAnnotation svg polygon,
-.annotationLayer .caretAnnotation,
-.annotationLayer .inkAnnotation svg polyline,
-.annotationLayer .stampAnnotation,
-.annotationLayer .fileAttachmentAnnotation {
-  cursor: pointer;
-}
 .annotationLayer section {
   border: none!important;
+  z-index: 30;
 }
 .annotationLayer .linkAnnotation > a:hover {
   background: none;
@@ -270,72 +69,86 @@
 .textLayer .endOfContent.active {
   top: 0;
 }
-.reader__page {
+.pdf-reader__page {
   background: #ffffff center center / cover no-repeat;
   margin: 24px;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.2);
   flex: 1 0 auto;
   position: relative;
 }
-.reader__page-overlay {
+.pdf-reader__overlay {
   position: absolute;
 }
-.reader__page-overlay__bounding-box {
+.pdf-reader__overlay-bounding-box {
   position: absolute;
-  z-index: 1;
+  z-index: 40;
 }
-.reader__page-overlay__bounding-box-highlighted {
+.pdf-reader__overlay-bounding-box-highlighted {
   background-color: #1857B6;
   mix-blend-mode: screen;
 }
-.reader__page-overlay__bounding-box-highlighted:hover {
+.pdf-reader__overlay-bounding-box-highlighted:hover {
   cursor: pointer;
 }
-.reader__page-overlay__bounding-box-highlighted:hover,
-.reader__page-overlay__bounding-box-highlighted.selected {
+.pdf-reader__overlay-bounding-box-highlighted:hover,
+.pdf-reader__overlay-bounding-box-highlighted.selected {
   background-color: #5492EF;
   mix-blend-mode: screen;
 }
-.reader__page-overlay__bounding-box-underline {
+.pdf-reader__overlay-bounding-box-underline {
   pointer-events: none;
   position: absolute;
-  z-index: 1;
+  z-index: 40;
 }
-.reader__page-overlay__bounding-box-underline.rotate0 {
+.pdf-reader__overlay-bounding-box-underline.rotate0 {
   border-bottom: 2px dotted #1857B6;
 }
-.reader__page-overlay__bounding-box-underline.rotate90 {
+.pdf-reader__overlay-bounding-box-underline.rotate90 {
   border-left: 2px dotted #1857B6;
 }
-.reader__page-overlay__bounding-box-underline.rotate180 {
+.pdf-reader__overlay-bounding-box-underline.rotate180 {
   border-top: 2px dotted #1857B6;
 }
-.reader__page-overlay__bounding-box-underline.rotate270 {
+.pdf-reader__overlay-bounding-box-underline.rotate270 {
   border-right: 2px dotted #1857B6;
 }
-.reader__page--is-building-page-image {
+.pdf-reader__is-building-page-image {
   outline: 2px solid #F4D35E;
 }
-.reader__page--is-loading-image {
-  align-items: center;
-  background-color: #F4D35E;
-  justify-content: center;
-  height: 24px;
+.pdf-reader__page--render-type-single-canvas.pdf-reader__page--no-page-image .react-pdf__Page__textContent {
+  color: initial;
+}
+.pdf-reader__page--render-type-multi-canvas .react-pdf__Page .react-pdf__Page__canvas {
+  z-index: 10;
+}
+.pdf-reader__page--render-type-multi-canvas.pdf-reader__page--no-page-image .react-pdf__Page__textContent {
+  color: transparent;
+}
+.pdf-reader__page--is-loading-image {
+  left: 50%;
   margin: 0 auto;
+  position: absolute;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+.pdf-reader__page--is-loading-image .reader__page--is-loading-image-content {
+  background-color: #F4D35E;
+  height: 24px;
   padding: 0px 12px;
   text-align: center;
   top: 0;
   width: 125px;
 }
-.reader__page--has-page-image .textLayer {
+.pdf-reader__page--has-page-image .textLayer {
   color: transparent;
+  z-index: 20;
 }
-.reader__page-highlight-overlay {
+.pdf-reader__page-highlight-overlay {
   pointer-events: none;
   position: absolute;
-  z-index: 1;
+  z-index: 40;
 }
-.reader__page__outline-target {
+.pdf-reader__page__outline-target {
   position: absolute;
   visibility: hidden;
 }
@@ -345,29 +158,29 @@
 .react-pdf__Page__textContent > span {
   height: 0em!important;
 }
-.reader__download-btn,
-.reader__print-btn {
+.pdf-reader__download-btn,
+.pdf-reader__print-btn {
   align-items: center;
   display: flex;
 }
-.reader__page-number-control__current-page[type="number"] {
+.pdf-reader__page-number-control__current-page[type="number"] {
   border-radius: 3px;
   height: 24px;
   -moz-appearance: textfield;
   text-align: center;
   width: 24px;
 }
-.reader__page-number-control__total-pages {
+.pdf-reader__page-number-control__total-pages {
   border: none;
 }
-.reader__page-number-control__separator {
+.pdf-reader__page-number-control__separator {
   padding: 5px;
 }
-.reader__page-number-control__current-page::-webkit-inner-spin-button,
-.reader__page-number-control__current-page::-webkit-outer-spin-button {
+.pdf-reader__page-number-control__current-page::-webkit-inner-spin-button,
+.pdf-reader__page-number-control__current-page::-webkit-outer-spin-button {
   -webkit-appearance: none;
 }
-.reader__thumbnail {
+.pdf-reader__thumbnail {
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
   cursor: pointer;
   min-height: 250px;
@@ -375,28 +188,138 @@
   transition: opacity 400ms ease-in-out;
   width: 100%;
 }
-.reader__thumbnail.reader__thumbnail--no-image {
+.pdf-reader__thumbnail.pdf-reader__thumbnail--no-image {
   background-color: rgba(0, 0, 0, 0.1);
 }
-.reader__thumbnail:hover {
+.pdf-reader__thumbnail:hover {
   opacity: 0.75;
   transition-duration: 75ms;
 }
-.reader__thumbnail.reader__thumbnail--is-visible {
+.pdf-reader__thumbnail.pdf-reader__thumbnail--is-visible {
   opacity: 1;
   transition-duration: 200ms;
 }
-.reader__thumbnail-list {
+.pdf-reader__thumbnail-list {
   list-style: none;
 }
-.reader__thumbnail {
+.pdf-reader__thumbnail {
   display: inline-block;
 }
-.reader__thumbnail-image {
+.pdf-reader__thumbnail-image {
   width: 100%;
 }
 .reader__thumbnail-list__item:nth-of-type(n + 1) {
   margin-top: 16px;
+}
+.pdf-reader__side-panel {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+}
+.pdf-reader__side-panel.pdf-reader__side-panel--hidden {
+  display: none;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone {
+  height: 100%;
+  position: absolute;
+  width: 15px;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--right {
+  right: 0;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--right .pdf-reader__drag-handle {
+  right: -9px;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--right .pdf-reader__drag-handle__assistive-input {
+  right: -36px;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--left {
+  left: 0;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--left .pdf-reader__drag-handle {
+  left: -9px;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone.pdf-reader__resize-zone--left .pdf-reader__drag-handle__assistive-input {
+  left: -36px;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone:hover .pdf-reader__drag-handle {
+  opacity: 1;
+  transition: opacity 100ms ease-in, transform 100ms ease-in-out;
+}
+.pdf-reader__side-panel .pdf-reader__resize-zone:hover .pdf-reader__drag-handle__assistive-input {
+  opacity: 1;
+  transition: opacity 200ms ease-in-out, transform 50ms ease-in-out;
+}
+.pdf-reader__side-panel .pdf-reader__drag-handle {
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #d9dadb;
+  border-radius: 12px;
+  cursor: col-resize;
+  display: flex;
+  height: 72px;
+  justify-content: center;
+  opacity: 0;
+  position: absolute;
+  top: calc(50% - 36px);
+  width: 18px;
+}
+.pdf-reader__side-panel .pdf-reader__drag-handle .pdf-reader__drag-handle__inner {
+  background-color: #d9dadb;
+  border-radius: 6px;
+  height: 30px;
+  width: 5px;
+}
+.pdf-reader__side-panel .pdf-reader__drag-handle__assistive-input {
+  direction: rtl;
+  height: 0px;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  transform: rotate(90deg);
+  width: 72px;
+}
+.pdf-reader__side-panel .pdf-reader__drag-handle__assistive-input:focus + .pdf-reader__drag-handle {
+  opacity: 1;
+}
+.pdf-reader__side-panel .pdf-reader__side-panel-overlay {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+.pdf-reader__side-panel .pdf-reader__side-panel-title,
+.pdf-reader__side-panel .pdf-reader__side-panel-content,
+.pdf-reader__side-panel .pdf-reader__side-panel-footer {
+  padding: 5px 12px;
+}
+.pdf-reader__side-panel .pdf-reader__side-panel-close-button {
+  border-radius: 50%;
+  margin: 5px;
+  position: absolute;
+  right: 0px;
+}
+.pdf-reader__arrow-flag-base {
+  color: #2E3743;
+}
+.pdf-reader__arrow-flag-base .pdf-reader__arrow-flag-base__flag {
+  position: absolute;
+  z-index: 45;
+}
+.pdf-reader__arrow-flag-base .pdf-reader__arrow-flag-base__flag .pdf-reader__arrow-flag-base__flag-icon {
+  position: absolute;
+  fill: #ffffff;
+  stroke: #2E3743;
+}
+.pdf-reader__arrow-flag-base .pdf-reader__arrow-flag-base__flag .pdf-reader__arrow-flag-base__flag-label {
+  font-size: 11px;
+  font-weight: 300;
+}
+.pdf-reader__arrow-flag-base .pdf-reader__arrow-flag-base__tail {
+  position: absolute;
+  background-color: #ffffff;
+  border: 1px solid #2E3743;
+  border-radius: 3px;
 }
 @media print {
   ::-webkit-scrollbar {

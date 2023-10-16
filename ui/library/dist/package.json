@@ -1,6 +1,6 @@
 {
   "name": "@allenai/pdf-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "Apache-2.0",
   "author": "s2@allenai.org",
   "main": "./pdf-components.js",
