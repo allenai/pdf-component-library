@@ -1,56 +1,43 @@
-# pdf-component-library
+# Pdf-component-library
 
-This repository contains code for a collection of components that can be used to build PDF reading experiences for React applications.
+Create an interactive reading experience for PDF's in your react application! 
+
+This repo is used and maintained by the Semantic Scholar team to create  [Semantic Reader](https://www.semanticscholar.org/reader/13497bd108d4412d02050e646235f456568cf822). It is built on top of [React-PDF](https://github.com/wojtekmaj/react-pdf/tree/main/packages/react-pdf), with some added features and performance improvements. 
+
+## Features
+- Citation Popovers
+- PDF Outlines
+- Thumbnails (React-PDF now has this with version 7)
+- Zoom Buttons
+- Page number control
+- Text highlighting
+- Hypothesis.io integration for note taking
+- Scroll-to logic
+- Browser performance optimization
 
 ## Getting Started
 Install by executing `npm install @allenai/pdf-components`.
 Refer to directory `ui/demo` for examples of how to import the components.
 
-### Running the Demo Locally
-To start a version of the application locally for development purposes, run
-this command:
+### Running the Demo Locally via Docker
 
-```
-~ docker-compose up --build
-```
+In this demo, you will see several added features to the PDF reading experience. This includes Citation Cards, Thumbnails, Outlines, Zoom, and Notetaking. 
 
-This process launches 2 services, the `ui` and a `proxy` responsible
-for forwarding traffic to the appropriate services. You'll see output
-from each.
+1. Download and install Docker
+2. Download or clone the Pdf-Components-Library repo
+3. In your terminal, navigate to `ui/demo` then run `docker-compose up --build`. This process launches 2 services, the `ui` and a `proxy` responsible
+for forwarding traffic to the appropriate services. You'll see output from each.
+4. Once docker is done running, you can access the demo on `http://localhost:8080/`
 
-It might take a minute or two for your application to start, particularly
-if it's the first time you've executed this command. Be patience and wait
-for a clear message indicating that all of the required services have
-started up.
 
-As you make changes the running application will be automatically updated.
-Simply refresh your browser to see them.
-
-Sometimes one portion of your application will crash due to errors in the code.
-When this occurs resolve the related issue and re-run `docker-compose up --build`
-to start things back up.
-
-### Publishing a new release
-See [wiki](https://github.com/allenai/pdf-component-library/wiki/Publishing-to-npm) for details on publishing a new package version. We use semver-ish
-versioning and use [npm](https://docs.npmjs.com/about-semantic-versioning) as an informal style guide.
-
-### Testing changes to the library locally
-There are times when you would want to test changes to the library locally without having to publish the package to npm.
+## Modifying the library
+Made changes to the library and want to apply them to your own project? The below steps will help you build and apply your changes
 
 #### Build the library
-In the ui/library directory, run `yarn build`.
-```
-library% yarn build
-```
-If this is the first time building, you might have to follow the steps listed in this [Docker](ui/Dockerfile) file to install the dependencies.
+In the ui/library directory, run `yarn build`. If this is the first time building, you might have to follow the steps listed in this [Docker](ui/Dockerfile) file to install the dependencies.
 
 #### Create a package
-On building the library, the artifacts are copied over to `ui/library/dist` folder. Run `npm pack` in this folder.
-```
-dist% npm pack
-```
-This creates a package.
-e.g. `pdf-component-library/ui/library/dist/allenai-pdf-components-0.2.3.tgz`
+On building the library, the artifacts are copied over to `ui/library/dist` folder. Run `npm pack` in this folder. This creates a package. e.g. `pdf-component-library/ui/library/dist/allenai-pdf-components-0.2.3.tgz`
 
 #### Point to your file
 Update the `package.json` file of your application. Point to the file we produced in the previous step.
@@ -59,15 +46,7 @@ Update the `package.json` file of your application. Point to the file we produce
     "@allenai/pdf-components": "file:~/pdf-component-library/ui/library/dist/allenai-pdf-components-0.2.3.tgz"
 }
 ```
-Make sure to re-install your package after this update
-```
-yarn install
-```
-or
-```
-npm install
-```
-
+Make sure to re-install your package after this update via `yarn install` or `npm install`
 ## Prerequisites
 
 Make sure that you have the latest version of [Docker 🐳](https://www.docker.com/get-started)
