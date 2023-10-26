@@ -53,14 +53,14 @@ If this is the first time building the library, you might have to follow the ste
 
 | Name | Description |
 | --------- | ----------- |
-| DocumentWrapper | Loads the pdf file, and does several necessary initialization code such as setting scroll observers and setting the render type. It servers as a wrapper for the react-pdf [Document](https://github.com/wojtekmaj/react-pdf/blob/main/packages/react-pdf/README.md#document) component |
+| [DocumentWrapper](https://github.com/allenai/pdf-component-library/tree/main#more-info-on-the-documentwrapper) | Loads the pdf file, and does several necessary initialization code such as setting scroll observers and setting the render type.  |
 | PageWrapper | Renders a page, should be placed in the `<DocumentWrapper />` |
 | ContextProvider | Contains several necessary contexts which I will go into below. These contexts help us control and get data from the pdf which allows us to create several of the features.  |
 | DocumentContext | Has helpful info about the pdf including the number of pages, the pdf outline (table of contents), and the page dimensions.  |
 | TransformContext | Allows setting the scale of pages (zoom), and the rotation |
 | UIContext | Helpful ui info such as if the pdf is currently loading and if thumbnails/outlines/highlights are currently showing.  |
 | ScrollContext | By far our most complex and worked on context. It provides scroll logic and scroll data, including if at the top of the pdf, how many pages are currently visible, and functionality to scroll to certain parts of the pdf. This is all possible via Intersection Observers, which tell us if a certain spot is currently visible in the user’s viewport. We place several of these on every page so we know exactly how visible reader pages are. |
-| PageRenderContext | Contains logic for rendering the images on every page. Once the page images are done rendering, you can grab the image’s blobURL via getObjectURLForPage and render anywhere like this <img src={getObjectURLForPage()} />. This is how we made thumbnails. |
+| PageRenderContext | Contains logic for rendering the images on every page. Once the page images are done rendering, you can grab the image’s blobURL via getObjectURLForPage and render anywhere like this `<img src={getObjectURLForPage()} />`. This is how we made thumbnails. |
 
 ### More info on the DocumentWrapper
 This component is a wrapper of React-PDF's `Document` component. This loads a document passed using the `file` prop.<br>
