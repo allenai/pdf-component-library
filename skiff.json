@@ -2,5 +2,5 @@
     "appName": "pdf-reader",
     "contact": "smitar",
     "team": "s2",
-    "replicas": { "prod": 1 }
+    "replicas": { "prod": 0 }
 }
