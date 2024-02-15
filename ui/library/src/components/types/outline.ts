@@ -1,6 +1,6 @@
-import { PageRotation } from '../../utils/rotate';
-import { Dimensions } from './boundingBox';
-import { Nullable } from './utils';
+import { PageRotation } from "../../utils/rotate";
+import { Dimensions } from "./boundingBox";
+import { Nullable } from "./utils";
 
 export type NodeDestination = Nullable<string> | any[];
 export type OutlineNode = {

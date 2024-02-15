@@ -1,10 +1,10 @@
-import classNames from 'classnames';
-import * as React from 'react';
+import classNames from "classnames";
+import * as React from "react";
 
-import { DocumentContext } from '../context/DocumentContext';
-import { TransformContext } from '../context/TransformContext';
-import { computeBoundingBoxStyle } from '../utils/style';
-import { BoundingBox as BoundingBoxType } from './types/boundingBox';
+import { DocumentContext } from "../context/DocumentContext";
+import { TransformContext } from "../context/TransformContext";
+import { computeBoundingBoxStyle } from "../utils/style";
+import { BoundingBox as BoundingBoxType } from "./types/boundingBox";
 
 export type Props = {
   className?: string;
@@ -32,8 +32,10 @@ export const BoundingBox: React.FunctionComponent<Props> = ({
   const { rotation, scale } = React.useContext(TransformContext);
   const boxSize = { top, left, height, width };
   const componentClassName = classNames(
-    'pdf-reader__overlay-bounding-box',
-    isHighlighted === true ? 'pdf-reader__overlay-bounding-box-highlighted' : '',
+    "pdf-reader__overlay-bounding-box",
+    isHighlighted === true
+      ? "pdf-reader__overlay-bounding-box-highlighted"
+      : "",
     className
   );
 

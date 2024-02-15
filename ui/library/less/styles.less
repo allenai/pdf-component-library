@@ -25,11 +25,11 @@
     cursor: pointer;
   }
 
-  &:hover, &.selected  {
+  &:hover,
+  &.selected {
     background-color: @hover-active-blue;
     mix-blend-mode: screen;
   }
-
 }
 
 .pdf-reader__overlay-bounding-box-underline {
@@ -71,7 +71,7 @@
       z-index: @z-index-multicanvas;
     }
   }
-  
+
   &.pdf-reader__page--no-page-image {
     .react-pdf__Page__textContent {
       color: transparent;
@@ -83,7 +83,7 @@
   left: 50%;
   margin: 0 auto;
   position: absolute;
-  transform: translateX(-50%);  
+  transform: translateX(-50%);
   z-index: @z-index-loading-content;
 
   .reader__page--is-loading-image-content {
@@ -119,16 +119,17 @@
 }
 
 // HACK: avoid mis-alignment of selected texts
-.react-pdf__Page__textContent>span {
-  height: 0em!important;
+.react-pdf__Page__textContent > span {
+  height: 0em !important;
 }
 
-.pdf-reader__download-btn, .pdf-reader__print-btn {
+.pdf-reader__download-btn,
+.pdf-reader__print-btn {
   align-items: center;
   display: flex;
 }
 
-.pdf-reader__page-number-control__current-page[type="number"]  {
+.pdf-reader__page-number-control__current-page[type="number"] {
   border-radius: 3px;
   height: 24px;
   -moz-appearance: textfield;
@@ -145,28 +146,28 @@
 }
 
 .pdf-reader__page-number-control__current-page::-webkit-inner-spin-button,
-.pdf-reader__page-number-control__current-page::-webkit-outer-spin-button { 
-	-webkit-appearance: none;
+.pdf-reader__page-number-control__current-page::-webkit-outer-spin-button {
+  -webkit-appearance: none;
 }
 
 .pdf-reader__thumbnail {
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, .8);
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
   cursor: pointer;
   min-height: 250px;
-  opacity: .5;
+  opacity: 0.5;
   transition: opacity 400ms ease-in-out;
   width: 100%;
 
   &.pdf-reader__thumbnail--no-image {
-    background-color: rgba(0, 0, 0, .1);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   &:hover {
-    opacity: .75;
+    opacity: 0.75;
     transition-duration: 75ms;
   }
 
-  &.pdf-reader__thumbnail--is-visible {
+  &.pdf-reader__thumbnail--full-opacity {
     opacity: 1;
     transition-duration: 200ms;
   }
@@ -182,7 +183,7 @@
 
 .pdf-reader__thumbnail-image {
   width: 100%;
-} 
+}
 
 .reader__thumbnail-list__item:nth-of-type(n + 1) {
   margin-top: 16px;
@@ -306,7 +307,7 @@
   .pdf-reader__arrow-flag-base__flag {
     position: absolute;
     z-index: @z-index-arrow-flag;
-    
+
     .pdf-reader__arrow-flag-base__flag-icon {
       position: absolute;
       fill: @pdflib-page-background;

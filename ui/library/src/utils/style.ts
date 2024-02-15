@@ -1,5 +1,5 @@
-import { Dimensions, Size } from '../components/types/boundingBox';
-import { isSideways, PageRotation } from './rotate';
+import { Dimensions, Size } from "../components/types/boundingBox";
+import { isSideways, PageRotation } from "./rotate";
 
 // Computes the style for a bounding box, accounting for page roation and page scaling/zoom
 export function computeBoundingBoxStyle(
@@ -57,11 +57,17 @@ export function computePageStyle(
 }
 
 // Get page height accounting for page rotation- if the page is rotated on its side, its width becomes its height
-export function getPageHeight(pageDimensions: Dimensions, rotation: PageRotation): number {
+export function getPageHeight(
+  pageDimensions: Dimensions,
+  rotation: PageRotation
+): number {
   return isSideways(rotation) ? pageDimensions.width : pageDimensions.height;
 }
 
 // Get page width accounting for page rotation- if the page is rotated on its side, its height becomes its width
-export function getPageWidth(pageDimensions: Dimensions, rotation: PageRotation): number {
+export function getPageWidth(
+  pageDimensions: Dimensions,
+  rotation: PageRotation
+): number {
   return isSideways(rotation) ? pageDimensions.height : pageDimensions.width;
 }

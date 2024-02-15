@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export type Props = {
   className?: string;
@@ -19,8 +19,9 @@ export const PrintButton: React.FunctionComponent<Props> = ({
       onClick={() => onClickPrint()}
       aria-label="Print PDF"
       className={`pdf-reader__print-btn ${className}`}
-      {...extraProps}>
-      {children ? children : 'Print'}
+      {...extraProps}
+    >
+      {children ? children : "Print"}
     </button>
   );
 };

@@ -1,15 +1,15 @@
-import classnames from 'classnames';
-import * as React from 'react';
+import classnames from "classnames";
+import * as React from "react";
 
-import { DocumentContext } from '../../context/DocumentContext';
-import { TransformContext } from '../../context/TransformContext';
-import { computeBoundingBoxStyle } from '../../utils/style';
-import { IconFlag } from '../icon/IconFlag';
-import { Size } from '../types/boundingBox';
+import { DocumentContext } from "../../context/DocumentContext";
+import { TransformContext } from "../../context/TransformContext";
+import { computeBoundingBoxStyle } from "../../utils/style";
+import { IconFlag } from "../icon/IconFlag";
+import { Size } from "../types/boundingBox";
 
 export const POSITION = {
-  LEFT: 'LEFT',
-  RIGHT: 'RIGHT',
+  LEFT: "LEFT",
+  RIGHT: "RIGHT",
 } as const;
 
 export type PositionType = typeof POSITION[keyof typeof POSITION];
@@ -44,7 +44,8 @@ export const ArrowFlagBase: React.FunctionComponent<Props> = ({
   const { rotation, scale } = React.useContext(TransformContext);
   // function for scaling bounding boxes based on current document states
   const computeSize = React.useCallback(
-    (box: Size): Size => computeBoundingBoxStyle(box, pageDimensions, rotation, scale),
+    (box: Size): Size =>
+      computeBoundingBoxStyle(box, pageDimensions, rotation, scale),
     [pageDimensions, rotation, scale, originTop]
   );
 
@@ -68,7 +69,10 @@ export const ArrowFlagBase: React.FunctionComponent<Props> = ({
 
   const tailPosition = {
     top: computedTailSize.top,
-    left: position === POSITION.LEFT ? -computedTailSize.width : pageDimensions.width * scale,
+    left:
+      position === POSITION.LEFT
+        ? -computedTailSize.width
+        : pageDimensions.width * scale,
     height: computedTailSize.height,
     width: computedTailSize.width,
   };
@@ -84,17 +88,21 @@ export const ArrowFlagBase: React.FunctionComponent<Props> = ({
           ? -computedTailSize.width
           : tailPosition.left + tailPosition.width - width + 1,
     };
-    const labelPosition = position === POSITION.LEFT ? '47%' : '53%';
+    const labelPosition = position === POSITION.LEFT ? "47%" : "53%";
 
     return (
       <div className="pdf-reader__arrow-flag-base__flag" style={flagPosition}>
-        <IconFlag className="pdf-reader__arrow-flag-base__flag-icon" headerPosition={position}>
+        <IconFlag
+          className="pdf-reader__arrow-flag-base__flag-icon"
+          headerPosition={position}
+        >
           <text
             x={labelPosition}
             y="54%"
             dominantBaseline="middle"
             textAnchor="middle"
-            className="pdf-reader__arrow-flag-base__flag-label">
+            className="pdf-reader__arrow-flag-base__flag-label"
+          >
             {label}
           </text>
         </IconFlag>
@@ -103,7 +111,10 @@ export const ArrowFlagBase: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <div className={classnames('pdf-reader__arrow-flag-base', className)} {...extraProps}>
+    <div
+      className={classnames("pdf-reader__arrow-flag-base", className)}
+      {...extraProps}
+    >
       <div className="pdf-reader__arrow-flag-base__tail" style={tailPosition} />
       {label && renderFlag()}
     </div>

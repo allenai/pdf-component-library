@@ -1,9 +1,12 @@
-import classnames from 'classnames';
-import * as React from 'react';
+import classnames from "classnames";
+import * as React from "react";
 
-import { DocumentContext } from '../../context/DocumentContext';
-import { BoundingBox as BoundingBoxType, scaleRawBoundingBox } from '../types/boundingBox';
-import { ArrowFlagBase, POSITION, PositionType } from './ArrowFlagBase';
+import { DocumentContext } from "../../context/DocumentContext";
+import {
+  BoundingBox as BoundingBoxType,
+  scaleRawBoundingBox,
+} from "../types/boundingBox";
+import { ArrowFlagBase, POSITION, PositionType } from "./ArrowFlagBase";
 
 type Props = {
   boundingBoxes: Array<BoundingBoxType>; // all bounding boxes are expected to be on the same page
@@ -23,7 +26,11 @@ export const ArrowFlag: React.FunctionComponent<Props> = ({
   const { pageDimensions } = React.useContext(DocumentContext);
   const convertRatioToPx = React.useCallback(
     (rawBoundingBox: BoundingBoxType): BoundingBoxType =>
-      scaleRawBoundingBox(rawBoundingBox, pageDimensions.height, pageDimensions.width),
+      scaleRawBoundingBox(
+        rawBoundingBox,
+        pageDimensions.height,
+        pageDimensions.width
+      ),
     [pageDimensions]
   );
 
@@ -40,7 +47,9 @@ export const ArrowFlag: React.FunctionComponent<Props> = ({
     rightBoundingBoxes: BoundingBoxType[] = [];
   if (!hasWideBox) {
     leftBoundingBoxes = boundingBoxes.filter(({ left }) => left < CENTER_LINE);
-    rightBoundingBoxes = boundingBoxes.filter(({ left }) => left >= CENTER_LINE);
+    rightBoundingBoxes = boundingBoxes.filter(
+      ({ left }) => left >= CENTER_LINE
+    );
   }
 
   // To handle a special case where the previous bounding box is on the right while
@@ -88,7 +97,10 @@ export const ArrowFlag: React.FunctionComponent<Props> = ({
   const hasLeftFlag = leftBoundingBoxes.length > 0;
 
   return (
-    <div className={classnames('pdf-reader__arrow-flag', className)} {...extraProps}>
+    <div
+      className={classnames("pdf-reader__arrow-flag", className)}
+      {...extraProps}
+    >
       {renderArrowFlagBase(leftBoundingBoxes, POSITION.LEFT, hasLeftFlag)}
       {renderArrowFlagBase(rightBoundingBoxes, POSITION.RIGHT, !hasLeftFlag)}
     </div>

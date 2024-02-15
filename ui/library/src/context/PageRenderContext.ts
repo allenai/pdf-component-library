@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { pdfjs } from 'react-pdf';
+import * as React from "react";
+import { pdfjs } from "react-pdf";
 
-import { PageNumber } from '../components/types/page';
-import { Nullable } from '../components/types/utils';
-import { logProviderWarning } from '../utils/provider';
-import { VisibleEntryDetailType } from '../utils/VisibleEntriesDetector';
+import { PageNumber } from "../components/types/page";
+import { Nullable } from "../components/types/utils";
+import { logProviderWarning } from "../utils/provider";
+import { getMostVisiblePageNumber } from "../utils/VisiblePageUtil";
 
 export type RenderState = {
   promise: Promise<string>;
@@ -23,21 +23,33 @@ export interface IPageRenderContext {
 
 export const PageRenderContext = React.createContext<IPageRenderContext>({
   pageRenderStates: new Map(),
-  getObjectURLForPage: args => {
-    logProviderWarning(`getObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+  getObjectURLForPage: (args) => {
+    logProviderWarning(
+      `getObjectURLForPage(${JSON.stringify(args)})`,
+      "PageRenderContext"
+    );
     return null;
   },
-  isBuildingObjectURLForPage: args => {
-    logProviderWarning(`isBuildingObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
+  isBuildingObjectURLForPage: (args) => {
+    logProviderWarning(
+      `isBuildingObjectURLForPage(${JSON.stringify(args)})`,
+      "PageRenderContext"
+    );
     return false;
   },
   isFinishedBuildingAllPagesObjectURLs: () => {
-    logProviderWarning(`isFinishedBuildingAllPagesObjectURLs()`, 'PageRenderContext');
+    logProviderWarning(
+      `isFinishedBuildingAllPagesObjectURLs()`,
+      "PageRenderContext"
+    );
     return false;
   },
-  buildObjectURLForPage: args => {
-    logProviderWarning(`buildObjectURLForPage(${JSON.stringify(args)})`, 'PageRenderContext');
-    return Promise.resolve('');
+  buildObjectURLForPage: (args) => {
+    logProviderWarning(
+      `buildObjectURLForPage(${JSON.stringify(args)})`,
+      "PageRenderContext"
+    );
+    return Promise.resolve("");
   },
 });
 
@@ -45,20 +57,17 @@ export function usePageRenderContextProps({
   pdfDocProxy,
   pixelRatio,
   scale,
-  visiblePageRatios,
 }: {
   pdfDocProxy?: pdfjs.PDFDocumentProxy;
   pixelRatio: number;
   scale: number;
-  visiblePageRatios: Map<number, VisibleEntryDetailType>;
 }): IPageRenderContext {
-  const [pageRenderStates, _setPageRenderStates] = React.useState<PageNumberToRenderStateMap>(
-    () => {
+  const [pageRenderStates, _setPageRenderStates] =
+    React.useState<PageNumberToRenderStateMap>(() => {
       const map = new Map();
       Object.freeze(map);
       return map;
-    }
-  );
+    });
 
   // Because rendering a page is async, we will lose the current pageRenderStates
   // This ref trick allows the latest to be accessible when the objectURL is ready
@@ -73,10 +82,10 @@ export function usePageRenderContextProps({
 
   const isBuildingObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): boolean => {
-      if (typeof pageIndex === 'number') {
+      if (typeof pageIndex === "number") {
         pageNumber = pageIndex + 1;
       }
-      if (typeof pageNumber !== 'number') {
+      if (typeof pageNumber !== "number") {
         return false;
       }
       const state = pageRenderStates.get(pageNumber);
@@ -88,22 +97,27 @@ export function usePageRenderContextProps({
     [pageRenderStates]
   );
 
-  const isFinishedBuildingAllPagesObjectURLs = React.useCallback((): boolean => {
-    if (!pdfDocProxy) return false;
-    for (let pageNumber = 1; pageNumber <= pdfDocProxy.numPages; pageNumber++) {
-      if (!pageRenderStates.get(pageNumber)?.objectURL) {
-        return false;
+  const isFinishedBuildingAllPagesObjectURLs =
+    React.useCallback((): boolean => {
+      if (!pdfDocProxy) return false;
+      for (
+        let pageNumber = 1;
+        pageNumber <= pdfDocProxy.numPages;
+        pageNumber++
+      ) {
+        if (!pageRenderStates.get(pageNumber)?.objectURL) {
+          return false;
+        }
       }
-    }
-    return true;
-  }, [pdfDocProxy, pageRenderStates]);
+      return true;
+    }, [pdfDocProxy, pageRenderStates]);
 
   const getObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): Nullable<string> => {
-      if (typeof pageIndex === 'number') {
+      if (typeof pageIndex === "number") {
         pageNumber = pageIndex + 1;
       }
-      if (typeof pageNumber !== 'number') {
+      if (typeof pageNumber !== "number") {
         return null;
       }
       return pageRenderStates.get(pageNumber)?.objectURL || null;
@@ -113,14 +127,16 @@ export function usePageRenderContextProps({
 
   const buildObjectURLForPage = React.useCallback(
     ({ pageNumber, pageIndex }: PageNumber): Promise<string> => {
-      if (typeof pageIndex === 'number') {
+      if (typeof pageIndex === "number") {
         pageNumber = pageIndex + 1;
       }
-      if (typeof pageNumber !== 'number') {
+      if (typeof pageNumber !== "number") {
         throw new Error('prop "pageNumber" is not a number');
       }
       if (!pdfDocProxy) {
-        throw new Error('cannot build a page until a "pdfDocProxy" is set on DocumentContext');
+        throw new Error(
+          'cannot build a page until a "pdfDocProxy" is set on DocumentContext'
+        );
       }
 
       // Don't need to start another task if already rendered
@@ -140,7 +156,7 @@ export function usePageRenderContextProps({
         promise,
         objectURL: null,
       };
-      promise.then(objectURL => {
+      promise.then((objectURL) => {
         if (!objectURL) return;
         renderState.objectURL = objectURL;
         const newPageRenderStates = new Map(pageRenderStatesRef.current);
@@ -157,16 +173,18 @@ export function usePageRenderContextProps({
   );
 
   React.useEffect(() => {
-    const visiblePages = [...visiblePageRatios.keys()];
-    if (!pdfDocProxy || [...pageRenderStates.keys()].length === pdfDocProxy.numPages) {
+    if (
+      !pdfDocProxy ||
+      [...pageRenderStates.keys()].length === pdfDocProxy.numPages
+    ) {
       return;
     }
 
-    const priorityQueue = getPriorityQueue(visiblePages, pdfDocProxy.numPages);
+    const priorityQueue = getPriorityQueue(pdfDocProxy.numPages);
     for (const pageNumber of priorityQueue) {
       buildObjectURLForPage({ pageNumber });
     }
-  }, [pageRenderStates, pdfDocProxy, visiblePageRatios]);
+  }, [pageRenderStates, pdfDocProxy]);
 
   // Flush page render states when scale changes
   React.useEffect(() => {
@@ -195,16 +213,28 @@ export function usePageRenderContextProps({
   };
 }
 
-export function getNeighboringPages(pages: number[], numTotalPages: number): number[] {
+export function getNeighboringPages(
+  pages: number[],
+  numTotalPages: number
+): number[] {
   return pages.length === 0
     ? []
-    : [Math.max(1, pages[0] - 1), Math.min(numTotalPages, pages[pages.length - 1] + 1)];
+    : [
+        Math.max(1, pages[0] - 1),
+        Math.min(numTotalPages, pages[pages.length - 1] + 1),
+      ];
 }
 
-export function getPriorityQueue(visiblePages: number[], numPages: number): number[] {
+export function getPriorityQueue(numPages: number): number[] {
+  const mostVisiblePage = getMostVisiblePageNumber();
+  const visiblePages: number[] = mostVisiblePage ? [mostVisiblePage] : [];
   const visiblePagesNeighbors = getNeighboringPages(visiblePages, numPages);
   const allPages = Array.from({ length: numPages }, (_, i) => i + 1);
-  const priorityQueue = new Set([...visiblePages, ...visiblePagesNeighbors, ...allPages]); // put into set to remove duplicats
+  const priorityQueue = new Set([
+    ...visiblePages,
+    ...visiblePagesNeighbors,
+    ...allPages,
+  ]); // put into set to remove duplicats
   return Array.from(priorityQueue); // convert set to array
 }
 
@@ -215,9 +245,11 @@ const SCALE_BOOST = 2;
 async function buildPageObjectURL({
   pageNumber,
   pdfDocProxy,
-  pixelRatio = (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 0,
+  pixelRatio = (typeof window !== "undefined"
+    ? window.devicePixelRatio
+    : null) || 0,
   scale = 1,
-  imageType = 'image/png',
+  imageType = "image/png",
   imageQuality = 1.0,
   promiseTimestamp,
 }: {
@@ -231,44 +263,48 @@ async function buildPageObjectURL({
 }): Promise<string> {
   const pageProxy = await pdfDocProxy.getPage(pageNumber);
 
-  const blob: Nullable<Blob> | number = await useRenderCanvas(async canvas => {
-    if (promiseTimestamp !== flushTimestamp) {
-      return promiseTimestamp; // flush stale promise
-    }
-    // Render page in a canvas
-    const viewport = pageProxy.getViewport({ scale: scale * pixelRatio * SCALE_BOOST });
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    const canvasContext = canvas.getContext('2d');
-    if (!canvasContext) {
-      throw new Error('canvas was unable to get a context');
-    }
-
-    const renderTask = pageProxy.render({
-      canvasContext,
-      viewport,
-      intent: 'print', // immediately render pages on inactive pages
-    });
-    await renderTask.promise;
-
-    await new Promise(resolve => setTimeout(resolve, 16));
-
-    // Fetch a blob for an image of the canvas
-    return new Promise((resolve, reject) => {
-      try {
-        canvas.toBlob(blob => resolve(blob), imageType, imageQuality);
-      } catch (error) {
-        reject(error);
+  const blob: Nullable<Blob> | number = await useRenderCanvas(
+    async (canvas) => {
+      if (promiseTimestamp !== flushTimestamp) {
+        return promiseTimestamp; // flush stale promise
       }
-    });
-  });
+      // Render page in a canvas
+      const viewport = pageProxy.getViewport({
+        scale: scale * pixelRatio * SCALE_BOOST,
+      });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      const canvasContext = canvas.getContext("2d");
+      if (!canvasContext) {
+        throw new Error("canvas was unable to get a context");
+      }
 
-  if (typeof blob === 'number') {
-    return '';
+      const renderTask = pageProxy.render({
+        canvasContext,
+        viewport,
+        intent: "print", // immediately render pages on inactive pages
+      });
+      await renderTask.promise;
+
+      await new Promise((resolve) => setTimeout(resolve, 16));
+
+      // Fetch a blob for an image of the canvas
+      return new Promise((resolve, reject) => {
+        try {
+          canvas.toBlob((blob) => resolve(blob), imageType, imageQuality);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    }
+  );
+
+  if (typeof blob === "number") {
+    return "";
   }
   // Convert blob image to object url
   if (!blob) {
-    throw new Error('unable to create image from page');
+    throw new Error("unable to create image from page");
   }
   return URL.createObjectURL(blob);
 }
@@ -278,7 +314,7 @@ let renderCanvas: Nullable<HTMLCanvasElement> = null;
 // Get or create a shared canvas for rendering pages in
 function getRenderCanvas(): HTMLCanvasElement {
   if (!renderCanvas) {
-    renderCanvas = document.createElement('canvas');
+    renderCanvas = document.createElement("canvas");
   }
   return renderCanvas;
 }
@@ -287,7 +323,9 @@ let flushTimestamp = new Date().getTime();
 let nextCanvasUse: Promise<any> = Promise.resolve();
 
 // Use the shared canvas to render a page, using promises to create a queue
-async function useRenderCanvas<T>(callback: (canvas: HTMLCanvasElement) => Promise<T>): Promise<T> {
+async function useRenderCanvas<T>(
+  callback: (canvas: HTMLCanvasElement) => Promise<T>
+): Promise<T> {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   let resolve = (_value: T | PromiseLike<T>) => {};
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -296,8 +334,10 @@ async function useRenderCanvas<T>(callback: (canvas: HTMLCanvasElement) => Promi
     resolve = _resolve;
     reject = _reject;
   });
-  nextCanvasUse = nextCanvasUse.then(() => callback(getRenderCanvas()).then(resolve, reject));
+  nextCanvasUse = nextCanvasUse.then(() =>
+    callback(getRenderCanvas()).then(resolve, reject)
+  );
   const result = await prom;
-  await new Promise(res => setTimeout(res, 16)); // Give some time between renders
+  await new Promise((res) => setTimeout(res, 16)); // Give some time between renders
   return result;
 }

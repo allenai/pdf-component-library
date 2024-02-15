@@ -36,5 +36,7 @@ export function rotateCounterClockwise(rotation: PageRotation): PageRotation {
  * e.g. whether the page "is rotated sideways."
  */
 export function isSideways(rotation: PageRotation): boolean {
-  return rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270;
+  return (
+    rotation === PageRotation.Rotate90 || rotation === PageRotation.Rotate270
+  );
 }

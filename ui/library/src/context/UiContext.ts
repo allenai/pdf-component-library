@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Nullable } from '../components/types/utils';
-import { logProviderWarning } from '../utils/provider';
+import { Nullable } from "../components/types/utils";
+import { logProviderWarning } from "../utils/provider";
 
 export interface IUiContext {
   errorMessage: Nullable<string>;
@@ -25,33 +25,47 @@ export const UiContext = React.createContext<IUiContext>({
   isShowingOutline: false,
   isShowingTextHighlight: false,
   isShowingThumbnail: false,
-  setErrorMessage: errorMessage => {
-    logProviderWarning(`setErrorMessage(${errorMessage})`, 'UiContext');
+  setErrorMessage: (errorMessage) => {
+    logProviderWarning(`setErrorMessage(${errorMessage})`, "UiContext");
   },
-  setIsShowingOutline: isShowingOutline => {
-    logProviderWarning(`setIsShowingOutline(${isShowingOutline})`, 'UiContext');
+  setIsShowingOutline: (isShowingOutline) => {
+    logProviderWarning(`setIsShowingOutline(${isShowingOutline})`, "UiContext");
   },
-  setIsLoading: isLoading => {
-    logProviderWarning(`setIsLoading(${isLoading})`, 'UiContext');
+  setIsLoading: (isLoading) => {
+    logProviderWarning(`setIsLoading(${isLoading})`, "UiContext");
   },
-  setIsShowingHighlightOverlay: isShowingHighlightOverlay => {
-    logProviderWarning(`setIsShowingHighlightOverlay(${isShowingHighlightOverlay})`, 'UiContext');
+  setIsShowingHighlightOverlay: (isShowingHighlightOverlay) => {
+    logProviderWarning(
+      `setIsShowingHighlightOverlay(${isShowingHighlightOverlay})`,
+      "UiContext"
+    );
   },
-  setIsShowingTextHighlight: isShowingTextHighlight => {
-    logProviderWarning(`setIsShowingTextHighlight(${isShowingTextHighlight})`, 'UiContext');
+  setIsShowingTextHighlight: (isShowingTextHighlight) => {
+    logProviderWarning(
+      `setIsShowingTextHighlight(${isShowingTextHighlight})`,
+      "UiContext"
+    );
   },
-  setIsShowingThumbnail: isShowingThumbnail => {
-    logProviderWarning(`setIsShowingThumbnail(${isShowingThumbnail})`, 'UiContext');
+  setIsShowingThumbnail: (isShowingThumbnail) => {
+    logProviderWarning(
+      `setIsShowingThumbnail(${isShowingThumbnail})`,
+      "UiContext"
+    );
   },
 });
 
 export function useUiContextProps(): IUiContext {
-  const [errorMessage, setErrorMessage] = React.useState<Nullable<string>>(null);
+  const [errorMessage, setErrorMessage] =
+    React.useState<Nullable<string>>(null);
   const [isLoading, setIsLoading] = React.useState<boolean>(true);
-  const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] = React.useState<boolean>(false);
-  const [isShowingOutline, setIsShowingOutline] = React.useState<boolean>(false);
-  const [isShowingTextHighlight, setIsShowingTextHighlight] = React.useState<boolean>(false);
-  const [isShowingThumbnail, setIsShowingThumbnail] = React.useState<boolean>(false);
+  const [isShowingHighlightOverlay, setIsShowingHighlightOverlay] =
+    React.useState<boolean>(false);
+  const [isShowingOutline, setIsShowingOutline] =
+    React.useState<boolean>(false);
+  const [isShowingTextHighlight, setIsShowingTextHighlight] =
+    React.useState<boolean>(false);
+  const [isShowingThumbnail, setIsShowingThumbnail] =
+    React.useState<boolean>(false);
 
   return {
     errorMessage,

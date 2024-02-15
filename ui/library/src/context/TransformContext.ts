@@ -1,7 +1,7 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { logProviderWarning } from '../utils/provider';
-import { PageRotation } from '../utils/rotate';
+import { logProviderWarning } from "../utils/provider";
+import { PageRotation } from "../utils/rotate";
 
 export const DEFAULT_ZOOM_SCALE = 1.0;
 export interface ITransformContext {
@@ -16,31 +16,41 @@ export interface ITransformContext {
 }
 
 export const TransformContext = React.createContext<ITransformContext>({
-  pixelRatio: (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1,
+  pixelRatio:
+    (typeof window !== "undefined" ? window.devicePixelRatio : null) || 1,
   rotation: PageRotation.Rotate0,
   scale: 1,
   zoomIncrementValue: 0.2,
-  setPixelRatio: pixelRatio => {
-    logProviderWarning(`setPixelRatio(${pixelRatio})`, 'TransformContext');
+  setPixelRatio: (pixelRatio) => {
+    logProviderWarning(`setPixelRatio(${pixelRatio})`, "TransformContext");
   },
-  setRotation: rotation => {
-    logProviderWarning(`setRotation(${rotation})`, 'TransformContext');
+  setRotation: (rotation) => {
+    logProviderWarning(`setRotation(${rotation})`, "TransformContext");
   },
-  setScale: scale => {
-    logProviderWarning(`setScale(${scale})`, 'TransformContext');
+  setScale: (scale) => {
+    logProviderWarning(`setScale(${scale})`, "TransformContext");
   },
-  setZoomIncrementValue: value => {
-    logProviderWarning(`setZoomIncrementValue(${value})`, 'TransformContext');
+  setZoomIncrementValue: (value) => {
+    logProviderWarning(`setZoomIncrementValue(${value})`, "TransformContext");
   },
 });
 
-export function useTransformContextProps(): ITransformContext {
+export function useTransformContextProps(
+  transformContextOverrides?: Partial<
+    React.ContextType<typeof TransformContext>
+  >
+): ITransformContext {
   const [pixelRatio, setPixelRatio] = React.useState<number>(
-    (typeof window !== 'undefined' ? window.devicePixelRatio : null) || 1
+    (typeof window !== "undefined" ? window.devicePixelRatio : null) || 1
   );
-  const [rotation, setRotation] = React.useState<PageRotation>(PageRotation.Rotate0);
-  const [scale, setScale] = React.useState<number>(DEFAULT_ZOOM_SCALE);
-  const [zoomIncrementValue, setZoomIncrementValue] = React.useState<number>(0.2);
+  const [rotation, setRotation] = React.useState<PageRotation>(
+    PageRotation.Rotate0
+  );
+  const [scale, setScale] = React.useState<number>(
+    transformContextOverrides?.scale || DEFAULT_ZOOM_SCALE
+  );
+  const [zoomIncrementValue, setZoomIncrementValue] =
+    React.useState<number>(0.2);
 
   return {
     pixelRatio,

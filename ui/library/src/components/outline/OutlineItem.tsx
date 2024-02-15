@@ -1,15 +1,18 @@
-import classnames from 'classnames';
-import * as React from 'react';
+import classnames from "classnames";
+import * as React from "react";
 
-import { ScrollContext } from '../../context/ScrollContext';
-import { NodeDestination, OutlineNode } from '../types/outline';
+import { ScrollContext } from "../../context/ScrollContext";
+import { NodeDestination, OutlineNode } from "../types/outline";
 
 type Props = {
   items?: Array<OutlineNode>;
   onClick?: (dest: NodeDestination) => void;
 };
 
-export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: Props) => {
+export const OutlineItem: React.FunctionComponent<Props> = ({
+  items,
+  onClick,
+}: Props) => {
   const { isOutlineTargetVisible } = React.useContext(ScrollContext);
 
   if (!items || !items.length) {
@@ -28,9 +31,12 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
     return (
       <li
         key={item.dest?.toString() || item.title}
-        className={classnames('reader__outline-item', {
-          'reader__outline-item--target-visible': isOutlineTargetVisible(item.dest),
-        })}>
+        className={classnames("reader__outline-item", {
+          "reader__outline-item--target-visible": isOutlineTargetVisible(
+            item.dest
+          ),
+        })}
+      >
         <a href="#" onClick={clickHandler} data-test-id="reader-outline-item">
           {item.title}
         </a>
@@ -39,5 +45,9 @@ export const OutlineItem: React.FunctionComponent<Props> = ({ items, onClick }: 
     );
   }
 
-  return <ul className="reader__outline-items">{items.map(item => renderItem(item))}</ul>;
+  return (
+    <ul className="reader__outline-items">
+      {items.map((item) => renderItem(item))}
+    </ul>
+  );
 };

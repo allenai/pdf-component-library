@@ -1,6 +1,6 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { POSITION, PositionType } from '../marker/ArrowFlagBase';
+import { POSITION, PositionType } from "../marker/ArrowFlagBase";
 
 type Props = {
   children?: React.ReactNode;

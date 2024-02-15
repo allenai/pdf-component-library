@@ -1,8 +1,8 @@
-import { Nullable } from '../components/types/utils';
+import { Nullable } from "../components/types/utils";
 
 export enum ScrollDirection {
-  UP = 'UP',
-  DOWN = 'DOWN',
+  UP = "UP",
+  DOWN = "DOWN",
 }
 export default class ScrollDetector {
   _lastScrollTop: number;
@@ -12,7 +12,9 @@ export default class ScrollDetector {
   _lastScrollTopBeforeDirectionChange: number;
   _scrollThreshold?: number;
   _isScrollThresholdReachedInDirection: Nullable<ScrollDirection>;
-  _setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any;
+  _setScrollThresholdReachedInDirection?: (
+    scrollDirection: Nullable<ScrollDirection>
+  ) => any;
   _isAtTop: Nullable<boolean>;
   _setIsAtTop: (isAtTop: boolean) => any;
 
@@ -20,7 +22,9 @@ export default class ScrollDetector {
     el: Element,
     setScrollDirection: (scrollDirection: ScrollDirection) => any,
     setIsAtTop: (isAtTop: boolean) => any,
-    setScrollThresholdReachedInDirection?: (scrollDirection: Nullable<ScrollDirection>) => any,
+    setScrollThresholdReachedInDirection?: (
+      scrollDirection: Nullable<ScrollDirection>
+    ) => any,
     scrollThreshold?: number
   ) {
     this._el = el;
@@ -33,23 +37,24 @@ export default class ScrollDetector {
     this._scrollThreshold = scrollThreshold;
 
     this._isScrollThresholdReachedInDirection = null;
-    this._setScrollThresholdReachedInDirection = setScrollThresholdReachedInDirection;
+    this._setScrollThresholdReachedInDirection =
+      setScrollThresholdReachedInDirection;
   }
 
   attachScrollListener(): void {
-    if (this._el?.tagName?.toLowerCase() === 'html') {
-      window.addEventListener('scroll', this._onScroll, false);
+    if (this._el?.tagName?.toLowerCase() === "html") {
+      window.addEventListener("scroll", this._onScroll, false);
       return;
     }
-    this._el.addEventListener('scroll', this._onScroll, false);
+    this._el.addEventListener("scroll", this._onScroll, false);
   }
 
   detachScrollListener(): void {
-    if (this._el?.tagName?.toLowerCase() === 'html') {
-      window.removeEventListener('scroll', this._onScroll, false);
+    if (this._el?.tagName?.toLowerCase() === "html") {
+      window.removeEventListener("scroll", this._onScroll, false);
       return;
     }
-    this._el.removeEventListener('scroll', this._onScroll, false);
+    this._el.removeEventListener("scroll", this._onScroll, false);
   }
 
   _onScroll = (): void => {
@@ -67,7 +72,9 @@ export default class ScrollDetector {
       if (currScrollTop <= 0) {
         return ScrollDirection.DOWN;
       }
-      return this._lastScrollTop < currScrollTop ? ScrollDirection.DOWN : ScrollDirection.UP;
+      return this._lastScrollTop < currScrollTop
+        ? ScrollDirection.DOWN
+        : ScrollDirection.UP;
     })();
 
     // Update state, if changed
@@ -83,7 +90,9 @@ export default class ScrollDetector {
       }
     } else {
       if (this._scrollThreshold && this._setScrollThresholdReachedInDirection) {
-        const scrolledAmount = Math.abs(this._lastScrollTopBeforeDirectionChange - currScrollTop);
+        const scrolledAmount = Math.abs(
+          this._lastScrollTopBeforeDirectionChange - currScrollTop
+        );
         if (scrolledAmount >= this._scrollThreshold) {
           this._isScrollThresholdReachedInDirection = this._lastScrollDirection;
           this._setScrollThresholdReachedInDirection(this._lastScrollDirection);
