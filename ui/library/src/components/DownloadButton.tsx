@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export type Props = {
   className?: string;
@@ -22,13 +22,13 @@ export const DownloadButton: React.FunctionComponent<Props> = ({
     setFetching(true);
 
     fetch(pdfUrl)
-      .then(response => response.blob())
-      .then(blob => {
+      .then((response) => response.blob())
+      .then((blob) => {
         setFetching(false);
         const blobURL = URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = blobURL;
-        a.download = pdfUrl.split('/').pop() || pdfUrl;
+        a.download = pdfUrl.split("/").pop() || pdfUrl;
         document.body.appendChild(a);
         a.click();
       });
@@ -40,8 +40,9 @@ export const DownloadButton: React.FunctionComponent<Props> = ({
       onClick={() => download()}
       aria-label="Download PDF"
       className={`pdf-reader__download-btn ${className}`}
-      {...extraProps}>
-      {children ? children : 'Download'}
+      {...extraProps}
+    >
+      {children ? children : "Download"}
     </button>
   );
 };

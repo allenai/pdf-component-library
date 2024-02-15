@@ -1,11 +1,11 @@
-import { Dimensions } from '../components/types/boundingBox';
-import { PageProperties } from '../components/types/page';
-import { Nullable } from '../components/types/utils';
-import { PageRotation } from '../utils/rotate';
+import { Dimensions } from "../components/types/boundingBox";
+import { PageProperties } from "../components/types/page";
+import { Nullable } from "../components/types/utils";
+import { PageRotation } from "../utils/rotate";
 
 // Each page div is ID'd according to page index
 // e.g. reader_pg_0, reader_pg_1, etc.
-export const PAGE_NAV_TARGET_ID_ROOT = 'reader_pg_';
+export const PAGE_NAV_TARGET_ID_ROOT = "reader_pg_";
 
 const PDF_HEIGHT_POINTS = 792;
 const PDF_WIDTH_POINTS = 612;
@@ -17,7 +17,11 @@ export function generatePageIdFromIndex(pageIndex: number | string): string {
 export function scrollToId(id: string): void {
   const element = document.getElementById(id);
   if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'center' });
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "center",
+    });
   } else {
     console.error(`Could not find scroll target with ID #${id}`);
   }
@@ -61,16 +65,19 @@ export function scrollToPosition(
 
   if (rotation == PageRotation.Rotate90) {
     marginTopPixels = marginLeft;
-    bottomPixels = (height * (PDF_WIDTH_POINTS - leftPoints)) / PDF_WIDTH_POINTS;
+    bottomPixels =
+      (height * (PDF_WIDTH_POINTS - leftPoints)) / PDF_WIDTH_POINTS;
     leftPixels = (width * bottomPoints) / PDF_HEIGHT_POINTS;
   } else if (rotation == PageRotation.Rotate180) {
     marginTopPixels = marginBottom;
-    bottomPixels = (height * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
+    bottomPixels =
+      (height * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
     leftPixels = (width * (PDF_WIDTH_POINTS - leftPoints)) / PDF_WIDTH_POINTS;
   } else if (rotation == PageRotation.Rotate270) {
     marginTopPixels = marginRight;
     bottomPixels = (height * leftPoints) / PDF_WIDTH_POINTS;
-    leftPixels = (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
+    leftPixels =
+      (width * (PDF_HEIGHT_POINTS - bottomPoints)) / PDF_HEIGHT_POINTS;
   }
 
   // Find page element
@@ -96,19 +103,22 @@ export function scrollToPosition(
       bottomPx: bottomPixels,
     }),
     left: Math.floor(leftPixels),
-    behavior: 'smooth',
+    behavior: "smooth",
   });
 }
 
 export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
   const minScrollableHeight = 50; // used to check for a bug where Firefox gives inline containers a small scrollHeight when it shouldnt
-  if (typeof document === 'undefined') {
+  if (typeof document === "undefined") {
     return null;
   }
-  if (!node || node.nodeName.toLowerCase() === 'body') {
+  if (!node || node.nodeName.toLowerCase() === "body") {
     return document.documentElement;
   }
-  if (node.scrollHeight - node.clientHeight > minScrollableHeight && !isOverflowIsHidden(node)) {
+  if (
+    node.scrollHeight - node.clientHeight > minScrollableHeight &&
+    !isOverflowIsHidden(node)
+  ) {
     return node;
   }
   return getScrollParent(node.parentElement as HTMLElement);
@@ -117,9 +127,9 @@ export function getScrollParent(node: HTMLElement): Nullable<HTMLElement> {
 function isOverflowIsHidden(node: HTMLElement): boolean {
   const style = getComputedStyle(node);
   return (
-    style.overflow.includes('hidden') ||
-    style.overflowX.includes('hidden') ||
-    style.overflowY.includes('hidden')
+    style.overflow.includes("hidden") ||
+    style.overflowX.includes("hidden") ||
+    style.overflowY.includes("hidden")
   );
 }
 
@@ -136,7 +146,9 @@ export function calculateTopPx({
   heightPx: number;
   bottomPx: number;
 }): number {
-  return Math.floor(heightWithMarginsInPx * pageIndex + marginTopPx + (heightPx - bottomPx));
+  return Math.floor(
+    heightWithMarginsInPx * pageIndex + marginTopPx + (heightPx - bottomPx)
+  );
 }
 
 /**
@@ -187,8 +199,10 @@ export function calculateTargetPosition({
   switch (rotation) {
     default:
     case PageRotation.Rotate0: {
-      const leftPx = (leftPoint / PDF_WIDTH_POINTS) * pageDimensions.width * scale;
-      const topPx = (1 - bottomPoint / PDF_HEIGHT_POINTS) * pageDimensions.height * scale;
+      const leftPx =
+        (leftPoint / PDF_WIDTH_POINTS) * pageDimensions.width * scale;
+      const topPx =
+        (1 - bottomPoint / PDF_HEIGHT_POINTS) * pageDimensions.height * scale;
       return { leftPx, topPx };
     }
   }

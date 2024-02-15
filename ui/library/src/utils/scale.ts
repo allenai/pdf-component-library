@@ -1,4 +1,4 @@
-import { Dimensions } from '../components/types/boundingBox';
+import { Dimensions } from "../components/types/boundingBox";
 
 // Data from react-pdf/pdfjs that we need to compute the pixel size of the PDF's page(s).
 export interface IPDFPageProxy {

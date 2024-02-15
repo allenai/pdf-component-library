@@ -1,14 +1,17 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { buildOutlinePositions, DocumentContext } from '../../context/DocumentContext';
-import { ScrollContext } from '../../context/ScrollContext';
-import { NodeDestination, OutlineNode } from '../types/outline';
-import { OutlineItem } from './OutlineItem';
+import {
+  buildOutlinePositions,
+  DocumentContext,
+} from "../../context/DocumentContext";
+import { ScrollContext } from "../../context/ScrollContext";
+import { NodeDestination, OutlineNode } from "../types/outline";
+import { OutlineItem } from "./OutlineItem";
 
 export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
   const { outline, pdfDocProxy, setOutline, setOutlinePositions } =
     React.useContext(DocumentContext);
-  const { scrollToOutlineTarget, resetScrollObservers } = React.useContext(ScrollContext);
+  const { scrollToOutlineTarget } = React.useContext(ScrollContext);
 
   React.useEffect(() => {
     if (outline) {
@@ -25,11 +28,8 @@ export const Outline: React.FunctionComponent = ({ ...extraProps }) => {
         setOutline(outlineArray);
         return buildOutlinePositions(pdfDocProxy, outlineArray);
       })
-      .then(outlinePositions => {
+      .then((outlinePositions) => {
         setOutlinePositions(outlinePositions);
-      })
-      .then(() => {
-        resetScrollObservers();
       });
   }, [outline]);
 

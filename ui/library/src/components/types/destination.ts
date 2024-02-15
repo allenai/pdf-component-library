@@ -1,4 +1,4 @@
-import { PageReference } from './page';
+import { PageReference } from "./page";
 
 export type Destination = {
   dest: string;

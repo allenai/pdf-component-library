@@ -1,38 +1,42 @@
 @media print {
-    ::-webkit-scrollbar {
-      display: none;
-    }
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
-    html, body { height: auto,  }
-    
-    @page{
-        size: auto;
-        margin: 0;
-        overflow:hidden;
-    }
+  html,
+  body {
+    height: auto;
+  }
 
-    html, body { 
-      margin: 0 !important; 
-      padding: 0 !important;  
-    }
- 
-    .no-break{ page-break-before: always; }
+  @page {
+    size: auto;
+    margin: 0;
+    overflow: hidden;
+  }
 
-    .reader__page {
-      margin: 0;  
-    }
-  
-    .reader .reader__main {
-      margin-top: 0px;
-    }
-  
-    .reader__header {
-      display: none; 
-    }
-    
-    hypothesis-sidebar {
-      display: none;
-    }
+  html,
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .no-break {
+    page-break-before: always;
+  }
+
+  .reader__page {
+    margin: 0;
+  }
+
+  .reader .reader__main {
+    margin-top: 0px;
+  }
+
+  .reader__header {
+    display: none;
+  }
+
+  hypothesis-sidebar {
+    display: none;
+  }
 }
-  
-   
